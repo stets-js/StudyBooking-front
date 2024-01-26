@@ -1,0 +1,44 @@
+@import "../../../styles/variables.scss";
+
+.title {
+  border-bottom: 2px $font-black solid;
+  text-align: center;
+  font-family: $poppins;
+  padding-bottom: 13px;
+  font-size: 32px;
+  margin-bottom: 5px;
+}
+
+.form {
+  margin: 0 auto;
+  @media screen and (max-width: 420px) {
+  width: 360px;
+  }
+}
+.textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: #d9d9d9;
+  font-size: 16px;
+  resize: none;
+  border-radius: 10px;
+  font-family: $poppins;
+  font-size: 20px;
+}
+.input__label {
+  margin-top: 20px;
+  font-family: $poppins;
+  font-size: 20px;
+  width: 45%;
+  color: $font-black;
+  margin: 26px 0 10px;
+  text-align-last: left;
+}
+.button__wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 25px;
+}

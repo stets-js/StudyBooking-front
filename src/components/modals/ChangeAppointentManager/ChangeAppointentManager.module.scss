@@ -1,0 +1,29 @@
+.managerButton{
+    background-color: #000;
+    color: #fff;
+    height: 50px;
+    width: 200px;
+    border-radius: 25px;
+    font-size: large;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+.noManagersButton{
+    font-weight: 400;
+}
+
+.managersListBox{
+    overflow-y: auto;
+    max-height: 560px;
+}
+
+.noManagersLoadingWrapper{
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}

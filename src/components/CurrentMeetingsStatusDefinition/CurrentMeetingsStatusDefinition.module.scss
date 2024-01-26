@@ -1,0 +1,121 @@
+@import "../../styles/variables.scss";
+
+.wrapperStatsDefins {
+  width: 1230px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 75px auto;
+}
+
+.statDefin {
+  max-width: 170px;
+  height: 55px;
+  padding: 15px;
+  font-size: 24px;
+  transition: 200ms linear;
+  border-radius: 20px;
+  border: 3px solid transparent;
+  font-family: $poppins;
+  font-weight: 400;
+  color: $font-black;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: #000000 solid 2px;
+  min-width: 150px;
+}
+
+.bck_blue {
+  background-color: #dae8fc;
+}
+.bck_scheduled {
+  background-color: #4da6ff;
+}
+.bck_confirmed {
+  background-color: #8000ff;
+}
+.bck_pink {
+  background-color: rgb(228, 175, 255);
+}
+.bck_orange {
+  background-color: #f0a30a;
+}
+.bck_green {
+  background-color: #70bf20;
+}
+.bck_red {
+  background-color: #ff6161;
+}
+.bck_yellow {
+  background-color: #FCFF5F;
+}
+
+@media screen and (max-width: 1250px) {
+  .wrapperStatsDefins {
+    width: 620px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto 75px auto;
+  }
+
+  .statDefin {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .wrapperStatsDefins {
+    width: 520px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto 75px auto;
+  }
+
+  .statDefin {
+    margin-bottom: 20px;
+    font-size: 18px;
+    height: 45px;
+    min-width: 130px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .wrapperStatsDefins {
+    width: 420px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto 75px auto;
+  }
+
+  .statDefin {
+    margin-bottom: 20px;
+    font-size: 14px;
+    height: 45px;
+    min-width: 100px;
+  }
+}
+@media screen and (max-width: 445px) {
+  .wrapperStatsDefins {
+    width: 355px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto 75px auto;
+  }
+
+  .statDefin {
+    margin-bottom: 20px;
+    font-size: 10px;
+    height: 35px;
+    min-width: 80px;
+  }
+}
