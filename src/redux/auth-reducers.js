@@ -13,7 +13,7 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'LOGIN_SUCCESS':
-			console.log(action.payload.token);
+			console.log(action.payload);
 			const decodedToken = jwtDecode(action.payload.token);
 			return {
 				...state,

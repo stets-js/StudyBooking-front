@@ -16,13 +16,11 @@ const Login = ({ isOpen, handleClose }) => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			console.log(login, password);
 			const res = await loginUser({ login, password });
-			console.log(res);
 			dispatch({
 				type: 'LOGIN_SUCCESS',
 				payload: {
-					token: res.token,
+					token: res,
 				},
 			});
 			handleClose();
