@@ -1,31 +1,30 @@
-import styles from "./SignUp.module.scss";
-import Modal from "../../Modal/Modal";
-import FormInput from "../../FormInput/FormInput";
-import React, { useState } from "react";
-import { postManager } from "../../../helpers/manager/manager";
-import { getRoles, postUser } from "../../../helpers/user/user";
-import Form from "../../Form/Form";
-import Select from "../../Select/Select";
+import styles from './SignUp.module.scss';
+import Modal from '../../Modal/Modal';
+import FormInput from '../../FormInput/FormInput';
+import React, {useState} from 'react';
+import {postManager} from '../../../helpers/manager/manager';
+import {getRoles, postUser} from '../../../helpers/user/user';
+import Form from '../../Form/Form';
+import Select from '../../Select/Select';
 
-const SignUp = ({ isOpen, handleClose }) => {
-  const [name, setName] = useState("");
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+const SignUp = ({isOpen, handleClose}) => {
+  const [name, setName] = useState('');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState(2);
   return (
     <>
       {isOpen && (
         <Modal open={isOpen} onClose={handleClose}>
           <Form
-            type={{ type: role === 2 ? "post" : "user", button: "signup" }}
+            type={{type: role === 2 ? 'post' : 'user', button: 'signup'}}
             text={
               <p className={styles.exit}>
-                Already have an account?{" "}
+                Already have an account?{' '}
                 <span
                   onClick={() => {
                     handleClose();
-                  }}
-                >
+                  }}>
                   Log in
                 </span>
               </p>
@@ -33,21 +32,20 @@ const SignUp = ({ isOpen, handleClose }) => {
             onSubmit={() => {
               handleClose();
               setRole(2);
-              setPassword("");
-              setLogin("");
-              setName("");
+              setPassword('');
+              setLogin('');
+              setName('');
             }}
-            requests={{ post: postUser, user:  postManager}}
+            requests={postUser}
             // setValue={setData}
             // data={data}
             name={name}
-            rating={0}
+            // rating={0}
             login={login}
             password={password}
             role={role}
             title="Sign Up"
-            signUp={true}
-          >
+            signUp={true}>
             <FormInput
               title="Name, Surname:"
               type="text"
@@ -58,15 +56,15 @@ const SignUp = ({ isOpen, handleClose }) => {
               handler={setName}
             />
             <FormInput
-                classname={styles.title}
-                title="Login:"
-                type="text"
-                name="login"
-                value={login}
-                placeholder="Login"
-                isRequired={true}
-                handler={setLogin}
-              />
+              classname={styles.title}
+              title="Login:"
+              type="text"
+              name="login"
+              value={login}
+              placeholder="Login"
+              isRequired={true}
+              handler={setLogin}
+            />
 
             <FormInput
               title="Password:"
@@ -84,8 +82,7 @@ const SignUp = ({ isOpen, handleClose }) => {
               value={role}
               manager={true}
               defaultValue="manager/caller/confirmator"
-              signUp={true}
-            ></Select>
+              signUp={true}></Select>
           </Form>
         </Modal>
       )}

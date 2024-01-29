@@ -1,6 +1,6 @@
-import styles from "./Select.module.scss";
-import React, { useState, useEffect } from "react";
-import classnames from "classnames";
+import styles from './Select.module.scss';
+import React, {useState, useEffect} from 'react';
+import classnames from 'classnames';
 
 const Select = ({
   classname,
@@ -14,47 +14,45 @@ const Select = ({
   groupId,
   administrator,
   manager,
-  signUp,
+  signUp
 }) => {
   const [data, setData] = useState([]);
 
   const getData = async () => {
     const res = await request()
-      .then((res) => res.data)
-      .catch((error) => console.log(error));
+      .then(res => res.data)
+      .catch(error => console.log(error));
 
     if (res === undefined) {
       setData([]);
       return;
     }
-    if (signUp){
-      const filteredData = res.filter(i => i.name !== "Administrator");
-      setData(filteredData);
-      return filteredData;
-    }
+    // if (signUp) {
+    //   setData(res);
+    //   return res;
+    // }
     setData(res);
     return res;
   };
 
   useEffect(() => {
-    if (type === "no-request") {
+    if (type === 'no-request') {
       return;
     }
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <label className={styles.input__label}>
       <p className={classnames(styles.input__title, classname)}>{title}</p>
-      {type === "no-request" ? (
+      {type === 'no-request' ? (
         <select
           multiple={false}
           className={classname ? classnames(styles.select) : styles.select}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
-          required
-        >
+          onChange={e => setValue(e.target.value)}
+          required>
           <option value="" disabled hidden>
             {defaultValue}
           </option>
@@ -62,14 +60,11 @@ const Select = ({
         </select>
       ) : (
         <select
-          className={
-            classname ? classnames(styles.select, classname) : styles.select
-          }
+          className={classname ? classnames(styles.select, classname) : styles.select}
           value={manager && !value ? 2 : value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
           onClick={getData}
-          required
-        >
+          required>
           {data?.length > 0 && (
             <option value="" disabled hidden>
               {defaultValue}
@@ -81,12 +76,12 @@ const Select = ({
             </option>
           )}
 
-          {data.map((i) => {
-            if (i.name === "Administrator" && administrator === true) {
-              return "";
+          {data.map(i => {
+            if (i.name === 'Administrator' && administrator === true) {
+              return '';
             }
-            if (i.name === "Не призначено" && manager) {
-              return "";
+            if (i.name === 'Не призначено' && manager) {
+              return '';
             }
             if (groupId === i.course_id) {
               return (
@@ -95,7 +90,7 @@ const Select = ({
                 </option>
               );
             } else if (groupId) {
-              return;
+              return <></>;
             }
             return (
               <option value={i.id} key={i.id}>

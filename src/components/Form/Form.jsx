@@ -1,15 +1,15 @@
-import { defaults, error, success } from "@pnotify/core";
-import React, { useEffect, useState } from "react";
-import { Fade } from "react-awesome-reveal";
-import { removeSlot } from "../../helpers/confirmation/avaliable";
-import { getUserByName, postUser } from "../../helpers/user/user";
-import InputCancel from "../InputCancel/InputCancel";
-import InputDelete from "../InputDelete/InputDelete";
-import InputSubmit from "../InputSubmit/InputSubmit";
-import OpenChangeManagerCourses from "../OpenChangeManagerCourses/OpenChangeManagerCourses";
-import ChangeAppointment from "../modals/ChangeAppointment/ChangeAppointment";
-import ChangeManagerCourses from "../modals/ChangeManagerCourses/ChangeManagerCourses";
-import styles from "./Form.module.scss";
+import {defaults, error, success} from '@pnotify/core';
+import React, {useEffect, useState} from 'react';
+import {Fade} from 'react-awesome-reveal';
+import {removeSlot} from '../../helpers/confirmation/avaliable';
+import {getUserByName, postUser} from '../../helpers/user/user';
+import InputCancel from '../InputCancel/InputCancel';
+import InputDelete from '../InputDelete/InputDelete';
+import InputSubmit from '../InputSubmit/InputSubmit';
+import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeManagerCourses';
+import ChangeAppointment from '../modals/ChangeAppointment/ChangeAppointment';
+import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
+import styles from './Form.module.scss';
 
 defaults.delay = 1000;
 
@@ -44,45 +44,44 @@ const Form = ({
   ...formData
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isChangeManagerCoursesOpen, setIsChangeManagerCoursesOpen] =
-    useState(false);
+  const [isChangeManagerCoursesOpen, setIsChangeManagerCoursesOpen] = useState(false);
   const [errorsuccessMessage, setError] = useState(false);
   const [inputCancelClicked, setInputCancelClicked] = useState(false);
-  const [selectedReason, setSelectedReason] = useState("");
+  const [selectedReason, setSelectedReason] = useState('');
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    if (type.type === "no-request-test") {
+    if (type.type === 'no-request-test') {
       return onSubmit();
     }
-    if (type.type === "no-request") {
+    if (type.type === 'no-request') {
       if (onSubmit && !inputCancelClicked) {
-        return onSubmit()
-          // .catch((e) => {
-          //   error(`${status.failMessage}, ${e.message}`);
-          // })
-          // .then(() => {
-          //   // success(status.successMessage);
-          // });
+        return onSubmit();
+        // .catch((e) => {
+        //   error(`${status.failMessage}, ${e.message}`);
+        // })
+        // .then(() => {
+        //   // success(status.successMessage);
+        // });
       }
-      setInputCancelClicked(false)
+      setInputCancelClicked(false);
       return;
     }
     try {
       event.preventDefault();
       const data = new FormData();
       for (const i in formData) {
-        if (role != 2 && formData[i] === undefined){
-          continue
+        if (role != 2 && formData[i] === undefined) {
+          continue;
         }
         if (!formData[i].toString()) {
           formData[i] = 2;
         }
         data.append(i, formData[i]);
       }
-      isDescription && data.append("description", "test");
+      isDescription && data.append('description', 'test');
 
-      if (+role === 2 && type.type === "put" && startRole !== 2) {
+      if (+role === 2 && type.type === 'put' && startRole !== 2) {
         const res = await getUserByName(startName);
         await requests.delete(res.data.id);
         return await postUser(data)
@@ -90,11 +89,11 @@ const Form = ({
             success(status.successMessage);
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
-          .catch((e) => {
+          .catch(e => {
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
-      if (+role !== 2 && type.type === "put" && startRole === 2) {
+      if (+role !== 2 && type.type === 'put' && startRole === 2) {
         const manager = await requests.getByName(startName.trim());
         await requests.managerDelete(manager.data.id);
 
@@ -104,37 +103,43 @@ const Form = ({
             success(status.successMessage);
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
-          .catch((e) => {
+          .catch(e => {
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
 
-      if (+role === 2 && type.type === "put") {
+      if (+role === 2 && type.type === 'put') {
         const res = await requests.getByName(startName.trim());
-        if (data.get("role_id")) data.delete("role_id");
+        if (data.get('role_id')) data.delete('role_id');
         return await requests
           .user(data, res.data.id)
           .then(() => {
             success(status.successMessage);
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
-          .catch((e) => {
+          .catch(e => {
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
 
-      if (+role === 2 && type.type === "post") {
+      if (+role === 2 && type.type === 'post') {
         onSubmit();
         return await requests.post(data);
       }
-      if (type.type === "login") {
+      if (type.type === 'login') {
         onSubmit();
         return await requests.login(data);
       }
-      if (+role !== 2 && type.type === "user") {
-        data.append('role_id', role)
+      if (type.type === 'user') {
+        console.log(role);
+        const user = {
+          name: data.get('name'),
+          login: data.get('login'),
+          password: data.get('password'),
+          RoleId: role
+        };
         onSubmit();
-        return await requests.user(data);
+        return await requests.user(user);
       }
       if (manager) {
         const res = await requests.getByName(startName.trim());
@@ -143,13 +148,11 @@ const Form = ({
           return error(status.failMessage);
         });
       }
-      if (type.type === "post") {
+      if (type.type === 'post') {
         return await requests
           .post(data)
-          .catch((e) => {
-            return error(
-              `${e.response.data.message ? e.response.data.message : e.message}`
-            );
+          .catch(e => {
+            return error(`${e.response.data.message ? e.response.data.message : e.message}`);
           })
           .then(() => {
             success(status.successMessage);
@@ -158,10 +161,8 @@ const Form = ({
       }
 
       await requests[type.type](data, requests.additional)
-        .catch((e) => {
-          return error(
-            `${e.response.data.message ? e.response.data.message : e.message}`
-          );
+        .catch(e => {
+          return error(`${e.response.data.message ? e.response.data.message : e.message}`);
         })
         .then(() => {
           success(status.successMessage);
@@ -190,15 +191,15 @@ const Form = ({
 
     await requests
       .delete(requests.additional)
-      .catch((e) => {
+      .catch(e => {
         return error(`${status.failMessageDelete}, ${e.message}`);
       })
       .then(() => {
         return success(status.successMessageDelete);
       });
-    if (+role === 2 && type.additionalType === "delete") {
+    if (+role === 2 && type.additionalType === 'delete') {
       const res = await requests.getByName(startName.trim());
-      await requests.userDelete(res.data.id).catch((e) => {
+      await requests.userDelete(res.data.id).catch(e => {
         return error(`${status.failMessageDelete}, ${e.message}`);
       });
     }
@@ -206,44 +207,37 @@ const Form = ({
   };
 
   return (
-    <div className={styles.modal} style={{ width: width }}>
+    <div className={styles.modal} style={{width: width}}>
       {title && <h3 className={styles.title}>{title}</h3>}
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           handleSubmit(e);
         }}
-        className={styles.form}
-      >
+        className={styles.form}>
         {children}
         <div className={styles.button__wrapper}>
-          {type.button === "login" && (
+          {type.button === 'login' && (
             <button
               type="button"
-              onClick={(e) => {
+              onClick={e => {
                 handleSubmit(e);
               }}
-              className={styles.login}
-            >
+              className={styles.login}>
               Log in
             </button>
           )}
-          {type.button === "signup" && (
+          {type.button === 'signup' && (
             <button
               type="button"
-              onClick={(e) => {
+              onClick={e => {
                 handleSubmit(e);
               }}
-              className={styles.signup}
-            >
+              className={styles.signup}>
               Sign Up
             </button>
-          )}{" "}
-          {!type.button && (
-            <InputSubmit buttonTitle={buttonTitle ? buttonTitle : "Save"} />
-          )}
-          {isCancelConfConsult && (
-            <InputDelete handleDelete={cancelConfConsultOnClickFn} />
-          )}
+          )}{' '}
+          {!type.button && <InputSubmit buttonTitle={buttonTitle ? buttonTitle : 'Save'} />}
+          {isCancelConfConsult && <InputDelete handleDelete={cancelConfConsultOnClickFn} />}
           {type.additionalType && <InputDelete handleDelete={handleDelete} />}
           {postpone && (
             <button
@@ -252,21 +246,20 @@ const Form = ({
               onClick={() => {
                 postponeClick();
                 handleClose();
-              }}
-            >
+              }}>
               Postpone
             </button>
           )}
           {isCancel ? (
             <InputCancel
-              InputCancelFunc={(reason) => {
-                setInputCancelClicked(true)
+              InputCancelFunc={reason => {
+                setInputCancelClicked(true);
                 removeSlot(slotId, reason, removeMessage);
                 onClose();
               }}
             />
           ) : (
-            ""
+            ''
           )}
           {role === 2 && !signUp ? (
             <>
@@ -285,14 +278,11 @@ const Form = ({
               ) : null}
             </>
           ) : (
-            ""
+            ''
           )}
         </div>
       </form>
-      {type.type === "no-request-test" &&
-      data.length > 0 &&
-      data[0] !== 0 &&
-      data[0] !== undefined
+      {type.type === 'no-request-test' && data.length > 0 && data[0] !== 0 && data[0] !== undefined
         ? data.map((item, i) => {
             return (
               <React.Fragment key={i}>
@@ -315,30 +305,24 @@ const Form = ({
                     age={item.age}
                     isFollowUp={item.follow_up}
                   />
-                  <div
-                    className={styles.appointment}
-                    onClick={() => setIsOpen(!isOpen)}
-                  >
+                  <div className={styles.appointment} onClick={() => setIsOpen(!isOpen)}>
                     <p className={styles.appointment__data}>
-                      {item.date.slice(0, 11)},{" "}
-                      {item.hour > 9 ? item.hour : "0" + item.hour}:00{" "}
-                      {item.course}, {item.manager_name}, {item.phone}{" "}
+                      {item.date.slice(0, 11)}, {item.hour > 9 ? item.hour : '0' + item.hour}:00{' '}
+                      {item.course}, {item.manager_name}, {item.phone}{' '}
                     </p>
                   </div>
                 </Fade>
               </React.Fragment>
             );
           })
-        : type.type === "no-request-test" &&
+        : type.type === 'no-request-test' &&
           data[0] === undefined && (
             <p className={styles.appointment__data}>
               There are no scheduled appointments for this CRM link
             </p>
           )}
       {text}
-      {type.type !== "no-request-test" && (
-        <p className={styles.exit}>Click outside to exit</p>
-      )}
+      {type.type !== 'no-request-test' && <p className={styles.exit}>Click outside to exit</p>}
     </div>
   );
 };

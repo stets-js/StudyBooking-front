@@ -6,6 +6,7 @@ import NewGroup from "../../components/modals/NewGroup/NewGroup";
 
 const GroupsPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
@@ -18,6 +19,7 @@ const GroupsPage = () => {
       <div className={styles.btn_wrapper}>
         <button
           className={styles.add_btn}
+          data-modal="new-user"
           onClick={() => {
             setIsOpen(!isOpen);
           }}

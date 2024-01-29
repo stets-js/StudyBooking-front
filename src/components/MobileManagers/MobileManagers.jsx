@@ -1,73 +1,73 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { getUsers } from "../../helpers/user/user";
-import styles from "./MobileManagers.module.scss";
-import ChangeUser from "../modals/ChangeUser/ChangeUser";
-import { Fade } from "react-awesome-reveal";
-import { getManagers } from "../../helpers/manager/manager";
-import { v4 as uuidv4 } from 'uuid';
+import React from 'react';
+import {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
+import {getUsers} from '../../helpers/user/user';
+import styles from './MobileManagers.module.scss';
+import ChangeUser from '../modals/ChangeUser/ChangeUser';
+import {Fade} from 'react-awesome-reveal';
+import {getManagers} from '../../helpers/manager/manager';
+import {v4 as uuidv4} from 'uuid';
 
-export default function MobileManagers({ isOpenModal, role, isAdmin, data }) {
-  const [name, setName] = useState("");
-  const [rating, setRating] = useState("");
+export default function MobileManagers({isOpenModal, role, isAdmin, data}) {
+  const [name, setName] = useState('');
+  const [rating, setRating] = useState('');
   const [managers, setManagers] = useState(data);
   const [id, setId] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [newRole, setRole] = useState("");
-  const [newLogin, setLogin] = useState("");
-  const [currentUserType, setcurrentUserType] = useState("Managers");
+  const [errorMessage, setErrorMessage] = useState('');
+  const [newRole, setRole] = useState('');
+  const [newLogin, setLogin] = useState('');
+  const [currentUserType, setcurrentUserType] = useState('Managers');
   const [currentUserTypeIndex, setcurrentUserTypeIndex] = useState(3);
-  const currentUserTypeCalc = (type) => {
+  const currentUserTypeCalc = type => {
     switch (type) {
-      case "Administrators":
+      case 'Administrators':
         setcurrentUserTypeIndex(0);
         break;
-      case "Managers":
+      case 'Managers':
         setcurrentUserTypeIndex(1);
         break;
-      case "Confirmators":
+      case 'Confirmators':
         setcurrentUserTypeIndex(2);
         break;
-      case "Call center":
+      case 'Call center':
         setcurrentUserTypeIndex(3);
         break;
       default:
-        //console.log(`Sorry, u got no bitches`);
-        //console.log(`index is ${currentUserTypeIndex}`);
+      //console.log(`Sorry, u got no bitches`);
+      //console.log(`index is ${currentUserTypeIndex}`);
     }
   };
 
   let usersArray = [
     {
-      text: "Administrators",
-      role: "Administrator",
+      text: 'Administrators',
+      role: 'Administrator',
       roleId: 3,
       isAdmin: false,
-      isManager: false,
+      isManager: false
     },
     {
-      text: "Managers",
-      role: "Manager",
+      text: 'Managers',
+      role: 'Manager',
       roleId: 2,
       isAdmin: false,
-      isManager: true,
+      isManager: true
     },
     {
-      text: "Confirmators",
-      role: "Confirmator",
+      text: 'Confirmators',
+      role: 'Confirmator',
       roleId: 5,
       isAdmin: false,
-      isManager: false,
+      isManager: false
     },
     {
-      text: "Call center",
-      role: "Caller",
+      text: 'Call center',
+      role: 'Caller',
       isAdmin: false,
       roleId: 4,
-      isManager: false,
-    },
+      isManager: false
+    }
   ];
   if (isAdmin) {
     usersArray = usersArray.slice(1);
@@ -75,11 +75,9 @@ export default function MobileManagers({ isOpenModal, role, isAdmin, data }) {
 
   const getUsersData = async () => {
     const arr = [];
-    const res = await getUsers().then((res) =>
-      res.users.filter((item) => item.role_id > 2)
-    );
-    const resManagers = await getManagers().then((res) => res.data);
-    resManagers.map((item) => (item.role_id = 2));
+    const res = await getUsers().then(res => res.users.filter(item => item.role_id > 2));
+    const resManagers = await getManagers().then(res => res.data);
+    resManagers.map(item => (item.role_id = 2));
     arr.push(...res);
     arr.push(...resManagers);
     return setManagers(arr);
@@ -89,10 +87,10 @@ export default function MobileManagers({ isOpenModal, role, isAdmin, data }) {
     getUsersData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, isOpenModal]);
-  const currentUserArray = managers.sort((item) => item.role_id=currentUserTypeIndex);
+  const currentUserArray = managers.sort(item => (item.role_id = currentUserTypeIndex));
   return (
     <>
-    {/* {console.table(managers.sort((item) => item.role_id=2))} */}
+      {/* {console.table(managers.sort((item) => item.role_id=2))} */}
       {managers?.length > 0 &&
         usersArray.map((i, index) => {
           return (
@@ -101,39 +99,29 @@ export default function MobileManagers({ isOpenModal, role, isAdmin, data }) {
                 <p
                   className={styles.mini_title}
                   onClick={() => {
-                    
                     setcurrentUserType(i.text);
-                    currentUserTypeCalc(i.text)
-                  }}
-                >
+                    currentUserTypeCalc(i.text);
+                  }}>
                   {i.text}
                 </p>
                 <ul className={styles.main_wrapper}>
-                  {currentUserArray.map((item) => {
+                  {currentUserArray.map(item => {
                     if (i.roleId === item.role_id || !item.role_id) {
                       return (
-                        <Fade
-                          cascade
-                          triggerOnce
-                          duration={300}
-                          direction="up"
-                          key={uuidv4()}
-                        >
+                        <Fade cascade triggerOnce duration={300} direction="up" key={uuidv4()}>
                           <li className={styles.ul_items} key={uuidv4()}>
                             <Link
                               className={styles.ul_items_link}
                               target="_blank"
                               to={
-                                i.role === "Manager"
+                                i.role === 'Manager'
                                   ? `/manager/${item.id}/planning/`
-                                  : i.role === "Administrator"
+                                  : i.role === 'Administrator'
                                   ? `/admin/${item.id}`
-                                  : i.role === "Caller"
+                                  : i.role === 'Caller'
                                   ? `/caller/${item.id}`
-                                  : i.role === "Confirmator" &&
-                                    `/confirmator/${item.id}`
-                              }
-                            >
+                                  : i.role === 'Confirmator' && `/confirmator/${item.id}`
+                              }>
                               <p className={styles.ul_items_text}>
                                 {item.name} ({item.id})
                               </p>

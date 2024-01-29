@@ -1,53 +1,55 @@
-import axios from "../axios-config";
-import { error } from "@pnotify/core";
+import axios from '../axios-config';
+import {error} from '@pnotify/core';
 
 const getRoles = () => {
   return axios
-    .get("/roles")
-    .then((res) => res.data)
-    .catch((error) => {
+
+    .get('/roles')
+    .then(res => res.data)
+    .catch(error => {
       throw error;
     });
 };
 const getUsers = () => {
   return axios
-    .get("/users")
-    .then((res) => res.data)
-    .catch((error) => {
+    .get('/users')
+    .then(res => res.data)
+    .catch(error => {
       throw error;
     });
 };
-const getUserById = (id) => {
+const getUserById = id => {
   return axios
     .get(`/user/${id}`)
-    .then((res) => res.data)
-    .catch((err) => {
+    .then(res => res.data)
+    .catch(err => {
       error(`${err.response.data.message}`);
       throw err;
     });
 };
-const getUsersByRole = (roleName) => {
+const getUsersByRole = roleName => {
   return axios
     .get(`/users/${roleName}`)
-    .then((res) => res.data)
-    .catch((error) => {
+    .then(res => res.data)
+    .catch(error => {
       throw error;
     });
 };
-const getUserByName = (name) => {
+const getUserByName = name => {
   return axios
     .get(`/user/${name}`)
-    .then((res) => res.data)
-    .catch((error) => {
+    .then(res => res.data)
+    .catch(error => {
       throw error;
     });
 };
 
-const postUser = (credentials) => {
+const postUser = credentials => {
+  console.log(credentials);
   return axios
-    .post("/register_manager", credentials)
-    .then((res) => res.data)
-    .catch((error) => {
+    .post('/users', credentials)
+    .then(res => res)
+    .catch(error => {
       throw error;
     });
 };
@@ -55,26 +57,26 @@ const postUser = (credentials) => {
 const putUser = (credentials, id) => {
   return axios
     .put(`/update_user/${id}`, credentials)
-    .then((res) => res.data)
-    .catch((error) => {
+    .then(res => res.data)
+    .catch(error => {
       throw error;
     });
 };
 
-const deleteUser = (id) => {
+const deleteUser = id => {
   return axios
     .delete(`/remove_user/${id}`)
-    .then((res) => res.data)
-    .catch((error) => {
+    .then(res => res.data)
+    .catch(error => {
       throw error;
     });
 };
 
-const deleteManager = (id) => {
+const deleteManager = id => {
   return axios
     .delete(`/remove_manager/${id}`)
-    .then((res) => res.data)
-    .catch((error) => {
+    .then(res => res.data)
+    .catch(error => {
       throw error;
     });
 };
@@ -88,5 +90,5 @@ export {
   getUserById,
   getUserByName,
   getUsers,
-  deleteManager,
+  deleteManager
 };
