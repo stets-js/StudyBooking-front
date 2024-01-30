@@ -226,16 +226,7 @@ const Form = ({
               Log in
             </button>
           )}
-          {type.button === 'signup' && (
-            <button
-              type="button"
-              onClick={e => {
-                handleSubmit(e);
-              }}
-              className={styles.signup}>
-              Sign Up
-            </button>
-          )}{' '}
+
           {!type.button && <InputSubmit buttonTitle={buttonTitle ? buttonTitle : 'Save'} />}
           {isCancelConfConsult && <InputDelete handleDelete={cancelConfConsultOnClickFn} />}
           {type.additionalType && <InputDelete handleDelete={handleDelete} />}

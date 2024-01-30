@@ -27,43 +27,15 @@ export default function LoginBox({loggedUser}) {
         {isAuthenticated ? (
           <p className={styles.role}>Logged: {name}</p>
         ) : (
-          <div className={styles.btnWrapper}>
-            <button
-              type="button"
-              data-modal="login"
-              onClick={() => {
-                setIsOpen(!isOpen);
-              }}
-              className={styles.login}>
-              Log in
-            </button>
-            <button
-              type="button"
-              data-modal="signup"
-              onClick={() => {
-                setIsOpen(!isOpen);
-              }}
-              className={styles.signup}>
-              Sign up
-            </button>
-          </div>
-        )}
-        {isAuthenticated ? null : (
           <button
-            className={styles.button}
-            data-modal="settings"
-            onClick={() => setIsOpen(!isOpen)}
-            type="button">
-            <img
-              src={settingsIco}
-              alt="settings"
-              data-modal="settings"
-              onClick={() => setIsOpen(!isOpen)}
-            />
+            type="button"
+            data-modal="login"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+            className={styles.login}>
+            Log in
           </button>
-        )}
-        {modal === 'settings' && (
-          <SettingsModal isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />
         )}
       </div>
       {isAuthenticated && (
