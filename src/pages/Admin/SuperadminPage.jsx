@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SuperAdminPage.module.scss';
+import styles from '../../styles/SuperAdminPage.module.scss';
 import BgWrapper from '../../components/BgWrapper/BgWrapper';
 import Header from '../../components/Header/Header';
 import path from '../../helpers/routerPath';
@@ -11,7 +11,12 @@ const SuperAdministrator = () => {
 
   return (
     <>
-      <Header endpoints={[{text: 'users', path: path.users}]} />
+      <Header
+        endpoints={[
+          {text: 'users', path: path.users},
+          {text: 'courses', path: '/admin/' + path.courses}
+        ]}
+      />
       <section className={styles.main_wrapper}>
         <BgWrapper title={userRole} />
         <Outlet />

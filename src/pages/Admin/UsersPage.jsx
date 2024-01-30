@@ -1,18 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import styles from './SuperAdminPage.module.scss';
+import styles from '../../styles/SuperAdminPage.module.scss';
 import NewUser from '../../components/modals/NewUser/NewUser';
 import {getUsers} from '../../helpers/user/user';
 // import { getManagers } from "../../helpers/manager/manager";
 import {v4 as uuidv4} from 'uuid';
 import {useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
-import {Link} from 'react-router-dom';
 
 export default function UsersPage() {
   const [isOpen, setIsOpen] = useState(false);
   const userRole = useSelector(state => state.auth.user.role);
 
-  const [data, setData] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const fetchData = async () => {

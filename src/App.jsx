@@ -14,6 +14,7 @@ import UsersPage from './pages/Admin/UsersPage';
 
 import Footer from './components/Footer/Footer';
 import {useSelector} from 'react-redux';
+import CoursesPage from './pages/Admin/CoursesPage';
 
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -29,6 +30,7 @@ const App = () => {
             <Route path={path.superAdmin} element={<Navigate to={path.users} />} />
             <Route path={path.superAdmin} element={<SuperAdministratorPage />}>
               <Route path={path.users} element={<UsersPage />} />
+              <Route path={path.courses} element={<CoursesPage />} />
             </Route>
           </>
         ) : (

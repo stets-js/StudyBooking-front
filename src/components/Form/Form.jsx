@@ -70,8 +70,10 @@ const Form = ({
     try {
       event.preventDefault();
       const data = new FormData();
+
       for (const i in formData) {
-        if (role != 2 && formData[i] === undefined) {
+        console.log(i);
+        if (formData[i] === undefined) {
           continue;
         }
         if (!formData[i].toString()) {
@@ -79,7 +81,6 @@ const Form = ({
         }
         data.append(i, formData[i]);
       }
-      isDescription && data.append('description', 'test');
 
       if (+role === 2 && type.type === 'put' && startRole !== 2) {
         const res = await getUserByName(startName);
@@ -122,16 +123,15 @@ const Form = ({
           });
       }
 
-      if (+role === 2 && type.type === 'post') {
-        onSubmit();
-        return await requests.post(data);
-      }
+      // if (+role === 2 && type.type === 'post') {
+      //   onSubmit();
+      //   return await requests.post(data);
+      // }
       if (type.type === 'login') {
         onSubmit();
         return await requests.login(data);
       }
       if (type.type === 'user') {
-        console.log(role);
         const user = {
           name: data.get('name'),
           login: data.get('login'),
@@ -149,6 +149,7 @@ const Form = ({
         });
       }
       if (type.type === 'post') {
+        console.log(data);
         return await requests
           .post(data)
           .catch(e => {
