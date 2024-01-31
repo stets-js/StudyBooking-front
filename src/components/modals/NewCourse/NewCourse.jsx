@@ -6,19 +6,22 @@ import Form from '../../Form/Form';
 import {getUsers} from '../../../helpers/user/user';
 import Select from 'react-select';
 import styles from '../../../styles/FormInput.module.scss';
+import {useSelector} from 'react-redux';
+
 const NewCourse = ({isOpen, handleClose}) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState(0);
   const [teamLead, setTeamLead] = useState({label: '', value: null});
   const [selectedTeamLead, setSelectedTeamLead] = useState(0);
+  const userId = useSelector(state => state.auth.user.id);
   useEffect(() => {
-    getUsers('role=administrator').then(data =>
+    getUsers('role=administrator').then(data => {
       setTeamLead(
         data.data.map(el => {
           return {label: el.name, value: el.id};
         })
-      )
-    );
+      );
+    });
   }, []);
 
   return (
@@ -68,6 +71,7 @@ const NewCourse = ({isOpen, handleClose}) => {
               <p className={styles.input__title}>Administator: </p>
             </label>
             <Select
+              defaultValue={teamLead.filter(user => user.value === userId)}
               className={styles.selector}
               options={teamLead}
               name="teamLead"
