@@ -1,14 +1,25 @@
 import Modal from '../../Modal/Modal';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {postCourse} from '../../../helpers/course/course';
-import {postGroup} from '../../../helpers/group/group';
 import FormInput from '../../FormInput/FormInput';
 import Form from '../../Form/Form';
+import {getUsers} from '../../../helpers/user/user';
+import Select from 'react-select';
 
 const NewCourse = ({isOpen, handleClose}) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState(0);
-  const [teamLead, setTeamLead] = useState(0);
+  const [teamLead, setTeamLead] = useState({label: '', value: null});
+  const [selectedTeamLead, setSelectedTeamLead] = useState(0);
+  useEffect(() => {
+    getUsers().then(data =>
+      setTeamLead(
+        data.data.map(el => {
+          return {label: el.name, value: el.id};
+        })
+      )
+    );
+  }, []);
 
   return (
     <>
@@ -18,6 +29,7 @@ const NewCourse = ({isOpen, handleClose}) => {
             onSubmit={() => {
               handleClose();
               setName('');
+              setNumber(0);
             }}
             isDescription={true}
             type={{type: 'post'}}
@@ -30,7 +42,7 @@ const NewCourse = ({isOpen, handleClose}) => {
             }}
             name={name}
             group_number={number}
-            team_lead={teamLead}
+            team_lead_id={selectedTeamLead}
             title="New course">
             <FormInput
               title="Name:"
@@ -52,15 +64,13 @@ const NewCourse = ({isOpen, handleClose}) => {
               isRequired={true}
               handler={setNumber}
             />
-            <FormInput
-              title="Team lead:"
-              type="number"
-              name="team_lead"
-              min={0}
-              value={teamLead}
-              placeholder="Team lead"
-              isRequired={true}
-              handler={setTeamLead}
+            <br />
+            <br />
+            <Select
+              options={teamLead}
+              name="teamLead"
+              required
+              onChange={choice => setSelectedTeamLead(choice.value)}
             />
           </Form>
         </Modal>

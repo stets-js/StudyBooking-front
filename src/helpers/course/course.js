@@ -18,10 +18,13 @@ const getCourseIdByName = name => {
 };
 
 const postCourse = credentials => {
+  for (var pair of credentials.entries()) {
+    console.log(pair[0] + ', ' + pair[1]);
+  }
   const cours = {
     name: credentials.get('name'),
     group_amount: credentials.get('group_number'),
-    teamLeadId: credentials.get('team_lead')
+    teamLeadId: credentials.get('team_lead_id')
   };
 
   return axios

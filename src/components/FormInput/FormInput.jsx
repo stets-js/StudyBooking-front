@@ -1,6 +1,5 @@
 import styles from './FormInput.module.scss';
 import React from 'react';
-
 import classnames from 'classnames';
 
 const FormInput = ({
@@ -30,7 +29,10 @@ const FormInput = ({
         minLength={min}
         maxLength={max}
         placeholder={placeholder}
-        onChange={e => handler(e.currentTarget.value)}
+        autoComplete="off"
+        onChange={e => {
+          handler(e.currentTarget.value);
+        }}
       />
     </label>
   );
