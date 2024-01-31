@@ -5,14 +5,14 @@ import FormInput from '../../FormInput/FormInput';
 import Form from '../../Form/Form';
 import {getUsers} from '../../../helpers/user/user';
 import Select from 'react-select';
-
+import styles from '../../../styles/FormInput.module.scss';
 const NewCourse = ({isOpen, handleClose}) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState(0);
   const [teamLead, setTeamLead] = useState({label: '', value: null});
   const [selectedTeamLead, setSelectedTeamLead] = useState(0);
   useEffect(() => {
-    getUsers().then(data =>
+    getUsers('role=administrator').then(data =>
       setTeamLead(
         data.data.map(el => {
           return {label: el.name, value: el.id};
@@ -64,9 +64,11 @@ const NewCourse = ({isOpen, handleClose}) => {
               isRequired={true}
               handler={setNumber}
             />
-            <br />
-            <br />
+            <label htmlFor="teamLead" className={styles.input__label}>
+              <p className={styles.input__title}>Administator: </p>
+            </label>
             <Select
+              className={styles.selector}
               options={teamLead}
               name="teamLead"
               required

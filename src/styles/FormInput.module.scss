@@ -1,4 +1,4 @@
-@import "../../styles/variables.scss";
+@import "./variables.scss";
 .input {
   display: block;
   width: 100%;
@@ -35,7 +35,6 @@
 .input__bottom__phone {
   width: 100%;
 }
-
 
 @media screen and (max-width: 420px) {
   

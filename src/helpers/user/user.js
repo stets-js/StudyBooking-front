@@ -10,9 +10,9 @@ const getRoles = () => {
       throw error;
     });
 };
-const getUsers = () => {
+const getUsers = (options = '') => {
   return axios
-    .get('/users')
+    .get('/users' + (options ? `?${options}` : ''))
     .then(res => res.data)
     .catch(error => {
       throw error;

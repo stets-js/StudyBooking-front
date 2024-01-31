@@ -1,4 +1,4 @@
-import styles from './FormInput.module.scss';
+import styles from '../../styles/FormInput.module.scss';
 import React from 'react';
 import classnames from 'classnames';
 
