@@ -1,38 +1,85 @@
-import Modal from "../../Modal/Modal";
-import React, { useState, useEffect } from "react";
-import { putCourse, deleteCourse } from "../../../helpers/course/course";
-import Form from "../../Form/Form";
-import FormInput from "../../FormInput/FormInput";
+import Modal from '../../Modal/Modal';
+import React, {useState, useEffect} from 'react';
+import {patchCourse, deleteCourse, getCourseById} from '../../../helpers/course/course';
+import Form from '../../Form/Form';
+import FormInput from '../../FormInput/FormInput';
+import styles from '../../../styles/FormInput.module.scss';
+import {getUsers} from '../../../helpers/user/user';
+import Select from 'react-select';
+import {useDispatch, useSelector} from 'react-redux';
 
-const NewManager = ({ isOpen, handleClose, id, dataName }) => {
-  const [name, setName] = useState("");
+const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
+  console.log(courseArray);
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState(0);
+  const [teamLead, setTeamLead] = useState([{label: 'a', value: 0}]);
+  const [teamLeadId, setTeamLeadId] = useState(0);
+  const [author, setAuthor] = useState({label: '', value: 0});
+
   useEffect(() => {
-    setName(dataName);
-  }, [isOpen, dataName]);
+    const fectchUsers = async () => {
+      setTeamLead(
+        (await getUsers('role=administrator')).data.map(el => {
+          return {
+            label: el.name,
+            value: el.id
+          };
+        })
+      );
+    };
+    console.log('fetched');
+    fectchUsers();
+  }, [id]);
+  console.log(teamLead);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        console.log(id);
+
+        try {
+          const courseData = (await getCourseById(id)).data;
+
+          console.log(courseData);
+          setName(courseData.name);
+          setNumber(courseData.group_amount);
+          setTeamLeadId(courseData.teamLeadId);
+        } catch (error) {}
+      }
+    };
+    fetchData();
+    try {
+    } catch (error) {}
+  }, [id, teamLead]);
+  useEffect(() => {
+    console.log(teamLeadId);
+    setAuthor(teamLead.filter(tl => tl.value === teamLeadId)[0]);
+    console.log(author);
+  }, [teamLeadId, teamLead, author]);
+
   return (
     <>
       {isOpen && (
         <Modal open={isOpen} onClose={handleClose}>
           <Form
-            type={{ type: "put", additionalType: "delete" }}
+            type={{type: 'put', additionalType: 'delete'}}
             requests={{
-              put: putCourse,
+              put: patchCourse,
               additional: id,
-              delete: deleteCourse,
+              delete: deleteCourse
             }}
-            onSubmit={() => {
-              handleClose();
-              setName("");
-            }}
+            onSubmit={handleClose}
             status={{
-              successMessage: "Successfully changed course",
-              failMessage: "Failed to change course",
-              successMessageDelete: "Successfully deleted course",
-              failMessageDelete: "Failed to delete course",
+              successMessage: 'Successfully changed course',
+              failMessage: 'Failed to change course',
+              successMessageDelete: 'Successfully deleted course',
+              failMessageDelete: 'Failed to delete course'
             }}
             name={name}
-            title="Change course's info"
-          >
+            number={number}
+            teamLeadId={teamLeadId}
+            title="Change course's info">
             <FormInput
               title="Name:"
               type="text"
@@ -42,6 +89,28 @@ const NewManager = ({ isOpen, handleClose, id, dataName }) => {
               isRequired={true}
               handler={setName}
             />
+            <FormInput
+              title="Group number:"
+              type="number"
+              name="group_number"
+              min={0}
+              value={number}
+              placeholder="Group number"
+              isRequired={true}
+              handler={setNumber}
+            />
+            <label htmlFor="teamLead" className={styles.input__label}>
+              <p className={styles.input__title}>Administator: </p>
+            </label>
+            <Select
+              key={'Rerender_element' + Math.random() * (1000 - 100)}
+              defaultValue={teamLead.filter(tl => tl.value === teamLeadId)[0]}
+              className={styles.selector}
+              options={teamLead}
+              name="teamLead"
+              required
+              onChange={choice => setTeamLeadId(choice.value)}
+            />
           </Form>
         </Modal>
       )}
@@ -49,4 +118,4 @@ const NewManager = ({ isOpen, handleClose, id, dataName }) => {
   );
 };
 
-export default NewManager;
+export default ChangeCourse;

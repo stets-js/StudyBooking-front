@@ -20,7 +20,7 @@ const getUsers = (options = '') => {
 };
 const getUserById = id => {
   return axios
-    .get(`/user/${id}`)
+    .get(`/users/${id}`)
     .then(res => res.data)
     .catch(err => {
       error(`${err.response.data.message}`);

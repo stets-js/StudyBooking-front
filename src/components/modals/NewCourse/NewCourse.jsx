@@ -9,11 +9,12 @@ import styles from '../../../styles/FormInput.module.scss';
 import {useSelector} from 'react-redux';
 
 const NewCourse = ({isOpen, handleClose}) => {
+  const userId = useSelector(state => state.auth.user.id);
   const [name, setName] = useState('');
   const [number, setNumber] = useState(0);
   const [teamLead, setTeamLead] = useState({label: '', value: null});
-  const [selectedTeamLead, setSelectedTeamLead] = useState(0);
-  const userId = useSelector(state => state.auth.user.id);
+  const [selectedTeamLead, setSelectedTeamLead] = useState(userId);
+
   useEffect(() => {
     getUsers('role=administrator').then(data => {
       setTeamLead(

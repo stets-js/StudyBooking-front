@@ -1,5 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "redux";
+import {configureStore} from '@reduxjs/toolkit';
+import {combineReducers} from 'redux';
 import {
   persistReducer,
   persistStore,
@@ -8,40 +8,44 @@ import {
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
+  REGISTER
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 import managerReducer from './manager/manager-reducers';
 import callerReducer from './caller/caller-reducers';
-import confirmatorReducer from "./confirmator/confirmator-reducers";
-import avaliableReducer from "./confirmator/avaliable-reducers";
-import authReducer from "./auth-reducers";
-
+import confirmatorReducer from './confirmator/confirmator-reducers';
+import avaliableReducer from './confirmator/avaliable-reducers';
+import authReducer from './auth-reducers';
+import courseReducer from './course-reducers';
 const persistConfig = {
-  key: "booking-system",
-  storage,
+  key: 'booking-system',
+  storage
   // blacklist: ['token'],
 };
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
-const persistedReducer = persistReducer(persistConfig, combineReducers({
-  auth: authReducer,
-  manager: managerReducer,
-  caller: callerReducer,
-  confirmator: confirmatorReducer,
-  avaliable: avaliableReducer,
-}));
+const persistedReducer = persistReducer(
+  persistConfig,
+  combineReducers({
+    auth: authReducer,
+    manager: managerReducer,
+    caller: callerReducer,
+    confirmator: confirmatorReducer,
+    avaliable: avaliableReducer,
+    course: courseReducer
+  })
+);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  devTools: process.env.NODE_ENV === "development",
-  middleware: (getDefaultMiddleware) =>
+  devTools: process.env.NODE_ENV === 'development',
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    })
 });
 export const persistor = persistStore(store);
 // export const persistor = persistStore(store);

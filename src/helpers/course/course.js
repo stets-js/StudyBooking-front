@@ -8,9 +8,13 @@ const getCourses = () => {
       throw error;
     });
 };
-const getCourseIdByName = name => {
+const getCourseIdByName = id => {
+  return;
+};
+
+const getCourseById = id => {
   return axios
-    .get(`/get_course_id/${name}`)
+    .get(`/courses/${id}`)
     .then(res => res.data)
     .catch(error => {
       throw error;
@@ -18,9 +22,6 @@ const getCourseIdByName = name => {
 };
 
 const postCourse = credentials => {
-  for (var pair of credentials.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
   const cours = {
     name: credentials.get('name'),
     group_amount: credentials.get('group_number'),
@@ -35,9 +36,9 @@ const postCourse = credentials => {
     });
 };
 
-const putCourse = (credentials, id) => {
+const patchCourse = (credentials, id) => {
   return axios
-    .put(`/courses/${id}`, credentials)
+    .patch(`/courses/${id}`, credentials)
     .then(res => res.data)
     .catch(error => {
       throw error;
@@ -75,8 +76,9 @@ export {
   getCourses,
   postManagerCourses,
   postCourse,
-  putCourse,
+  patchCourse,
   deleteCourse,
   getManagerCourses,
-  getCourseIdByName
+  getCourseIdByName,
+  getCourseById
 };

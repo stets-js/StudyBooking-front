@@ -10,6 +10,7 @@ import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeMana
 import ChangeAppointment from '../modals/ChangeAppointment/ChangeAppointment';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 import styles from './Form.module.scss';
+import {json} from 'react-router-dom';
 
 defaults.delay = 1000;
 
@@ -76,12 +77,13 @@ const Form = ({
         if (formData[i] === undefined) {
           continue;
         }
-        if (!formData[i].toString()) {
-          formData[i] = 2;
-        }
+
         data.append(i, formData[i]);
       }
-
+      let jsonData = {};
+      for (var pair of data.entries()) {
+        jsonData[pair[0]] = pair[1];
+      }
       if (+role === 2 && type.type === 'put' && startRole !== 2) {
         const res = await getUserByName(startName);
         await requests.delete(res.data.id);
@@ -108,7 +110,17 @@ const Form = ({
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
-
+      if (type.type === 'put') {
+        return await requests
+          .put(jsonData, requests.additional)
+          .then(() => {
+            success(status.successMessage);
+            return !errorsuccessMessage && onSubmit && onSubmit();
+          })
+          .catch(e => {
+            return error(`${status.failMessage}, ${e.message}`);
+          });
+      }
       if (+role === 2 && type.type === 'put') {
         const res = await requests.getByName(startName.trim());
         if (data.get('role_id')) data.delete('role_id');
