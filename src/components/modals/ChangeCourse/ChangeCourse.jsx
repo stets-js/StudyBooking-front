@@ -6,11 +6,8 @@ import FormInput from '../../FormInput/FormInput';
 import styles from '../../../styles/FormInput.module.scss';
 import {getUsers} from '../../../helpers/user/user';
 import Select from 'react-select';
-import {useDispatch, useSelector} from 'react-redux';
 
 const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
-  console.log(courseArray);
-  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState(0);
   const [teamLead, setTeamLead] = useState([{label: 'a', value: 0}]);
@@ -28,20 +25,14 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
         })
       );
     };
-    console.log('fetched');
     fectchUsers();
   }, [id]);
-  console.log(teamLead);
-
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        console.log(id);
-
         try {
           const courseData = (await getCourseById(id)).data;
 
-          console.log(courseData);
           setName(courseData.name);
           setNumber(courseData.group_amount);
           setTeamLeadId(courseData.teamLeadId);
@@ -53,9 +44,7 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
     } catch (error) {}
   }, [id, teamLead]);
   useEffect(() => {
-    console.log(teamLeadId);
     setAuthor(teamLead.filter(tl => tl.value === teamLeadId)[0]);
-    console.log(author);
   }, [teamLeadId, teamLead, author]);
 
   return (
