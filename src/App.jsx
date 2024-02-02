@@ -23,7 +23,7 @@ const App = () => {
   return (
     <>
       <Routes>
-        {isAuthenticated ? (
+        {isAuthenticated && userRole === 'administrator' ? (
           <>
             <Route path={path.home} element={<Navigate to={`${path.superAdmin}`} />}></Route>
 

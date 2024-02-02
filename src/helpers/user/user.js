@@ -45,7 +45,6 @@ const getUserByName = name => {
 };
 
 const postUser = credentials => {
-  console.log(credentials);
   return axios
     .post('/users', credentials)
     .then(res => res)
@@ -54,9 +53,9 @@ const postUser = credentials => {
     });
 };
 
-const putUser = (credentials, id) => {
+const patchUser = (credentials, id) => {
   return axios
-    .put(`/update_user/${id}`, credentials)
+    .put(`/users/${id}`, credentials)
     .then(res => res.data)
     .catch(error => {
       throw error;
@@ -86,7 +85,7 @@ export {
   getUsersByRole,
   postUser,
   deleteUser,
-  putUser,
+  patchUser,
   getUserById,
   getUserByName,
   getUsers,

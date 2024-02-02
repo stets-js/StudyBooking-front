@@ -2,43 +2,44 @@ import styles from './NewUser.module.scss';
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import Select from '../../Select/Select';
-import React, {useState} from 'react';
-import {getRoles, postUser} from '../../../helpers/user/user';
+import React, {useEffect, useState} from 'react';
+import {getRoles, postUser, patchUser} from '../../../helpers/user/user';
 
 import Form from '../../Form/Form';
 
-const NewUser = ({isOpen, handleClose, isAdmin}) => {
+const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, userName, ...item}) => {
   const [name, setName] = useState('');
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState(0);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState(2);
+  const [role, setRole] = useState('');
+  // useEffect(() => {
+  //   setName(userName);
+  //   setRating(item.rating);
+  //   setLogin(item.login);
+  //   setRole(item.role);
+  // }, []);
   return (
     <>
       {isOpen && (
         <Modal open={isOpen} onClose={handleClose}>
           <Form
             type={{type: 'user'}}
-            requests={{user: postUser}}
-            name={name}
-            role={role}
+            requests={{user: edit ? patchUser : postUser}}
             onSubmit={() => {
               handleClose();
-              setRole(2);
-              setRating('');
-              setPassword('');
-              setLogin('');
-              setName('');
             }}
-            rating={rating}
+            role_id={role}
+            name={name}
+            role={role}
             login={login}
             password={password}
-            role_id={role}
+            rating={rating}
             status={{
               successMessage: 'Successfully created user',
               failMessage: 'Failed to create user'
             }}
-            title="New user">
+            title={title}>
             <FormInput
               title="Name:"
               type="text"
@@ -89,9 +90,7 @@ const NewUser = ({isOpen, handleClose, isAdmin}) => {
               request={getRoles}
               setValue={setRole}
               value={role}
-              manager={true}
-              administrator={isAdmin}
-              defaultValue="manager/caller/confirmator"></Select>
+              administrator={isAdmin}></Select>
           </Form>
         </Modal>
       )}
