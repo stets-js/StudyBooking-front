@@ -1,0 +1,46 @@
+@import "./App.scss";
+
+// #d5e8d4 / #d5e8d4 - group collor
+// #d5e8d4 / #d5e8d4- indiv
+// #d5e8d4 / #d5e8d4 -zamina
+
+.calendar{
+    width: 100%;
+    padding: 10px;
+    
+}
+
+.type_selector{
+    height:50px;
+    margin:10px;
+    width:100px;
+    border-radius: 10px;
+    
+    &__group{
+        background-color: $group-color;
+        border:2px solid $group-color-border;
+        opacity: 0.75;
+    }
+  
+    &__indiv{
+        background-color: $indiv-color;
+        border: 2px solid $indiv-color-border;
+        opacity: 0.75;
+    }
+    
+    &__zamina{
+        background-color: $zamina-color;
+        border: 2px solid $zamina-color-border;
+        opacity: 0.75;
+    }
+    &__free{
+        background-color: rgb(159, 159, 159);
+        border:2px solid black;
+        opacity: 0.75;
+    }
+}
+
+
+.choosed{
+    opacity: 1;
+}

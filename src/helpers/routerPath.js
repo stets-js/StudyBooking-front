@@ -24,6 +24,7 @@ const path = {
   currentManagersTable: '/currentManagersTable/',
   history: '/history/',
   authorization: 'auth/',
-  ik: 'ik/'
+  ik: 'ik/',
+  teacher: '/teacher/'
 };
 export default path;

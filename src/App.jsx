@@ -15,6 +15,7 @@ import UsersPage from './pages/Admin/UsersPage';
 import Footer from './components/Footer/Footer';
 import {useSelector} from 'react-redux';
 import CoursesPage from './pages/Admin/CoursesPage';
+import TeacherPage from './pages/Teacher/TeacherPage';
 
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -32,6 +33,11 @@ const App = () => {
               <Route path={path.users} element={<UsersPage />} />
               <Route path={path.courses} element={<CoursesPage />} />
             </Route>
+          </>
+        ) : isAuthenticated && userRole === 'teacher' ? (
+          <>
+            <Route path={path.home} element={<Navigate to={`${path.teacher}`} />}></Route>
+            <Route path={path.teacher} element={<TeacherPage />}></Route>
           </>
         ) : (
           <>
