@@ -75,7 +75,7 @@ export default function TeacherPage() {
         <thead>
           <tr>
             {startDates.map((startDate, dateIndex) => (
-              <th key={dateIndex}>
+              <th key={dateIndex} className={styles.columns}>
                 <div>
                   <div>{format(startDate, 'dd.MM')}</div>
                   <div>{format(startDate, 'EEEE')}</div>
@@ -86,7 +86,7 @@ export default function TeacherPage() {
         </thead>
         <tbody>
           {Array.from({length: 29}, (_, timeIndex) => (
-            <tr key={timeIndex} className={styles.calendar__column}>
+            <tr key={timeIndex}>
               {startDates.map((date, dateIndex) => (
                 <td key={dateIndex}>
                   {!(
@@ -94,13 +94,7 @@ export default function TeacherPage() {
                     addMinutes(date, timeIndex * 30).getMinutes() === 30
                   ) && (
                     <button
-                      className={classNames(styles.slotButton, {
-                        [styles.selectedSlot]:
-                          selectedSlot &&
-                          selectedSlot.getTime() === addMinutes(date, timeIndex * 30).getTime(),
-                        [styles.validSlot]:
-                          addMinutes(date, timeIndex * 30).getHours() >= startingHour
-                      })}
+                      className={classNames(styles.cell)}
                       onClick={() => handleCellClick(date, addMinutes(date, timeIndex * 30))}>
                       {addMinutes(date, timeIndex * 30).getHours() >= startingHour &&
                         addMinutes(date, timeIndex * 30).toLocaleTimeString([], {
