@@ -22,13 +22,13 @@
         opacity: 0.75;
     }
   
-    &__indiv{
+    &__private{
         background-color: $indiv-color;
         border: 2px solid $indiv-color-border;
         opacity: 0.75;
     }
     
-    &__zamina{
+    &__replacement{
         background-color: $zamina-color;
         border: 2px solid $zamina-color-border;
         opacity: 0.75;
@@ -54,3 +54,8 @@
 .columns{
     width:150px
 }
+
+.occupied {
+    background-color: red;
+  }
+  
