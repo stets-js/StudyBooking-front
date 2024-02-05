@@ -14,6 +14,22 @@ const teacherReducer = (state = initialState, action) => {
         ...state,
         occupiedSlots: [...state.occupiedSlots, action.payload]
       };
+    case 'DELETE_SLOT':
+      return {
+        ...state,
+        occupiedSlots: state.occupiedSlots.filter(el => el.id !== action.payload)
+      };
+    case 'UPDATE_SLOT':
+      console.log(state.occupiedSlots.length);
+      console.log(state.occupiedSlots.filter(el => el.id !== action.payload.id).length);
+      console.log(action.payload);
+      return {
+        ...state,
+        occupiedSlots: [
+          ...state.occupiedSlots.filter(el => el.id !== action.payload.id),
+          action.payload
+        ]
+      };
     case 'CLEAN_OCCUPIED_SLOTS': {
       return {
         ...state,

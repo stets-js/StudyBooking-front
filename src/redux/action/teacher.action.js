@@ -11,3 +11,13 @@ export const cleanOccupiedSlots = () => ({
   type: 'CLEAN_OCCUPIED_SLOTS',
   payload: []
 });
+
+export const DeleteSlot = slotId => ({
+  type: 'DELETE_SLOT',
+  payload: slotId
+});
+
+export const updateSlotForUser = updatedSlot => ({
+  type: 'UPDATE_SLOT',
+  payload: updatedSlot
+});
