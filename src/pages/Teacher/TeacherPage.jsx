@@ -62,12 +62,16 @@ export default function TeacherPage() {
     } else if (
       isSlotOccupied &&
       selectedAppointmentTypeId !== 3 &&
-      isSlotOccupied.id !== selectedAppointmentTypeId
+      isSlotOccupied.appointmentTypeId !== selectedAppointmentTypeId
     ) {
-      const res = await updateSlot(userId, isSlotOccupied.id, selectedAppointmentTypeId);
+      const res = await updateSlot(
+        userId,
+        isSlotOccupied.appointmentTypeId,
+        selectedAppointmentTypeId
+      );
       console.log(res.data);
       if (res.data) dispatch(updateSlotForUser(res.data));
-    } else {
+    } else if (!isSlotOccupied) {
       const res = await createSlotForUser(userId, timeSlot, selectedAppointmentTypeId);
 
       if (res.status === 'success') {
