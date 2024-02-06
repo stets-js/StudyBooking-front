@@ -1,103 +1,90 @@
-import styles from "./ChangeManagerCourses.module.scss";
-import Modal from "../../Modal/Modal";
-import React, { useState, useEffect } from "react";
+import styles from './ChangeManagerCourses.module.scss';
+import Modal from '../../Modal/Modal';
+import React, {useState, useEffect} from 'react';
 import {
-  getManagerCourses,
-  postManagerCourses,
-} from "../../../helpers/course/course";
-import { info, success, error } from "@pnotify/core";
+  getCourses,
+  getTeacherCourses,
+  postTeacherCourse,
+  deleteTeacherCourse
+} from '../../../helpers/course/course';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  addTeacherCourses,
+  setCourses,
+  setTeacherCourses
+} from '../../../redux/action/course.action';
 
-const ChangeManagerCourses = ({ isOpen, handleClose, managerId }) => {
-  const [managerCourses, setManagerCourses] = useState([]);
-  const [activeCourseIds, setActiveCourseIds] = useState([]);
+const ChangeManagerCourses = ({isOpen, handleClose, teacherId}) => {
+  const dispatch = useDispatch();
+  const courses = useSelector(state => state.courses.courses);
+  const teacherCourses = useSelector(state => state.courses.teacherCourses);
+
   const [managerInfo, setManagerInfo] = useState([]);
+
   useEffect(() => {
-    getManagerCourses(managerId)
-      .then((res) => {
-        setManagerCourses(res.courses);
-        setManagerInfo(res.manager);
-        const activeIds = res.courses
-          .filter((course) => course.is_active)
-          .map((course) => course.id);
-        setActiveCourseIds(activeIds);
-      })
-      .catch((error) => {
-        // Handle the error here
-        console.error(error);
-      });
-  }, [managerId]);
+    const fetchAllCourses = async () => {
+      const allCourses = await getCourses();
+      dispatch(setCourses(allCourses.data));
+      const teachersCrs = await getTeacherCourses(teacherId);
+      dispatch(setTeacherCourses(teachersCrs.data));
+    };
+    fetchAllCourses();
+  }, [teacherId, dispatch]);
 
-  const handleCheckboxChange = (courseId) => {
-    setManagerCourses((prevCourses) =>
-      prevCourses.map((course) => {
-        if (course.id === courseId) {
-          const updatedCourse = {
-            ...course,
-            is_active: !course.is_active,
-          };
-
-          if (updatedCourse.is_active) {
-            setActiveCourseIds((prevIds) => [...prevIds, courseId]);
-          } else {
-            setActiveCourseIds((prevIds) =>
-              prevIds.filter((id) => id !== courseId)
-            );
-          }
-
-          return updatedCourse;
-        }
-        return course;
-      })
-    );
-  };
-
-  const handleSave = () => {
-    const coursesList = activeCourseIds.join(" ");
-    const data = new FormData();
-    data.append("courses", coursesList);
-    postManagerCourses(managerId, data)
-      .then((response) => {
-        success("Courses successfully updated");
-        handleClose();
-      })
-      .catch((error) => {
-        // Handle the error here
-        console.error(error);
-        error("Something went wrong");
-      });
+  const handleCheckboxChange = async courseId => {
+    console.log('trying to handle');
+    if (teacherCourses.some(el => el.id === courseId)) {
+      console.log('deleting');
+      await deleteTeacherCourse(teacherId, courseId);
+      console.log(teacherCourses.filter(el => el.id !== courseId));
+      console.log(courseId);
+      console.log(teacherCourses);
+      dispatch(setTeacherCourses(teacherCourses.filter(el => el.id !== courseId)));
+    } else {
+      console.log('adding');
+      await postTeacherCourse(teacherId, courseId);
+      const newTeacherCourses = courses.filter(el => el.id === courseId)[0];
+      console.log(newTeacherCourses);
+      dispatch(addTeacherCourses(newTeacherCourses));
+    }
   };
 
   return (
     <>
       <Modal open={isOpen} onClose={handleClose}>
-        <h1 className={styles.title}>Manager courses</h1>
+        <h1 className={styles.title}>Teacher courses</h1>
         <h3 className={styles.managerLinkTitle}>
-          Manager :{" "}
-          <a
-            className={styles.managerLink}
-            href={`/manager/${managerInfo.id}/planning`}
-          >
+          Teacher :{/* TODO: make href */}
+          <a className={styles.managerLink} href={`/user/${managerInfo.id}/planning`}>
             {managerInfo.name}
           </a>
         </h3>
         <div className={styles.coursesBox}>
-          {managerCourses.map((course) => (
-            <div key={course.id} className={styles.checkBoxDiv}>
-              <label className={styles.checkBoxLabel}>
-                <input
-                  className={styles.checkBox}
-                  type="checkbox"
-                  checked={course.is_active}
-                  onChange={() => handleCheckboxChange(course.id)}
-                />
-                {course.name}
-              </label>
-            </div>
-          ))}
+          {courses.length > 0 &&
+            courses.map(course => (
+              <div key={course.id} className={styles.checkBoxDiv}>
+                <label className={styles.checkBoxLabel}>
+                  <input
+                    className={styles.checkBox}
+                    type="checkbox"
+                    key={Math.random() * 1000 - 10}
+                    checked={
+                      teacherCourses.length > 0 &&
+                      teacherCourses.some(el => {
+                        console.log(course);
+                        return el.id === course.id;
+                      })
+                    }
+                    onChange={() => handleCheckboxChange(course.id)}
+                  />
+                  {course.name}
+                </label>
+              </div>
+            ))}
         </div>
-        <button className={styles.input__submit} onClick={handleSave}>
+        {/* <button className={styles.input__submit} onClick={handleSave}>
           Save
-        </button>
+        </button> */}
       </Modal>
     </>
   );

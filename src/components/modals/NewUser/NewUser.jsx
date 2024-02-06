@@ -13,6 +13,7 @@ const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, user
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  console.log(item);
   // useEffect(() => {
   //   setName(userName);
   //   setRating(item.rating);
@@ -35,6 +36,7 @@ const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, user
             login={login}
             password={password}
             rating={rating}
+            id={item.id}
             status={{
               successMessage: 'Successfully created user',
               failMessage: 'Failed to create user'

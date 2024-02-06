@@ -17,7 +17,8 @@ import callerReducer from './caller/caller-reducers';
 import confirmatorReducer from './confirmator/confirmator-reducers';
 import avaliableReducer from './confirmator/avaliable-reducers';
 import authReducer from './auth-reducers';
-import courseReducer from './course-reducers';
+import courseReducer from './course-reducers'; // TODO: MERGE IT TO
+import coursesReducer from './courses-reducers';
 import teacherReducer from './teacher-reducers';
 const persistConfig = {
   key: 'booking-system',
@@ -35,7 +36,8 @@ const persistedReducer = persistReducer(
     confirmator: confirmatorReducer,
     avaliable: avaliableReducer,
     course: courseReducer,
-    teacher: teacherReducer
+    teacher: teacherReducer,
+    courses: coursesReducer
   })
 );
 

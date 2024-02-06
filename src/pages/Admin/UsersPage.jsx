@@ -18,6 +18,7 @@ export default function UsersPage() {
   const [rating, setRating] = useState(0);
   const [login, setLogin] = useState('');
   const [edit, setEdit] = useState(false);
+  const [id, setId] = useState(0);
   const fetchData = async () => {
     const res = await getUsers();
     const teachersBuffer = res.data.filter(user => {
@@ -69,7 +70,7 @@ export default function UsersPage() {
                         {item.name} ({item.id})
                         <button
                           className={styles.ul_items_btn}
-                          data-modal="change-user"
+                          // data-modal="change-user"
                           onClick={() => {
                             setIsOpen(!isOpen);
                             setTitle(`Edit ${item.name}`);
@@ -78,6 +79,7 @@ export default function UsersPage() {
                             setRole(item.RoleId);
                             setLogin(item.login);
                             setRating(item.rating);
+                            setId(item.id);
                             setEdit(true);
                             // if (!item.role_id) setRole(2);
                             // else {
@@ -119,6 +121,7 @@ export default function UsersPage() {
             login={login}
             rating={rating}
             edit={edit}
+            id={id}
           />
         </div>
       )}

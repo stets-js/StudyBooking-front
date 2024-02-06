@@ -54,18 +54,27 @@ const deleteCourse = id => {
     });
 };
 
-const getManagerCourses = id => {
+const getTeacherCourses = id => {
   return axios
-    .get(`/manager/courses/${id}`)
+    .get(`/users/${id}/courses`)
     .then(res => res.data)
     .catch(error => {
       throw error;
     });
 };
 
-const postManagerCourses = (id, coursesList) => {
+const postTeacherCourse = (userId, courseId) => {
   return axios
-    .post(`/manager/courses/${id}`, coursesList)
+    .post(`/users/${userId}/courses/${courseId}`)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+
+const deleteTeacherCourse = (userId, courseId) => {
+  return axios
+    .delete(`/users/${userId}/courses/${courseId}`)
     .then(res => res.data)
     .catch(error => {
       throw error;
@@ -74,11 +83,12 @@ const postManagerCourses = (id, coursesList) => {
 
 export {
   getCourses,
-  postManagerCourses,
+  postTeacherCourse,
   postCourse,
   patchCourse,
   deleteCourse,
-  getManagerCourses,
+  getTeacherCourses,
   getCourseIdByName,
-  getCourseById
+  getCourseById,
+  deleteTeacherCourse
 };

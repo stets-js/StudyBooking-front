@@ -265,7 +265,7 @@ const Form = ({
           ) : (
             ''
           )}
-          {role === 2 && !signUp ? (
+          {1 ? (
             <>
               <OpenChangeManagerCourses
                 OpenChangeManagerCoursesFunc={setIsChangeManagerCoursesOpen}
@@ -274,7 +274,7 @@ const Form = ({
 
               {isChangeManagerCoursesOpen ? (
                 <ChangeManagerCourses
-                  managerId={id}
+                  teacherId={id}
                   handleClose={() => {
                     setIsChangeManagerCoursesOpen(!isChangeManagerCoursesOpen);
                   }}

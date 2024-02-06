@@ -20,9 +20,6 @@ const teacherReducer = (state = initialState, action) => {
         occupiedSlots: state.occupiedSlots.filter(el => el.id !== action.payload)
       };
     case 'UPDATE_SLOT':
-      console.log(state.occupiedSlots.length);
-      console.log(state.occupiedSlots.filter(el => el.id !== action.payload.id).length);
-      console.log(action.payload);
       return {
         ...state,
         occupiedSlots: [
