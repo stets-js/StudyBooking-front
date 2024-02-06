@@ -32,19 +32,12 @@ const ChangeManagerCourses = ({isOpen, handleClose, teacherId}) => {
   }, [teacherId, dispatch]);
 
   const handleCheckboxChange = async courseId => {
-    console.log('trying to handle');
     if (teacherCourses.some(el => el.id === courseId)) {
-      console.log('deleting');
       await deleteTeacherCourse(teacherId, courseId);
-      console.log(teacherCourses.filter(el => el.id !== courseId));
-      console.log(courseId);
-      console.log(teacherCourses);
       dispatch(setTeacherCourses(teacherCourses.filter(el => el.id !== courseId)));
     } else {
-      console.log('adding');
       await postTeacherCourse(teacherId, courseId);
       const newTeacherCourses = courses.filter(el => el.id === courseId)[0];
-      console.log(newTeacherCourses);
       dispatch(addTeacherCourses(newTeacherCourses));
     }
   };
