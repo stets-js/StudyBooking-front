@@ -126,67 +126,68 @@ export default function TeacherPage() {
       </div>
 
       <div>Вибраний appointmentTypeId: {selectedAppointmentTypeId}</div>
-
-      <table className={styles.calendar}>
-        <thead className={styles.tableHeader}>
-          <tr>
-            {startDates.map((startDate, dateIndex) => (
-              <td key={dateIndex} className={styles.columns}>
-                <div>
+      <div className={styles.scroller}>
+        <table className={styles.calendar}>
+          <thead className={styles.tableHeader}>
+            <tr>
+              {startDates.map((startDate, dateIndex) => (
+                <td key={dateIndex} className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>
                   <div>
-                    {format(startDate, 'EEEE', {locale: uk}).charAt(0).toUpperCase() +
-                      format(startDate, 'EEEE', {locale: uk}).slice(1)}
-                  </div>
+                    <div>
+                      {format(startDate, 'EEEE', {locale: uk}).charAt(0).toUpperCase() +
+                        format(startDate, 'EEEE', {locale: uk}).slice(1)}
+                    </div>
 
-                  <div>{format(startDate, 'dd.MM')}</div>
-                </div>
-              </td>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {Array.from({length: 29}, (_, timeIndex) => (
-            <tr key={timeIndex}>
-              {startDates.map((date, dateIndex) => (
-                <td key={dateIndex}>
-                  {!(
-                    addMinutes(date, timeIndex * 30).getHours() === 22 &&
-                    addMinutes(date, timeIndex * 30).getMinutes() === 30
-                  ) && (
-                    <button
-                      className={`${styles.cell} ${
-                        occupiedSlots.some(
-                          el => el.data === addMinutes(date, timeIndex * 30).toISOString()
-                        )
-                          ? styles[
-                              `type_selector__${
-                                occupiedSlots.filter(
-                                  el => el.data === addMinutes(date, timeIndex * 30).toISOString()
-                                )[0].AppointmentType.name
-                              }`
-                            ]
-                          : ''
-                      }
-                      `}
-                      // className={classNames(styles.cell, {
-                      //   [styles.occupied]: occupiedSlots.some(
-                      //     el => el.data === addMinutes(date, timeIndex * 30).toISOString()
-                      //   )
-                      // })}
-                      onClick={() => handleCellClick(date, addMinutes(date, timeIndex * 30))}>
-                      {addMinutes(date, timeIndex * 30).getHours() >= startingHour &&
-                        addMinutes(date, timeIndex * 30).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                    </button>
-                  )}
+                    <div>{format(startDate, 'dd.MM')}</div>
+                  </div>
                 </td>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {Array.from({length: 29}, (_, timeIndex) => (
+              <tr key={timeIndex}>
+                {startDates.map((date, dateIndex) => (
+                  <td key={dateIndex}>
+                    {!(
+                      addMinutes(date, timeIndex * 30).getHours() === 22 &&
+                      addMinutes(date, timeIndex * 30).getMinutes() === 30
+                    ) && (
+                      <button
+                        className={`${styles.cell} ${
+                          occupiedSlots.some(
+                            el => el.data === addMinutes(date, timeIndex * 30).toISOString()
+                          )
+                            ? styles[
+                                `type_selector__${
+                                  occupiedSlots.filter(
+                                    el => el.data === addMinutes(date, timeIndex * 30).toISOString()
+                                  )[0].AppointmentType.name
+                                }`
+                              ]
+                            : ''
+                        }
+                      `}
+                        // className={classNames(styles.cell, {
+                        //   [styles.occupied]: occupiedSlots.some(
+                        //     el => el.data === addMinutes(date, timeIndex * 30).toISOString()
+                        //   )
+                        // })}
+                        onClick={() => handleCellClick(date, addMinutes(date, timeIndex * 30))}>
+                        {addMinutes(date, timeIndex * 30).getHours() >= startingHour &&
+                          addMinutes(date, timeIndex * 30).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                      </button>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
