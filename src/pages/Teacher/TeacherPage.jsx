@@ -22,6 +22,7 @@ import {
 export default function TeacherPage() {
   const dispatch = useDispatch();
   const userId = useSelector(state => state.auth.user.id);
+  const userName = useSelector(state => state.auth.user.name);
   const loggedUser = useSelector(state => state.auth);
   const initialStartDate = startOfWeek(new Date(), {weekStartsOn: 1});
   const startingHour = 8;
@@ -33,16 +34,28 @@ export default function TeacherPage() {
   );
   const [appointmentTypes, setAppointmentTypes] = useState([]);
   const [selectedAppointmentTypeId, setSelectedAppointmentTypeId] = useState(null);
+  const [selectedAppointmentTypeName, setSelectedAppointmentTypeName] = useState(null);
   const occupiedSlots = useSelector(state => state.teacher.occupiedSlots);
 
   useEffect(() => {
     const fetchAppointmentTypes = async () => {
       try {
         const response = await getAppointmentTypes();
-        const slots = await getSlotsForUser();
-        setAppointmentTypes(response.data);
-        if (appointmentTypes && appointmentTypes.length > 0)
+        const slots = await getSlotsForUser(userId);
+
+        setAppointmentTypes(
+          response.data.sort((a, b) => {
+            const order = ['group', 'private', 'replacement', 'free'];
+            return order.indexOf(a.name) - order.indexOf(b.name);
+          })
+        );
+        // setAppointmentTypes(sortedAppointmentTypes);
+
+        if (appointmentTypes && appointmentTypes.length > 0) {
           setSelectedAppointmentTypeId(appointmentTypes[0].id || null);
+          setSelectedAppointmentTypeName(appointmentTypes[0].name);
+        }
+
         dispatch(setOccupiedSlots(slots.data));
       } catch (error) {
         console.error('Error fetching appointment types:', error);
@@ -71,7 +84,8 @@ export default function TeacherPage() {
       );
       console.log(res.data);
       if (res.data) dispatch(updateSlotForUser(res.data));
-    } else if (!isSlotOccupied) {
+    } else if (!isSlotOccupied && selectedAppointmentTypeId !== 3) {
+      // Free slots cant be placed
       const res = await createSlotForUser(userId, timeSlot, selectedAppointmentTypeId);
 
       if (res.status === 'success') {
@@ -96,36 +110,54 @@ export default function TeacherPage() {
   const handleNextWeek = () => {
     setStartDates(startDates.map(startDate => addDays(startDate, 7)));
   };
+  const translateAppointmentTypeName = name => {
+    switch (name) {
+      case 'group':
+        return 'Група';
+      case 'private':
+        return 'Індивід';
+      case 'replacement':
+        return 'Заміна';
+      case 'free':
+        return 'Вільно';
+      default:
+        return name;
+    }
+  };
 
   return (
     <div>
       <LoginBox loggedUser={loggedUser} />
-      <div>
-        <button onClick={handlePrevWeek} className={styles.type_selector}>
-          Попередній тиждень
+      <div className={styles.dates_wrapper}>
+        <button onClick={handlePrevWeek} className={styles.week_selector}>
+          {`<<`}
         </button>
-        <button onClick={handleNextWeek} className={styles.type_selector}>
-          Наступний тиждень
+        <div>
+          {format(startDates[0], 'dd.MM')} - {format(startDates[6], 'dd.MM')}
+        </div>
+        <button onClick={handleNextWeek} className={styles.week_selector}>
+          {`>>`}
         </button>
       </div>
 
-      <div>
+      <div className={styles.buttons_header}>
         {appointmentTypes.map(appointmentType => (
           <button
             key={appointmentType.id}
             onClick={() => {
               handleGroupChange(appointmentType.name);
               setSelectedAppointmentTypeId(appointmentType.id);
+              setSelectedAppointmentTypeName(appointmentType.name);
             }}
             className={`${styles.type_selector} ${
               styles[`type_selector__${appointmentType.name}`]
             }`}>
-            {appointmentType.name}
+            {translateAppointmentTypeName(appointmentType.name)}
           </button>
         ))}
+        <div className={styles.teacherInfo}>Викладач: {userName}</div>
       </div>
 
-      <div>Вибраний appointmentTypeId: {selectedAppointmentTypeId}</div>
       <div className={styles.scroller}>
         <table className={styles.calendar}>
           <thead className={styles.tableHeader}>
@@ -155,6 +187,8 @@ export default function TeacherPage() {
                     ) && (
                       <button
                         className={`${styles.cell} ${
+                          styles[`hover__${selectedAppointmentTypeName}`]
+                        }  ${
                           occupiedSlots.some(
                             el => el.data === addMinutes(date, timeIndex * 30).toISOString()
                           )
@@ -166,13 +200,7 @@ export default function TeacherPage() {
                                 }`
                               ]
                             : ''
-                        }
-                      `}
-                        // className={classNames(styles.cell, {
-                        //   [styles.occupied]: occupiedSlots.some(
-                        //     el => el.data === addMinutes(date, timeIndex * 30).toISOString()
-                        //   )
-                        // })}
+                        } `}
                         onClick={() => handleCellClick(date, addMinutes(date, timeIndex * 30))}>
                         {addMinutes(date, timeIndex * 30).getHours() >= startingHour &&
                           addMinutes(date, timeIndex * 30).toLocaleTimeString([], {

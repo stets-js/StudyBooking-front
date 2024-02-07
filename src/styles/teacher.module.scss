@@ -36,6 +36,7 @@
         background-color: $group-color;
         border:2px solid $group-color-border;
         // opacity: 0.75;
+       
     }
   
     &__private{
@@ -50,12 +51,25 @@
         // opacity: 0.75;
     }
     &__free{
-        background-color: rgb(159, 159, 159);
+        background-color: transparent;
         border:2px solid black;
         // opacity: 0.75;
     }
 }
-
+.hover{
+    &__private:hover{
+        background-color: $indiv-color;
+    }
+    &__free:hover{
+        background-color: transparent;
+    }
+    &__group:hover{
+        background-color: $group-color;
+    }
+    &__replacement:hover{
+        background-color: $zamina-color;
+    }
+}
 
 .choosed{
     opacity: 1;
@@ -75,3 +89,25 @@
     background-color: red;
   }
   
+
+.buttons_header{
+    display: flex;
+}
+.dates_wrapper{
+    height: 40px;
+    align-items: center;
+    display:flex;
+justify-content: center;
+}
+
+.teacherInfo{
+    margin-left: auto;
+    margin-right:20px;
+    font-size: 20px;
+}
+.week_selector{
+    // background-color: #6ca7df;
+    font-size: 20px;
+    margin:10px;
+    background-color: transparent;    
+}
