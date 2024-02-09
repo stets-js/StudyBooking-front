@@ -55,6 +55,10 @@
         border:2px solid black;
         // opacity: 0.75;
     }
+    &__universal{
+        background-color:$universal-color ;
+        border: 2px solid $universal-color-border;
+    }
 }
 .hover{
     &__private:hover{
@@ -68,6 +72,10 @@
     }
     &__replacement:hover{
         background-color: $zamina-color;
+    }
+    &__universal:hover {
+        background-color:$universal-color ;
+        border: 2px solid $universal-color-border;
     }
 }
 
