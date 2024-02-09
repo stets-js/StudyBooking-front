@@ -11,13 +11,7 @@ import {
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {useDispatch, useSelector} from 'react-redux';
 import LoginBox from '../../components/LoginBox/LoginBox';
-import {
-  DeleteSlot,
-  addNewSlot,
-  cleanOccupiedSlots,
-  setOccupiedSlots,
-  updateSlotForUser
-} from '../../redux/action/teacher.action';
+import {addNewSlot, cleanOccupiedSlots, setOccupiedSlots} from '../../redux/action/teacher.action';
 import {
   DeleteSlotFromWeek,
   addNewSlotToWeek,
@@ -78,7 +72,8 @@ export default function TeacherPage() {
   }, [dispatch]);
 
   const handleCellClick = async (date, timeSlot, weekDay) => {
-    const isSlotOccupied = occupiedSlots.find(el => el.data === timeSlot.toISOString());
+    console.log(weekDay, timeSlot, date);
+    const isSlotOccupied = weekSchedule[weekDay].find(el => el.time === format(timeSlot, 'HH:mm'));
     if (isSlotOccupied && selectedAppointmentTypeId === 3) {
       // type free - delete slot
       const slotId = isSlotOccupied.id;
