@@ -10,6 +10,7 @@ const path = {
   admin: '/admin/:adminId/',
   users: 'users/',
   groups: 'groups/',
+  appointments: 'appointments/',
   courses: 'courses/',
   actions: 'actions/',
   manager: '/manager/:managerId/',

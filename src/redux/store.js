@@ -20,6 +20,7 @@ import authReducer from './auth-reducers';
 import courseReducer from './course-reducers'; // TODO: MERGE IT TO
 import coursesReducer from './courses-reducers';
 import teacherReducer from './teacher-reducers';
+import weekScheduler from './week-scheduler.reducers';
 const persistConfig = {
   key: 'booking-system',
   storage
@@ -37,7 +38,8 @@ const persistedReducer = persistReducer(
     avaliable: avaliableReducer,
     course: courseReducer,
     teacher: teacherReducer,
-    courses: coursesReducer
+    courses: coursesReducer,
+    weekScheduler: weekScheduler
   })
 );
 

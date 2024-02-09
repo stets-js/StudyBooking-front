@@ -10,9 +10,14 @@ const getSlotsForUser = userId => {
     });
 };
 
-const createSlotForUser = (userId, slotData, appointmentTypeId) => {
+const createSlotForUser = (userId, slotData, appointmentTypeId, weekDay, time) => {
   return axios
-    .post(`/users/${userId}/slots`, {data: slotData, appointmentTypeId: appointmentTypeId})
+    .post(`/users/${userId}/slots`, {
+      data: slotData,
+      appointmentTypeId: appointmentTypeId,
+      weekDay: weekDay,
+      time: time
+    })
     .then(res => res.data)
     .catch(e => {
       throw error(e.response.data.message);

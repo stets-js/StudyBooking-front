@@ -18,6 +18,12 @@ import {
   setOccupiedSlots,
   updateSlotForUser
 } from '../../redux/action/teacher.action';
+import {
+  DeleteSlotFromWeek,
+  addNewSlotToWeek,
+  setWeekScheduler,
+  updateSlotForWeek
+} from '../../redux/action/weekScheduler.action';
 
 export default function TeacherPage() {
   const dispatch = useDispatch();
@@ -25,10 +31,11 @@ export default function TeacherPage() {
   const userName = useSelector(state => state.auth.user.name);
   const loggedUser = useSelector(state => state.auth);
   const initialStartDate = startOfWeek(new Date(), {weekStartsOn: 1});
+  const weekSchedule = useSelector(state => state.weekScheduler.weekScheduler);
+  console.log(weekSchedule);
   const startingHour = 8;
   initialStartDate.setHours(startingHour, 0, 0, 0);
 
-  const [selectedGroup, setSelectedGroup] = useState('Група');
   const [startDates, setStartDates] = useState(
     Array.from({length: 7}, (_, i) => addDays(initialStartDate, i))
   );
@@ -38,7 +45,7 @@ export default function TeacherPage() {
   const occupiedSlots = useSelector(state => state.teacher.occupiedSlots);
 
   useEffect(() => {
-    const fetchAppointmentTypes = async () => {
+    const fetchAppointmentTypesAndSlots = async () => {
       try {
         const response = await getAppointmentTypes();
         const slots = await getSlotsForUser(userId);
@@ -49,8 +56,12 @@ export default function TeacherPage() {
             return order.indexOf(a.name) - order.indexOf(b.name);
           })
         );
-        // setAppointmentTypes(sortedAppointmentTypes);
 
+        const updatedWeekSchedule = Array.from({length: 7}, () => []);
+        slots.data.forEach(slot => {
+          updatedWeekSchedule[slot.weekDay].push(slot);
+        });
+        dispatch(setWeekScheduler(updatedWeekSchedule));
         if (appointmentTypes && appointmentTypes.length > 0) {
           setSelectedAppointmentTypeId(appointmentTypes[0].id || null);
           setSelectedAppointmentTypeName(appointmentTypes[0].name);
@@ -61,46 +72,41 @@ export default function TeacherPage() {
         console.error('Error fetching appointment types:', error);
       }
     };
+
     dispatch(cleanOccupiedSlots());
-    fetchAppointmentTypes();
+    fetchAppointmentTypesAndSlots();
   }, [dispatch]);
 
-  const handleCellClick = async (date, timeSlot) => {
-    const isSlotOccupied = occupiedSlots.filter(el => el.data === timeSlot.toISOString())[0];
+  const handleCellClick = async (date, timeSlot, weekDay) => {
+    const isSlotOccupied = occupiedSlots.find(el => el.data === timeSlot.toISOString());
     if (isSlotOccupied && selectedAppointmentTypeId === 3) {
       // type free - delete slot
       const slotId = isSlotOccupied.id;
       await deleteSlotForUser(userId, slotId);
-      dispatch(DeleteSlot(slotId));
+      dispatch(DeleteSlotFromWeek(slotId));
     } else if (
       isSlotOccupied &&
       selectedAppointmentTypeId !== 3 &&
       isSlotOccupied.appointmentTypeId !== selectedAppointmentTypeId
     ) {
-      const res = await updateSlot(
-        userId,
-        isSlotOccupied.appointmentTypeId,
-        selectedAppointmentTypeId
-      );
-      console.log(res.data);
-      if (res.data) dispatch(updateSlotForUser(res.data));
+      console.log(isSlotOccupied.id, selectedAppointmentTypeId);
+      const res = await updateSlot(userId, isSlotOccupied.id, selectedAppointmentTypeId);
+      if (res.data) dispatch(updateSlotForWeek(res.data));
     } else if (!isSlotOccupied && selectedAppointmentTypeId !== 3) {
       // Free slots cant be placed
-      const res = await createSlotForUser(userId, timeSlot, selectedAppointmentTypeId);
+      const res = await createSlotForUser(
+        userId,
+        timeSlot,
+        selectedAppointmentTypeId,
+        weekDay,
+        format(timeSlot, 'HH:mm')
+      );
 
       if (res.status === 'success') {
+        dispatch(addNewSlotToWeek(res.data));
         dispatch(addNewSlot(res.data));
       }
-      console.log(`Ви вибрали ${timeSlot}`);
-      console.log(`Дата: ${format(date, 'dd.MM.yyyy')}`);
-      console.log(`День тижня: ${format(date, 'EEEE')}`);
-      console.log(`Вибрана група: ${selectedGroup}`);
-      console.log(`Вибраний appointmentTypeId: ${selectedAppointmentTypeId}`);
     }
-  };
-
-  const handleGroupChange = group => {
-    setSelectedGroup(group);
   };
 
   const handlePrevWeek = () => {
@@ -145,7 +151,6 @@ export default function TeacherPage() {
           <button
             key={appointmentType.id}
             onClick={() => {
-              handleGroupChange(appointmentType.name);
               setSelectedAppointmentTypeId(appointmentType.id);
               setSelectedAppointmentTypeName(appointmentType.name);
             }}
@@ -177,42 +182,42 @@ export default function TeacherPage() {
             </tr>
           </thead>
           <tbody>
-            {Array.from({length: 29}, (_, timeIndex) => (
-              <tr key={timeIndex}>
-                {startDates.map((date, dateIndex) => (
-                  <td key={dateIndex}>
-                    {!(
-                      addMinutes(date, timeIndex * 30).getHours() === 22 &&
-                      addMinutes(date, timeIndex * 30).getMinutes() === 30
-                    ) && (
-                      <button
-                        className={`${styles.cell} ${
-                          styles[`hover__${selectedAppointmentTypeName}`]
-                        }  ${
-                          occupiedSlots.some(
-                            el => el.data === addMinutes(date, timeIndex * 30).toISOString()
-                          )
-                            ? styles[
-                                `type_selector__${
-                                  occupiedSlots.filter(
-                                    el => el.data === addMinutes(date, timeIndex * 30).toISOString()
-                                  )[0].AppointmentType.name
-                                }`
-                              ]
-                            : ''
-                        } `}
-                        onClick={() => handleCellClick(date, addMinutes(date, timeIndex * 30))}>
-                        {addMinutes(date, timeIndex * 30).getHours() >= startingHour &&
-                          addMinutes(date, timeIndex * 30).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                      </button>
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {Array.from({length: 28}, (_, timeIndex) => {
+              return (
+                <tr key={timeIndex}>
+                  {startDates.map((date, dateIndex) => {
+                    const currentTime = addMinutes(date, timeIndex * 30);
+                    console.log(weekSchedule[dateIndex]);
+                    const daySlots = weekSchedule[dateIndex];
+                    const slot = (daySlots || []).find(slot => {
+                      if (slot.time === format(currentTime, 'HH:mm')) {
+                        console.log(slot);
+                      }
+                      return slot.time === format(currentTime, 'HH:mm');
+                    });
+                    return (
+                      <td key={dateIndex}>
+                        {!(currentTime.getHours() === 22 && currentTime.getMinutes() === 30) && (
+                          <button
+                            className={`${styles.cell} ${
+                              styles[`hover__${selectedAppointmentTypeName}`]
+                            }  ${
+                              slot ? styles[`type_selector__${slot.AppointmentType.name}`] : ''
+                            } `}
+                            onClick={() => handleCellClick(date, currentTime, dateIndex)}>
+                            {currentTime.getHours() >= startingHour &&
+                              currentTime.toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                          </button>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

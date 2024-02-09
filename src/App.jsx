@@ -16,7 +16,7 @@ import Footer from './components/Footer/Footer';
 import {useSelector} from 'react-redux';
 import CoursesPage from './pages/Admin/CoursesPage';
 import TeacherPage from './pages/Teacher/TeacherPage';
-
+import Appointment from './pages/Admin/AppointmentSelector';
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const userRole = useSelector(state => state.auth.user.role);
@@ -32,6 +32,7 @@ const App = () => {
             <Route path={path.superAdmin} element={<SuperAdministratorPage />}>
               <Route path={path.users} element={<UsersPage />} />
               <Route path={path.courses} element={<CoursesPage />} />
+              <Route path={path.appointments} element={<Appointment />} />
             </Route>
           </>
         ) : isAuthenticated && userRole === 'teacher' ? (
