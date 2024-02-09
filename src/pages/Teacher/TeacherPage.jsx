@@ -33,7 +33,7 @@ export default function TeacherPage() {
   const initialStartDate = startOfWeek(new Date(), {weekStartsOn: 1});
   const weekSchedule = useSelector(state => state.weekScheduler.weekScheduler);
   console.log(weekSchedule);
-  const startingHour = 8;
+  const startingHour = 9;
   initialStartDate.setHours(startingHour, 0, 0, 0);
 
   const [startDates, setStartDates] = useState(
@@ -182,41 +182,35 @@ export default function TeacherPage() {
             </tr>
           </thead>
           <tbody>
-            {Array.from({length: 28}, (_, timeIndex) => {
-              return (
-                <tr key={timeIndex}>
-                  {startDates.map((date, dateIndex) => {
-                    const currentTime = addMinutes(date, timeIndex * 30);
-                    console.log(weekSchedule[dateIndex]);
-                    const daySlots = weekSchedule[dateIndex];
-                    const slot = (daySlots || []).find(slot => {
-                      if (slot.time === format(currentTime, 'HH:mm')) {
-                        console.log(slot);
-                      }
-                      return slot.time === format(currentTime, 'HH:mm');
-                    });
-                    return (
-                      <td key={dateIndex}>
-                        {!(currentTime.getHours() === 22 && currentTime.getMinutes() === 30) && (
-                          <button
-                            className={`${styles.cell} ${
-                              styles[`hover__${selectedAppointmentTypeName}`]
-                            }  ${
-                              slot ? styles[`type_selector__${slot.AppointmentType.name}`] : ''
-                            } `}
-                            onClick={() => handleCellClick(date, currentTime, dateIndex)}>
-                            {currentTime.getHours() >= startingHour &&
-                              currentTime.toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
-                          </button>
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
+            {Array.from({length: 25}, (_, timeIndex) => {
+              const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+              if (currentTime.getHours() >= startingHour)
+                return (
+                  <tr key={timeIndex}>
+                    {startDates.map((date, dateIndex) => {
+                      const daySlots = weekSchedule[dateIndex];
+                      const slot = (daySlots || []).find(
+                        slot => slot.time === format(currentTime, 'HH:mm')
+                      );
+
+                      return (
+                        <td key={dateIndex}>
+                          {
+                            <button
+                              className={`${styles.cell} ${
+                                styles[`hover__${selectedAppointmentTypeName}`]
+                              }  ${
+                                slot ? styles[`type_selector__${slot.AppointmentType.name}`] : ''
+                              } `}
+                              onClick={() => handleCellClick(date, currentTime, dateIndex)}>
+                              {format(currentTime, 'HH:mm')}
+                            </button>
+                          }
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
             })}
           </tbody>
         </table>
