@@ -14,26 +14,48 @@ const FormInput = ({
   pattern,
   min,
   width,
-  max
+  max,
+  disabled,
+  textArea = false
 }) => {
   return (
     <label className={styles.input__label} style={{width: width}}>
       <p className={classnames(styles.input__title, styles[`${classname}`])}>{title}</p>
-      <input
-        className={classnames(styles.input, styles[`${classname}`])}
-        type={type}
-        name={name}
-        required={isRequired}
-        value={value}
-        pattern={pattern}
-        minLength={min}
-        maxLength={max}
-        placeholder={placeholder}
-        autoComplete="off"
-        onChange={e => {
-          handler(e.currentTarget.value);
-        }}
-      />
+      {textArea ? (
+        <textarea
+          className={classnames(styles.input__textarea, styles.input, styles[`${classname}`])}
+          disabled={disabled}
+          type={type}
+          name={name}
+          required={isRequired}
+          value={value}
+          pattern={pattern}
+          minLength={min}
+          maxLength={max}
+          placeholder={placeholder}
+          autoComplete="off"
+          onChange={e => {
+            handler(e.currentTarget.value);
+          }}
+        />
+      ) : (
+        <input
+          className={classnames(styles.input, styles[`${classname}`])}
+          disabled={disabled}
+          type={type}
+          name={name}
+          required={isRequired}
+          value={value}
+          pattern={pattern}
+          minLength={min}
+          maxLength={max}
+          placeholder={placeholder}
+          autoComplete="off"
+          onChange={e => {
+            handler(e.currentTarget.value);
+          }}
+        />
+      )}
     </label>
   );
 };

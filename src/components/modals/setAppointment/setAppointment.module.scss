@@ -1,0 +1,22 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/reset.scss";
+
+.input__block {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+.input__block > .input__label {
+  margin: 0;
+  width: 47%;
+}
+
+.input__textarea{
+    border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #ededed;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 8px 0;
+  transition: border-color 150ms ease;
+}

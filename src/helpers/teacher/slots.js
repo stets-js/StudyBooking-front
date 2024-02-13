@@ -9,7 +9,14 @@ const getSlotsForUser = userId => {
       throw error(e.response.data.message);
     });
 };
-
+const getSlotsForUsers = userIds => {
+  return axios
+    .post('/slots', {userIds})
+    .then(res => res.data)
+    .catch(e => {
+      throw error(e.response.data.message);
+    });
+};
 const createSlotForUser = (userId, slotData, appointmentTypeId, weekDay, time) => {
   return axios
     .post(`/users/${userId}/slots`, {
@@ -42,4 +49,4 @@ const deleteSlotForUser = (userId, slotId) => {
     });
 };
 
-export {getSlotsForUser, createSlotForUser, deleteSlotForUser, updateSlot};
+export {getSlotsForUser, createSlotForUser, deleteSlotForUser, updateSlot, getSlotsForUsers};

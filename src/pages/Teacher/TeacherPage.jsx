@@ -72,7 +72,6 @@ export default function TeacherPage() {
   }, [dispatch]);
 
   const handleCellClick = async (date, timeSlot, weekDay) => {
-    console.log(weekDay, timeSlot, date);
     const isSlotOccupied = weekSchedule[weekDay].find(el => el.time === format(timeSlot, 'HH:mm'));
     if (isSlotOccupied && selectedAppointmentTypeId === 3) {
       // type free - delete slot

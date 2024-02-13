@@ -63,6 +63,15 @@ const getTeacherCourses = id => {
     });
 };
 
+const getTeachersByCourse = id => {
+  return axios
+    .get(`/courses/${id}/users`)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+
 const postTeacherCourse = (userId, courseId) => {
   return axios
     .post(`/users/${userId}/courses/${courseId}`)
@@ -90,5 +99,6 @@ export {
   getTeacherCourses,
   getCourseIdByName,
   getCourseById,
-  deleteTeacherCourse
+  deleteTeacherCourse,
+  getTeachersByCourse
 };
