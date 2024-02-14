@@ -6,6 +6,7 @@ import Select from 'react-select';
 
 import Form from '../../Form/Form';
 import {getUserById} from '../../../helpers/user/user';
+import {addMinutes, format} from 'date-fns';
 const SetAppointment = ({
   isOpen,
   handleClose,
@@ -47,13 +48,20 @@ const SetAppointment = ({
           if (selectedSlots[i].length > 0) {
             day += `${weekNames[i]}: `;
             // for (let j = 0; j < selectedSlots[i].length; j++) {
-            day += selectedSlots[i][0] + ' - ' + selectedSlots[i][appointmentLength - 1]; // add +30 minutes to last slot because its showing start of the last slot, not end
+            const startTime = selectedSlots[i][0];
+            const endTime = addMinutes(
+              new Date(`1970 ${selectedSlots[i][appointmentLength - 1]}`),
+              30
+            );
+            day += startTime + ' - ' + format(endTime, 'HH:mm');
             // }
             schedule.push(day);
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [isOpen]);
   useEffect(() => {});
   const close = () => {
