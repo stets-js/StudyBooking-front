@@ -5,7 +5,7 @@ import styles from './setAppointment.module.scss';
 import Select from 'react-select';
 
 import Form from '../../Form/Form';
-import {getUserById} from '../../../helpers/user/user';
+import {getUserById, getUsers} from '../../../helpers/user/user';
 import {addMinutes, format} from 'date-fns';
 const SetAppointment = ({
   isOpen,
@@ -19,6 +19,8 @@ const SetAppointment = ({
   const [subGroup, setSubGroup] = useState('');
   const [description, setDescription] = useState('');
   const [teachers, setTeachers] = useState([]);
+  const [startDate, setStartDate] = useState(Date());
+  const [endDate, setEndDate] = useState(Date());
   const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
 
   const [schedule, setSchedule] = useState([]);
@@ -26,13 +28,14 @@ const SetAppointment = ({
   const appointmentLength = !appointmentType ? 3 : 2;
   const fetchTeachers = async () => {
     try {
-      const teachersData = await Promise.all(
-        teachersIds.map(async el => {
-          const teacher = await getUserById(el);
-          return {label: teacher.data.name, value: teacher.data.id};
+      console.log(teachersIds);
+      const teachersData = await getUsers({users: teachersIds});
+
+      setTeachers(
+        teachersData.data.map(el => {
+          return {label: el.name, value: el.id};
         })
       );
-      setTeachers(teachersData);
     } catch (error) {
       console.error('Error fetching teachers:', error);
     }
@@ -41,7 +44,10 @@ const SetAppointment = ({
   useEffect(() => {
     try {
       if (isOpen) {
-        if (teachersIds.length > 0) fetchTeachers();
+        if (teachersIds.length > 0) {
+          console.log('hello');
+          fetchTeachers();
+        }
 
         for (let i = 0; i < 6; i++) {
           let day = '';
@@ -84,21 +90,11 @@ const SetAppointment = ({
               successMessage: 'Successfully created user',
               failMessage: 'Failed to create user'
             }}>
-            {/* <Select
-          className={styles.selector}
-          options={courses}
-          placeholder="Select course"
-          required
-          onChange={choice => {
-            setSelectedSlots(Array.from({length: 7}, _ => []));
-            setTeachersIds([]);
-            setSelectedCourse(choice.value);
-          }}
-        /> */}
             <Select
               className={styles.selector}
               defaultValue={teachers[0]}
               options={teachers}
+              key={Math.random() * 100 - 10}
               placeholder="Select teacher"
             />
             <FormInput
@@ -138,13 +134,19 @@ const SetAppointment = ({
             </div>
             <div className={styles.input__block}>
               <FormInput
-                defaultValue={new Date()}
                 classname="input__bottom"
                 title="Початок:"
                 type="date"
                 name="schedule"
+                handler={setStartDate}
               />
-              <FormInput classname="input__bottom" title="Кінець:" type="date" name="schedule" />
+              <FormInput
+                classname="input__bottom"
+                handler={setEndDate}
+                title="Кінець:"
+                type="date"
+                name="schedule"
+              />
             </div>
             <FormInput
               classname="input__bottom"

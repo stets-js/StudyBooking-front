@@ -41,7 +41,6 @@ export default function UsersPage() {
     };
     if (selectedCourse) {
       fetchUsersIds();
-      console.log('updated');
     }
   }, [selectedCourse, selectedClassType]);
 
