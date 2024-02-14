@@ -29,7 +29,7 @@ const SetAppointment = ({
   const fetchTeachers = async () => {
     try {
       console.log(teachersIds);
-      const teachersData = await getUsers({users: teachersIds});
+      const teachersData = await getUsers(`users=${JSON.stringify(teachersIds)}`);
 
       setTeachers(
         teachersData.data.map(el => {

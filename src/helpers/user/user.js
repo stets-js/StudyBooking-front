@@ -11,7 +11,6 @@ const getRoles = () => {
     });
 };
 const getUsers = (options = '') => {
-  console.log(options); // TODO: FIX options injection to query
   return axios
     .get('/users' + (options ? `?${options}` : ''))
     .then(res => res.data)
