@@ -4,8 +4,6 @@ import Select from 'react-select';
 import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {uk} from 'date-fns/locale';
 
-import {useDispatch, useSelector} from 'react-redux';
-import LoginBox from '../../components/LoginBox/LoginBox';
 import {getCourses, getTeachersByCourse} from '../../helpers/course/course';
 import {getSlotsForUsers} from '../../helpers/teacher/slots';
 import SetAppointment from '../../components/modals/setAppointment/setAppointment';
@@ -41,8 +39,11 @@ export default function UsersPage() {
       const usersIds = await getTeachersByCourse(selectedCourse);
       setTeachersIds(usersIds);
     };
-    if (selectedCourse) fetchUsersIds();
-  }, [selectedCourse]);
+    if (selectedCourse) {
+      fetchUsersIds();
+      console.log('updated');
+    }
+  }, [selectedCourse, selectedClassType]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +72,7 @@ export default function UsersPage() {
     if (selectedCourse && teachersIds) {
       fetchData();
     }
-  }, [selectedCourse, teachersIds]);
+  }, [selectedCourse, selectedClassType, teachersIds]);
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
@@ -148,19 +149,25 @@ export default function UsersPage() {
           }}
         />
         <Select
+          key={Math.random() * 1000 - 10}
           className={styles.selector}
           placeholder="Select type"
-          value={{label: 'Група', value: 0}}
+          defaultValue={[
+            {label: 'Група', value: 0},
+            {label: 'Індив', value: 1}
+          ].filter(el => el.value === selectedClassType)}
           options={[
             {label: 'Група', value: 0},
             {label: 'Індив', value: 1}
           ]}
           required
           onChange={choice => {
+            setSelectedSlots(Array.from({length: 7}, _ => []));
             setSelectedClassType(choice.value);
           }}
         />
       </div>
+      <button onClick={handleClose}>Додати групу</button>
       <div className={styles.scroller}>
         <table className={styles.calendar}>
           <thead className={styles.tableHeader}>
@@ -210,7 +217,7 @@ export default function UsersPage() {
           </tbody>
         </table>
       </div>
-      <button onClick={handleClose}>Додати групу</button>
+
       <SetAppointment
         isOpen={isOpen}
         handleClose={handleClose}
