@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Fade} from 'react-awesome-reveal';
 import {removeSlot} from '../../helpers/confirmation/avaliable';
 import {getUserByName, postUser} from '../../helpers/user/user';
+
 import InputCancel from '../InputCancel/InputCancel';
 import InputDelete from '../InputDelete/InputDelete';
 import InputSubmit from '../InputSubmit/InputSubmit';
@@ -10,7 +11,9 @@ import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeMana
 import ChangeAppointment from '../modals/ChangeAppointment/ChangeAppointment';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 import styles from './Form.module.scss';
-import {json} from 'react-router-dom';
+import {postSubGroup} from '../../helpers/subgroup/subgroup';
+import {bulkUpdate} from '../../helpers/slot/slot';
+import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 
 defaults.delay = 1000;
 
@@ -41,6 +44,7 @@ const Form = ({
   cancelConfConsultOnClickFn,
   isCancelConfConsult,
   signUp,
+  userId,
   removeMessage,
   isSetAppointment = false,
   ...formData
@@ -74,7 +78,6 @@ const Form = ({
       const data = new FormData();
 
       for (const i in formData) {
-        console.log(i);
         if (formData[i] === undefined) {
           continue;
         }
@@ -84,6 +87,35 @@ const Form = ({
       let jsonData = {};
       for (var pair of data.entries()) {
         jsonData[pair[0]] = pair[1];
+      }
+
+      if (type.type === 'appointment') {
+        // 0 - group, 1 - private
+        const appointmentType = await getAppointmentTypes(
+          `name=appointed_${Number(jsonData.appointmentType) === 0 ? 'group' : 'private'}`
+        );
+        jsonData.slots = JSON.parse(jsonData.slots);
+        return await postSubGroup(jsonData)
+          .then(async data => {
+            success(status.successMessage || 'Success');
+            for (let i = 0; i <= 6; i++) {
+              if (jsonData.slots[i].length > 0) {
+                const body = {
+                  subgroup: data.data.id,
+                  weekDay: i,
+                  time: jsonData.slots[i],
+                  appointmentTypeId: appointmentType.data[0]['id'],
+                  userId: userId
+                };
+                await bulkUpdate(body);
+              }
+            }
+
+            return !errorsuccessMessage && onSubmit && onSubmit();
+          })
+          .catch(e => {
+            return error(`${status.failMessage}, ${e.message}`);
+          });
       }
       if (+role === 2 && type.type === 'put' && startRole !== 2) {
         const res = await getUserByName(startName);
@@ -155,6 +187,7 @@ const Form = ({
         return await requests.user(user);
       }
       if (manager) {
+        console.log('123');
         const res = await requests.getByName(startName.trim());
         onSubmit();
         return await requests.user(data, res.data.id).catch(() => {

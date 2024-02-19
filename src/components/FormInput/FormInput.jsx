@@ -16,16 +16,22 @@ const FormInput = ({
   width,
   max,
   disabled,
-  textArea = false
+  textArea = false,
+  appointmentLength = 3
 }) => {
   return (
     <label className={styles.input__label} style={{width: width}}>
       <p className={classnames(styles.input__title, styles[`${classname}`])}>{title}</p>
       {textArea ? (
         <textarea
-          className={classnames(styles.input__textarea, styles.input, styles[`${classname}`])}
+          className={classnames(
+            styles.autoheigh,
+            styles.input__textarea,
+            styles.input,
+            styles[`${classname}`]
+          )}
           disabled={disabled}
-          type={type}
+          // type={type}
           name={name}
           required={isRequired}
           value={value}
@@ -34,10 +40,11 @@ const FormInput = ({
           maxLength={max}
           placeholder={placeholder}
           autoComplete="off"
+          //min height of it
+          rows={appointmentLength < 2 ? 2 : appointmentLength}
           onChange={e => {
             handler(e.currentTarget.value);
-          }}
-        />
+          }}></textarea>
       ) : (
         <input
           className={classnames(styles.input, styles[`${classname}`])}

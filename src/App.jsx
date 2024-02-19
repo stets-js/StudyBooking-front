@@ -13,18 +13,25 @@ import SuperAdministratorPage from './pages/Admin/SuperadminPage';
 import UsersPage from './pages/Admin/UsersPage';
 
 import Footer from './components/Footer/Footer';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CoursesPage from './pages/Admin/CoursesPage';
 import TeacherPage from './pages/Teacher/TeacherPage';
 import Appointment from './pages/Admin/AppointmentSelector';
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const jwtExp = useSelector(state => state.auth.user.exp);
   const userRole = useSelector(state => state.auth.user.role);
-  const userId = useSelector(state => state.auth.user.id);
+  const dispatch = useDispatch();
+  const auth = isAuthenticated && jwtExp * 1000 > Date.now();
+  if (isAuthenticated && !auth) {
+    dispatch({
+      type: 'LOGOUT'
+    });
+  }
   return (
     <>
       <Routes>
-        {isAuthenticated && userRole === 'administrator' ? (
+        {auth && userRole === 'administrator' ? (
           <>
             <Route path={path.home} element={<Navigate to={`${path.superAdmin}`} />}></Route>
 
@@ -35,7 +42,7 @@ const App = () => {
               <Route path={path.appointments} element={<Appointment />} />
             </Route>
           </>
-        ) : isAuthenticated && userRole === 'teacher' ? (
+        ) : auth && userRole === 'teacher' ? (
           <>
             <Route path={path.home} element={<Navigate to={`${path.teacher}`} />}></Route>
             <Route path={path.teacher} element={<TeacherPage />}></Route>

@@ -18,6 +18,7 @@ export default function UsersPage() {
   const startingHour = 9;
   const [selectedClassType, setSelectedClassType] = useState(0);
   const [selectedSlots, setSelectedSlots] = useState(Array.from({length: 7}, _ => []));
+  const [selectedSlotsAmount, setSelectedSlotsAmount] = useState(0);
   initialStartDate.setHours(startingHour, 0, 0, 0);
 
   const [startDates, setStartDates] = useState(
@@ -46,7 +47,6 @@ export default function UsersPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(teachersIds);
       const slotsResponse = await getSlotsForUsers(teachersIds);
       const slots = slotsResponse.data;
       const organizedSlots = {};
@@ -75,17 +75,17 @@ export default function UsersPage() {
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
-  const handlePrevWeek = () => {
-    setStartDates(startDates.map(startDate => addDays(startDate, -7)));
-  };
+  // const handlePrevWeek = () => {
+  //   setStartDates(startDates.map(startDate => addDays(startDate, -7)));
+  // };
 
-  const handleNextWeek = () => {
-    setStartDates(startDates.map(startDate => addDays(startDate, 7)));
-  };
+  // const handleNextWeek = () => {
+  //   setStartDates(startDates.map(startDate => addDays(startDate, 7)));
+  // };
   const handleCellClick = async (weekDay, timeStr) => {
     const numSlotsToCheck = selectedClassType === 0 ? 3 : 2;
 
-    const teachersIdsNew = [];
+    let teachersIdsNew = [];
 
     for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
       // validating slots
@@ -99,12 +99,9 @@ export default function UsersPage() {
       teachersIdsNew.push(slots.map(el => el.userId));
     }
 
-    teachersIdsNew.reduce((commonIds, currentArray) => {
-      const filteredIds = currentArray.filter(id => commonIds.includes(id));
-
-      return filteredIds;
-    }, teachersIdsNew[0]);
-
+    teachersIdsNew = teachersIdsNew[0].filter(id => {
+      return teachersIdsNew.every(currentArray => currentArray.includes(id));
+    });
     if (!teachersIdsNew || !teachersIdsNew.length) {
       // validating  that there is at least one teacher in the array
       return new Error('Cant find avaible teacher, Slots is occupied for different teachers');
@@ -119,12 +116,12 @@ export default function UsersPage() {
         })[0]
       );
     }
-
-    setTeachersIds(teachersIdsNew[0]);
+    setSelectedSlotsAmount(selectedSlotsAmount + 1);
+    setTeachersIds(teachersIdsNew);
   };
   return (
     <div>
-      <div className={styles.dates_wrapper}>
+      {/* <div className={styles.dates_wrapper}>
         <button onClick={handlePrevWeek} className={styles.week_selector}>
           {`<<`}
         </button>
@@ -134,10 +131,9 @@ export default function UsersPage() {
         <button onClick={handleNextWeek} className={styles.week_selector}>
           {`>>`}
         </button>
-      </div>
-      <div>
+      </div> */}
+      <div className={styles.chooser_selector}>
         <Select
-          className={styles.selector}
           options={courses}
           placeholder="Select course"
           required
@@ -165,8 +161,13 @@ export default function UsersPage() {
             setSelectedClassType(choice.value);
           }}
         />
+        <button
+          onClick={handleClose}
+          className={styles.add_button}
+          disabled={selectedSlotsAmount === 0}>
+          Додати{' '}
+        </button>
       </div>
-      <button onClick={handleClose}>Додати групу</button>
       <div className={styles.scroller}>
         <table className={styles.calendar}>
           <thead className={styles.tableHeader}>
@@ -218,10 +219,11 @@ export default function UsersPage() {
       </div>
 
       <SetAppointment
+        setSelectedCourse={setSelectedCourse}
         isOpen={isOpen}
         handleClose={handleClose}
         selectedSlots={selectedSlots}
-        teachersIds={teachersIds}
+        teachersIds={JSON.stringify(teachersIds)}
         appointmentType={selectedClassType}
         course={courses.filter(el => el.value === selectedCourse)[0]}
       />

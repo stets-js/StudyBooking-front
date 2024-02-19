@@ -5,30 +5,33 @@ import styles from './setAppointment.module.scss';
 import Select from 'react-select';
 
 import Form from '../../Form/Form';
-import {getUserById, getUsers} from '../../../helpers/user/user';
-import {addMinutes, format} from 'date-fns';
+import {getUsers} from '../../../helpers/user/user';
+import {addMinutes, addMonths, format} from 'date-fns';
+import {useSelector} from 'react-redux';
 const SetAppointment = ({
   isOpen,
   handleClose,
   selectedSlots,
   teachersIds,
   course,
-  appointmentType
+  appointmentType,
+  setSelectedCourse
 }) => {
+  teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
   const [subGroup, setSubGroup] = useState('');
   const [description, setDescription] = useState('');
   const [teachers, setTeachers] = useState([]);
-  const [startDate, setStartDate] = useState(Date());
-  const [endDate, setEndDate] = useState(Date());
+  const [startDate, setStartDate] = useState(format(Date.now(), 'yyyy-MM-dd'));
+  const [endDate, setEndDate] = useState(
+    format(addMonths(Date.now(), !appointmentType ? 6 : 1), 'yyyy-MM-dd')
+  );
+  const [selectedTeacher, setSelectedTeacher] = useState(teachersIds[0]);
   const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
-
   const [schedule, setSchedule] = useState([]);
-
   const appointmentLength = !appointmentType ? 3 : 2;
   const fetchTeachers = async () => {
     try {
-      console.log(teachersIds);
       const teachersData = await getUsers(`users=${JSON.stringify(teachersIds)}`);
 
       setTeachers(
@@ -36,6 +39,7 @@ const SetAppointment = ({
           return {label: el.name, value: el.id};
         })
       );
+      setSelectedTeacher(teachers[0].value);
     } catch (error) {
       console.error('Error fetching teachers:', error);
     }
@@ -45,13 +49,13 @@ const SetAppointment = ({
     try {
       if (isOpen) {
         if (teachersIds.length > 0) {
-          console.log('hello');
           fetchTeachers();
         }
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i <= 6; i++) {
           let day = '';
           if (selectedSlots[i].length > 0) {
+            console.log(i);
             day += `${weekNames[i]}: `;
             // for (let j = 0; j < selectedSlots[i].length; j++) {
             const startTime = selectedSlots[i][0];
@@ -74,21 +78,32 @@ const SetAppointment = ({
     setSchedule([]);
     handleClose();
   };
-
+  const adminId = useSelector(state => state.auth.user.id) || 0;
   return (
     <>
       {isOpen && (
         <Modal open={isOpen} onClose={close}>
           <Form
+            link={link}
+            subGroup={subGroup}
+            description={description}
+            startDate={startDate}
+            endDate={endDate}
+            userId={selectedTeacher}
+            selectedAdmin={adminId}
+            selectedCourse={course.value}
+            slots={JSON.stringify(selectedSlots)}
             type={{type: 'appointment'}}
+            appointmentType={appointmentType}
             isSetAppointment={true}
             // requests={}
             onSubmit={() => {
               handleClose();
+              window.location.reload();
             }}
             status={{
-              successMessage: 'Successfully created user',
-              failMessage: 'Failed to create user'
+              successMessage: `Successfully created ${appointmentType === 0 ? 'group' : 'private'}`,
+              failMessage: `Failed to create ${appointmentType === 0 ? 'group' : 'private'}`
             }}>
             <Select
               className={styles.selector}
@@ -96,6 +111,7 @@ const SetAppointment = ({
               options={teachers}
               key={Math.random() * 100 - 10}
               placeholder="Select teacher"
+              onChange={el => setSelectedTeacher(el.value)}
             />
             <FormInput
               title="Курс:"
@@ -110,7 +126,6 @@ const SetAppointment = ({
               type="text"
               name="link"
               placeholder="link"
-              isRequired={true}
               handler={setLink}
             />
             <div className={styles.input__block}>
@@ -122,14 +137,15 @@ const SetAppointment = ({
                 value={schedule.join('\n')}
                 disabled={true}
                 textArea={true}
+                appointmentLength={schedule.length}
               />
               <FormInput
                 classname="input__bottom"
                 title="Підгрупа:"
                 type="text"
                 name="subgroup"
-                max={50}
                 handler={setSubGroup}
+                isRequired={true}
               />
             </div>
             <div className={styles.input__block}>
@@ -139,6 +155,8 @@ const SetAppointment = ({
                 type="date"
                 name="schedule"
                 handler={setStartDate}
+                value={startDate}
+                isRequired={true}
               />
               <FormInput
                 classname="input__bottom"
@@ -146,6 +164,9 @@ const SetAppointment = ({
                 title="Кінець:"
                 type="date"
                 name="schedule"
+                // if appointmentType is group +6 month, else +1
+                value={endDate}
+                isRequired={true}
               />
             </div>
             <FormInput

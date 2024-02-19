@@ -13,15 +13,19 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
+      console.log(action.payload.token);
       const decodedToken = jwtDecode(action.payload.token);
+      console.log(decodedToken);
       return {
         ...state,
         isAuthenticated: true,
+
         user: {
           name: decodedToken.user_name,
           role: decodedToken.role,
           roleId: decodedToken.roleId,
-          id: decodedToken.id
+          id: decodedToken.id,
+          exp: decodedToken.exp
         },
         token: action.payload.token
       };
