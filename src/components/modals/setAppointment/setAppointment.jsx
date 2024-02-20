@@ -32,14 +32,14 @@ const SetAppointment = ({
   const appointmentLength = !appointmentType ? 3 : 2;
   const fetchTeachers = async () => {
     try {
-      const teachersData = await getUsers(`users=${JSON.stringify(teachersIds)}`);
-
-      setTeachers(
-        teachersData.data.map(el => {
-          return {label: el.name, value: el.id};
-        })
-      );
-      setSelectedTeacher(teachers[0].value);
+      getUsers(`users=${JSON.stringify(teachersIds)}`).then(teachersData => {
+        setTeachers(
+          teachersData.data.map(el => {
+            return {label: el.name, value: el.id};
+          })
+        );
+        setSelectedTeacher(teachers[0]?.value);
+      });
     } catch (error) {
       console.error('Error fetching teachers:', error);
     }

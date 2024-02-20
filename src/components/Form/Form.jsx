@@ -23,6 +23,7 @@ const Form = ({
   postpone,
   postponeClick,
   onSubmit,
+  SetNeedToRender,
   title,
   id,
   startRole,
@@ -101,6 +102,7 @@ const Form = ({
             success(status.successMessage || 'Success');
             for (let i = 0; i <= 6; i++) {
               if (jsonData.slots[i].length > 0) {
+                console.log(userId);
                 const body = {
                   subgroup: data.data.id,
                   weekDay: i,
@@ -149,6 +151,7 @@ const Form = ({
           .put(jsonData, requests.additional)
           .then(() => {
             success(status.successMessage);
+            // SetNeedToRender(true);
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
           .catch(e => {
@@ -182,10 +185,13 @@ const Form = ({
           name: data.get('name'),
           email: data.get('email'),
           password: data.get('password'),
-          RoleId: role
+          RoleId: role,
+          jsonData
         };
         onSubmit();
-        return await requests.user(user);
+        const newUser = await requests.user(user);
+        SetNeedToRender(true);
+        return newUser;
       }
       if (manager) {
         console.log('123');
@@ -204,6 +210,7 @@ const Form = ({
           })
           .then(() => {
             success(status.successMessage);
+            SetNeedToRender(true);
             return !errorsuccessMessage && onSubmit && onSubmit();
           });
       }

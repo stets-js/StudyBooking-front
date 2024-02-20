@@ -7,25 +7,33 @@ import {getRoles, postUser, patchUser} from '../../../helpers/user/user';
 
 import Form from '../../Form/Form';
 
-const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, ...item}) => {
+const NewUser = ({
+  isOpen,
+  handleClose,
+  isAdmin,
+  title = 'New user: ',
+  edit,
+  SetNeedToRender,
+  ...item
+}) => {
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
-  console.log(item);
+  const [role, setRole] = useState(1); // for now one is default teacher
   useEffect(() => {
     setName(item.name);
     setRating(item.rating);
     setEmail(item.email);
     setRole(item.role);
-  }, [item]);
+  }, [isOpen]);
   return (
     <>
       {isOpen && (
         <Modal open={isOpen} onClose={handleClose}>
           <Form
             type={{type: 'user'}}
+            SetNeedToRender={SetNeedToRender}
             requests={{user: edit ? patchUser : postUser}}
             onSubmit={() => {
               handleClose();
@@ -68,7 +76,7 @@ const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, ...i
               <FormInput
                 classname="input__bottom"
                 title="Email:"
-                type="email"
+                type="text"
                 name="email"
                 max={50}
                 value={email}

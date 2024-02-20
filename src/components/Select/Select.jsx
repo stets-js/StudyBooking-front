@@ -20,7 +20,10 @@ const Select = ({
 
   const getData = async () => {
     const res = await request()
-      .then(res => res.data)
+      .then(res => {
+        setValue(res.data[0]?.id);
+        return res.data;
+      })
       .catch(error => console.log(error));
 
     if (res === undefined) {

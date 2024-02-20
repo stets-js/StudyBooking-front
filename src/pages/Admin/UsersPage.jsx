@@ -20,6 +20,8 @@ export default function UsersPage() {
   const [email, setEmail] = useState('');
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(0);
+  const [needToRender, SetNeedToRender] = useState(true);
+
   const fetchData = async () => {
     const res = await getUsers();
     const teachersBuffer = res.data.filter(user => {
@@ -35,8 +37,10 @@ export default function UsersPage() {
 
   useEffect(() => {
     fetchData();
-  }, []);
-  const key = uuidv4();
+    console.log('rerender');
+    SetNeedToRender(false);
+    console.log(teachers);
+  }, [needToRender]);
   return (
     <>
       <div className={styles.main_wrapper}>
@@ -91,6 +95,7 @@ export default function UsersPage() {
                               setRating(item.rating);
                               setId(item.id);
                               setEdit(true);
+
                               // if (!item.role_id) setRole(2);
                               // else {
                               //   setRole(item.role_id);
@@ -126,6 +131,7 @@ export default function UsersPage() {
             isOpen={isOpen}
             handleClose={() => handleClose()}
             isAdmin={false}
+            SetNeedToRender={SetNeedToRender}
             title={title}
             name={name}
             role={role}
