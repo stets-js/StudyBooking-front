@@ -70,7 +70,6 @@ export default function AvaliableTable() {
   const handleDateChange = daysToAdd => {
     const newDate = addDays(currentDate, daysToAdd);
     setCurrentDate(newDate);
-    console.log(getDay(newDate));
     // Reset selectedWeekDay to null when changing the date
     setSelectedWeekDay(getDay(newDate));
   };
@@ -92,7 +91,7 @@ export default function AvaliableTable() {
         }}
       />
 
-      <table className={styles.calendar} key={Math.random() * 100 - 1}>
+      <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
         <tr className={styles.tableHeader}>
           <th>Час</th>
           <th>Викладачі</th>

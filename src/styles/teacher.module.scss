@@ -15,6 +15,11 @@
     padding: 10px;
     background-color: white;
     font-family: $poppins;
+    &__available{
+        width: 60% !important;
+        margin-left:20% !important;
+
+    }
 }
 .available_cell:first-child{
     width: 25% !important;
