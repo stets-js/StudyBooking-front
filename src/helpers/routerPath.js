@@ -1,6 +1,7 @@
 const path = {
   all: '*',
   home: '/',
+  avaliableTable: 'available/',
   modals: '/modals/',
   confirmator: '/confirmator/:confirmatorId/',
   confirmed: '/confirmed/:confirmatorId/',

@@ -15,7 +15,8 @@ const SuperAdministrator = () => {
         endpoints={[
           {text: 'users', path: path.users},
           {text: 'courses', path: path.courses},
-          {text: 'Appointments', path: path.appointments}
+          {text: 'Appointments', path: path.appointments},
+          {text: 'Available Table', path: path.avaliableTable}
         ]}
       />
       <section className={styles.main_wrapper}>

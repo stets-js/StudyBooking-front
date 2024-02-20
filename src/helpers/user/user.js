@@ -10,6 +10,16 @@ const getRoles = () => {
       throw error;
     });
 };
+
+const getFreeUsers = (selectedCourse, selectedWeekDay) => {
+  console.log(selectedCourse, selectedWeekDay);
+  return axios
+    .get(`/users/available-teachers/${selectedWeekDay}/${selectedCourse}`)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
 const getUsers = (options = '') => {
   return axios
     .get('/users' + (options ? `?${options}` : ''))
@@ -89,5 +99,6 @@ export {
   getUserById,
   getUserByName,
   getUsers,
-  deleteManager
+  deleteManager,
+  getFreeUsers
 };

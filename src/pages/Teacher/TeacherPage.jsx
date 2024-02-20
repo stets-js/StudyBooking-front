@@ -235,7 +235,13 @@ export default function TeacherPage() {
                               type="button"
                               style={
                                 appointedTable[key]
-                                  ? {height: `${35 * appointedTable[key].rowLength + 4}px`}
+                                  ? {
+                                      height: `${
+                                        35 * appointedTable[key].rowLength +
+                                        (appointedTable[key].rowLength === 3 ? 3 : 2) *
+                                          appointedTable[key].rowLength
+                                      }px`
+                                    }
                                   : {}
                               }
                               className={`${styles.cell} ${

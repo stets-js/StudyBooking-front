@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import CoursesPage from './pages/Admin/CoursesPage';
 import TeacherPage from './pages/Teacher/TeacherPage';
 import Appointment from './pages/Admin/AppointmentSelector';
+import AvaliableTable from './pages/Admin/AvaiblePage';
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const jwtExp = useSelector(state => state.auth.user.exp);
@@ -40,6 +41,7 @@ const App = () => {
               <Route path={path.users} element={<UsersPage />} />
               <Route path={path.courses} element={<CoursesPage />} />
               <Route path={path.appointments} element={<Appointment />} />
+              <Route path={path.avaliableTable} element={<AvaliableTable />} />
             </Route>
           </>
         ) : auth && userRole === 'teacher' ? (

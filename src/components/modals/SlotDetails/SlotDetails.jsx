@@ -11,6 +11,7 @@ const SlotDetails = ({isOpen, handleClose, slotId, appointmentDetails}) => {
   const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
   const [selectedSlots, setSelectedSlots] = useState(Array.from({length: 7}, _ => []));
   const [schedule, setSchedule] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await getSlotDetails(slotId);
@@ -19,7 +20,10 @@ const SlotDetails = ({isOpen, handleClose, slotId, appointmentDetails}) => {
       if (slot && slot.CourseId) {
       }
     };
-    if (slotId) fetchData();
+    if (slotId) {
+      setSchedule([]);
+      fetchData();
+    }
   }, [slotId]);
   useEffect(() => {
     const fetchCourse = async () => {
@@ -30,13 +34,10 @@ const SlotDetails = ({isOpen, handleClose, slotId, appointmentDetails}) => {
   }, [slot]);
   useEffect(() => {
     const appointmentLength = slot?.Slots[0]?.AppointmentType?.name.includes('group') ? 3 : 2;
-    console.log(slot?.Slots);
     for (let i = 0; i < slot?.Slots.length || 0; i++) {
       const startDate = slot?.Slots[i].time;
       const endTime = addMinutes(new Date(`1970 ${startDate}`), 30 * appointmentLength);
-      console.log(
-        `${weekNames[slot.Slots[i].weekDay]}: ${startDate} - ${format(endTime, 'HH:mm')}`
-      );
+
       schedule.push(
         `${weekNames[slot.Slots[i].weekDay]}: ${startDate} - ${format(endTime, 'HH:mm')}`
       );
