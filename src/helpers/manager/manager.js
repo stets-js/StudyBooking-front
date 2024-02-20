@@ -108,7 +108,7 @@ const postManager = credentials => {
     name: credentials.name,
     password: credentials.password,
     role: credentials.role,
-    login: credentials.login
+    email: credentials.email
   };
   return axios
     .post('/users', user)

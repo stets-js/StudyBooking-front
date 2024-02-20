@@ -64,7 +64,6 @@ const ChangeManagerCourses = ({isOpen, handleClose, teacherId}) => {
                     checked={
                       teacherCourses.length > 0 &&
                       teacherCourses.some(el => {
-                        console.log(course);
                         return el.id === course.id;
                       })
                     }

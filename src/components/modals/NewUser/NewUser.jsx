@@ -7,18 +7,19 @@ import {getRoles, postUser, patchUser} from '../../../helpers/user/user';
 
 import Form from '../../Form/Form';
 
-const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, userName, ...item}) => {
+const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, ...item}) => {
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
-  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
-  // useEffect(() => {
-  //   setName(userName);
-  //   setRating(item.rating);
-  //   setLogin(item.login);
-  //   setRole(item.role);
-  // }, []);
+  console.log(item);
+  useEffect(() => {
+    setName(item.name);
+    setRating(item.rating);
+    setEmail(item.email);
+    setRole(item.role);
+  }, [item]);
   return (
     <>
       {isOpen && (
@@ -33,7 +34,7 @@ const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, user
             role_id={role}
             name={name}
             role={role}
-            login={login}
+            email={email}
             password={password}
             rating={rating}
             id={item.id}
@@ -66,14 +67,14 @@ const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, user
             <div className={styles.input__block}>
               <FormInput
                 classname="input__bottom"
-                title="Login:"
-                type="text"
-                name="login"
+                title="Email:"
+                type="email"
+                name="email"
                 max={50}
-                value={login}
-                placeholder="Login"
+                value={email}
+                placeholder="Email"
                 isRequired={true}
-                handler={setLogin}
+                handler={setEmail}
               />
               <FormInput
                 classname="input__bottom"

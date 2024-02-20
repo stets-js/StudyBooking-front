@@ -17,7 +17,7 @@ export default function UsersPage() {
   const [name, setName] = useState('');
   const [role, setRole] = useState(0);
   const [rating, setRating] = useState(0);
-  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(0);
   const fetchData = async () => {
@@ -85,10 +85,9 @@ export default function UsersPage() {
                             onClick={() => {
                               setIsOpen(!isOpen);
                               setTitle(`Edit ${item.name}`);
-
                               setName(item.name);
                               setRole(item.RoleId);
-                              setLogin(item.login);
+                              setEmail(item.email);
                               setRating(item.rating);
                               setId(item.id);
                               setEdit(true);
@@ -128,9 +127,9 @@ export default function UsersPage() {
             handleClose={() => handleClose()}
             isAdmin={false}
             title={title}
-            userName={name}
+            name={name}
             role={role}
-            login={login}
+            email={email}
             rating={rating}
             edit={edit}
             id={id}

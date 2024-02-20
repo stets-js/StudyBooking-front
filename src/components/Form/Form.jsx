@@ -180,7 +180,7 @@ const Form = ({
       if (type.type === 'user') {
         const user = {
           name: data.get('name'),
-          login: data.get('login'),
+          email: data.get('email'),
           password: data.get('password'),
           RoleId: role
         };
