@@ -29,6 +29,7 @@ const NewUser = ({isOpen, handleClose, isAdmin, title = 'New user: ', edit, user
             onSubmit={() => {
               handleClose();
             }}
+            edit={edit}
             role_id={role}
             name={name}
             role={role}

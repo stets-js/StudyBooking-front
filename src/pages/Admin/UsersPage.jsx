@@ -6,6 +6,7 @@ import {getUsers} from '../../helpers/user/user';
 import {v4 as uuidv4} from 'uuid';
 import {useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
+import {Link} from 'react-router-dom';
 
 export default function UsersPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,66 +39,77 @@ export default function UsersPage() {
   const key = uuidv4();
   return (
     <>
-      <h3 className={styles.main_title}>Manage users.</h3>
-      <div className={styles.main_wrapper2}>
-        <React.Fragment key={key}>
-          <div className={styles.wrapper} key={'index'}>
-            <p className={styles.mini_title}>Administrators</p>
+      <div className={styles.main_wrapper}>
+        <h3 className={styles.main_title}>Manage users.</h3>
+        <div className={styles.main_wrapper2}>
+          <div className={styles.wrapper} key={'index1'}>
+            <React.Fragment key={1}>
+              <div key={'index'}>
+                <p className={styles.mini_title}>Administrators</p>
 
-            <ul className={styles.main_wrapper}>
-              {admins.map(item => {
-                return (
-                  <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
-                    <li className={styles.ul_items} key={item.name}>
-                      <p className={styles.ul_items_text}>
-                        {item.name} ({item.id})
-                      </p>
-                    </li>
-                  </Fade>
-                );
-              })}
-            </ul>
+                <ul className={styles.main_wrapper}>
+                  {admins.map(item => {
+                    return (
+                      <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
+                        <li className={styles.ul_items} key={item.name}>
+                          <Link className={styles.ul_items_link} target="_self" to={'#'}>
+                            {' '}
+                            <p className={styles.ul_items_text}>
+                              {item.name} ({item.id})
+                            </p>
+                          </Link>
+                        </li>
+                      </Fade>
+                    );
+                  })}
+                </ul>
+              </div>
+            </React.Fragment>
           </div>
-          <div className={styles.wrapper} key={'index'}>
-            <p className={styles.mini_title}>Teachers</p>
+          <React.Fragment key={2}>
+            <div className={styles.wrapper} key={'index1'}>
+              <p className={styles.mini_title}>Teachers</p>
 
-            <ul className={styles.main_wrapper}>
-              {teachers.map(item => {
-                return (
-                  <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
-                    <li className={styles.ul_items} key={item.name}>
-                      <p className={styles.ul_items_text}>
-                        {item.name} ({item.id})
-                        <button
-                          className={styles.ul_items_btn}
-                          // data-modal="change-user"
-                          onClick={() => {
-                            setIsOpen(!isOpen);
-                            setTitle(`Edit ${item.name}`);
+              <ul className={styles.main_wrapper}>
+                {teachers.map(item => {
+                  return (
+                    <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
+                      <li className={styles.ul_items} key={item.name}>
+                        <Link className={styles.ul_items_link} target="_self" to={'#'}>
+                          <p className={styles.ul_items_text}>
+                            {item.name} ({item.id})
+                          </p>
+                          <button
+                            className={styles.ul_items_btn}
+                            // data-modal="change-user"
+                            onClick={() => {
+                              setIsOpen(!isOpen);
+                              setTitle(`Edit ${item.name}`);
 
-                            setName(item.name);
-                            setRole(item.RoleId);
-                            setLogin(item.login);
-                            setRating(item.rating);
-                            setId(item.id);
-                            setEdit(true);
-                            // if (!item.role_id) setRole(2);
-                            // else {
-                            //   setRole(item.role_id);
-                            // }
-                            // setLogin(item.login);
-                            // setSlack(item.slack);
-                            // setTeam(item.team);
-                          }}
-                        />
-                      </p>
-                    </li>
-                  </Fade>
-                );
-              })}
-            </ul>
-          </div>
-        </React.Fragment>
+                              setName(item.name);
+                              setRole(item.RoleId);
+                              setLogin(item.login);
+                              setRating(item.rating);
+                              setId(item.id);
+                              setEdit(true);
+                              // if (!item.role_id) setRole(2);
+                              // else {
+                              //   setRole(item.role_id);
+                              // }
+                              // setLogin(item.login);
+                              // setSlack(item.slack);
+                              // setTeam(item.team);
+                            }}
+                          />
+                        </Link>
+                      </li>
+                    </Fade>
+                  );
+                })}
+              </ul>
+            </div>
+          </React.Fragment>
+        </div>
       </div>
       {userRole === 'administrator' && (
         <div className={styles.btn_wrapper}>
@@ -109,7 +121,7 @@ export default function UsersPage() {
               setTitle('New User');
               setEdit(false);
             }}>
-            Add new administrator +
+            Add new user
           </button>
           <NewUser
             isOpen={isOpen}

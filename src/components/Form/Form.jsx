@@ -47,6 +47,7 @@ const Form = ({
   userId,
   removeMessage,
   isSetAppointment = false,
+  edit,
   ...formData
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -299,7 +300,7 @@ const Form = ({
           ) : (
             ''
           )}
-          {!isSetAppointment ? (
+          {!isSetAppointment && edit ? (
             <>
               <OpenChangeManagerCourses
                 OpenChangeManagerCoursesFunc={setIsChangeManagerCoursesOpen}
