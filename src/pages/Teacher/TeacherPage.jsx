@@ -200,7 +200,7 @@ export default function TeacherPage() {
                       const slot = (daySlots || []).find(
                         slot => slot.time === format(currentTime, 'HH:mm')
                       );
-                      const isSlotOccupied = weekSchedule[dateIndex].find(
+                      const isSlotOccupied = (weekSchedule[dateIndex] || []).find(
                         el => el.time === format(currentTime, 'HH:mm')
                       );
                       let key = '';

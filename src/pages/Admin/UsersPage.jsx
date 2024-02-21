@@ -24,7 +24,7 @@ export default function UsersPage() {
 
   const fetchData = async () => {
     const res = await getUsers();
-    const teachersBuffer = res.data.filter(user => {
+    const teachersBuffer = (res.data || []).filter(user => {
       return user.Role ? user.Role.name === 'teacher' : false;
     });
     setTeachers(teachersBuffer);
@@ -52,7 +52,7 @@ export default function UsersPage() {
                 <p className={styles.mini_title}>Administrators</p>
 
                 <ul className={styles.main_wrapper}>
-                  {admins.map(item => {
+                  {(admins || []).map(item => {
                     return (
                       <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
                         <li className={styles.ul_items} key={item.name}>
@@ -75,7 +75,7 @@ export default function UsersPage() {
               <p className={styles.mini_title}>Teachers</p>
 
               <ul className={styles.main_wrapper}>
-                {teachers.map(item => {
+                {(teachers || []).map(item => {
                   return (
                     <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
                       <li className={styles.ul_items} key={item.name}>
