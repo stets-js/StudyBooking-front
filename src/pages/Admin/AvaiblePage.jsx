@@ -45,7 +45,9 @@ export default function AvaliableTable() {
     const fetchUsers = async () => {
       setScheduleTable(generateTimeSlots());
 
-      const freeUsers = (await getFreeUsers(selectedCourse, selectedWeekDay)).availableSlots;
+      const freeUsers = (
+        await getFreeUsers(selectedCourse, selectedWeekDay - 1 < 0 ? 6 : selectedWeekDay - 1)
+      ).availableSlots;
       setScheduleTable(prevSchedule => {
         const newSchedule = [...prevSchedule];
         freeUsers.forEach(el => {
