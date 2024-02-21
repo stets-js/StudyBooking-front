@@ -12,7 +12,6 @@ const getRoles = () => {
 };
 
 const getFreeUsers = (selectedCourse, selectedWeekDay) => {
-  console.log(selectedCourse, selectedWeekDay);
   return axios
     .get(`/users/available-teachers/${selectedWeekDay}/${selectedCourse}`)
     .then(res => res.data)

@@ -10,7 +10,6 @@ const HomePage = () => {
 
   useEffect(() => {
     const tokenFromLocalStorage = localStorage.getItem('booking');
-
     if (tokenFromLocalStorage) {
       dispatch({
         type: 'LOGIN_SUCCESS',

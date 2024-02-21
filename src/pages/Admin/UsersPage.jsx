@@ -23,12 +23,14 @@ export default function UsersPage() {
   const [needToRender, SetNeedToRender] = useState(true);
 
   const fetchData = async () => {
-    const res = await getUsers();
-    const teachersBuffer = (res.data || []).filter(user => {
-      return user.Role ? user.Role.name === 'teacher' : false;
-    });
-    setTeachers(teachersBuffer);
-    setAdmins(res.data.filter(user => (user.Role ? user.Role.name === 'administrator' : false)));
+    try {
+      const res = await getUsers();
+      const teachersBuffer = (res.data || []).filter(user => {
+        return user.Role ? user.Role.name === 'teacher' : false;
+      });
+      setTeachers(teachersBuffer);
+      setAdmins(res.data.filter(user => (user.Role ? user.Role.name === 'administrator' : false)));
+    } catch (error) {}
   };
 
   const handleClose = () => {
@@ -37,9 +39,7 @@ export default function UsersPage() {
 
   useEffect(() => {
     fetchData();
-    console.log('rerender');
     SetNeedToRender(false);
-    console.log(teachers);
   }, [needToRender]);
   return (
     <>
