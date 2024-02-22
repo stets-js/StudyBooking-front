@@ -108,7 +108,9 @@ const Form = ({
                   weekDay: i,
                   time: jsonData.slots[i],
                   appointmentTypeId: appointmentType.data[0]['id'],
-                  userId: userId
+                  userId: userId,
+                  startDate: jsonData.startDate,
+                  endDate: jsonData.endDate
                 };
                 await bulkUpdate(body);
               }

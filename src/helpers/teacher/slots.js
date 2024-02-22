@@ -1,29 +1,29 @@
 import axios from '../axios-config';
 import {error} from '@pnotify/core';
 
-const getSlotsForUser = userId => {
+const getSlotsForUser = ({userId, startDate, endDate}) => {
   return axios
-    .get(`/users/${userId}/slots`)
+    .get(`/users/${userId}/slots${startDate ? `?startDate=${startDate}&endDate=${endDate}` : ''}`)
     .then(res => res.data)
     .catch(e => {
       throw error(e.response.data.message);
     });
 };
-const getSlotsForUsers = userIds => {
+const getSlotsForUsers = ({userIds, startDate, endDate}) => {
   return axios
-    .post('/slots', {userIds})
+    .post(`/slots${startDate ? `?startDate=${startDate}&endDate=${endDate}` : ''}`, {userIds})
     .then(res => res.data)
     .catch(e => {
       throw error(e.response.data.message);
     });
 };
-const createSlotForUser = (userId, slotData, appointmentTypeId, weekDay, time) => {
+const createSlotForUser = ({userId, appointmentTypeId, weekDay, time, startDate}) => {
   return axios
     .post(`/users/${userId}/slots`, {
-      data: slotData,
       appointmentTypeId: appointmentTypeId,
       weekDay: weekDay,
-      time: time
+      time: time,
+      startDate: startDate
     })
     .then(res => res.data)
     .catch(e => {

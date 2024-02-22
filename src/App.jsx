@@ -22,8 +22,9 @@ const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const jwtExp = useSelector(state => state.auth.user.exp);
   const userRole = useSelector(state => state.auth.user.role);
+  const token = useSelector(state => state.auth.token);
   const dispatch = useDispatch();
-  const auth = isAuthenticated && jwtExp * 1000 > Date.now();
+  const auth = isAuthenticated && jwtExp * 1000 > Date.now() && token;
   if (isAuthenticated && !auth) {
     dispatch({
       type: 'LOGOUT'

@@ -44,7 +44,11 @@ export default function TeacherPage() {
     const fetchAppointmentTypesAndSlots = async () => {
       try {
         const response = await getAppointmentTypes();
-        const slots = await getSlotsForUser(userId);
+        const slots = await getSlotsForUser({
+          userId,
+          startDate: format(startDates[0], 'yyyy-MM-dd'),
+          endDate: format(startDates[6], 'yyyy-MM-dd')
+        });
 
         setAppointmentTypes(
           response.data.sort((a, b) => {
@@ -71,7 +75,7 @@ export default function TeacherPage() {
 
     dispatch(cleanOccupiedSlots());
     fetchAppointmentTypesAndSlots();
-  }, [dispatch]);
+  }, [dispatch, startDates]);
 
   const handleCellClick = async (isSlotOccupied, date, timeSlot, weekDay) => {
     if (
@@ -79,7 +83,7 @@ export default function TeacherPage() {
       selectedAppointmentTypeName.startsWith('appointed')
     )
       return;
-
+    console.log(addDays(date, -weekDay));
     if (isSlotOccupied && selectedAppointmentTypeName === 'free') {
       // type free - delete slot
       const slotId = isSlotOccupied.id;
@@ -95,13 +99,13 @@ export default function TeacherPage() {
       if (res.data) dispatch(updateSlotForWeek(res.data));
     } else if (!isSlotOccupied && selectedAppointmentTypeId !== 3) {
       // Free slots cant be placed
-      const res = await createSlotForUser(
+      const res = await createSlotForUser({
         userId,
-        timeSlot,
-        selectedAppointmentTypeId,
+        appointmentTypeId: selectedAppointmentTypeId,
         weekDay,
-        format(timeSlot, 'HH:mm')
-      );
+        startDate: addDays(date, -weekDay).toISOString().split('T')[0],
+        time: format(timeSlot, 'HH:mm')
+      });
 
       if (res.status === 'success') {
         dispatch(addNewSlotToWeek(res.data));

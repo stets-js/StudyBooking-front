@@ -7,6 +7,7 @@ import {uk} from 'date-fns/locale';
 import {getCourses, getTeachersByCourse} from '../../helpers/course/course';
 import {getSlotsForUsers} from '../../helpers/teacher/slots';
 import SetAppointment from '../../components/modals/setAppointment/setAppointment';
+import FormInput from '../../components/FormInput/FormInput';
 
 export default function UsersPage() {
   const [slotsData, setSlotsData] = useState([]);
@@ -19,12 +20,14 @@ export default function UsersPage() {
   const [selectedClassType, setSelectedClassType] = useState(0);
   const [selectedSlots, setSelectedSlots] = useState(Array.from({length: 7}, _ => []));
   const [selectedSlotsAmount, setSelectedSlotsAmount] = useState(0);
+
   initialStartDate.setHours(startingHour, 0, 0, 0);
 
   const [startDates, setStartDates] = useState(
     Array.from({length: 7}, (_, i) => addDays(initialStartDate, i))
   );
-
+  const [startDate, setStartDate] = useState(startDates[0]);
+  const [endDate, setEndDate] = useState(null);
   useEffect(() => {
     getCourses().then(data => {
       setCourses(
@@ -47,7 +50,7 @@ export default function UsersPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const slotsResponse = await getSlotsForUsers(teachersIds);
+      const slotsResponse = await getSlotsForUsers({userIds: teachersIds, startDate, endDate});
       const slots = slotsResponse.data;
       const organizedSlots = {};
       slots.forEach(slot => {
@@ -67,11 +70,14 @@ export default function UsersPage() {
 
       setSlotsData(organizedSlots);
     };
-
-    if (selectedCourse && teachersIds) {
+    if (endDate < startDate) {
+      // add snackebar for alerting  user about wrong input
+      return;
+    }
+    if (selectedCourse && teachersIds && startDate && endDate) {
       fetchData();
     }
-  }, [selectedCourse, selectedClassType, teachersIds]);
+  }, [selectedCourse, selectedClassType, teachersIds, startDate, endDate]);
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
@@ -133,37 +139,57 @@ export default function UsersPage() {
         </button>
       </div> */}
       <div className={styles.chooser_selector}>
-        <Select
-          options={courses}
-          placeholder="Select course"
-          required
-          onChange={choice => {
-            setSelectedSlots(Array.from({length: 7}, _ => []));
-            setTeachersIds([]);
-            setSelectedCourse(choice.value);
-          }}
-        />
-        <Select
-          key={Math.random() * 1000 - 10}
-          className={styles.selector}
-          placeholder="Select type"
-          defaultValue={[
-            {label: 'Група', value: 0},
-            {label: 'Індив', value: 1}
-          ].filter(el => el.value === selectedClassType)}
-          options={[
-            {label: 'Група', value: 0},
-            {label: 'Індив', value: 1}
-          ]}
-          required
-          onChange={choice => {
-            setSelectedSlots(Array.from({length: 7}, _ => []));
-            setSelectedClassType(choice.value);
-          }}
-        />
+        <div className={styles.chooser_selector__item}>
+          <Select
+            options={courses}
+            placeholder="Select course"
+            required
+            onChange={choice => {
+              setSelectedSlots(Array.from({length: 7}, _ => []));
+              setTeachersIds([]);
+              setSelectedCourse(choice.value);
+            }}
+          />
+        </div>
+        <div className={styles.chooser_selector__item}>
+          <Select
+            key={Math.random() * 1000 - 10}
+            className={styles.selector}
+            placeholder="Select type"
+            defaultValue={[
+              {label: 'Група', value: 0},
+              {label: 'Індив', value: 1}
+            ].filter(el => el.value === selectedClassType)}
+            options={[
+              {label: 'Група', value: 0},
+              {label: 'Індив', value: 1}
+            ]}
+            required
+            onChange={choice => {
+              setSelectedSlots(Array.from({length: 7}, _ => []));
+              setSelectedClassType(choice.value);
+            }}
+          />
+        </div>
+        <div className={styles.chooser_selector__item}>
+          <FormInput
+            type={'date'}
+            title={'Початок'}
+            value={startDate}
+            pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
+            handler={setStartDate}></FormInput>
+        </div>
+        <div className={styles.chooser_selector__item}>
+          <FormInput
+            type={'date'}
+            title={'Кінець'}
+            value={endDate}
+            pattern="\d{2}.\d{2}.\d{4}"
+            handler={setEndDate}></FormInput>
+        </div>
         <button
           onClick={handleClose}
-          className={styles.add_button}
+          className={`${styles.add_button} ${styles.chooser_selector__item}`}
           disabled={selectedSlotsAmount === 0}>
           Додати{' '}
         </button>
@@ -220,6 +246,8 @@ export default function UsersPage() {
 
       <SetAppointment
         setSelectedCourse={setSelectedCourse}
+        startDate={startDate}
+        endDate={endDate}
         isOpen={isOpen}
         handleClose={handleClose}
         selectedSlots={selectedSlots}

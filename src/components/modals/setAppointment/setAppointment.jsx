@@ -15,17 +15,15 @@ const SetAppointment = ({
   teachersIds,
   course,
   appointmentType,
-  setSelectedCourse
+  setSelectedCourse,
+  startDate,
+  endDate
 }) => {
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
   const [subGroup, setSubGroup] = useState('');
   const [description, setDescription] = useState('');
   const [teachers, setTeachers] = useState([]);
-  const [startDate, setStartDate] = useState(format(Date.now(), 'yyyy-MM-dd'));
-  const [endDate, setEndDate] = useState(
-    format(addMonths(Date.now(), !appointmentType ? 6 : 1), 'yyyy-MM-dd')
-  );
   const [selectedTeacher, setSelectedTeacher] = useState(teachersIds[0]);
   const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
   const [schedule, setSchedule] = useState([]);
@@ -99,7 +97,7 @@ const SetAppointment = ({
             // requests={}
             onSubmit={() => {
               handleClose();
-              window.location.reload();
+              // window.location.reload();
             }}
             status={{
               successMessage: `Successfully created ${appointmentType === 0 ? 'group' : 'private'}`,
@@ -154,16 +152,16 @@ const SetAppointment = ({
                 title="Початок:"
                 type="date"
                 name="schedule"
-                handler={setStartDate}
                 value={startDate}
                 isRequired={true}
+                disabled={true}
               />
               <FormInput
                 classname="input__bottom"
-                handler={setEndDate}
                 title="Кінець:"
                 type="date"
                 name="schedule"
+                disabled={true}
                 // if appointmentType is group +6 month, else +1
                 value={endDate}
                 isRequired={true}
