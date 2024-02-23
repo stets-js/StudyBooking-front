@@ -39,6 +39,7 @@ export default function TeacherPage() {
   const [selectedSlotDetailsId, setSelectedSlotDetailsId] = useState(0);
   const [openSlotDetails, setOpenSlotDetails] = useState(false);
   const [appointmentDetails, setAppointmentDetails] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
     const fetchAppointmentTypesAndSlots = async () => {
@@ -61,13 +62,39 @@ export default function TeacherPage() {
         slots.data.forEach(slot => {
           updatedWeekSchedule[slot.weekDay].push(slot);
         });
+
+        // for (let dayIndex = 0; dayIndex <= 6; dayIndex++) {
+        //   const slotsForDay = updatedWeekSchedule[dayIndex];
+
+        //   slotsForDay.forEach(el => {
+        //     if (el.rowSpan === undefined) {
+        //       let rowSpan = 1;
+        //       const cursorTime = new Date(`1970 ${el.time}`);
+        //       let checkForNext = true;
+        //       while (checkForNext) {
+        //         const nextSlot = slotsForDay.filter(
+        //           // eslint-disable-next-line no-loop-func
+        //           element =>
+        //             element[rowSpan] === undefined &&
+        //             element.time === format(addMinutes(cursorTime, 30 * rowSpan), 'HH:mm')
+        //         );
+        //         if (nextSlot.length > 0) {
+        //           nextSlot[0].rowSpan = 0;
+        //           rowSpan++;
+        //         } else checkForNext = false;
+        //       }
+        //       el.rowSpan = rowSpan;
+        //     }
+        //   });
+        // }
+
         dispatch(setWeekScheduler(updatedWeekSchedule));
         if (appointmentTypes && appointmentTypes.length > 0) {
           setSelectedAppointmentTypeId(appointmentTypes[0].id || null);
           setSelectedAppointmentTypeName(appointmentTypes[0].name);
         }
 
-        dispatch(setOccupiedSlots(slots.data));
+        // dispatch(setOccupiedSlots(slots.data));
       } catch (error) {
         console.error('Error fetching appointment types:', error);
       }
@@ -75,7 +102,7 @@ export default function TeacherPage() {
 
     dispatch(cleanOccupiedSlots());
     fetchAppointmentTypesAndSlots();
-  }, [dispatch, startDates]);
+  }, [dispatch, startDates, userId]);
 
   const handleCellClick = async (isSlotOccupied, date, timeSlot, weekDay) => {
     if (
@@ -83,30 +110,41 @@ export default function TeacherPage() {
       selectedAppointmentTypeName.startsWith('appointed')
     )
       return;
-    console.log(addDays(date, -weekDay));
     if (isSlotOccupied && selectedAppointmentTypeName === 'free') {
       // type free - delete slot
-      const slotId = isSlotOccupied.id;
-      await deleteSlotForUser(userId, slotId);
-      dispatch(DeleteSlotFromWeek(slotId));
+      const weekStart = format(startDates[0], 'yyyy-MM-dd');
+      const weekEnd = format(startDates[6], 'yyyy-MM-dd');
+      if (isSlotOccupied.startDate >= weekStart && isSlotOccupied.startDate <= weekEnd) {
+        await deleteSlotForUser(userId, isSlotOccupied.id);
+        dispatch(DeleteSlotFromWeek(isSlotOccupied.id));
+      } else {
+        // set slot endDate to date - 7 days
+        const res = await updateSlot(userId, isSlotOccupied.id, {endDate: addDays(date, -7)});
+        if (res.data) dispatch(DeleteSlotFromWeek(isSlotOccupied.id));
+      }
     } else if (
       isSlotOccupied &&
       selectedAppointmentTypeName !== 'free' &&
       isSlotOccupied.appointmentTypeId !== selectedAppointmentTypeId
     ) {
-      console.log(isSlotOccupied.id, selectedAppointmentTypeId);
-      const res = await updateSlot(userId, isSlotOccupied.id, selectedAppointmentTypeId);
+      const res = await updateSlot(userId, isSlotOccupied.id, {
+        appointmentTypeId: selectedAppointmentTypeId
+      });
       if (res.data) dispatch(updateSlotForWeek(res.data));
     } else if (!isSlotOccupied && selectedAppointmentTypeId !== 3) {
       // Free slots cant be placed
+      const prevWeekStart = format(addDays(date, -weekDay - 7), 'yyyy-MM-dd');
+      const prevWeekEnd = format(addDays(date, -weekDay - 1), 'yyyy-MM-dd');
       const res = await createSlotForUser({
         userId,
         appointmentTypeId: selectedAppointmentTypeId,
         weekDay,
-        startDate: addDays(date, -weekDay).toISOString().split('T')[0],
-        time: format(timeSlot, 'HH:mm')
+        startDate: format(date, 'yyyy-MM-dd'),
+        time: format(timeSlot, 'HH:mm'),
+        prevWeekStart,
+        prevWeekEnd
       });
-
+      // check if message is 'updated' -> reload table
       if (res.status === 'success') {
         dispatch(addNewSlotToWeek(res.data));
         dispatch(addNewSlot(res.data));
@@ -198,41 +236,46 @@ export default function TeacherPage() {
               const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
               if (currentTime.getHours() >= startingHour)
                 return (
-                  <tr key={timeIndex}>
+                  <tr
+                    key={timeIndex}
+                    onClick={() => {
+                      setSelectedRow(timeIndex);
+                    }}>
                     {startDates.map((date, dateIndex) => {
                       const daySlots = weekSchedule[dateIndex];
                       const slot = (daySlots || []).find(
                         slot => slot.time === format(currentTime, 'HH:mm')
                       );
-                      const isSlotOccupied = (weekSchedule[dateIndex] || []).find(
-                        el => el.time === format(currentTime, 'HH:mm')
-                      );
+
                       let key = '';
                       if (
-                        isSlotOccupied &&
-                        isSlotOccupied.SubGroupId &&
-                        isSlotOccupied.AppointmentType.name.startsWith('appointed')
+                        slot &&
+                        slot.SubGroupId &&
+                        slot.AppointmentType.name.startsWith('appointed')
                       ) {
-                        key = `1${isSlotOccupied.SubGroupId}${isSlotOccupied.weekDay}`; // 1 is for case of both 0
+                        key = `1${slot.SubGroupId}${slot.weekDay}`; // 1 is for case of both 0
                         if (appointedTable[key]) {
                           appointedTable[key].display = false;
                           return <></>;
                         } else
                           appointedTable[key] = {
                             display: true,
-                            rowLength: isSlotOccupied.AppointmentType.name.includes('group')
-                              ? 3
-                              : 2,
+                            rowLength: slot.AppointmentType.name.includes('group') ? 3 : 2,
                             id: key
                           };
                       }
+                      // if (slot && slot.rowSpan === 0) return <></>;
+
                       return (
                         <td
                           key={dateIndex}
                           rowspan={
                             appointedTable[key] && appointedTable[key].display
                               ? appointedTable[key].rowLength
-                              : 1
+                              : // slot
+                                // ? slot.rowSpan
+                                // :
+                                1
                           }>
                           {
                             <input
@@ -246,7 +289,12 @@ export default function TeacherPage() {
                                           appointedTable[key].rowLength
                                       }px`
                                     }
-                                  : {}
+                                  : // slot && slot.rowSpan !== undefined
+                                    // ? {
+                                    //     height: `${35 * slot.rowSpan + 3 * slot.rowSpan}px`
+                                    //   }
+                                    // :
+                                    {}
                               }
                               className={`${styles.cell} ${
                                 // key can be generated only for appointed
@@ -257,16 +305,12 @@ export default function TeacherPage() {
                                   : ''
                               } `}
                               onClick={() => {
-                                if (
-                                  isSlotOccupied &&
-                                  isSlotOccupied.AppointmentType.name.startsWith('appointed')
-                                ) {
+                                if (slot && slot.AppointmentType.name.startsWith('appointed')) {
                                   setOpenSlotDetails(!openSlotDetails);
                                   setSelectedSlotDetailsId(slot.SubGroupId);
                                   setAppointmentDetails(slot.AppointmentType.name);
                                   return;
-                                } else
-                                  handleCellClick(isSlotOccupied, date, currentTime, dateIndex);
+                                } else handleCellClick(slot, date, currentTime, dateIndex);
                               }}
                               value={
                                 appointedTable[key]

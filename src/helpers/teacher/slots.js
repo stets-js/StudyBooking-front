@@ -17,13 +17,23 @@ const getSlotsForUsers = ({userIds, startDate, endDate}) => {
       throw error(e.response.data.message);
     });
 };
-const createSlotForUser = ({userId, appointmentTypeId, weekDay, time, startDate}) => {
+const createSlotForUser = ({
+  userId,
+  appointmentTypeId,
+  weekDay,
+  time,
+  startDate,
+  prevWeekStart,
+  prevWeekEnd
+}) => {
   return axios
     .post(`/users/${userId}/slots`, {
-      appointmentTypeId: appointmentTypeId,
-      weekDay: weekDay,
-      time: time,
-      startDate: startDate
+      appointmentTypeId,
+      weekDay,
+      time,
+      startDate,
+      prevWeekEnd,
+      prevWeekStart
     })
     .then(res => res.data)
     .catch(e => {
@@ -31,9 +41,9 @@ const createSlotForUser = ({userId, appointmentTypeId, weekDay, time, startDate}
     });
 };
 
-const updateSlot = (userId, slotId, appointmentTypeId) => {
+const updateSlot = (userId, slotId, options) => {
   return axios
-    .patch(`/users/${userId}/slots/${slotId}`, {appointmentTypeId: appointmentTypeId})
+    .patch(`/users/${userId}/slots/${slotId}`, options)
     .then(res => res.data)
     .catch(e => {
       throw error(e.response.data.message);
