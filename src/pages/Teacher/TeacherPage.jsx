@@ -42,14 +42,55 @@ export default function TeacherPage() {
   const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
-    const fetchAppointmentTypesAndSlots = async () => {
+    const fetchSlots = async () => {
+      dispatch(cleanOccupiedSlots());
+      const slots = await getSlotsForUser({
+        userId,
+        startDate: format(startDates[0], 'yyyy-MM-dd'),
+        endDate: format(startDates[6], 'yyyy-MM-dd')
+      });
+      const updatedWeekSchedule = Array.from({length: 7}, () => []);
+      slots.data.forEach(slot => {
+        updatedWeekSchedule[slot.weekDay].push(slot);
+      });
+      // for (let dayIndex = 0; dayIndex <= 6; dayIndex++) {
+      //   const slotsForDay = updatedWeekSchedule[dayIndex];
+
+      //   slotsForDay.forEach(el => {
+      //     if (el.rowSpan === undefined) {
+      //       let rowSpan = 1;
+      //       const cursorTime = new Date(`1970 ${el.time}`);
+      //       let checkForNext = true;
+      //       while (checkForNext) {
+      //         const nextSlot = slotsForDay.filter(
+      //           // eslint-disable-next-line no-loop-func
+      //           element =>
+      //             element[rowSpan] === undefined &&
+      //             element.time === format(addMinutes(cursorTime, 30 * rowSpan), 'HH:mm')
+      //         );
+      //         if (nextSlot.length > 0) {
+      //           nextSlot[0].rowSpan = 0;
+      //           rowSpan++;
+      //         } else checkForNext = false;
+      //       }
+      //       el.rowSpan = rowSpan;
+      //     }
+      //   });
+      // }
+
+      dispatch(setWeekScheduler(updatedWeekSchedule));
+    };
+    try {
+      fetchSlots();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [userId, dispatch, startDates]);
+
+  useEffect(() => {
+    const fetchAppointmentType = async () => {
       try {
         const response = await getAppointmentTypes();
-        const slots = await getSlotsForUser({
-          userId,
-          startDate: format(startDates[0], 'yyyy-MM-dd'),
-          endDate: format(startDates[6], 'yyyy-MM-dd')
-        });
 
         setAppointmentTypes(
           response.data.sort((a, b) => {
@@ -58,37 +99,6 @@ export default function TeacherPage() {
           })
         );
 
-        const updatedWeekSchedule = Array.from({length: 7}, () => []);
-        slots.data.forEach(slot => {
-          updatedWeekSchedule[slot.weekDay].push(slot);
-        });
-
-        // for (let dayIndex = 0; dayIndex <= 6; dayIndex++) {
-        //   const slotsForDay = updatedWeekSchedule[dayIndex];
-
-        //   slotsForDay.forEach(el => {
-        //     if (el.rowSpan === undefined) {
-        //       let rowSpan = 1;
-        //       const cursorTime = new Date(`1970 ${el.time}`);
-        //       let checkForNext = true;
-        //       while (checkForNext) {
-        //         const nextSlot = slotsForDay.filter(
-        //           // eslint-disable-next-line no-loop-func
-        //           element =>
-        //             element[rowSpan] === undefined &&
-        //             element.time === format(addMinutes(cursorTime, 30 * rowSpan), 'HH:mm')
-        //         );
-        //         if (nextSlot.length > 0) {
-        //           nextSlot[0].rowSpan = 0;
-        //           rowSpan++;
-        //         } else checkForNext = false;
-        //       }
-        //       el.rowSpan = rowSpan;
-        //     }
-        //   });
-        // }
-
-        dispatch(setWeekScheduler(updatedWeekSchedule));
         if (appointmentTypes && appointmentTypes.length > 0) {
           setSelectedAppointmentTypeId(appointmentTypes[0].id || null);
           setSelectedAppointmentTypeName(appointmentTypes[0].name);
@@ -100,9 +110,8 @@ export default function TeacherPage() {
       }
     };
 
-    dispatch(cleanOccupiedSlots());
-    fetchAppointmentTypesAndSlots();
-  }, [dispatch, startDates, userId]);
+    fetchAppointmentType();
+  }, [dispatch, userId]);
 
   const handleCellClick = async (isSlotOccupied, date, timeSlot, weekDay) => {
     if (
