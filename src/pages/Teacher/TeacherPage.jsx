@@ -19,12 +19,27 @@ import {
   updateSlotForWeek
 } from '../../redux/action/weekScheduler.action';
 import SlotDetails from '../../components/modals/SlotDetails/SlotDetails';
+import {useParams} from 'react-router-dom';
+import {getUserById} from '../../helpers/user/user';
 
 export default function TeacherPage() {
+  const {teacherId} = useParams() || null;
   const dispatch = useDispatch();
-  const userId = useSelector(state => state.auth.user.id);
-  const userName = useSelector(state => state.auth.user.name);
-  const loggedUser = useSelector(state => state.auth);
+  let userId = useSelector(state => state.auth.user.id);
+  let loggedUser = useSelector(state => state.auth);
+  const [userName, setUserName] = useState('');
+  const nameFromRedux = useSelector(state => state.auth.user.name);
+  if (teacherId) userId = teacherId;
+  else {
+    // setUserName(name);
+  }
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUserById(teacherId);
+      setUserName(user.data.name);
+    };
+    if (teacherId) fetchUser();
+  }, [teacherId]);
   const initialStartDate = startOfWeek(new Date(), {weekStartsOn: 1});
   const weekSchedule = useSelector(state => state.weekScheduler.weekScheduler);
   const startingHour = 9;
@@ -192,7 +207,7 @@ export default function TeacherPage() {
 
   return (
     <div>
-      <LoginBox loggedUser={loggedUser} />
+      {!teacherId && <LoginBox loggedUser={loggedUser} />}
       <div className={styles.dates_wrapper}>
         <button onClick={handlePrevWeek} className={styles.week_selector}>
           {`<<`}
@@ -219,7 +234,7 @@ export default function TeacherPage() {
             {translateAppointmentTypeName(appointmentType.name)}
           </button>
         ))}
-        <div className={styles.teacherInfo}>Викладач: {userName}</div>
+        <div className={styles.teacherInfo}>Викладач: {teacherId ? userName : nameFromRedux}</div>
       </div>
 
       <div className={styles.scroller}>

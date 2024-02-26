@@ -17,7 +17,6 @@ const Login = ({isOpen, handleClose}) => {
     event.preventDefault();
     try {
       const res = await loginUser({email, password});
-      localStorage.setItem('booking', res);
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: {

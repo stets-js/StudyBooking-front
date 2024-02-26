@@ -7,7 +7,7 @@ import {v4 as uuidv4} from 'uuid';
 import {useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
-
+import path from './../../helpers/routerPath';
 export default function UsersPage() {
   const [isOpen, setIsOpen] = useState(false);
   const userRole = useSelector(state => state.auth.user.role);
@@ -79,7 +79,10 @@ export default function UsersPage() {
                   return (
                     <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
                       <li className={styles.ul_items} key={item.name}>
-                        <Link className={styles.ul_items_link} target="_self" to={'#'}>
+                        <Link
+                          className={styles.ul_items_link}
+                          target="_self"
+                          to={`../teacher/${item.id}`}>
                           <p className={styles.ul_items_text}>
                             {item.name} ({item.id})
                           </p>

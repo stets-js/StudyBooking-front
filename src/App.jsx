@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom';
 
 import './styles/App.scss';
@@ -18,6 +18,8 @@ import CoursesPage from './pages/Admin/CoursesPage';
 import TeacherPage from './pages/Teacher/TeacherPage';
 import Appointment from './pages/Admin/AppointmentSelector';
 import AvaliableTable from './pages/Admin/AvaiblePage';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const jwtExp = useSelector(state => state.auth.user.exp);
@@ -30,6 +32,20 @@ const App = () => {
       type: 'LOGOUT'
     });
   }
+  // useEffect(() => {
+  axios.interceptors.request.use(
+    function (config) {
+      console.log('123');
+      console.log(token);
+      config.headers.Authorization = 'Bearer ' + Cookies.get('token');
+      return config;
+    },
+    error => {
+      return Promise.reject(error);
+    }
+  );
+  // }, [token]);
+
   return (
     <>
       <Routes>
@@ -43,6 +59,7 @@ const App = () => {
               <Route path={path.courses} element={<CoursesPage />} />
               <Route path={path.appointments} element={<Appointment />} />
               <Route path={path.avaliableTable} element={<AvaliableTable />} />
+              <Route path={`teacher/:teacherId`} element={<TeacherPage />} />
             </Route>
           </>
         ) : auth && userRole === 'teacher' ? (

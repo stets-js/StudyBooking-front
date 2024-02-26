@@ -12,6 +12,6 @@ axiosRetry(axios, {
     return error.response && error.response.status === 400;
   }
 });
-axios.defaults.headers.authorization = 'Bearer ' + localStorage.getItem('booking');
+// axios.defaults.headers.authorization = 'Bearer ' + localStorage.getItem('booking');
 
 export default axios;
