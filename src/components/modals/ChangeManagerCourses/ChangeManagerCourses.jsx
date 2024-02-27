@@ -14,43 +14,61 @@ import {
   setTeacherCourses
 } from '../../../redux/action/course.action';
 
-const ChangeManagerCourses = ({isOpen, handleClose, teacherId}) => {
+const ChangeManagerCourses = ({
+  isOpen,
+  handleClose,
+  teacherId,
+  filteringCourses,
+  setFilteringCourses,
+  forFilters = false
+}) => {
   const dispatch = useDispatch();
   const courses = useSelector(state => state.courses.courses);
   const teacherCourses = useSelector(state => state.courses.teacherCourses);
-
-  const [managerInfo, setManagerInfo] = useState([]);
-
   useEffect(() => {
     const fetchAllCourses = async () => {
       const allCourses = await getCourses();
       dispatch(setCourses(allCourses.data));
-      const teachersCrs = await getTeacherCourses(teacherId);
-      dispatch(setTeacherCourses(teachersCrs.data));
+      if (teacherId) {
+        const teachersCrs = await getTeacherCourses(teacherId);
+        dispatch(setTeacherCourses(teachersCrs.data));
+      }
     };
     fetchAllCourses();
   }, [teacherId, dispatch]);
 
   const handleCheckboxChange = async courseId => {
-    if (teacherCourses.some(el => el.id === courseId)) {
-      await deleteTeacherCourse(teacherId, courseId);
-      dispatch(setTeacherCourses(teacherCourses.filter(el => el.id !== courseId)));
+    if (teacherId) {
+      if (teacherCourses.some(el => el.id === courseId)) {
+        await deleteTeacherCourse(teacherId, courseId);
+        dispatch(setTeacherCourses(teacherCourses.filter(el => el.id !== courseId)));
+      } else {
+        await postTeacherCourse(teacherId, courseId);
+        const newTeacherCourses = courses.filter(el => el.id === courseId)[0];
+        dispatch(addTeacherCourses(newTeacherCourses));
+      }
     } else {
-      await postTeacherCourse(teacherId, courseId);
-      const newTeacherCourses = courses.filter(el => el.id === courseId)[0];
-      dispatch(addTeacherCourses(newTeacherCourses));
+      setFilteringCourses(prevCourses => {
+        if (prevCourses.includes(courseId)) {
+          return prevCourses.filter(el => el !== courseId);
+        } else {
+          return [...prevCourses, courseId];
+        }
+      });
     }
   };
-
+  if (forFilters && !isOpen) return <></>;
   return (
     <>
       <Modal open={isOpen} onClose={handleClose}>
         <h1 className={styles.title}>Teacher courses</h1>
         <h3 className={styles.managerLinkTitle}>
-          Teacher :{/* TODO: make href */}
-          <a className={styles.managerLink} href={`/user/${managerInfo.id}/planning`}>
+          Pick courses for filtering, and close this window <br />
+          to apply changes:
+          {/* Teacher :TODO: make href */}
+          {/* <a className={styles.managerLink} href={`/user/${managerInfo.id}/planning`}>
             {managerInfo.name}
-          </a>
+          </a> */}
         </h3>
         <div className={styles.coursesBox}>
           {courses.length > 0 &&
@@ -60,12 +78,17 @@ const ChangeManagerCourses = ({isOpen, handleClose, teacherId}) => {
                   <input
                     className={styles.checkBox}
                     type="checkbox"
-                    key={Math.random() * 1000 - 10}
+                    key={Math.random() * 100000 - 10}
                     checked={
-                      teacherCourses.length > 0 &&
-                      teacherCourses.some(el => {
-                        return el.id === course.id;
-                      })
+                      teacherId
+                        ? teacherCourses.length > 0 &&
+                          teacherCourses.some(el => {
+                            return el.id === course.id;
+                          })
+                        : filteringCourses.length > 0 &&
+                          filteringCourses.some(el => {
+                            return el === course.id;
+                          })
                     }
                     onChange={() => handleCheckboxChange(course.id)}
                   />

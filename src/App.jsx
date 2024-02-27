@@ -35,8 +35,6 @@ const App = () => {
   // useEffect(() => {
   axios.interceptors.request.use(
     function (config) {
-      console.log('123');
-      console.log(token);
       config.headers.Authorization = 'Bearer ' + Cookies.get('token');
       return config;
     },

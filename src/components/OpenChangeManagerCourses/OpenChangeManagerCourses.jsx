@@ -5,7 +5,8 @@ const OpenChangeManagerCourses = ({OpenChangeManagerCoursesFunc, curState}) => {
     <button
       className={styles.input__submit}
       // onClick={OpenChangeManagerCoursesFunc(!curState)}
-      onClick={() => {
+      onClick={e => {
+        e.preventDefault();
         OpenChangeManagerCoursesFunc(!curState);
       }}>
       Courses

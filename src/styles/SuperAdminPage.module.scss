@@ -4,6 +4,26 @@
   margin-bottom: 60px;
   margin-top: 34px;
 }
+
+.filter_wrapper{
+  margin-top:0px;
+}
+.courses_filter{
+  padding: 10px;
+  display: block;
+  width: 100%;
+  background-color: $grey;
+  border-radius: 10px;
+  border: 0;
+  height: 45px;
+  font-size: 20px;
+  font-family: $poppins;
+  opacity: 0.8;
+}
+.courses_filter:hover{
+  background-color: $blue;
+}
+
 .ul_items_btn {
   cursor: pointer;
   width: 20px;

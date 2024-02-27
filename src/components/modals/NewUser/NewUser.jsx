@@ -84,17 +84,19 @@ const NewUser = ({
                 isRequired={true}
                 handler={setEmail}
               />
-              <FormInput
-                classname="input__bottom"
-                title="Password:"
-                type="password"
-                name="password"
-                max={50}
-                value={password}
-                placeholder="Password"
-                isRequired={true}
-                handler={setPassword}
-              />
+              {!edit && (
+                <FormInput
+                  classname="input__bottom"
+                  title="Password:"
+                  type="password"
+                  name="password"
+                  max={50}
+                  value={password}
+                  placeholder="Password"
+                  isRequired={true}
+                  handler={setPassword}
+                />
+              )}
             </div>
             <Select
               title="Role:"

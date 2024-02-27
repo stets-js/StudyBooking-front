@@ -8,6 +8,11 @@ import {useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
 import path from './../../helpers/routerPath';
+import FormInput from '../../components/FormInput/FormInput';
+import Courses from '../../components/Courses/Courses';
+import ChangeManagerCourses from '../../components/modals/ChangeManagerCourses/ChangeManagerCourses';
+import {render} from 'react-dom';
+
 export default function UsersPage() {
   const [isOpen, setIsOpen] = useState(false);
   const userRole = useSelector(state => state.auth.user.role);
@@ -21,15 +26,30 @@ export default function UsersPage() {
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(0);
   const [needToRender, SetNeedToRender] = useState(true);
+  const [filterName, setFilterName] = useState('');
+  const [coursesModal, setCoursesModal] = useState(false);
+  const [filterCourses, setFilterCourses] = useState([]);
+  const [prevFilterCourses, setPrevFilterCourses] = useState(filterCourses);
+  const [debounceTimer, setDebounceTimer] = useState();
 
-  const fetchData = async () => {
+  const fetchAdmins = async () => {
     try {
-      const res = await getUsers();
-      const teachersBuffer = (res.data || []).filter(user => {
-        return user.Role ? user.Role.name === 'teacher' : false;
-      });
-      setTeachers(teachersBuffer);
-      setAdmins(res.data.filter(user => (user.Role ? user.Role.name === 'administrator' : false)));
+      const res = await getUsers(`role=administrator`);
+
+      setAdmins(res.data);
+    } catch (error) {}
+  };
+
+  const fetchTeachers = async () => {
+    try {
+      const res = await getUsers(
+        // teachersFilter - flag for corner case on backend
+        `role=teacher${filterName || filterCourses.length > 0 ? '&teachersFilter=true' : ''}${
+          filterName ? '&name=' + filterName : ''
+        }${filterCourses.length > 0 ? '&courses=' + JSON.stringify(filterCourses) : ''}`
+      );
+
+      setTeachers(res.data);
     } catch (error) {}
   };
 
@@ -37,10 +57,44 @@ export default function UsersPage() {
     setIsOpen(!isOpen);
   };
 
+  const [renderTeachers, setRenderTeachers] = useState(false);
+  const handleFilterNameChange = value => {
+    setFilterName(value);
+
+    clearTimeout(debounceTimer);
+    const newDebounceTimer = setTimeout(() => {
+      setRenderTeachers(true);
+    }, 500);
+    setDebounceTimer(newDebounceTimer);
+  };
+
   useEffect(() => {
-    fetchData();
+    fetchAdmins();
+    fetchTeachers();
     SetNeedToRender(false);
   }, [needToRender]);
+
+  useEffect(() => {
+    fetchTeachers();
+    setRenderTeachers(false);
+  }, [renderTeachers]);
+
+  useEffect(() => {
+    if (coursesModal) {
+      // before open modal window
+      console.log('open');
+      setPrevFilterCourses(filterCourses);
+    }
+    if (!coursesModal) {
+      console.log('close');
+      // after closing modal window
+      if (JSON.stringify(prevFilterCourses) !== JSON.stringify(filterCourses)) {
+        console.log('filtering');
+        setRenderTeachers(true);
+      }
+    }
+  }, [coursesModal]);
+
   return (
     <>
       <div className={styles.main_wrapper}>
@@ -74,7 +128,30 @@ export default function UsersPage() {
             <div className={styles.wrapper} key={'index1'}>
               <p className={styles.mini_title}>Teachers</p>
 
-              <ul className={styles.main_wrapper}>
+              <ul className={`${styles.main_wrapper} ${styles.filter_wrapper}`}>
+                <li className={styles.ul_items}>
+                  <Fade
+                    style={{marginBottom: '10px'}}
+                    cascade
+                    triggerOnce
+                    duration={300}
+                    direction="up"
+                    key={`item.id`}>
+                    <FormInput
+                      type={'text'}
+                      placeholder={`Ім'я`}
+                      value={filterName}
+                      handler={handleFilterNameChange}></FormInput>
+                    <FormInput
+                      value={'Курси'}
+                      type={'button'}
+                      classname={styles.courses_filter}
+                      handler={() => {
+                        setCoursesModal(!coursesModal);
+                      }}
+                      alignValue={true}></FormInput>
+                  </Fade>
+                </li>
                 {(teachers || []).map(item => {
                   return (
                     <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
@@ -86,29 +163,29 @@ export default function UsersPage() {
                           <p className={styles.ul_items_text}>
                             {item.name} ({item.id})
                           </p>
-                          <button
-                            className={styles.ul_items_btn}
-                            // data-modal="change-user"
-                            onClick={() => {
-                              setIsOpen(!isOpen);
-                              setTitle(`Edit ${item.name}`);
-                              setName(item.name);
-                              setRole(item.RoleId);
-                              setEmail(item.email);
-                              setRating(item.rating);
-                              setId(item.id);
-                              setEdit(true);
-
-                              // if (!item.role_id) setRole(2);
-                              // else {
-                              //   setRole(item.role_id);
-                              // }
-                              // setLogin(item.login);
-                              // setSlack(item.slack);
-                              // setTeam(item.team);
-                            }}
-                          />
                         </Link>
+                        <button
+                          className={styles.ul_items_btn}
+                          // data-modal="change-user"
+                          onClick={() => {
+                            setIsOpen(!isOpen);
+                            setTitle(`Edit ${item.name}`);
+                            setName(item.name);
+                            setRole(item.RoleId);
+                            setEmail(item.email);
+                            setRating(item.rating);
+                            setId(item.id);
+                            setEdit(true);
+
+                            // if (!item.role_id) setRole(2);
+                            // else {
+                            //   setRole(item.role_id);
+                            // }
+                            // setLogin(item.login);
+                            // setSlack(item.slack);
+                            // setTeam(item.team);
+                          }}
+                        />
                       </li>
                     </Fade>
                   );
@@ -145,6 +222,14 @@ export default function UsersPage() {
           />
         </div>
       )}
+      <ChangeManagerCourses
+        isOpen={coursesModal}
+        filteringCourses={filterCourses}
+        setFilteringCourses={setFilterCourses}
+        forFilters={true}
+        handleClose={() => {
+          setCoursesModal(!coursesModal);
+        }}></ChangeManagerCourses>
     </>
   );
 }

@@ -16,6 +16,7 @@ const FormInput = ({
   width,
   max,
   disabled,
+  alignValue,
   textArea = false,
   appointmentLength = 3
 }) => {
@@ -47,7 +48,11 @@ const FormInput = ({
           }}></textarea>
       ) : (
         <input
-          className={classnames(styles.input, styles[`${classname}`])}
+          className={classnames(
+            styles.input,
+            alignValue ? styles.padding : '',
+            styles[`${classname}`]
+          )}
           disabled={disabled}
           type={type}
           name={name}
@@ -58,7 +63,9 @@ const FormInput = ({
           maxLength={max}
           placeholder={placeholder}
           autoComplete="off"
+          onClick={type === 'button' ? handler : () => {}}
           onChange={e => {
+            console.log(123);
             handler(e.currentTarget.value);
           }}
         />
