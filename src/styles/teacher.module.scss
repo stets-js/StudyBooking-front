@@ -10,6 +10,11 @@
     font-size: 20px;
     font-family: $poppins;
 }
+.replacement_wrapper{
+    font-size: 20px;
+    font-family: $poppins;
+    display: grid;
+}
 .calendar{
     width: 100%;
     padding: 10px;
@@ -22,6 +27,9 @@
     }
 }
 .available_cell:first-child{
+    width: 25% !important;
+}
+.subgroup_cell:last-child{
     width: 25% !important;
 }
 .scroller{
@@ -162,12 +170,25 @@ width:100%;
         width: auto;
     }
 }
+.search_wrapper{
+    width: 60%;
+    
+}
 .add_button{
     font-size: 20px;
     color:#33A64C ;
     border:1px solid #33A64C;
     border-radius: 10px;
     padding:5px;
+    text-align: center;
+}
+.delete_button{
+    font-size: 20px;
+    color:red ;
+    border:1px solid red;
+    border-radius: 10px;
+    padding:10px;
+    margin:2px;
     text-align: center;
 }
 .add_button:disabled{

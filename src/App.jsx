@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom';
 
 import './styles/App.scss';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-
+import {ConfirmProvider} from 'material-ui-confirm';
 import path from './helpers/routerPath';
 
 import HomePage from './pages/HomePage/HomePage';
@@ -20,6 +20,7 @@ import Appointment from './pages/Admin/AppointmentSelector';
 import AvaliableTable from './pages/Admin/AvaiblePage';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import SubGroupPage from './pages/Admin/SubGroupPage';
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const jwtExp = useSelector(state => state.auth.user.exp);
@@ -46,34 +47,38 @@ const App = () => {
 
   return (
     <>
-      <Routes>
-        {auth && userRole === 'administrator' ? (
-          <>
-            <Route path={path.home} element={<Navigate to={`${path.superAdmin}`} />}></Route>
+      {/* ConfrimProvider just for subGroup confirmation of deleting  */}
+      <ConfirmProvider>
+        <Routes>
+          {auth && userRole === 'administrator' ? (
+            <>
+              <Route path={path.home} element={<Navigate to={`${path.superAdmin}`} />}></Route>
 
-            <Route path={path.superAdmin} element={<Navigate to={path.users} />} />
-            <Route path={path.superAdmin} element={<SuperAdministratorPage />}>
-              <Route path={path.users} element={<UsersPage />} />
-              <Route path={path.courses} element={<CoursesPage />} />
-              <Route path={path.appointments} element={<Appointment />} />
-              <Route path={path.avaliableTable} element={<AvaliableTable />} />
-              <Route path={`teacher/:teacherId`} element={<TeacherPage />} />
-            </Route>
-          </>
-        ) : auth && userRole === 'teacher' ? (
-          <>
-            <Route path={path.home} element={<Navigate to={`${path.teacher}`} />}></Route>
-            <Route path={path.teacher} element={<TeacherPage />}></Route>
-          </>
-        ) : (
-          <>
-            <Route path={path.all} element={<Navigate to={path.home} />} />
-            <Route path={path.home} element={<HomePage />} />
-          </>
-        )}
-      </Routes>
+              <Route path={path.superAdmin} element={<Navigate to={path.users} />} />
+              <Route path={path.superAdmin} element={<SuperAdministratorPage />}>
+                <Route path={path.users} element={<UsersPage />} />
+                <Route path={path.courses} element={<CoursesPage />} />
+                <Route path={path.appointments} element={<Appointment />} />
+                <Route path={path.avaliableTable} element={<AvaliableTable />} />
+                <Route path={`teacher/:teacherId`} element={<TeacherPage />} />
+                <Route path={path.subgroups} element={<SubGroupPage />}></Route>
+              </Route>
+            </>
+          ) : auth && userRole === 'teacher' ? (
+            <>
+              <Route path={path.home} element={<Navigate to={`${path.teacher}`} />}></Route>
+              <Route path={path.teacher} element={<TeacherPage />}></Route>
+            </>
+          ) : (
+            <>
+              <Route path={path.all} element={<Navigate to={path.home} />} />
+              <Route path={path.home} element={<HomePage />} />
+            </>
+          )}
+        </Routes>
 
-      <Footer />
+        <Footer />
+      </ConfirmProvider>
     </>
   );
 };

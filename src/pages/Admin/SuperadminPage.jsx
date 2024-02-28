@@ -16,7 +16,8 @@ const SuperAdministrator = () => {
           {text: 'users', path: path.users},
           {text: 'courses', path: path.courses},
           {text: 'Appointments', path: path.appointments},
-          {text: 'Available Table', path: path.avaliableTable}
+          {text: 'Available Table', path: path.avaliableTable},
+          {text: 'Потоки', path: path.subgroups}
         ]}
       />
       <section className={styles.main_wrapper}>

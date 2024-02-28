@@ -36,8 +36,9 @@ const SetAppointment = ({
             return {label: el.name, value: el.id};
           })
         );
-        setSelectedTeacher(teachers[0]?.value);
+        setSelectedTeacher(teachers[0]?.value || teachersIds[0]);
       });
+      console.log(selectedTeacher);
     } catch (error) {
       console.error('Error fetching teachers:', error);
     }

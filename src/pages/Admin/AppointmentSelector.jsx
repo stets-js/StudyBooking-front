@@ -3,6 +3,7 @@ import styles from '../../styles/teacher.module.scss';
 import Select from 'react-select';
 import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {uk} from 'date-fns/locale';
+import Switch from 'react-switch';
 
 import {getCourses, getTeachersByCourse} from '../../helpers/course/course';
 import {getSlotsForUsers} from '../../helpers/teacher/slots';
@@ -26,7 +27,7 @@ export default function UsersPage() {
   const [startDates, setStartDates] = useState(
     Array.from({length: 7}, (_, i) => addDays(initialStartDate, i))
   );
-  const [startDate, setStartDate] = useState(startDates[0]);
+  const [startDate, setStartDate] = useState(format(startDates[0], 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState(null);
   useEffect(() => {
     getCourses().then(data => {
@@ -37,11 +38,15 @@ export default function UsersPage() {
       );
     });
   }, []);
-
+  const [isReplacement, setIsReplacement] = useState(false);
   useEffect(() => {
     const fetchUsersIds = async () => {
-      const usersIds = await getTeachersByCourse(selectedCourse);
-      setTeachersIds(usersIds);
+      try {
+        const usersIds = await getTeachersByCourse(selectedCourse);
+        setTeachersIds(usersIds);
+      } catch (error) {
+        console.log(error);
+      }
     };
     if (selectedCourse) {
       fetchUsersIds();
@@ -125,6 +130,7 @@ export default function UsersPage() {
     setSelectedSlotsAmount(selectedSlotsAmount + 1);
     setTeachersIds(teachersIdsNew);
   };
+
   return (
     <div>
       {/* <div className={styles.dates_wrapper}>
@@ -154,7 +160,6 @@ export default function UsersPage() {
         <div className={styles.chooser_selector__item}>
           <Select
             key={Math.random() * 1000 - 10}
-            className={styles.selector}
             placeholder="Select type"
             defaultValue={[
               {label: 'Група', value: 0},
@@ -171,12 +176,20 @@ export default function UsersPage() {
             }}
           />
         </div>
+
+        <div className={styles.replacement_wrapper}>
+          <label>
+            <span className={styles.date_selector}>Заміна</span>
+          </label>
+          <Switch onChange={() => setIsReplacement(!isReplacement)} checked={isReplacement} />
+        </div>
         <div className={styles.chooser_selector__item}>
           <FormInput
             type={'date'}
             title={'Початок'}
             value={startDate}
-            pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
+            defaultValue={isReplacement ? startDate : null}
+            // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
             handler={setStartDate}></FormInput>
         </div>
         <div className={styles.chooser_selector__item}>
@@ -187,6 +200,7 @@ export default function UsersPage() {
             pattern="\d{2}.\d{2}.\d{4}"
             handler={setEndDate}></FormInput>
         </div>
+
         <button
           onClick={handleClose}
           className={`${styles.add_button} ${styles.chooser_selector__item}`}

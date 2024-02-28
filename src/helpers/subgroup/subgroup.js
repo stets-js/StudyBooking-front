@@ -34,4 +34,20 @@ const getSlotDetails = id => {
     });
 };
 
-export {postSubGroup, getSlotDetails};
+const getSubGroups = () => {
+  return axios
+    .get(`/subgroups`)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+const deleteSubGroup = id => {
+  return axios
+    .delete(`/subgroups/${id}`)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+export {postSubGroup, getSubGroups, getSlotDetails, deleteSubGroup};

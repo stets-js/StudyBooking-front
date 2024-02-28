@@ -27,6 +27,7 @@ const path = {
   history: '/history/',
   authorization: 'auth/',
   ik: 'ik/',
-  teacher: '/teacher/'
+  teacher: '/teacher/',
+  subgroups: 'subgroups/'
 };
 export default path;
