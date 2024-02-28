@@ -13,7 +13,6 @@ const updateSlotComment = credentials => {
     });
 };
 const bulkUpdate = credentials => {
-  console.log(credentials);
   return axios
     .patch('/slots/bulk', credentials)
     .then(res => res.data)

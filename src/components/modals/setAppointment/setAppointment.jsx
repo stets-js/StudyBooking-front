@@ -8,6 +8,7 @@ import Form from '../../Form/Form';
 import {getUsers} from '../../../helpers/user/user';
 import {addMinutes, addMonths, format} from 'date-fns';
 import {useSelector} from 'react-redux';
+import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 const SetAppointment = ({
   isOpen,
   handleClose,
@@ -17,7 +18,8 @@ const SetAppointment = ({
   appointmentType,
   setSelectedCourse,
   startDate,
-  endDate
+  endDate,
+  isReplacement
 }) => {
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
@@ -27,7 +29,10 @@ const SetAppointment = ({
   const [selectedTeacher, setSelectedTeacher] = useState(teachersIds[0]);
   const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
   const [schedule, setSchedule] = useState([]);
+  const [subGroups, setSubGroups] = useState([]);
+  const [selectedSubGroup, setSelectedSubGroup] = useState(0);
   const appointmentLength = !appointmentType ? 3 : 2;
+
   const fetchTeachers = async () => {
     try {
       getUsers(`users=${JSON.stringify(teachersIds)}`).then(teachersData => {
@@ -38,7 +43,6 @@ const SetAppointment = ({
         );
         setSelectedTeacher(teachers[0]?.value || teachersIds[0]);
       });
-      console.log(selectedTeacher);
     } catch (error) {
       console.error('Error fetching teachers:', error);
     }
@@ -72,11 +76,26 @@ const SetAppointment = ({
       console.log(error);
     }
   }, [isOpen]);
-  useEffect(() => {});
+  useEffect(() => {
+    const fetchSubGroups = async () => {
+      try {
+        const res = await getSubGroups();
+        setSubGroups(
+          res.data.map(el => {
+            return {label: el.name, value: el.id};
+          })
+        );
+      } catch (error) {}
+    };
+    if (isReplacement && isOpen) {
+      fetchSubGroups();
+    }
+  }, [isReplacement, isOpen]);
   const close = () => {
     setSchedule([]);
     handleClose();
   };
+
   const adminId = useSelector(state => state.auth.user.id) || 0;
   return (
     <>
@@ -95,13 +114,17 @@ const SetAppointment = ({
             type={{type: 'appointment'}}
             appointmentType={appointmentType}
             isSetAppointment={true}
+            isReplacement={isReplacement}
+            selectedSubGroup={selectedSubGroup}
             // requests={}
             onSubmit={() => {
               handleClose();
               // window.location.reload();
             }}
             status={{
-              successMessage: `Successfully created ${appointmentType === 0 ? 'group' : 'private'}`,
+              successMessage: `Successfully created ${
+                appointmentType === 0 ? 'group' : isReplacement ? 'replacement' : 'private'
+              }`,
               failMessage: `Failed to create ${appointmentType === 0 ? 'group' : 'private'}`
             }}>
             <Select
@@ -120,62 +143,107 @@ const SetAppointment = ({
               placeholder="Course"
               disabled={true}
             />
-            <FormInput
-              title="Посилання на CRM/LMS:"
-              type="text"
-              name="link"
-              placeholder="link"
-              handler={setLink}
-            />
-            <div className={styles.input__block}>
-              <FormInput
-                classname="input__bottom"
-                title="Графік:"
-                type="text"
-                name="schedule"
-                value={schedule.join('\n')}
-                disabled={true}
-                textArea={true}
-                appointmentLength={schedule.length}
-              />
-              <FormInput
-                classname="input__bottom"
-                title="Підгрупа:"
-                type="text"
-                name="subgroup"
-                handler={setSubGroup}
-                isRequired={true}
-              />
-            </div>
-            <div className={styles.input__block}>
-              <FormInput
-                classname="input__bottom"
-                title="Початок:"
-                type="date"
-                name="schedule"
-                value={startDate}
-                isRequired={true}
-                disabled={true}
-              />
-              <FormInput
-                classname="input__bottom"
-                title="Кінець:"
-                type="date"
-                name="schedule"
-                disabled={true}
-                // if appointmentType is group +6 month, else +1
-                value={endDate}
-                isRequired={true}
-              />
-            </div>
-            <FormInput
-              classname="input__bottom"
-              title="Повідомлення:"
-              type="text"
-              name="description"
-              textArea={true}
-              handler={setDescription}
-            />
+            {!isReplacement && isOpen ? (
+              <>
+                <FormInput
+                  title="Посилання на CRM/LMS:"
+                  type="text"
+                  name="link"
+                  placeholder="link"
+                  handler={setLink}
+                />
+                <div className={styles.input__block}>
+                  <FormInput
+                    classname="input__bottom"
+                    title="Початок:"
+                    type="date"
+                    name="schedule"
+                    value={startDate}
+                    isRequired={true}
+                    disabled={true}
+                  />
+                  <FormInput
+                    classname="input__bottom"
+                    title="Кінець:"
+                    type="date"
+                    name="schedule"
+                    disabled={true}
+                    // if appointmentType is group +6 month, else +1
+                    value={endDate}
+                    isRequired={true}
+                  />
+                </div>
+                <div className={styles.input__block}>
+                  <FormInput
+                    classname="input__bottom"
+                    title="Графік:"
+                    type="text"
+                    name="schedule"
+                    value={schedule.join('\n')}
+                    disabled={true}
+                    textArea={true}
+                    appointmentLength={schedule.length}
+                  />
+                  <FormInput
+                    classname="input__bottom"
+                    title="Підгрупа:"
+                    type="text"
+                    name="subgroup"
+                    handler={setSubGroup}
+                    isRequired={true}
+                  />
+                </div>
+                <FormInput
+                  classname="input__bottom"
+                  title="Повідомлення:"
+                  type="text"
+                  name="description"
+                  textArea={true}
+                  handler={setDescription}
+                />
+              </>
+            ) : (
+              <>
+                <br />
+                <Select
+                  className={styles.selector}
+                  value={selectedSubGroup}
+                  options={subGroups}
+                  key={Math.random() * 100 - 10}
+                  placeholder="Select subgroup"
+                  onChange={el => setSelectedSubGroup(el)}
+                />
+                <div className={styles.input__block}>
+                  <FormInput
+                    classname="input__bottom"
+                    title="Початок:"
+                    type="date"
+                    name="schedule"
+                    value={startDate}
+                    isRequired={true}
+                    disabled={true}
+                  />
+                  <FormInput
+                    classname="input__bottom"
+                    title="Кінець:"
+                    type="date"
+                    name="schedule"
+                    disabled={true}
+                    // if appointmentType is group +6 month, else +1
+                    value={endDate}
+                    isRequired={true}
+                  />
+                </div>
+                <FormInput
+                  classname="input__bottom"
+                  title="Повідомлення:"
+                  type="text"
+                  name="description"
+                  textArea={true}
+                  handler={setDescription}
+                />
+              </>
+            )}
           </Form>
         </Modal>
       )}

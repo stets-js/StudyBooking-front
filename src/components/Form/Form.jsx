@@ -14,6 +14,7 @@ import styles from './Form.module.scss';
 import {postSubGroup} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
+import {createReplacement} from '../../helpers/replacement/replacement';
 
 defaults.delay = 1000;
 
@@ -92,19 +93,22 @@ const Form = ({
       }
 
       if (type.type === 'appointment') {
-        // 0 - group, 1 - private
-        const appointmentType = await getAppointmentTypes(
-          `name=appointed_${Number(jsonData.appointmentType) === 0 ? 'group' : 'private'}`
-        );
         jsonData.slots = JSON.parse(jsonData.slots);
-        return await postSubGroup(jsonData)
+        // 0 - group, 1 - private
+        const searchQuery = `name=${
+          JSON.parse(jsonData.isReplacement) ? 'replacement' : 'appointed'
+        }_${Number(jsonData.appointmentType) === 0 ? 'group' : 'private'}`;
+        const appointmentType = await getAppointmentTypes(searchQuery);
+        return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
+          ? createReplacement(jsonData)
+          : postSubGroup(jsonData)
+        )
           .then(async data => {
             success(status.successMessage || 'Success');
             for (let i = 0; i <= 6; i++) {
+              // week itterating
               if (jsonData.slots[i].length > 0) {
-                console.log(userId);
                 const body = {
-                  subgroup: data.data.id,
                   weekDay: i,
                   time: jsonData.slots[i],
                   appointmentTypeId: appointmentType.data[0]['id'],
@@ -112,6 +116,9 @@ const Form = ({
                   startDate: jsonData.startDate,
                   endDate: jsonData.endDate
                 };
+                body[JSON.parse(jsonData.isReplacement) ? 'replacementId' : 'subgroupId'] =
+                  data.data.id;
+
                 await bulkUpdate(body);
               }
             }

@@ -62,6 +62,14 @@
         // opacity: 0.75;
        
     }
+    &__replacement{
+        &_group{
+            background-color: blue;
+        }
+        &_private{
+            background-color: yellow;
+        }
+    }
   &__appointed{
     &_group{
         background-color: $appointed_group;

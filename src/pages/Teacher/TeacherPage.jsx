@@ -109,7 +109,14 @@ export default function TeacherPage() {
 
         setAppointmentTypes(
           response.data.sort((a, b) => {
-            const order = ['group', 'private', 'replacement', 'free'];
+            const order = [
+              'group',
+              'private',
+              'replacement',
+              'free',
+              'replacement_group',
+              'replacement_private'
+            ];
             return order.indexOf(a.name) - order.indexOf(b.name);
           })
         );
@@ -169,10 +176,11 @@ export default function TeacherPage() {
         prevWeekEnd
       });
       // check if message is 'updated' -> reload table
-      if (res.status === 'success') {
-        dispatch(addNewSlotToWeek(res.data));
-        dispatch(addNewSlot(res.data));
-      }
+      // if (res.status === 'success') {
+      dispatch(addNewSlotToWeek(res.data));
+      dispatch(addNewSlot(res.data));
+      // } else {
+      // }
     }
   };
 
@@ -199,6 +207,10 @@ export default function TeacherPage() {
         return 'Заміна';
       case 'free':
         return 'Вільно';
+      case 'replacement_group':
+        return 'Заміна групи';
+      case 'replacement_private':
+        return 'Заміна індива';
       default:
         return name;
     }
@@ -268,23 +280,26 @@ export default function TeacherPage() {
                     {startDates.map((date, dateIndex) => {
                       const daySlots = weekSchedule[dateIndex];
                       const slot = (daySlots || []).find(
-                        slot => slot.time === format(currentTime, 'HH:mm')
+                        el => el.time === format(currentTime, 'HH:mm')
                       );
-
                       let key = '';
                       if (
                         slot &&
-                        slot.SubGroupId &&
-                        slot.AppointmentType.name.startsWith('appointed')
+                        (slot.SubGroupId || slot.ReplacementId)
+                        // &&
+                        // slot.AppointmentType.name.startsWith('appointed')
                       ) {
-                        key = `1${slot.SubGroupId}${slot.weekDay}`; // 1 is for case of both 0
+                        // 1 or 2 for unique of keys and for case of both id and weekDay === 0
+                        key = `${slot?.SubGroupId ? 1 : 2}${
+                          slot?.SubGroupId ? slot.SubGroupId : slot.ReplacementId
+                        }${slot.weekDay}`;
                         if (appointedTable[key]) {
                           appointedTable[key].display = false;
                           return <></>;
                         } else
                           appointedTable[key] = {
                             display: true,
-                            rowLength: slot.AppointmentType.name.includes('group') ? 3 : 2,
+                            rowLength: slot?.AppointmentType?.name.includes('group') ? 3 : 2,
                             id: key
                           };
                       }
@@ -293,7 +308,7 @@ export default function TeacherPage() {
                       return (
                         <td
                           key={dateIndex}
-                          rowspan={
+                          rowSpan={
                             appointedTable[key] && appointedTable[key].display
                               ? appointedTable[key].rowLength
                               : // slot

@@ -181,7 +181,13 @@ export default function UsersPage() {
           <label>
             <span className={styles.date_selector}>Заміна</span>
           </label>
-          <Switch onChange={() => setIsReplacement(!isReplacement)} checked={isReplacement} />
+          <Switch
+            onChange={() => {
+              console.log(isReplacement);
+              setIsReplacement(!isReplacement);
+            }}
+            checked={isReplacement}
+          />
         </div>
         <div className={styles.chooser_selector__item}>
           <FormInput
@@ -267,6 +273,7 @@ export default function UsersPage() {
         selectedSlots={selectedSlots}
         teachersIds={JSON.stringify(teachersIds)}
         appointmentType={selectedClassType}
+        isReplacement={isReplacement}
         course={courses.filter(el => el.value === selectedCourse)[0]}
       />
     </div>
