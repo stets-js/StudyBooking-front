@@ -212,3 +212,21 @@ width:100%;
     margin-top: 10px;    
     font-family: $poppins;
 }
+
+.reset_wrapper{
+    width: 60%;
+    margin-left: 20%;
+}
+.reset_button{
+    font-family: $poppins;
+    font-size: 20px;
+    padding: 10px;
+    color: green;
+    border: 2px solid green;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.reset_button:disabled{
+    border-color: grey;
+    color:grey
+}

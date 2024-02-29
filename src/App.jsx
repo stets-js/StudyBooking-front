@@ -21,6 +21,7 @@ import AvaliableTable from './pages/Admin/AvaiblePage';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import SubGroupPage from './pages/Admin/SubGroupPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const jwtExp = useSelector(state => state.auth.user.exp);
@@ -75,8 +76,10 @@ const App = () => {
               <Route path={path.home} element={<HomePage />} />
             </>
           )}
+          <Route
+            path={path.resetPassword}
+            element={<ResetPasswordPage></ResetPasswordPage>}></Route>
         </Routes>
-
         <Footer />
       </ConfirmProvider>
     </>

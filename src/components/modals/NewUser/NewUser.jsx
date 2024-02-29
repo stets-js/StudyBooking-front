@@ -6,6 +6,7 @@ import React, {useEffect, useState} from 'react';
 import {getRoles, postUser, patchUser} from '../../../helpers/user/user';
 
 import Form from '../../Form/Form';
+import {forgotPassword} from '../../../helpers/auth/auth';
 
 const NewUser = ({
   isOpen,
@@ -27,6 +28,15 @@ const NewUser = ({
     setEmail(item.email);
     setRole(item.role);
   }, [isOpen]);
+
+  const handlePasswordReset = async () => {
+    try {
+      const res = await forgotPassword(email);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       {isOpen && (
@@ -84,7 +94,7 @@ const NewUser = ({
                 isRequired={true}
                 handler={setEmail}
               />
-              {!edit && (
+              {!edit ? (
                 <FormInput
                   classname="input__bottom"
                   title="Password:"
@@ -96,6 +106,19 @@ const NewUser = ({
                   isRequired={true}
                   handler={setPassword}
                 />
+              ) : (
+                <button
+                  className={`${styles.input__block} ${styles.forgotPassword}`}
+                  title="Password:"
+                  type="button"
+                  name="password"
+                  placeholder="Password"
+                  isRequired={true}
+                  onClick={() => {
+                    handlePasswordReset();
+                  }}>
+                  Forgot password
+                </button>
               )}
             </div>
             <Select

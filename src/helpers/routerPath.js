@@ -1,6 +1,7 @@
 const path = {
   all: '*',
   home: '/',
+  resetPassword: '/resetPassword/:token',
   avaliableTable: 'available/',
   modals: '/modals/',
   confirmator: '/confirmator/:confirmatorId/',
