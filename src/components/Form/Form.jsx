@@ -195,7 +195,8 @@ const Form = ({
           email: data.get('email'),
           password: data.get('password'),
           RoleId: role,
-          jsonData
+          rating: data.get('rating'),
+          id: userId
         };
         onSubmit();
         const newUser = await requests.user(user);

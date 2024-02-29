@@ -5,92 +5,123 @@ import styles from './slotDetails.module.scss';
 import {getSlotDetails} from '../../../helpers/subgroup/subgroup';
 import {addMinutes, format} from 'date-fns';
 import {getCourseById} from '../../../helpers/course/course';
-const SlotDetails = ({isOpen, handleClose, slotId, appointmentDetails}) => {
+import {getReplacementDetails} from '../../../helpers/replacement/replacement';
+const SlotDetails = ({
+  isOpen,
+  handleClose,
+  subGroupId,
+  appointmentDetails,
+  replacementId,
+  isReplacement
+}) => {
   const [slot, setSlot] = useState(null);
   const [course, setCourse] = useState(null);
   const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
   const [selectedSlots, setSelectedSlots] = useState(Array.from({length: 7}, _ => []));
-  const [schedule, setSchedule] = useState([]);
-
+  const [replacementDetails, setReplacementDetails] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getSlotDetails(slotId);
-      setSlot(data.data);
-
-      if (slot && slot.CourseId) {
+    const fetchSubGroupDetails = async () => {
+      try {
+        const data = await getSlotDetails(subGroupId);
+        setSlot(data.data);
+      } catch (error) {
+        console.log(error);
       }
     };
-    if (slotId) {
-      setSchedule([]);
-      fetchData();
+    const fetchReplacementDetails = async () => {
+      const data = await getReplacementDetails(replacementId);
+      setReplacementDetails(data.data);
+    };
+
+    if (!isReplacement) {
+      if (subGroupId) {
+        fetchSubGroupDetails();
+      }
+    } else {
+      if (replacementId) fetchReplacementDetails();
     }
-  }, [slotId]);
+  }, [subGroupId, replacementId]);
   useEffect(() => {
     const fetchCourse = async () => {
-      const courseData = await getCourseById(slot.CourseId);
+      const courseData = await getCourseById(
+        !isReplacement ? slot.CourseId : replacementDetails?.SubGroup?.CourseId
+      );
       setCourse(courseData.data);
     };
-    if (slot?.CourseId) fetchCourse();
-  }, [slot]);
-  useEffect(() => {
-    const appointmentLength = slot?.Slots[0]?.AppointmentType?.name.includes('group') ? 3 : 2;
-    for (let i = 0; i < slot?.Slots.length || 0; i++) {
-      const startDate = slot?.Slots[i].time;
-      const endTime = addMinutes(new Date(`1970 ${startDate}`), 30 * appointmentLength);
-
-      schedule.push(
-        `${weekNames[slot.Slots[i].weekDay]}: ${startDate} - ${format(endTime, 'HH:mm')}`
-      );
-      i += appointmentLength - 1;
-    }
+    if ((!isReplacement && slot?.CourseId) || replacementDetails?.SubGroup?.CourseId) fetchCourse();
   }, [slot]);
   return (
     <>
-      {isOpen && slot && slot.name && (
+      {isOpen && (slot || replacementDetails) && (
         <Modal open={isOpen} onClose={handleClose} className={styles.modal_wrapper}>
-          <div className={styles.input__block}>
-            <a href="data.link">{slot?.name}</a>
-            <div className={styles.date_wrapper}>
-              <span>Старт: {format(slot.startDate, 'dd.MM.yyyy')}</span>
-              <br />
-              <span>Кінець: {format(slot.endDate, 'dd.MM.yyyy')}</span>
-            </div>
+          <div>
+            {!isReplacement && (
+              <div className={styles.input__block}>
+                <a href="data.link">{slot?.name}</a>
+                <div className={styles.date_wrapper}>
+                  <span>Старт: {format(slot.startDate, 'dd.MM.yyyy')}</span>
+                  <br />
+                  <span>Кінець: {format(slot.endDate, 'dd.MM.yyyy')}</span>
+                </div>
+              </div>
+            )}
+
+            <FormInput
+              title="Курс:"
+              type="text"
+              name="course"
+              value={course && course?.name}
+              placeholder="Course"
+              disabled={true}
+            />
+
+            <FormInput
+              title="Назва потока:"
+              type="text"
+              name="subgroupName"
+              value={!isReplacement ? slot?.name : replacementDetails?.SubGroup?.name}
+              placeholder="Course"
+              disabled={true}
+            />
+            <FormInput
+              title="Призначення:"
+              type="text"
+              name="course"
+              value={slot?.User?.name}
+              placeholder="Administrator"
+              disabled={true}
+            />
+            {!isReplacement && (
+              <FormInput
+                classname="input__bottom"
+                title="Графік:"
+                type="text"
+                name="schedule"
+                value={slot?.schedule.split(',').join('\n')}
+                disabled={true}
+                textArea={true}
+              />
+            )}
+
+            <FormInput
+              classname="input__bottom"
+              title="Повідомлення до потока:"
+              type="text"
+              value={!isReplacement ? slot.description : replacementDetails?.SubGroup?.description}
+              disabled={true}
+              textArea={true}
+            />
+            {isReplacement && (
+              <FormInput
+                classname="input__bottom"
+                title="Повідомлення до заміни:"
+                type="text"
+                value={replacementDetails?.description}
+                disabled={true}
+                textArea={true}
+              />
+            )}
           </div>
-          <FormInput
-            title="Курс:"
-            type="text"
-            name="course"
-            value={course && course?.name}
-            placeholder="Course"
-            disabled={true}
-          />
-          <FormInput
-            title="Адміністратор:"
-            type="text"
-            name="course"
-            value={slot?.User?.name}
-            placeholder="Administrator"
-            disabled={true}
-          />
-          <FormInput
-            classname="input__bottom"
-            title="Графік:"
-            type="text"
-            name="schedule"
-            value={schedule.join('\n')}
-            disabled={true}
-            textArea={true}
-            appointmentLength={schedule.length}
-          />
-          <FormInput
-            classname="input__bottom"
-            title="Повідомлення:"
-            type="text"
-            value={slot.description}
-            disabled={true}
-            textArea={true}
-            appointmentLength={schedule.length}
-          />
         </Modal>
       )}
     </>

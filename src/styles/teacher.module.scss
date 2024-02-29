@@ -64,10 +64,12 @@
     }
     &__replacement{
         &_group{
-            background-color: blue;
+            background-color: $zamina-color;
+            border: 2px solid $zamina-color-border
         }
         &_private{
-            background-color: yellow;
+            background-color: $indiv-color;
+            border:2px solid $indiv-color-border;
         }
     }
   &__appointed{

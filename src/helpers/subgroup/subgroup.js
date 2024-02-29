@@ -15,6 +15,7 @@ const postSubGroup = credentials => {
     data.CourseId = credentials.selectedCourse;
     data.startDate = new Date(credentials.startDate);
     data.endDate = new Date(credentials.endDate);
+    data.schedule = credentials.schedule;
   } catch (error) {}
   console.log(data);
   return axios

@@ -62,9 +62,10 @@ const postUser = credentials => {
     });
 };
 
-const patchUser = (credentials, id) => {
+const patchUser = credentials => {
+  console.log(credentials);
   return axios
-    .put(`/users/${id}`, credentials)
+    .patch(`/users/${credentials.id}`, credentials)
     .then(res => res.data)
     .catch(error => {
       throw error;

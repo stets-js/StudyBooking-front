@@ -20,3 +20,10 @@
   padding: 8px 0;
   transition: border-color 150ms ease;
 }
+.input__label {
+  font-family: $poppins;
+  font-size: 20px;
+  width: 45%;
+  margin-bottom: 10px;
+  display: flex;
+}

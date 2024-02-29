@@ -115,7 +115,8 @@ const SetAppointment = ({
             appointmentType={appointmentType}
             isSetAppointment={true}
             isReplacement={isReplacement}
-            selectedSubGroup={selectedSubGroup}
+            selectedSubGroup={selectedSubGroup.value}
+            schedule={schedule}
             // requests={}
             onSubmit={() => {
               handleClose();
@@ -127,7 +128,11 @@ const SetAppointment = ({
               }`,
               failMessage: `Failed to create ${appointmentType === 0 ? 'group' : 'private'}`
             }}>
+            <label htmlFor="teacher" className={styles.input__label}>
+              Ментор:
+            </label>
             <Select
+              name="teacher"
               className={styles.selector}
               defaultValue={teachers[0]}
               options={teachers}
@@ -157,7 +162,7 @@ const SetAppointment = ({
                     classname="input__bottom"
                     title="Початок:"
                     type="date"
-                    name="schedule"
+                    name="startDate"
                     value={startDate}
                     isRequired={true}
                     disabled={true}
@@ -166,7 +171,7 @@ const SetAppointment = ({
                     classname="input__bottom"
                     title="Кінець:"
                     type="date"
-                    name="schedule"
+                    name="EndDate"
                     disabled={true}
                     // if appointmentType is group +6 month, else +1
                     value={endDate}
@@ -186,7 +191,7 @@ const SetAppointment = ({
                   />
                   <FormInput
                     classname="input__bottom"
-                    title="Підгрупа:"
+                    title="Потік:"
                     type="text"
                     name="subgroup"
                     handler={setSubGroup}
@@ -205,7 +210,11 @@ const SetAppointment = ({
             ) : (
               <>
                 <br />
+                <label htmlFor="subGroupSelector" className={styles.input__label}>
+                  Потік:
+                </label>
                 <Select
+                  name="subGroupSelector"
                   className={styles.selector}
                   value={selectedSubGroup}
                   options={subGroups}

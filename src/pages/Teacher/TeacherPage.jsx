@@ -29,6 +29,8 @@ export default function TeacherPage() {
   let loggedUser = useSelector(state => state.auth);
   const [userName, setUserName] = useState('');
   const nameFromRedux = useSelector(state => state.auth.user.name);
+  const [replacement, setReplacement] = useState(null);
+  const [isReplacement, setIsReplacement] = useState(false);
   if (teacherId) userId = teacherId;
   else {
     // setUserName(name);
@@ -109,14 +111,7 @@ export default function TeacherPage() {
 
         setAppointmentTypes(
           response.data.sort((a, b) => {
-            const order = [
-              'group',
-              'private',
-              'replacement',
-              'free',
-              'replacement_group',
-              'replacement_private'
-            ];
+            const order = ['replacement_group', 'replacement_private', 'free'];
             return order.indexOf(a.name) - order.indexOf(b.name);
           })
         );
@@ -137,8 +132,9 @@ export default function TeacherPage() {
 
   const handleCellClick = async (isSlotOccupied, date, timeSlot, weekDay) => {
     if (
-      (isSlotOccupied && isSlotOccupied.SubGroupId) ||
-      selectedAppointmentTypeName.startsWith('appointed')
+      (isSlotOccupied && (isSlotOccupied.SubGroupId || isSlotOccupied.ReplacementId)) ||
+      selectedAppointmentTypeName.startsWith('appointed') ||
+      selectedAppointmentTypeName.startsWith('replacement')
     )
       return;
     if (isSlotOccupied && selectedAppointmentTypeName === 'free') {
@@ -344,10 +340,17 @@ export default function TeacherPage() {
                                   : ''
                               } `}
                               onClick={() => {
-                                if (slot && slot.AppointmentType.name.startsWith('appointed')) {
+                                if (slot && (slot.SubGroupId || slot.ReplacementId)) {
                                   setOpenSlotDetails(!openSlotDetails);
                                   setSelectedSlotDetailsId(slot.SubGroupId);
                                   setAppointmentDetails(slot.AppointmentType.name);
+                                  if (slot.ReplacementId) {
+                                    setReplacement(slot.ReplacementId);
+                                    setIsReplacement(true);
+                                  } else {
+                                    setIsReplacement(false);
+                                  }
+
                                   return;
                                 } else handleCellClick(slot, date, currentTime, dateIndex);
                               }}
@@ -372,9 +375,16 @@ export default function TeacherPage() {
       </div>
       <SlotDetails
         isOpen={openSlotDetails}
-        handleClose={() => setOpenSlotDetails(!openSlotDetails)}
-        slotId={selectedSlotDetailsId}
+        handleClose={() => {
+          setReplacement(null);
+          setSelectedSlotDetailsId(null);
+          setIsReplacement(false);
+          setOpenSlotDetails(!openSlotDetails);
+        }}
+        subGroupId={selectedSlotDetailsId}
         appointmentDetails={appointmentDetails}
+        replacementId={replacement}
+        isReplacement={isReplacement}
       />
     </div>
   );

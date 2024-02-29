@@ -86,7 +86,6 @@ export default function UsersPage() {
       setPrevFilterCourses(filterCourses);
     }
     if (!coursesModal) {
-      console.log('close');
       // after closing modal window
       if (JSON.stringify(prevFilterCourses) !== JSON.stringify(filterCourses)) {
         console.log('filtering');
@@ -103,7 +102,7 @@ export default function UsersPage() {
           <div className={styles.wrapper} key={'index1'}>
             <React.Fragment key={1}>
               <div key={'index'}>
-                <p className={styles.mini_title}>Administrators</p>
+                <p className={styles.mini_title}>Призначення</p>
 
                 <ul className={styles.main_wrapper}>
                   {(admins || []).map(item => {
@@ -126,7 +125,7 @@ export default function UsersPage() {
           </div>
           <React.Fragment key={2}>
             <div className={styles.wrapper} key={'index1'}>
-              <p className={styles.mini_title}>Teachers</p>
+              <p className={styles.mini_title}>Ментори</p>
 
               <ul className={`${styles.main_wrapper} ${styles.filter_wrapper}`}>
                 <li className={styles.ul_items}>
