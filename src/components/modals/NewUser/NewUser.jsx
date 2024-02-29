@@ -4,6 +4,7 @@ import FormInput from '../../FormInput/FormInput';
 import Select from '../../Select/Select';
 import React, {useEffect, useState} from 'react';
 import {getRoles, postUser, patchUser} from '../../../helpers/user/user';
+import {defaults, error, success} from '@pnotify/core';
 
 import Form from '../../Form/Form';
 import {forgotPassword} from '../../../helpers/auth/auth';
@@ -32,7 +33,7 @@ const NewUser = ({
   const handlePasswordReset = async () => {
     try {
       const res = await forgotPassword(email);
-      console.log(res);
+      success({text: 'email sent successfully!', delay: 1000});
     } catch (error) {
       console.log(error);
     }

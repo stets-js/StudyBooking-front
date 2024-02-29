@@ -104,7 +104,7 @@ const Form = ({
           : postSubGroup(jsonData)
         )
           .then(async data => {
-            success(status.successMessage || 'Success');
+            success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
               // week itterating
               if (jsonData.slots[i].length > 0) {
@@ -159,7 +159,7 @@ const Form = ({
         return await requests
           .put(jsonData, requests.additional)
           .then(() => {
-            success(status.successMessage);
+            success({text: status.successMessage, delay: 1000});
             // SetNeedToRender(true);
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
@@ -201,6 +201,7 @@ const Form = ({
         onSubmit();
         const newUser = await requests.user(user);
         SetNeedToRender(true);
+        success({text: 'Created/edited user', delay: 1000});
         return newUser;
       }
       if (manager) {
