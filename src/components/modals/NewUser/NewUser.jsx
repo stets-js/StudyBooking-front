@@ -56,7 +56,7 @@ const NewUser = ({
             email={email}
             password={password}
             rating={rating}
-            userId={item.id}
+            userId={!edit ? undefined : item.id}
             status={{
               successMessage: 'Successfully created user',
               failMessage: 'Failed to create user'
