@@ -66,15 +66,18 @@ const SetAppointment = ({
           let day = '';
           if (selectedSlots[i].length > 0) {
             console.log(i);
-            day += `${weekNames[i]}: `;
-            // for (let j = 0; j < selectedSlots[i].length; j++) {
-            const startTime = selectedSlots[i][0];
-            const endTime = addMinutes(
-              new Date(`1970 ${selectedSlots[i][appointmentLength - 1]}`),
-              30
-            );
-            day += startTime + ' - ' + format(endTime, 'HH:mm');
-            // }
+
+            for (let j = 0; j < selectedSlots[i].length; j += appointmentLength) {
+              // loop for case of several appointments on one day
+              day += `${weekNames[i]}: `;
+              const startTime = selectedSlots[i][j];
+              const endTime = addMinutes(
+                new Date(`1970 ${selectedSlots[i][j + appointmentLength - 1]}`),
+                30
+              );
+              day += startTime + ' - ' + format(endTime, 'HH:mm');
+              if (selectedSlots[i].length > j + appointmentLength + 1) day += '\n'; // addes new lines except last time range of the day
+            }
             schedule.push(day);
           }
         }
