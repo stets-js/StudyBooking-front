@@ -1,5 +1,11 @@
 @import "./App.scss";
+.new_user{
+  margin-bottom: 40px;
+}
+.new_user > .btn_wrapper {
+  margin-top: 0px !important;
 
+}
 .main_wrapper {
   margin-bottom: 60px;
   margin-top: 34px;

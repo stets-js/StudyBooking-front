@@ -3,15 +3,11 @@ import styles from '../../styles/SuperAdminPage.module.scss';
 import NewUser from '../../components/modals/NewUser/NewUser';
 import {getUsers} from '../../helpers/user/user';
 // import { getManagers } from "../../helpers/manager/manager";
-import {v4 as uuidv4} from 'uuid';
 import {useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
-import path from './../../helpers/routerPath';
 import FormInput from '../../components/FormInput/FormInput';
-import Courses from '../../components/Courses/Courses';
 import ChangeManagerCourses from '../../components/modals/ChangeManagerCourses/ChangeManagerCourses';
-import {render} from 'react-dom';
 
 export default function UsersPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -98,6 +94,35 @@ export default function UsersPage() {
     <>
       <div className={styles.main_wrapper}>
         <h3 className={styles.main_title}>Manage users.</h3>
+        {userRole === 'administrator' && (
+          <div className={styles.new_user}>
+            <div className={styles.btn_wrapper}>
+              <button
+                className={styles.add_btn}
+                data-modal="new-user"
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                  setTitle('New User');
+                  setEdit(false);
+                }}>
+                Add new user
+              </button>
+              <NewUser
+                isOpen={isOpen}
+                handleClose={() => handleClose()}
+                isAdmin={false}
+                SetNeedToRender={SetNeedToRender}
+                title={title}
+                name={name}
+                role={role}
+                email={email}
+                rating={rating}
+                edit={edit}
+                id={id}
+              />
+            </div>
+          </div>
+        )}
         <div className={styles.main_wrapper2}>
           <div className={styles.wrapper} key={'index1'}>
             <React.Fragment key={1}>
@@ -187,33 +212,7 @@ export default function UsersPage() {
           </React.Fragment>
         </div>
       </div>
-      {userRole === 'administrator' && (
-        <div className={styles.btn_wrapper}>
-          <button
-            className={styles.add_btn}
-            data-modal="new-user"
-            onClick={() => {
-              setIsOpen(!isOpen);
-              setTitle('New User');
-              setEdit(false);
-            }}>
-            Add new user
-          </button>
-          <NewUser
-            isOpen={isOpen}
-            handleClose={() => handleClose()}
-            isAdmin={false}
-            SetNeedToRender={SetNeedToRender}
-            title={title}
-            name={name}
-            role={role}
-            email={email}
-            rating={rating}
-            edit={edit}
-            id={id}
-          />
-        </div>
-      )}
+
       <ChangeManagerCourses
         isOpen={coursesModal}
         filteringCourses={filterCourses}
