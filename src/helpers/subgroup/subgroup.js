@@ -4,7 +4,7 @@ axios.create({
   withCredentials: true
 });
 
-const postSubGroup = credentials => {
+const postSubGroup = (credentials, userId) => {
   console.log(credentials);
   const data = {};
   try {
@@ -16,6 +16,7 @@ const postSubGroup = credentials => {
     data.startDate = new Date(credentials.startDate);
     data.endDate = new Date(credentials.endDate);
     data.schedule = credentials.schedule;
+    data.userId = userId;
   } catch (error) {}
   console.log(data);
   return axios

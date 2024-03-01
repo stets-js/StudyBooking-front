@@ -101,7 +101,7 @@ const Form = ({
         const appointmentType = await getAppointmentTypes(searchQuery);
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData)
-          : postSubGroup(jsonData)
+          : postSubGroup(jsonData, userId)
         )
           .then(async data => {
             success({text: status.successMessage || 'Success', delay: 1000});

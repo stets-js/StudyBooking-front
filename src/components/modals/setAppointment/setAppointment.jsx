@@ -33,7 +33,13 @@ const SetAppointment = ({
   const [subGroups, setSubGroups] = useState([]);
   const [selectedSubGroup, setSelectedSubGroup] = useState(0);
   const appointmentLength = !appointmentType ? 3 : 2;
-
+  const freeVariables = () => {
+    setTeachers([]);
+    setDescription('');
+    setSchedule([]);
+    setSubGroup([]);
+    setSelectedSubGroup(0);
+  };
   const fetchTeachers = async () => {
     try {
       getUsers(`users=${JSON.stringify(teachersIds)}`).then(teachersData => {
@@ -122,6 +128,7 @@ const SetAppointment = ({
             onSubmit={() => {
               onSubmit();
               handleClose();
+              freeVariables();
               // window.location.reload();
             }}
             status={{

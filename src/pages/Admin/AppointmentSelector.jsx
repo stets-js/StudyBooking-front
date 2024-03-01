@@ -280,6 +280,7 @@ export default function UsersPage() {
         onSubmit={() => {
           setTeachersIds([]);
           setSelectedSlotsAmount(0);
+
           setSelectedSlots(Array.from({length: 7}, _ => []));
         }}
       />
