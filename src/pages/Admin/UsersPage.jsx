@@ -92,6 +92,7 @@ export default function UsersPage() {
 
   return (
     <>
+      <h1>Test autodeploy</h1>
       <div className={styles.main_wrapper}>
         <h3 className={styles.main_title}>Manage users.</h3>
         {userRole === 'administrator' && (
