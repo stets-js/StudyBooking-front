@@ -30,6 +30,13 @@ const NewUser = ({
     setRole(item.role);
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!edit) {
+      setName('');
+      setRating(0);
+      setEmail('');
+    }
+  }, [edit]);
   const handlePasswordReset = async () => {
     try {
       const res = await forgotPassword(email);
