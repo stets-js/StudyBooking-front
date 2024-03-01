@@ -13,10 +13,7 @@ const CoursesPage = () => {
   return (
     <div className={styles.main_wrapper}>
       <h3 className={styles.main_title}>Manage courses</h3>
-      <div className={styles.main_wrapper2}>
-        <Courses text={'Courses'} isOpenModal={isOpen} />
-      </div>
-      <div className={styles.btn_wrapper}>
+      <div className={styles.course_btn_wrapper}>
         <button
           className={styles.add_btn}
           data-modal="new-user"
@@ -26,6 +23,9 @@ const CoursesPage = () => {
           Add new course +
         </button>
         <NewCourses isOpen={isOpen} handleClose={() => handleClose()} />
+      </div>
+      <div className={styles.main_wrapper2}>
+        <Courses text={'Courses'} isOpenModal={isOpen} />
       </div>
     </div>
   );
