@@ -27,7 +27,7 @@ const postCourse = credentials => {
     group_amount: credentials.get('group_number'),
     teamLeadId: credentials.get('team_lead_id')
   };
-
+  console.log(cours);
   return axios
     .post('/courses', cours)
     .then(res => res.data)

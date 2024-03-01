@@ -16,13 +16,15 @@ const NewCourse = ({isOpen, handleClose}) => {
   const [selectedTeamLead, setSelectedTeamLead] = useState(userId);
 
   useEffect(() => {
-    getUsers('role=administrator').then(data => {
-      setTeamLead(
-        data.data.map(el => {
-          return {label: el.name, value: el.id};
-        })
-      );
-    });
+    try {
+      getUsers('role=administrator').then(data => {
+        setTeamLead(
+          data.data.map(el => {
+            return {label: el.name, value: el.id};
+          })
+        );
+      });
+    } catch (error) {}
   }, []);
 
   return (

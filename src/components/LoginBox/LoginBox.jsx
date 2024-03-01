@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import styles from './LoginBox.module.scss';
-import SettingsModal from '../modals/SettingsModal/SettingsModal';
 import Login from '../modals/Login/Login';
 import SignUp from '../modals/SignUp/SignUp';
-import settingsIco from '../../img/icons/settings.png';
 import {useDispatch, useSelector} from 'react-redux';
 import logout from '../../img/logout.svg';
 

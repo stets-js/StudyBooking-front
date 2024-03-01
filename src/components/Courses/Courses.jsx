@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import {getCourses} from '../../helpers/course/course';
-import styles from '../Groups/Groups.module.scss';
+import styles from './Courses.module.scss';
 import ChangeCourse from '../modals/ChangeCourse/ChangeCourse';
 import {Fade} from 'react-awesome-reveal';
 
@@ -15,7 +15,7 @@ export default function Courses({text, isOpenModal, role}) {
   };
   const getCoursesData = async () => {
     const res = await getCourses()
-      .then(res => (res.data ? res.data : setErrorMessage('Example error message!')))
+      .then(res => (res?.data ? res?.data : setErrorMessage('Something went wrong!')))
       .catch(error => setErrorMessage(error.message));
 
     setCorses(res);

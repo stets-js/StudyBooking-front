@@ -1,14 +1,10 @@
 import {defaults, error, success} from '@pnotify/core';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Fade} from 'react-awesome-reveal';
-import {removeSlot} from '../../helpers/confirmation/avaliable';
-import {getUserByName, postUser} from '../../helpers/user/user';
 
-import InputCancel from '../InputCancel/InputCancel';
 import InputDelete from '../InputDelete/InputDelete';
 import InputSubmit from '../InputSubmit/InputSubmit';
 import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeManagerCourses';
-import ChangeAppointment from '../modals/ChangeAppointment/ChangeAppointment';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 import styles from './Form.module.scss';
 import {postSubGroup} from '../../helpers/subgroup/subgroup';
@@ -56,7 +52,6 @@ const Form = ({
   const [isChangeManagerCoursesOpen, setIsChangeManagerCoursesOpen] = useState(false);
   const [errorsuccessMessage, setError] = useState(false);
   const [inputCancelClicked, setInputCancelClicked] = useState(false);
-  const [selectedReason, setSelectedReason] = useState('');
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -129,51 +124,13 @@ const Form = ({
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
-      if (+role === 2 && type.type === 'put' && startRole !== 2) {
-        const res = await getUserByName(startName);
-        await requests.delete(res.data.id);
-        return await postUser(data)
-          .then(() => {
-            success(status.successMessage);
-            return !errorsuccessMessage && onSubmit && onSubmit();
-          })
-          .catch(e => {
-            return error(`${status.failMessage}, ${e.message}`);
-          });
-      }
-      if (+role !== 2 && type.type === 'put' && startRole === 2) {
-        const manager = await requests.getByName(startName.trim());
-        await requests.managerDelete(manager.data.id);
 
-        return await requests
-          .post(data)
-          .then(() => {
-            success(status.successMessage);
-            return !errorsuccessMessage && onSubmit && onSubmit();
-          })
-          .catch(e => {
-            return error(`${status.failMessage}, ${e.message}`);
-          });
-      }
       if (type.type === 'put') {
         return await requests
           .put(jsonData, requests.additional)
           .then(() => {
             success({text: status.successMessage, delay: 1000});
             // SetNeedToRender(true);
-            return !errorsuccessMessage && onSubmit && onSubmit();
-          })
-          .catch(e => {
-            return error(`${status.failMessage}, ${e.message}`);
-          });
-      }
-      if (+role === 2 && type.type === 'put') {
-        const res = await requests.getByName(startName.trim());
-        if (data.get('role_id')) data.delete('role_id');
-        return await requests
-          .user(data, res.data.id)
-          .then(() => {
-            success(status.successMessage);
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
           .catch(e => {
@@ -220,7 +177,7 @@ const Form = ({
             return error(`${e.response.data.message ? e.response.data.message : e.message}`);
           })
           .then(() => {
-            success(status.successMessage);
+            success(status.successMessage || 'Success');
             SetNeedToRender(true);
             return !errorsuccessMessage && onSubmit && onSubmit();
           });
@@ -307,7 +264,7 @@ const Form = ({
               Postpone
             </button>
           )}
-          {isCancel ? (
+          {/* {isCancel ? (
             <InputCancel
               InputCancelFunc={reason => {
                 setInputCancelClicked(true);
@@ -317,7 +274,7 @@ const Form = ({
             />
           ) : (
             ''
-          )}
+          )} */}
           {!isSetAppointment && edit ? (
             <>
               <OpenChangeManagerCourses
@@ -344,24 +301,6 @@ const Form = ({
             return (
               <React.Fragment key={i}>
                 <Fade cascade triggerOnce duration={300} direction="up">
-                  <ChangeAppointment
-                    isOpen={isOpen}
-                    setIsOpenModal={setIsOpen}
-                    handleClose={() => setIsOpen(!isOpen)}
-                    manager={item.manager_name}
-                    managerIdInit={item.manager_id}
-                    id={item.appointment_id}
-                    weekId={item.week_id}
-                    course={item.course_id}
-                    crm={item.crm_link}
-                    day={item.day}
-                    hour={item.hour}
-                    slotId={item.slot_id}
-                    number={item.phone}
-                    messageInit={item.comments}
-                    age={item.age}
-                    isFollowUp={item.follow_up}
-                  />
                   <div className={styles.appointment} onClick={() => setIsOpen(!isOpen)}>
                     <p className={styles.appointment__data}>
                       {item.date.slice(0, 11)}, {item.hour > 9 ? item.hour : '0' + item.hour}:00{' '}
