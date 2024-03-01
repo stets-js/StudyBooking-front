@@ -136,7 +136,7 @@ const SetAppointment = ({
             }}
             status={{
               successMessage: `Successfully created ${
-                appointmentType === 0 ? 'group' : isReplacement ? 'replacement' : 'private'
+                isReplacement ? 'replacement' : appointmentType === 0 ? 'group' : 'private'
               }`,
               failMessage: `Failed to create ${appointmentType === 0 ? 'group' : 'private'}`
             }}>
