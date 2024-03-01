@@ -9,7 +9,6 @@ export default function ResetPasswordPage() {
   const handleSubmit = async () => {
     if (newPassword.length > 3) {
       try {
-        console.log(token);
         const res = await resetPassword({newPassword, token});
         // redirect to homePage
       } catch (error) {
