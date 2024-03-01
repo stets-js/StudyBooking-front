@@ -4,7 +4,7 @@ import Select from 'react-select';
 import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {uk} from 'date-fns/locale';
 import Switch from 'react-switch';
-
+import {error} from '@pnotify/core';
 import {getCourses, getTeachersByCourse} from '../../helpers/course/course';
 import {getSlotsForUsers} from '../../helpers/teacher/slots';
 import SetAppointment from '../../components/modals/setAppointment/setAppointment';
@@ -103,19 +103,21 @@ export default function UsersPage() {
       const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
       const isAlreadySelected = selectedSlots[weekDay].includes(format(currentTime, 'HH:mm'));
       if (isAlreadySelected) {
-        return new Error('Slot already selected');
+        return error({delay: 1000, text: 'Slot already selected'});
       }
       const slots = slotsData[weekDay]?.[format(currentTime, 'HH:mm')];
-      if (!slots || !slots.length) return new Error('not enough slots');
+      if (!slots || !slots.length) return error({delay: 1000, text: 'Not enough slots'});
       teachersIdsNew.push(slots.map(el => el.userId));
     }
 
     teachersIdsNew = teachersIdsNew[0].filter(id => {
       return teachersIdsNew.every(currentArray => currentArray.includes(id));
-    });
+    }); // filtering for teachers that matches all slots
+
     if (!teachersIdsNew || !teachersIdsNew.length) {
       // validating  that there is at least one teacher in the array
-      return new Error('Cant find avaible teacher, Slots is occupied for different teachers');
+      error({text: 'Cant find avaible teacher, Slots occupied by different teachers', delay: 1000});
+      return;
     }
 
     for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
@@ -275,6 +277,11 @@ export default function UsersPage() {
         appointmentType={selectedClassType}
         isReplacement={isReplacement}
         course={courses.filter(el => el.value === selectedCourse)[0]}
+        onSubmit={() => {
+          setTeachersIds([]);
+          setSelectedSlotsAmount(0);
+          setSelectedSlots(Array.from({length: 7}, _ => []));
+        }}
       />
     </div>
   );

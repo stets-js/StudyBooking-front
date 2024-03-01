@@ -19,7 +19,8 @@ const SetAppointment = ({
   setSelectedCourse,
   startDate,
   endDate,
-  isReplacement
+  isReplacement,
+  onSubmit
 }) => {
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
@@ -119,6 +120,7 @@ const SetAppointment = ({
             schedule={schedule}
             // requests={}
             onSubmit={() => {
+              onSubmit();
               handleClose();
               // window.location.reload();
             }}
