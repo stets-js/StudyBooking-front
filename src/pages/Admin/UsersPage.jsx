@@ -175,14 +175,7 @@ export default function UsersPage() {
                             setRating(item.rating);
                             setId(item.id);
                             setEdit(true);
-
-                            // if (!item.role_id) setRole(2);
-                            // else {
-                            //   setRole(item.role_id);
-                            // }
-                            // setLogin(item.login);
-                            // setSlack(item.slack);
-                            // setTeam(item.team);
+                            console.log(id);
                           }}
                         />
                       </li>

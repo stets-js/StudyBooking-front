@@ -327,7 +327,7 @@ const Form = ({
 
               {isChangeManagerCoursesOpen ? (
                 <ChangeManagerCourses
-                  teacherId={id}
+                  teacherId={userId}
                   handleClose={() => {
                     setIsChangeManagerCoursesOpen(!isChangeManagerCoursesOpen);
                   }}

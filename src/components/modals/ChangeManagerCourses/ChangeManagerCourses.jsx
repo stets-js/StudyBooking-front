@@ -22,14 +22,15 @@ const ChangeManagerCourses = ({
   setFilteringCourses,
   forFilters = false
 }) => {
+  console.log(forFilters, teacherId);
   const dispatch = useDispatch();
   const courses = useSelector(state => state.courses.courses);
-  const teacherCourses = useSelector(state => state.courses.teacherCourses);
+  const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
   useEffect(() => {
     const fetchAllCourses = async () => {
       const allCourses = await getCourses();
       dispatch(setCourses(allCourses.data));
-      if (teacherId) {
+      if (!forFilters) {
         const teachersCrs = await getTeacherCourses(teacherId);
         dispatch(setTeacherCourses(teachersCrs.data));
       }
@@ -37,13 +38,14 @@ const ChangeManagerCourses = ({
     fetchAllCourses();
   }, [teacherId, dispatch]);
 
-  const handleCheckboxChange = async courseId => {
-    if (teacherId) {
-      if (teacherCourses.some(el => el.id === courseId)) {
-        await deleteTeacherCourse(teacherId, courseId);
+  const handleCheckboxChange = async (courseId, id) => {
+    if (!forFilters) {
+      console.log(id);
+      if (teacherCourses.some(el => el.id === id)) {
+        await deleteTeacherCourse(id, courseId);
         dispatch(setTeacherCourses(teacherCourses.filter(el => el.id !== courseId)));
       } else {
-        await postTeacherCourse(teacherId, courseId);
+        await postTeacherCourse(id, courseId);
         const newTeacherCourses = courses.filter(el => el.id === courseId)[0];
         dispatch(addTeacherCourses(newTeacherCourses));
       }
@@ -80,17 +82,17 @@ const ChangeManagerCourses = ({
                     type="checkbox"
                     key={Math.random() * 100000 - 10}
                     checked={
-                      teacherId
-                        ? teacherCourses.length > 0 &&
+                      !forFilters
+                        ? (teacherCourses || []).length > 0 &&
                           teacherCourses.some(el => {
                             return el.id === course.id;
                           })
-                        : filteringCourses.length > 0 &&
+                        : (filteringCourses || []).length > 0 &&
                           filteringCourses.some(el => {
                             return el === course.id;
                           })
                     }
-                    onChange={() => handleCheckboxChange(course.id)}
+                    onChange={() => handleCheckboxChange(course.id, teacherId)}
                   />
                   {course.name}
                 </label>

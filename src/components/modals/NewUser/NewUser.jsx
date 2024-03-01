@@ -83,51 +83,50 @@ const NewUser = ({
               handler={setRating}
             />
 
-            <div className={styles.input__block}>
+            <FormInput
+              classname="input__bottom"
+              title="Email:"
+              type="text"
+              name="email"
+              max={50}
+              value={email}
+              placeholder="Email"
+              isRequired={true}
+              handler={setEmail}
+            />
+            {!edit && (
               <FormInput
                 classname="input__bottom"
-                title="Email:"
-                type="text"
-                name="email"
+                title="Password:"
+                type="password"
+                name="password"
                 max={50}
-                value={email}
-                placeholder="Email"
+                value={password}
+                placeholder="Password"
                 isRequired={true}
-                handler={setEmail}
+                handler={setPassword}
               />
-              {!edit ? (
-                <FormInput
-                  classname="input__bottom"
-                  title="Password:"
-                  type="password"
-                  name="password"
-                  max={50}
-                  value={password}
-                  placeholder="Password"
-                  isRequired={true}
-                  handler={setPassword}
-                />
-              ) : (
-                <button
-                  className={`${styles.input__block} ${styles.forgotPassword}`}
-                  title="Password:"
-                  type="button"
-                  name="password"
-                  placeholder="Password"
-                  isRequired={true}
-                  onClick={() => {
-                    handlePasswordReset();
-                  }}>
-                  Forgot password
-                </button>
-              )}
-            </div>
+            )}
             <Select
               title="Role:"
               request={getRoles}
               setValue={setRole}
               value={role}
               administrator={isAdmin}></Select>
+            {edit && (
+              <button
+                className={`${styles.input__block} ${styles.forgotPassword}`}
+                title="Password:"
+                type="button"
+                name="password"
+                placeholder="Password"
+                isRequired={true}
+                onClick={() => {
+                  handlePasswordReset();
+                }}>
+                Forgot password
+              </button>
+            )}
           </Form>
         </Modal>
       )}
