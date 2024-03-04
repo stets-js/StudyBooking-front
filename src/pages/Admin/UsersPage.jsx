@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../../styles/SuperAdminPage.module.scss';
 import NewUser from '../../components/modals/NewUser/NewUser';
-import {getUsers} from '../../helpers/user/user';
+import {getRoles, getUsers} from '../../helpers/user/user';
 // import { getManagers } from "../../helpers/manager/manager";
 import {useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
@@ -89,7 +89,21 @@ export default function UsersPage() {
       }
     }
   }, [coursesModal]);
+  const [roles, setRoles] = useState([]);
 
+  useEffect(() => {
+    try {
+      const fetchRoles = async () => {
+        const res = await getRoles();
+        setRoles(
+          (res?.data || []).map(el => {
+            return {label: el.name, value: el.id};
+          })
+        );
+      };
+      fetchRoles();
+    } catch (error) {}
+  }, []);
   return (
     <>
       <div className={styles.main_wrapper}>
@@ -119,6 +133,7 @@ export default function UsersPage() {
                 rating={rating}
                 edit={edit}
                 id={id}
+                roles={roles}
               />
             </div>
           </div>
@@ -200,7 +215,6 @@ export default function UsersPage() {
                             setRating(item.rating);
                             setId(item.id);
                             setEdit(true);
-                            console.log(id);
                           }}
                         />
                       </li>

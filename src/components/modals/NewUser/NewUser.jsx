@@ -1,7 +1,7 @@
 import styles from './NewUser.module.scss';
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
-import Select from '../../Select/Select';
+import Select from 'react-select';
 import React, {useEffect, useState} from 'react';
 import {getRoles, postUser, patchUser} from '../../../helpers/user/user';
 import {defaults, error, success} from '@pnotify/core';
@@ -16,13 +16,16 @@ const NewUser = ({
   title = 'New user: ',
   edit,
   SetNeedToRender,
+  roles,
   ...item
 }) => {
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState(1); // for now one is default teacher
+  console.log(roles.find(el => el.label === 'teacher'));
+  const [role, setRole] = useState(roles.find(el => el.label === 'teacher')?.value || 1);
+  console.log(role);
   useEffect(() => {
     setName(item.name);
     setRating(item.rating);
@@ -116,10 +119,11 @@ const NewUser = ({
             )}
             <Select
               title="Role:"
-              request={getRoles}
-              setValue={setRole}
-              value={role}
-              administrator={isAdmin}></Select>
+              className={styles.selector}
+              options={roles}
+              value={roles.find(el => el.value === role)}
+              key={Math.random() * 1000 - 10}
+              onChange={el => setRole(el.value)}></Select>
             {edit && (
               <button
                 className={`${styles.input__block} ${styles.forgotPassword}`}
