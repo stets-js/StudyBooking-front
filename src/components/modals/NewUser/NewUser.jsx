@@ -23,9 +23,11 @@ const NewUser = ({
   const [rating, setRating] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log(roles.find(el => el.label === 'teacher'));
-  const [role, setRole] = useState(roles.find(el => el.label === 'teacher')?.value || 1);
-  console.log(role);
+  // console.log(roles.find(el => el.label === 'teacher'));
+  const [role, setRole] = useState(
+    // (1);
+    roles.find(el => el.label === 'teacher')?.value || 1
+  );
   useEffect(() => {
     setName(item.name);
     setRating(item.rating);
@@ -117,13 +119,15 @@ const NewUser = ({
                 handler={setPassword}
               />
             )}
-            <Select
-              title="Role:"
-              className={styles.selector}
-              options={roles}
-              value={roles.find(el => el.value === role)}
-              key={Math.random() * 1000 - 10}
-              onChange={el => setRole(el.value)}></Select>
+            {!edit && (
+              <Select
+                title="Role:"
+                className={styles.selector}
+                options={roles}
+                value={roles.find(el => el.value === role)}
+                key={Math.random() * 1000 - 10}
+                onChange={el => setRole(el.value)}></Select>
+            )}
             {edit && (
               <button
                 className={`${styles.input__block} ${styles.forgotPassword}`}

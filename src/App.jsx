@@ -51,7 +51,9 @@ const App = () => {
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
       <ConfirmProvider>
         <Routes>
-          {auth && userRole === 'administrator' ? (
+          {auth && ['administrator', 'superAdmin'].includes(userRole) ? (
+            //  userRole.toLowerCase().includes('admin')
+            // for admin and superAdmin
             <>
               <Route path={path.home} element={<Navigate to={`${path.superAdmin}`} />}></Route>
 

@@ -27,7 +27,7 @@ export default function UsersPage() {
   const [filterCourses, setFilterCourses] = useState([]);
   const [prevFilterCourses, setPrevFilterCourses] = useState(filterCourses);
   const [debounceTimer, setDebounceTimer] = useState();
-
+  const [superAdmins, setSuperAdmins] = useState([]);
   const fetchAdmins = async () => {
     try {
       const res = await getUsers(`role=administrator`);
@@ -36,6 +36,12 @@ export default function UsersPage() {
     } catch (error) {}
   };
 
+  const fetchSuperAdmins = async () => {
+    try {
+      const res = await getUsers(`role=superAdmin`);
+      setSuperAdmins(res.data);
+    } catch (error) {}
+  };
   const fetchTeachers = async () => {
     try {
       const res = await getUsers(
@@ -67,6 +73,7 @@ export default function UsersPage() {
   useEffect(() => {
     fetchAdmins();
     fetchTeachers();
+    fetchSuperAdmins();
     SetNeedToRender(false);
   }, [needToRender]);
 
@@ -108,7 +115,7 @@ export default function UsersPage() {
     <>
       <div className={styles.main_wrapper}>
         <h3 className={styles.main_title}>Manage users.</h3>
-        {userRole === 'administrator' && (
+        {['administrator', 'superAdmin'].includes(userRole) && (
           <div className={styles.new_user}>
             <div className={styles.btn_wrapper}>
               <button
@@ -139,6 +146,30 @@ export default function UsersPage() {
           </div>
         )}
         <div className={styles.main_wrapper2}>
+          <div className={styles.wrapper} key={'index0'}>
+            <React.Fragment key={1}>
+              <div key={'index'}>
+                <p className={styles.mini_title}>Супер адміністратор</p>
+
+                <ul className={styles.main_wrapper}>
+                  {(superAdmins || []).map(item => {
+                    return (
+                      <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
+                        <li className={styles.ul_items} key={item.name}>
+                          <Link className={styles.ul_items_link} target="_self" to={'#'}>
+                            {' '}
+                            <p className={styles.ul_items_text}>
+                              {item.name} ({item.id})
+                            </p>
+                          </Link>
+                        </li>
+                      </Fade>
+                    );
+                  })}
+                </ul>
+              </div>
+            </React.Fragment>
+          </div>
           <div className={styles.wrapper} key={'index1'}>
             <React.Fragment key={1}>
               <div key={'index'}>
@@ -153,6 +184,22 @@ export default function UsersPage() {
                             {' '}
                             <p className={styles.ul_items_text}>
                               {item.name} ({item.id})
+                              {userRole === 'superAdmin' && (
+                                <button
+                                  className={styles.ul_items_btn}
+                                  // data-modal="change-user"
+                                  onClick={() => {
+                                    setIsOpen(!isOpen);
+                                    setTitle(`Edit ${item.name}`);
+                                    setName(item.name);
+                                    setRole(item.RoleId);
+                                    setEmail(item.email);
+                                    setRating(item.rating);
+                                    setId(item.id);
+                                    setEdit(true);
+                                  }}
+                                />
+                              )}
                             </p>
                           </Link>
                         </li>
@@ -207,6 +254,7 @@ export default function UsersPage() {
                           className={styles.ul_items_btn}
                           // data-modal="change-user"
                           onClick={() => {
+                            console.log(item);
                             setIsOpen(!isOpen);
                             setTitle(`Edit ${item.name}`);
                             setName(item.name);

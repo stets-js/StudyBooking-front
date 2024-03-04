@@ -22,7 +22,7 @@ const ChangeManagerCourses = ({
   setFilteringCourses,
   forFilters = false
 }) => {
-  console.log(forFilters, teacherId);
+  console.log('hello?');
   const dispatch = useDispatch();
   const courses = useSelector(state => state.courses.courses);
   const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
@@ -65,8 +65,10 @@ const ChangeManagerCourses = ({
       <Modal open={isOpen} onClose={handleClose}>
         <h1 className={styles.title}>Teacher courses</h1>
         <h3 className={styles.managerLinkTitle}>
-          Pick courses for filtering, and close this window <br />
-          to apply changes:
+          {forFilters
+            ? `Pick courses for filtering, and close this window
+          to apply changes:`
+            : 'Виберіть курси'}
           {/* Teacher :TODO: make href */}
           {/* <a className={styles.managerLink} href={`/user/${managerInfo.id}/planning`}>
             {managerInfo.name}
