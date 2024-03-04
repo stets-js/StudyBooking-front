@@ -181,26 +181,26 @@ export default function UsersPage() {
                       <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
                         <li className={styles.ul_items} key={item.name}>
                           <Link className={styles.ul_items_link} target="_self" to={'#'}>
-                            {' '}
                             <p className={styles.ul_items_text}>
                               {item.name} ({item.id})
-                              {userRole === 'superAdmin' && (
-                                <button
-                                  className={styles.ul_items_btn}
-                                  // data-modal="change-user"
-                                  onClick={() => {
-                                    setIsOpen(!isOpen);
-                                    setTitle(`Edit ${item.name}`);
-                                    setName(item.name);
-                                    setRole(item.RoleId);
-                                    setEmail(item.email);
-                                    setRating(item.rating);
-                                    setId(item.id);
-                                    setEdit(true);
-                                  }}
-                                />
-                              )}
                             </p>
+
+                            {userRole === 'superAdmin' && (
+                              <button
+                                className={styles.ul_items_btn}
+                                // data-modal="change-user"
+                                onClick={() => {
+                                  setIsOpen(!isOpen);
+                                  setTitle(`Edit ${item.name}`);
+                                  setName(item.name);
+                                  setRole(item.RoleId);
+                                  setEmail(item.email);
+                                  setRating(item.rating);
+                                  setId(item.id);
+                                  setEdit(true);
+                                }}
+                              />
+                            )}
                           </Link>
                         </li>
                       </Fade>
