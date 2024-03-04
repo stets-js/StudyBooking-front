@@ -6,6 +6,10 @@
 .selectedCell {
     background-color: #9cc7f5; 
   }
+  .half_width{
+    width: 50% !important;
+    left:26%;
+  }
 .date_selector{
     font-size: 20px;
     font-family: $poppins;
@@ -14,6 +18,20 @@
     font-size: 20px;
     font-family: $poppins;
     display: grid;
+}
+.filter_wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 20px;
+    align-items: flex-end;
+}
+.grid_item{
+    width:100%;
+}
+.subgroup_selector{
+   
+    width: 100% !important;
+    margin-left: 0 !important;
 }
 .calendar{
     width: 100%;
@@ -164,9 +182,7 @@ justify-content: center;
     margin:10px;
     background-color: transparent;    
 }
-.selector{
-width:100%;
-}
+
 .chooser_selector{
     display: flex;
     justify-content: space-between;
@@ -207,10 +223,23 @@ width:100%;
     background-color: white;
 }
 .selector{
-    left:26%;
-    width: 50%;
+    width:100%;
     margin-top: 10px;    
     font-family: $poppins;
+    :has(span){
+        height: 45px;
+    }
+    :has(svg){
+        color:black
+    }
+    
+    :has(div){
+   
+        margin-left: 5px;
+        background-color: $grey;
+        font-size: 20px;
+        font-family: $poppins;
+    }
 }
 
 .reset_wrapper{

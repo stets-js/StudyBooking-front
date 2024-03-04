@@ -27,3 +27,23 @@
   margin-bottom: 10px;
   display: flex;
 }
+
+.selector{
+  width:100%;
+  margin-top: 10px;    
+  font-family: $poppins;
+  :has(span){
+      height: 45px;
+  }
+  :has(svg){
+      color:black
+  }
+  
+  :has(div){
+ 
+      margin-left: 5px;
+      background-color: $grey;
+      font-size: 20px;
+      font-family: $poppins;
+  }
+}

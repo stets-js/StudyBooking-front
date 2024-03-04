@@ -36,9 +36,9 @@ const getSlotDetails = id => {
     });
 };
 
-const getSubGroups = () => {
+const getSubGroups = (options = '') => {
   return axios
-    .get(`/subgroups`)
+    .get(`/subgroups` + (options ? `?${options}` : ''))
     .then(res => res.data)
     .catch(error => {
       throw error;

@@ -87,7 +87,7 @@ export default function AvaliableTable() {
         options={courses}
         placeholder="Select course"
         required
-        className={styles.selector}
+        className={`${styles.selector} ${styles.half_width}`}
         onChange={choice => {
           setSelectedCourse(choice.value);
         }}

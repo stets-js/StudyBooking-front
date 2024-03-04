@@ -152,6 +152,7 @@ export default function UsersPage() {
             options={courses}
             placeholder="Select course"
             required
+            className={styles.selector}
             onChange={choice => {
               setSelectedSlots(Array.from({length: 7}, _ => []));
               setTeachersIds([]);
@@ -162,6 +163,7 @@ export default function UsersPage() {
         <div className={styles.chooser_selector__item}>
           <Select
             key={Math.random() * 1000 - 10}
+            className={styles.selector}
             placeholder="Select type"
             defaultValue={[
               {label: 'Група', value: 0},

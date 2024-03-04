@@ -31,7 +31,7 @@ const CoursesPage = () => {
       <div className={styles.filter_block}>
         <FormInput
           title={'Сортування за назвою'}
-          placeholder={'Type here..'}
+          placeholder={'Назва..'}
           value={filterName}
           handler={setFilterName}></FormInput>
       </div>
