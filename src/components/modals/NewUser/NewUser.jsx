@@ -3,7 +3,7 @@ import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import Select from 'react-select';
 import React, {useEffect, useState} from 'react';
-import {getRoles, postUser, patchUser} from '../../../helpers/user/user';
+import {getRoles, postUser, patchUser, deleteUser} from '../../../helpers/user/user';
 import {defaults, error, success} from '@pnotify/core';
 
 import Form from '../../Form/Form';
@@ -55,9 +55,9 @@ const NewUser = ({
       {isOpen && (
         <Modal open={isOpen} onClose={handleClose}>
           <Form
-            type={{type: 'user'}}
+            type={{type: 'user', additionalType: edit}} // additionalType - delete
             SetNeedToRender={SetNeedToRender}
-            requests={{user: edit ? patchUser : postUser}}
+            requests={{user: edit ? patchUser : postUser, delete: deleteUser, additional: item.id}}
             onSubmit={() => {
               handleClose();
             }}
@@ -71,7 +71,8 @@ const NewUser = ({
             userId={!edit ? undefined : item.id}
             status={{
               successMessage: 'Successfully created user',
-              failMessage: 'Failed to create user'
+              failMessage: 'Failed to create user',
+              successMessageDelete: `Deleted user ${item.name}!`
             }}
             title={title}>
             <FormInput

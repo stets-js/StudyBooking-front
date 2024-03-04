@@ -91,7 +91,6 @@ export default function UsersPage() {
     if (!coursesModal) {
       // after closing modal window
       if (JSON.stringify(prevFilterCourses) !== JSON.stringify(filterCourses)) {
-        console.log('filtering');
         setRenderTeachers(true);
       }
     }
@@ -109,7 +108,7 @@ export default function UsersPage() {
           })
         );
         if (userRole !== 'superAdmin') {
-          setRoles(prev => prev.filter(el => el.label !== userRole));
+          setRoles(prev => prev.filter(el => el.label !== 'superAdmin'));
         }
       };
       fetchRoles();

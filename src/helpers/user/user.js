@@ -74,7 +74,7 @@ const patchUser = credentials => {
 
 const deleteUser = id => {
   return axios
-    .delete(`/remove_user/${id}`)
+    .delete(`/users/${id}`)
     .then(res => res.data)
     .catch(error => {
       throw error;

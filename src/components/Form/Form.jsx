@@ -242,18 +242,18 @@ const Form = ({
   };
 
   const handleDelete = async () => {
-    if (role === 2) {
-      const res = await requests.getByName(startName.trim());
-      onSubmit();
-      return await requests
-        .managerDelete(res.data.id)
-        .catch(() => {
-          return error(status.failMessageDelete);
-        })
-        .then(() => {
-          return success(status.successMessageDelete);
-        });
-    }
+    // if (role === 2) {
+    //   const res = await requests.getByName(startName.trim());
+    //   onSubmit();
+    //   return await requests
+    //     .managerDelete(res.data.id)
+    //     .catch(() => {
+    //       return error(status.failMessageDelete);
+    //     })
+    //     .then(() => {
+    //       return success(status.successMessageDelete);
+    //     });
+    // }
 
     await requests
       .delete(requests.additional)
@@ -261,14 +261,9 @@ const Form = ({
         return error(`${status.failMessageDelete}, ${e.message}`);
       })
       .then(() => {
-        return success(status.successMessageDelete);
+        return success({delay: 1000, text: status.successMessageDelete});
       });
-    if (+role === 2 && type.additionalType === 'delete') {
-      const res = await requests.getByName(startName.trim());
-      await requests.userDelete(res.data.id).catch(e => {
-        return error(`${status.failMessageDelete}, ${e.message}`);
-      });
-    }
+
     !errorsuccessMessage && onSubmit && onSubmit();
   };
 
@@ -295,7 +290,6 @@ const Form = ({
 
           {!type.button && <InputSubmit buttonTitle={buttonTitle ? buttonTitle : 'Save'} />}
           {isCancelConfConsult && <InputDelete handleDelete={cancelConfConsultOnClickFn} />}
-          {type.additionalType && <InputDelete handleDelete={handleDelete} />}
           {postpone && (
             <button
               className={styles.input__submit}
@@ -337,6 +331,7 @@ const Form = ({
           ) : (
             ''
           )}
+          {type.additionalType && <InputDelete handleDelete={handleDelete} />}
         </div>
       </form>
       {type.type === 'no-request-test' && data.length > 0 && data[0] !== 0 && data[0] !== undefined
