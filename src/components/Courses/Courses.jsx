@@ -5,7 +5,7 @@ import styles from '../Groups/Groups.module.scss';
 import ChangeCourse from '../modals/ChangeCourse/ChangeCourse';
 import {Fade} from 'react-awesome-reveal';
 
-export default function Courses({text, isOpenModal, role}) {
+export default function Courses({text, isOpenModal, role, filterName}) {
   const [courses, setCorses] = useState([]);
   const [id, setId] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +25,10 @@ export default function Courses({text, isOpenModal, role}) {
     getCoursesData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, isOpenModal]);
+
+  const filteredCourses = courses.filter(element =>
+    element.name.toLowerCase().includes(filterName.toLowerCase())
+  );
   return (
     <>
       {errorMessage && <p className="error"> {errorMessage} </p>}
@@ -36,10 +40,10 @@ export default function Courses({text, isOpenModal, role}) {
           courseArray={courses}
         />
         <p className={styles.mini_title}>{text}</p>
-        {courses?.length > 0 && (
+        {filteredCourses?.length > 0 && (
           <ul className={styles.main_wrapper}>
             <Fade cascade triggerOnce duration={300} direction="up">
-              {courses.map(item => {
+              {filteredCourses.map(item => {
                 return (
                   <li className={styles.ul_items} key={item.name}>
                     <p className={styles.ul_items_text}>{item.name}</p>

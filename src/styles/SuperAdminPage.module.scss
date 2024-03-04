@@ -6,11 +6,18 @@
   margin-top: 0px !important;
 
 }
+.header_wrapper{
+}
 .main_wrapper {
   margin-bottom: 60px;
   margin-top: 34px;
 }
-
+.filter_block{
+  margin-top: 10px;
+  margin-bottom:40px;
+  width: 60%;
+  margin-left:20%;
+}
 .filter_wrapper{
   margin-top:0px;
 }
@@ -106,9 +113,9 @@
   display:flex;
   width: 100%;
 }
-.course_btn_wrapper{
-  margin-bottom: 40px;
-}
+// .course_btn_wrapper{
+//   margin-bottom: 40px;
+// }
 .btn_wrapper {
   margin-top: 56px;
 }

@@ -3,29 +3,40 @@ import {useState} from 'react';
 import styles from '../../styles/SuperAdminPage.module.scss';
 import Courses from '../../components/Courses/Courses';
 import NewCourses from '../../components/modals/NewCourse/NewCourse';
+import FormInput from '../../components/FormInput/FormInput';
 
 const CoursesPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [filterName, setFilterName] = useState('');
 
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <div className={styles.main_wrapper}>
-      <h3 className={styles.main_title}>Manage courses</h3>
-      <div className={styles.course_btn_wrapper}>
+      <div className={`${styles.main_title} ${styles.header_wrapper}`}>
+        Manage courses{' '}
         <button
           className={styles.add_btn}
           data-modal="new-user"
           onClick={() => {
             setIsOpen(!isOpen);
           }}>
-          Add new course +
+          New
         </button>
         <NewCourses isOpen={isOpen} handleClose={() => handleClose()} />
       </div>
+
+      <div className={styles.filter_block}>
+        <FormInput
+          title={'Сортування за назвою'}
+          placeholder={'Type here..'}
+          value={filterName}
+          handler={setFilterName}></FormInput>
+      </div>
       <div className={styles.main_wrapper2}>
-        <Courses text={'Courses'} isOpenModal={isOpen} />
+        <Courses filterName={filterName} text={'Courses'} isOpenModal={isOpen} />
       </div>
     </div>
   );
