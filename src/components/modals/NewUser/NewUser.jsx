@@ -59,6 +59,7 @@ const NewUser = ({
             SetNeedToRender={SetNeedToRender}
             requests={{user: edit ? patchUser : postUser, delete: deleteUser, additional: item.id}}
             onSubmit={() => {
+              SetNeedToRender(true); // for optimizating my be develop switch case of choosing exactly which one call fetchAdmin/fetchTeacher/fetchSuperAdmin
               handleClose();
             }}
             edit={edit}
@@ -125,6 +126,7 @@ const NewUser = ({
                 title="Role:"
                 className={styles.selector}
                 options={roles}
+                required
                 value={roles.find(el => el.value === role)}
                 key={Math.random() * 1000 - 10}
                 onChange={el => setRole(el.value)}></Select>

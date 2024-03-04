@@ -164,6 +164,22 @@ export default function UsersPage() {
                             <p className={styles.ul_items_text}>
                               {item.name} ({item.id})
                             </p>
+                            {userRole === 'superAdmin' && (
+                              <button
+                                className={styles.ul_items_btn}
+                                // data-modal="change-user"
+                                onClick={() => {
+                                  setIsOpen(!isOpen);
+                                  setTitle(`Edit ${item.name}`);
+                                  setName(item.name);
+                                  setRole(item.RoleId);
+                                  setEmail(item.email);
+                                  setRating(item.rating);
+                                  setId(item.id);
+                                  setEdit(true);
+                                }}
+                              />
+                            )}
                           </Link>
                         </li>
                       </Fade>
