@@ -102,11 +102,15 @@ export default function UsersPage() {
     try {
       const fetchRoles = async () => {
         const res = await getRoles();
+
         setRoles(
           (res?.data || []).map(el => {
             return {label: el.name, value: el.id};
           })
         );
+        if (userRole !== 'superAdmin') {
+          setRoles(prev => prev.filter(el => el.label !== userRole));
+        }
       };
       fetchRoles();
     } catch (error) {}
