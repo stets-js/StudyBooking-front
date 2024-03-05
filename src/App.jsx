@@ -22,6 +22,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import SubGroupPage from './pages/Admin/SubGroupPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import ReplacementsPage from './pages/Admin/ReplacementPage';
+
 const App = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const jwtExp = useSelector(state => state.auth.user.exp);
@@ -64,7 +66,8 @@ const App = () => {
                 <Route path={path.appointments} element={<Appointment />} />
                 <Route path={path.avaliableTable} element={<AvaliableTable />} />
                 <Route path={`teacher/:teacherId`} element={<TeacherPage />} />
-                <Route path={path.subgroups} element={<SubGroupPage />}></Route>
+                <Route path={path.subgroups} element={<SubGroupPage />} />
+                <Route path={path.replacements} element={<ReplacementsPage />} />
               </Route>
             </>
           ) : auth && userRole === 'teacher' ? (

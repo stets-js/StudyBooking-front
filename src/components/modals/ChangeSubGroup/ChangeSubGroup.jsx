@@ -2,14 +2,11 @@ import Modal from '../../Modal/Modal';
 import React, {useState, useEffect} from 'react';
 
 import Form from '../../Form/Form';
-import {getSlotDetails, getSubGroups} from '../../../helpers/subgroup/subgroup';
+import {getSlotDetails} from '../../../helpers/subgroup/subgroup';
 import FormInput from '../../FormInput/FormInput';
-import {format} from 'date-fns';
+
 const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
   const [element, setElement] = useState({});
-  const [newName, setNewName] = useState('');
-  const [newStart, setNewStart] = useState();
-  const [newEnd, setNewEnd] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {

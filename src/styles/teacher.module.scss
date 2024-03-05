@@ -50,7 +50,14 @@
     }
 }
 .available_cell:first-child{
-    width: 25% !important;
+    width: 35% !important;
+}
+.available_cell:not(:first-child){
+    width: 40%;
+}
+
+.replacement_cell:first{
+    width: 20%;
 }
 .subgroup_cell:last-child{
     width: 25% !important;

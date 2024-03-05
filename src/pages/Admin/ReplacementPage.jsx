@@ -1,35 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {useConfirm} from 'material-ui-confirm';
 import Select from 'react-select';
-import {success} from '@pnotify/core';
 
-import {deleteSubGroup, getSubGroups} from '../../helpers/subgroup/subgroup';
 import styles from '../../styles/teacher.module.scss';
+import {deleteReplacement, getReplacements} from '../../helpers/replacement/replacement';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
-import ChangeSubGroup from '../../components/modals/ChangeSubGroup/ChangeSubGroup';
+import {useConfirm} from 'material-ui-confirm';
+import {success} from '@pnotify/core';
 
-export default function SubGroupPage() {
-  const [subGroups, setSubGroups] = useState([]);
+export default function ReplacementsPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const confirm = useConfirm();
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [replacements, setReplacements] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [loader, setLoader] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
-  const [render, setRender] = useState(false);
-  const fetchData = async (query = '') => {
-    try {
-      setLoader(true);
-      const data = await getSubGroups(query);
-      setLoader(false);
-      setSubGroups(data.data);
-    } catch (e) {
-      // error('Something went wrong');
-      console.log(e);
-    }
-  };
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
   const fetchCourses = async () => {
     try {
       const courses = await getCourses();
@@ -43,40 +27,36 @@ export default function SubGroupPage() {
       console.log(e);
     }
   };
+  const fetchData = async (options = '') => {
+    try {
+      const res = await getReplacements(options);
+      setReplacements(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const confirm = useConfirm();
   useEffect(() => {
-    //first time render
-    fetchData('');
+    fetchData();
     fetchCourses();
   }, []);
-
-  useEffect(() => {
-    if (render) {
-      fetchData('');
-      setRender(false);
-    }
-  }, [render]);
-  useEffect(() => {
-    fetchData(selectedCourse !== null ? `CourseId=${selectedCourse}` : '');
-  }, [selectedCourse]);
-
-  const handleDelete = async (id, name) => {
+  const handleDelete = async id => {
     confirm({
-      description: 'Are you sure you want to delete ' + name,
+      description: 'Are you sure you want to delete this replacement?',
       confirmationText: 'delete',
       confirmationButtonProps: {autoFocus: true}
     })
       .then(async () => {
-        await deleteSubGroup(id);
-        setSubGroups(prevSubGroups => prevSubGroups.filter(subgroup => subgroup.id !== id));
+        await deleteReplacement(id);
+        setReplacements(prev => prev.filter(el => el.id !== id));
         success({delay: 1000, text: 'Deleted successfully!'});
       })
       .catch(e => console.log('no ' + e));
   };
 
-  const filteredSubGroups = subGroups.filter(element =>
-    element.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredReplacements = replacements.filter(element =>
+    element?.SubGroup?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
   return (
     <div>
       <div className={styles.calendar__available}>
@@ -100,7 +80,9 @@ export default function SubGroupPage() {
         <table className={styles.table}>
           <thead className={styles.tableHeader}>
             <tr>
-              <th>Назва</th>
+              <th>Назва Потока</th>
+              <th>Ім'я ментора</th>
+              <th>Графік</th>
               <th>Дія</th>
             </tr>
           </thead>
@@ -113,30 +95,30 @@ export default function SubGroupPage() {
               //     </td>
               //   </tr>
               // ) :
-              filteredSubGroups.length === 0 ? (
+              filteredReplacements.length === 0 ? (
                 <tr>
-                  <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
-                    Ops, can't find this SubGroup...
+                  <td colSpan={4} className={`${styles.cell} ${styles.subgroup_cell}`}>
+                    Ops, can't find Replacement...
                   </td>
                 </tr>
               ) : (
-                filteredSubGroups.map(element => {
+                filteredReplacements.map(element => {
                   return (
                     <tr key={element.id}>
-                      <td className={`${styles.cell} ${styles.subgroup_cell}`}>{element.name}</td>
-                      <td className={`${styles.cell} ${styles.subgroup_cell}`}>
+                      <td className={`${styles.cell} ${styles.available_cell}`}>
+                        {element?.SubGroup?.name}
+                      </td>
+                      <td className={`${styles.cell} ${styles.available_cell}`}>
+                        {element?.SubGroup?.Mentor?.name}
+                      </td>
+                      <td className={`${styles.cell} ${styles.available_cell}`}>
+                        {element?.schedule}
+                      </td>
+                      <td className={`${styles.cell} ${styles.available_cell}`}>
                         <div className={styles.action_wrapper}>
                           <button
-                            className={`${styles.button} ${styles.button__edit}`}
-                            onClick={() => {
-                              setIsOpen(!isOpen);
-                              setSelectedId(element.id);
-                            }}>
-                            Edit
-                          </button>
-                          <button
                             className={`${styles.button} ${styles.button__delete}`}
-                            onClick={() => handleDelete(element.id, element.name)}>
+                            onClick={() => handleDelete(element.id)}>
                             Delete
                           </button>
                         </div>
@@ -148,11 +130,6 @@ export default function SubGroupPage() {
             }
           </tbody>
         </table>
-        <ChangeSubGroup
-          isOpen={isOpen}
-          handleClose={() => setIsOpen(!isOpen)}
-          setRender={setRender}
-          id={selectedId}></ChangeSubGroup>
       </div>
     </div>
   );

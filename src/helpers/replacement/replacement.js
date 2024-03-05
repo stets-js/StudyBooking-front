@@ -34,4 +34,12 @@ const getReplacements = (options = '') => {
       throw error;
     });
 };
-export {createReplacement, getReplacementDetails, getReplacements};
+const deleteReplacement = id => {
+  return axios
+    .delete(`/replacement/${id}`)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+export {deleteReplacement, createReplacement, getReplacementDetails, getReplacements};

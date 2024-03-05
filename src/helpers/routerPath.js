@@ -29,6 +29,7 @@ const path = {
   authorization: 'auth/',
   ik: 'ik/',
   teacher: '/teacher/',
-  subgroups: 'subgroups/'
+  subgroups: 'subgroups/',
+  replacements: 'replacements/'
 };
 export default path;

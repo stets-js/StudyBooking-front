@@ -148,6 +148,7 @@ const SetAppointment = ({
               className={styles.selector}
               defaultValue={teachers[0]}
               options={teachers}
+              required
               key={Math.random() * 100 - 10}
               placeholder="Select teacher"
               onChange={el => setSelectedTeacher(el.value)}
@@ -167,6 +168,7 @@ const SetAppointment = ({
                   type="text"
                   name="link"
                   placeholder="link"
+                  isRequired={true}
                   handler={setLink}
                 />
                 <div className={styles.input__block}>
@@ -231,6 +233,7 @@ const SetAppointment = ({
                   value={selectedSubGroup}
                   options={subGroups}
                   key={Math.random() * 100 - 10}
+                  required
                   placeholder="Select subgroup"
                   onChange={el => setSelectedSubGroup(el)}
                 />
