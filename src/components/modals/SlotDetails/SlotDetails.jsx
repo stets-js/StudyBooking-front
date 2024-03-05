@@ -16,8 +16,6 @@ const SlotDetails = ({
 }) => {
   const [slot, setSlot] = useState(null);
   const [course, setCourse] = useState(null);
-  const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
-  const [selectedSlots, setSelectedSlots] = useState(Array.from({length: 7}, _ => []));
   const [replacementDetails, setReplacementDetails] = useState(null);
   useEffect(() => {
     const fetchSubGroupDetails = async () => {
@@ -87,7 +85,7 @@ const SlotDetails = ({
               title="Призначення:"
               type="text"
               name="course"
-              value={slot?.User?.name}
+              value={slot?.Admin?.name}
               placeholder="Administrator"
               disabled={true}
             />
