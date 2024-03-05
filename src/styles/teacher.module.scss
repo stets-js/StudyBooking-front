@@ -3,6 +3,11 @@
 // #d5e8d4 / #d5e8d4 - group collor
 // #d5e8d4 / #d5e8d4- indiv
 // #d5e8d4 / #d5e8d4 -zamina
+.action_wrapper{
+    display: flex;
+    column-gap: 4px;
+    padding: 2px;
+}
 .selectedCell {
     background-color: #9cc7f5; 
   }
@@ -57,6 +62,9 @@
     border:1px solid black;
     border-radius: 10px;
     padding: 2px;
+}
+.table{
+    background-color: white;
 }
 .tableHeader{
     font-size: 18px;
@@ -200,28 +208,35 @@ justify-content: center;
     width: 60%;
     
 }
-.add_button{
+
+.button{
     font-size: 20px;
-    color:#33A64C ;
-    border:1px solid #33A64C;
-    border-radius: 10px;
-    padding:5px;
-    text-align: center;
-}
-.delete_button{
-    font-size: 20px;
-    color:red ;
-    border:1px solid red;
     border-radius: 10px;
     padding:10px;
     margin:2px;
     text-align: center;
+    width: 80px;
+    &__add{
+        color:#33A64C ;
+        border:1px solid #33A64C;
+        
+    }
+    &__add:disabled{
+        color:#7c7c7c ;
+        border:1px solid #7c7c7c;
+        background-color: white;
+    }
+    &__edit{
+        color: green;
+        border:1px solid green;
+    }
+    &__delete{
+        color:red ;
+        border:1px solid red;
+
 }
-.add_button:disabled{
-    color:#7c7c7c ;
-    border:1px solid #7c7c7c;
-    background-color: white;
 }
+
 .selector{
     width:100%;
     margin-top: 10px;    

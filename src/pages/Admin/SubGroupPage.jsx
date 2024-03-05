@@ -7,6 +7,7 @@ import {deleteSubGroup, getSubGroups} from '../../helpers/subgroup/subgroup';
 import styles from '../../styles/teacher.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
+import ChangeSubGroup from '../../components/modals/ChangeSubGroup/ChangeSubGroup';
 
 export default function SubGroupPage() {
   const [subGroups, setSubGroups] = useState([]);
@@ -15,6 +16,9 @@ export default function SubGroupPage() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courses, setCourses] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [render, setRender] = useState(false);
   const fetchData = async (query = '') => {
     try {
       setLoader(true);
@@ -45,6 +49,12 @@ export default function SubGroupPage() {
     fetchCourses();
   }, []);
 
+  useEffect(() => {
+    if (render) {
+      fetchData('');
+      setRender(false);
+    }
+  }, [render]);
   useEffect(() => {
     fetchData(selectedCourse !== null ? `CourseId=${selectedCourse}` : '');
   }, [selectedCourse]);
@@ -87,7 +97,7 @@ export default function SubGroupPage() {
             onChange={el => setSelectedCourse(el?.value || null)}
             isClearable></Select>
         </div>
-        <table>
+        <table className={styles.table}>
           <thead className={styles.tableHeader}>
             <tr>
               <th>Назва</th>
@@ -115,11 +125,21 @@ export default function SubGroupPage() {
                     <tr key={element.id}>
                       <td className={`${styles.cell} ${styles.subgroup_cell}`}>{element.name}</td>
                       <td className={`${styles.cell} ${styles.subgroup_cell}`}>
-                        <button
-                          className={`${styles.delete_button}`}
-                          onClick={() => handleDelete(element.id, element.name)}>
-                          Delete
-                        </button>
+                        <div className={styles.action_wrapper}>
+                          <button
+                            className={`${styles.button} ${styles.button__edit}`}
+                            onClick={() => {
+                              setIsOpen(!isOpen);
+                              setSelectedId(element.id);
+                            }}>
+                            Edit
+                          </button>
+                          <button
+                            className={`${styles.button} ${styles.button__delete}`}
+                            onClick={() => handleDelete(element.id, element.name)}>
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -128,7 +148,12 @@ export default function SubGroupPage() {
             }
           </tbody>
         </table>
-      </div>{' '}
+        <ChangeSubGroup
+          isOpen={isOpen}
+          handleClose={() => setIsOpen(!isOpen)}
+          setRender={setRender}
+          id={selectedId}></ChangeSubGroup>
+      </div>
     </div>
   );
 }

@@ -52,4 +52,12 @@ const deleteSubGroup = id => {
       throw error;
     });
 };
-export {postSubGroup, getSubGroups, getSlotDetails, deleteSubGroup};
+const updateSubGroup = (id, body) => {
+  return axios
+    .patch(`/subgroups/${id}`, body)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+export {updateSubGroup, postSubGroup, getSubGroups, getSlotDetails, deleteSubGroup};
