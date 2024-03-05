@@ -110,15 +110,16 @@ const Form = ({
               if (jsonData.slots[i].length > 0) {
                 const body = {
                   weekDay: i,
-                  time: jsonData.slots[i],
+                  time: jsonData.slots[i].map(el => el.time),
                   appointmentTypeId: appointmentType.data[0]['id'],
                   userId: userId,
                   startDate: jsonData.startDate,
                   endDate: jsonData.endDate
                 };
+                console.log(JSON.parse(jsonData.isReplacement));
                 body[JSON.parse(jsonData.isReplacement) ? 'replacementId' : 'subgroupId'] =
                   data.data.id;
-
+                console.log(body);
                 await bulkUpdate(body);
               }
             }

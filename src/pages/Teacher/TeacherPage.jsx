@@ -162,19 +162,24 @@ export default function TeacherPage() {
       // Free slots cant be placed
       const prevWeekStart = format(addDays(date, -weekDay - 7), 'yyyy-MM-dd');
       const prevWeekEnd = format(addDays(date, -weekDay - 1), 'yyyy-MM-dd');
-      const res = await createSlotForUser({
-        userId,
-        appointmentTypeId: selectedAppointmentTypeId,
-        weekDay,
-        startDate: format(date, 'yyyy-MM-dd'),
-        time: format(timeSlot, 'HH:mm'),
-        prevWeekStart,
-        prevWeekEnd
-      });
+      try {
+        const res = await createSlotForUser({
+          userId,
+          appointmentTypeId: selectedAppointmentTypeId,
+          weekDay,
+          startDate: format(date, 'yyyy-MM-dd'),
+          time: format(timeSlot, 'HH:mm'),
+          prevWeekStart,
+          prevWeekEnd
+        });
+        dispatch(addNewSlotToWeek(res.data));
+        dispatch(addNewSlot(res.data));
+      } catch (error) {
+        console.log(error);
+      }
       // check if message is 'updated' -> reload table
       // if (res.status === 'success') {
-      dispatch(addNewSlotToWeek(res.data));
-      dispatch(addNewSlot(res.data));
+
       // } else {
       // }
     }
@@ -289,18 +294,27 @@ export default function TeacherPage() {
                         key = `${slot?.SubGroupId ? 1 : 2}${
                           slot?.SubGroupId ? slot.SubGroupId : slot.ReplacementId
                         }${slot.weekDay}`;
+
                         if (appointedTable[key]) {
-                          appointedTable[key].display = false;
-                          return <></>;
+                          if (appointedTable[key]) appointedTable[key].forOneAppointment -= 1;
+                          if (appointedTable[key] && appointedTable[key].forOneAppointment > 0)
+                            return <></>;
+                          else {
+                            appointedTable[key].display = true;
+                            appointedTable[key].forOneAppointment = appointedTable[key].rowLength;
+                          }
                         } else
                           appointedTable[key] = {
                             display: true,
                             rowLength: slot?.AppointmentType?.name.includes('group') ? 3 : 2,
+                            forOneAppointment: slot?.AppointmentType?.name.includes('group')
+                              ? 3
+                              : 2,
                             id: key
                           };
                       }
                       // if (slot && slot.rowSpan === 0) return <></>;
-
+                      if (key) console.log(appointedTable);
                       return (
                         <td
                           key={dateIndex}
@@ -344,6 +358,7 @@ export default function TeacherPage() {
                                   setOpenSlotDetails(!openSlotDetails);
                                   setSelectedSlotDetailsId(slot.SubGroupId);
                                   setAppointmentDetails(slot.AppointmentType.name);
+                                  console.log(slot);
                                   if (slot.ReplacementId) {
                                     setReplacement(slot.ReplacementId);
                                     setIsReplacement(true);

@@ -61,18 +61,18 @@ const SetAppointment = ({
         if (teachersIds.length > 0) {
           fetchTeachers();
         }
+        console.log(selectedSlots);
 
         for (let i = 0; i <= 6; i++) {
           let day = '';
           if (selectedSlots[i].length > 0) {
             console.log(i);
-
             for (let j = 0; j < selectedSlots[i].length; j += appointmentLength) {
               // loop for case of several appointments on one day
               day += `${weekNames[i]}: `;
-              const startTime = selectedSlots[i][j];
+              const startTime = selectedSlots[i][j].time;
               const endTime = addMinutes(
-                new Date(`1970 ${selectedSlots[i][j + appointmentLength - 1]}`),
+                new Date(`1970 ${selectedSlots[i][j + appointmentLength - 1].time}`),
                 30
               );
               day += startTime + ' - ' + format(endTime, 'HH:mm');

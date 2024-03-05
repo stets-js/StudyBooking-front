@@ -21,7 +21,6 @@ export default function UsersPage() {
   const [selectedClassType, setSelectedClassType] = useState(0);
   const [selectedSlots, setSelectedSlots] = useState(Array.from({length: 7}, _ => []));
   const [selectedSlotsAmount, setSelectedSlotsAmount] = useState(0);
-
   initialStartDate.setHours(startingHour, 0, 0, 0);
 
   const [startDates, setStartDates] = useState(
@@ -97,11 +96,13 @@ export default function UsersPage() {
     const numSlotsToCheck = selectedClassType === 0 ? 3 : 2;
 
     let teachersIdsNew = [];
-
+    console.log('hello');
     for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
       // validating slots
       const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
-      const isAlreadySelected = selectedSlots[weekDay].includes(format(currentTime, 'HH:mm'));
+      const isAlreadySelected = selectedSlots[weekDay].find(
+        el => el?.time === format(currentTime, 'HH:mm')
+      );
       if (isAlreadySelected) {
         return error({delay: 1000, text: 'Slot already selected'});
       }
@@ -122,11 +123,8 @@ export default function UsersPage() {
 
     for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
       const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
-      const slots = slotsData[weekDay]?.[format(currentTime, 'HH:mm')];
       selectedSlots[weekDay].push(
-        slots.map(el => {
-          return el.time;
-        })[0]
+        {time: format(currentTime, 'HH:mm'), rowSpan: slotIndex === 0 ? numSlotsToCheck : 0} // if first td -> show, else dont show
       );
     }
     setSelectedSlotsAmount(selectedSlotsAmount + 1);
@@ -247,16 +245,38 @@ export default function UsersPage() {
                       const timeStr = format(currentTime, 'HH:mm');
 
                       const numPeople = slotsData[weekDay]?.[timeStr]?.length || 0;
-
+                      const element = selectedSlots[weekDay].find(el => el.time === timeStr);
+                      if (element) {
+                        if (element.rowSpan <= 0) {
+                          return <></>;
+                        }
+                      }
                       return (
-                        <td key={dayIndex}>
+                        <td key={dayIndex} rowSpan={element ? element?.rowSpan : 1}>
                           <button
-                            className={`${styles.cell} ${
-                              selectedSlots[weekDay].includes(timeStr) ? styles.selectedCell : ''
-                            }`}
+                            style={
+                              element
+                                ? {
+                                    height: `${
+                                      35 * element.rowSpan + element.rowSpan * element.rowSpan
+                                    }px`
+                                  }
+                                : // slot && slot.rowSpan !== undefined
+                                  // ? {
+                                  //     height: `${35 * slot.rowSpan + 3 * slot.rowSpan}px`
+                                  //   }
+                                  // :
+                                  {}
+                            }
+                            className={`${styles.cell} ${element ? styles.selectedCell : ''}`}
                             disabled={!(numPeople > 0)}
                             onClick={() => handleCellClick(weekDay, timeStr)}>
-                            {format(currentTime, 'HH:mm')} ({numPeople})
+                            {element
+                              ? `${timeStr} - ${format(
+                                  addMinutes(currentTime, 30 * element.rowSpan),
+                                  'HH:mm'
+                                )} (${numPeople})`
+                              : `${timeStr} (${numPeople})`}
                           </button>
                         </td>
                       );
