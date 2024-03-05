@@ -17,6 +17,7 @@ const postSubGroup = (credentials, userId) => {
     data.endDate = new Date(credentials.endDate);
     data.schedule = credentials.schedule;
     data.userId = userId;
+    data.mentorId = userId;
   } catch (error) {}
   console.log(data);
   return axios

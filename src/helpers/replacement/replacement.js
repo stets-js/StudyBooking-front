@@ -5,14 +5,11 @@ axios.create({
 });
 
 const createReplacement = credentials => {
-  console.log({
-    description: credentials.description,
-    SubGroupId: credentials.selectedSubGroup
-  });
   return axios
     .post(`/replacement`, {
       description: credentials.description,
-      SubGroupId: credentials.selectedSubGroup
+      SubGroupId: credentials.selectedSubGroup,
+      schedule: credentials.schedule
     })
     .then(res => res.data)
     .catch(error => {
@@ -28,4 +25,13 @@ const getReplacementDetails = id => {
       throw error;
     });
 };
-export {createReplacement, getReplacementDetails};
+
+const getReplacements = (options = '') => {
+  return axios
+    .get(`/replacement` + (options ? `?${options}` : ''))
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+export {createReplacement, getReplacementDetails, getReplacements};
