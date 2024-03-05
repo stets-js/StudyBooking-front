@@ -27,7 +27,8 @@ const Login = ({isOpen, handleClose}) => {
       setEmail('');
       setPassword('');
     } catch (err) {
-      error(err.response.data.message);
+      console.log(err);
+      error(err.message);
     }
   };
 
