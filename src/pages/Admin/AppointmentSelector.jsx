@@ -28,6 +28,9 @@ export default function UsersPage() {
   );
   const [startDate, setStartDate] = useState(format(startDates[0], 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState(null);
+
+  const [renderTeachers, setRenderTeachers] = useState(false);
+
   useEffect(() => {
     getCourses().then(data => {
       setCourses(
@@ -50,8 +53,8 @@ export default function UsersPage() {
     if (selectedCourse) {
       fetchUsersIds();
     }
-  }, [selectedCourse, selectedClassType]);
-
+    if (renderTeachers) setRenderTeachers(false);
+  }, [selectedCourse, selectedClassType, renderTeachers]);
   useEffect(() => {
     const fetchData = async () => {
       const slotsResponse = await getSlotsForUsers({userIds: teachersIds, startDate, endDate});
@@ -92,11 +95,15 @@ export default function UsersPage() {
   // const handleNextWeek = () => {
   //   setStartDates(startDates.map(startDate => addDays(startDate, 7)));
   // };
+  const clearTable = () => {
+    setSelectedSlots(Array.from({length: 7}, _ => []));
+    setRenderTeachers(true);
+  };
+
   const handleCellClick = async (weekDay, timeStr) => {
     const numSlotsToCheck = selectedClassType === 0 ? 3 : 2;
 
     let teachersIdsNew = [];
-    console.log('hello');
     for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
       // validating slots
       const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
@@ -130,7 +137,6 @@ export default function UsersPage() {
     setSelectedSlotsAmount(selectedSlotsAmount + 1);
     setTeachersIds(teachersIdsNew);
   };
-
   return (
     <div>
       {/* <div className={styles.dates_wrapper}>
@@ -211,9 +217,16 @@ export default function UsersPage() {
 
         <button
           onClick={handleClose}
-          className={`${styles.add_button} ${styles.chooser_selector__item}`}
+          className={`${styles.button} ${styles.button__add} ${styles.chooser_selector__item}`}
           disabled={selectedSlotsAmount === 0}>
           Додати{' '}
+        </button>
+        <button
+          onClick={() => {
+            clearTable();
+          }}
+          className={`${styles.button} ${styles.button__delete} ${styles.chooser_selector__item}`}>
+          Очистити
         </button>
       </div>
       <div className={styles.scroller}>
@@ -300,10 +313,7 @@ export default function UsersPage() {
         isReplacement={isReplacement}
         course={courses.filter(el => el.value === selectedCourse)[0]}
         onSubmit={() => {
-          setTeachersIds([]);
-          setSelectedSlotsAmount(0);
-
-          setSelectedSlots(Array.from({length: 7}, _ => []));
+          clearTable();
         }}
       />
     </div>
