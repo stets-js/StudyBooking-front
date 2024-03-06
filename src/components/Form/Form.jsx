@@ -14,7 +14,7 @@ import styles from './Form.module.scss';
 import {postSubGroup, updateSubGroup} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
-import {createReplacement} from '../../helpers/replacement/replacement';
+import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
 
 defaults.delay = 1000;
 
@@ -93,6 +93,16 @@ const Form = ({
       }
       if (type.type === 'subGroup') {
         return await updateSubGroup(id, jsonData)
+          .then(() => {
+            success({text: status.successMessage || 'Success', delay: 1000});
+            return !errorsuccessMessage && onSubmit && onSubmit();
+          })
+          .catch(e => {
+            return error(`${status.failMessage}, ${e.message}`);
+          });
+      }
+      if (type.type === 'replacement') {
+        return await updateReplacement(jsonData, id)
           .then(() => {
             success({text: status.successMessage || 'Success', delay: 1000});
             return !errorsuccessMessage && onSubmit && onSubmit();

@@ -44,4 +44,18 @@ const deleteReplacement = id => {
       throw error;
     });
 };
-export {deleteReplacement, createReplacement, getReplacementDetails, getReplacements};
+const updateReplacement = (credentials, id) => {
+  return axios
+    .patch(`/replacement/${id}`, credentials)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+export {
+  deleteReplacement,
+  updateReplacement,
+  createReplacement,
+  getReplacementDetails,
+  getReplacements
+};

@@ -7,13 +7,16 @@ import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
 import {useConfirm} from 'material-ui-confirm';
 import {success} from '@pnotify/core';
+import ChangeReplacement from '../../components/modals/ChangeReplacement/ChangeReplacement';
 
 export default function ReplacementsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [replacements, setReplacements] = useState([]);
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [render, setRender] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const fetchCourses = async () => {
     try {
       const courses = await getCourses();
@@ -36,10 +39,18 @@ export default function ReplacementsPage() {
     }
   };
   const confirm = useConfirm();
+
   useEffect(() => {
     fetchData();
     fetchCourses();
   }, []);
+
+  useEffect(() => {
+    if (render) {
+      fetchData();
+      setRender(false);
+    }
+  }, [render]);
   const handleDelete = async id => {
     confirm({
       description: 'Are you sure you want to delete this replacement?',
@@ -117,6 +128,14 @@ export default function ReplacementsPage() {
                       <td className={`${styles.cell} ${styles.available_cell}`}>
                         <div className={styles.action_wrapper}>
                           <button
+                            className={`${styles.button} ${styles.button__edit}`}
+                            onClick={() => {
+                              setSelectedId(element.id);
+                              setIsOpen(!isOpen);
+                            }}>
+                            Edit
+                          </button>
+                          <button
                             className={`${styles.button} ${styles.button__delete}`}
                             onClick={() => handleDelete(element.id)}>
                             Delete
@@ -131,6 +150,11 @@ export default function ReplacementsPage() {
           </tbody>
         </table>
       </div>
+      <ChangeReplacement
+        isOpen={isOpen}
+        handleClose={() => setIsOpen(!isOpen)}
+        setRender={setRender}
+        id={selectedId}></ChangeReplacement>
     </div>
   );
 }
