@@ -9,6 +9,14 @@ const getSlotsForUser = ({userId, startDate, endDate}) => {
       throw error(e.response.data.message);
     });
 };
+const getSlots = (options = '') => {
+  return axios
+    .get(`/slots${options ? `?type=${options}` : ''}`)
+    .then(res => res.data)
+    .catch(e => {
+      throw error(e.response.data.message);
+    });
+};
 const getSlotsForUsers = ({userIds, startDate, endDate}) => {
   return axios
     .post(`/slots${startDate ? `?startDate=${startDate}&endDate=${endDate}` : ''}`, {userIds})
@@ -59,4 +67,11 @@ const deleteSlotForUser = (userId, slotId) => {
     });
 };
 
-export {getSlotsForUser, createSlotForUser, deleteSlotForUser, updateSlot, getSlotsForUsers};
+export {
+  getSlotsForUser,
+  createSlotForUser,
+  deleteSlotForUser,
+  updateSlot,
+  getSlotsForUsers,
+  getSlots
+};

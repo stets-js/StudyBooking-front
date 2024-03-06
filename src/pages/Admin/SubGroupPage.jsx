@@ -2,12 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {useConfirm} from 'material-ui-confirm';
 import Select from 'react-select';
 import {success} from '@pnotify/core';
+import Switch from 'react-switch';
+import {addDays, addMinutes, format, getDay} from 'date-fns';
+import ukLocale from 'date-fns/locale/uk';
 
 import {deleteSubGroup, getSubGroups} from '../../helpers/subgroup/subgroup';
 import styles from '../../styles/teacher.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
 import ChangeSubGroup from '../../components/modals/ChangeSubGroup/ChangeSubGroup';
+import {getSlots} from '../../helpers/teacher/slots';
 
 export default function SubGroupPage() {
   const [subGroups, setSubGroups] = useState([]);
@@ -19,6 +23,10 @@ export default function SubGroupPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [render, setRender] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [selectedWeekDay, setSelectedWeekDay] = useState(0);
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const fetchData = async (query = '') => {
     try {
       setLoader(true);
@@ -48,13 +56,52 @@ export default function SubGroupPage() {
     fetchData('');
     fetchCourses();
   }, []);
+  const generateTimeSlots = () => {
+    const startTime = new Date().setHours(9, 0, 0, 0);
+    const endTime = new Date().setHours(20, 30, 0, 0);
+
+    const timeSlots = [];
+    let currentTime = startTime;
+
+    while (currentTime <= endTime) {
+      timeSlots.push({
+        time: format(currentTime, 'HH:mm'),
+        names: []
+      });
+      currentTime = addMinutes(currentTime, 30);
+    }
+
+    return timeSlots;
+  };
+  const [scheduleTable, setScheduleTable] = useState(generateTimeSlots());
+  const fetchSubGroupsByTime = async () => {
+    setScheduleTable(generateTimeSlots());
+    const data = await getSlots(
+      `type&weekDay=${selectedWeekDay}&endSubGroup=${format(currentDate, 'yyyy-MM-dd')}`
+    );
+    console.log(data);
+    setScheduleTable(prevSchedule => {
+      const newSchedule = [...prevSchedule];
+      data.data.forEach(el => {
+        const timeIndex = newSchedule.findIndex(slot => slot.time === el.time);
+        if (timeIndex !== -1) {
+          newSchedule[timeIndex].names.push(el.SubGroup.name);
+        }
+      });
+      return newSchedule;
+    });
+  };
+
+  useEffect(() => {
+    if (isChecked) fetchSubGroupsByTime();
+  }, [isChecked, selectedWeekDay]);
 
   useEffect(() => {
     if (render) {
       fetchData('');
       setRender(false);
     }
-  }, [render]);
+  }, [render, isChecked]);
   useEffect(() => {
     fetchData(selectedCourse !== null ? `CourseId=${selectedCourse}` : '');
   }, [selectedCourse]);
@@ -77,6 +124,16 @@ export default function SubGroupPage() {
     element.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleDateChange = daysToAdd => {
+    const newDate = addDays(currentDate, daysToAdd);
+    setCurrentDate(newDate);
+    // Reset selectedWeekDay to null when changing the date
+    setSelectedWeekDay(getDay(newDate) - 1 < 0 ? 6 : getDay(newDate) - 1);
+  };
+  const formatDate = date => {
+    return format(date, 'iiii, dd.MM', {locale: ukLocale});
+  };
+
   return (
     <div>
       <div className={styles.calendar__available}>
@@ -97,57 +154,95 @@ export default function SubGroupPage() {
             onChange={el => setSelectedCourse(el?.value || null)}
             isClearable></Select>
         </div>
-        <table className={styles.table}>
-          <thead className={styles.tableHeader}>
-            <tr>
-              <th>Назва</th>
-              <th>Дія</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              // loader ? (
-              //   <tr>
-              //     <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
-              //       Loading...
-              //     </td>
-              //   </tr>
-              // ) :
-              filteredSubGroups.length === 0 ? (
+        <div>
+          <label>
+            <span className={styles.date_selector}>Today</span>
+          </label>
+          <Switch
+            onChange={() => {
+              setIsChecked(!isChecked);
+            }}
+            checked={isChecked}
+          />
+        </div>
+        {!isChecked ? (
+          <>
+            <table className={styles.table}>
+              <thead className={styles.tableHeader}>
                 <tr>
-                  <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
-                    Ops, can't find this SubGroup...
-                  </td>
+                  <th>Назва</th>
+                  <th>Дія</th>
                 </tr>
-              ) : (
-                filteredSubGroups.map(element => {
-                  return (
-                    <tr key={element.id}>
-                      <td className={`${styles.cell} ${styles.subgroup_cell}`}>{element.name}</td>
-                      <td className={`${styles.cell} ${styles.subgroup_cell}`}>
-                        <div className={styles.action_wrapper}>
-                          <button
-                            className={`${styles.button} ${styles.button__edit}`}
-                            onClick={() => {
-                              setIsOpen(!isOpen);
-                              setSelectedId(element.id);
-                            }}>
-                            Edit
-                          </button>
-                          <button
-                            className={`${styles.button} ${styles.button__delete}`}
-                            onClick={() => handleDelete(element.id, element.name)}>
-                            Delete
-                          </button>
-                        </div>
+              </thead>
+              <tbody>
+                {
+                  // loader ? (
+                  //   <tr>
+                  //     <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
+                  //       Loading...
+                  //     </td>
+                  //   </tr>
+                  // ) :
+                  filteredSubGroups.length === 0 ? (
+                    <tr>
+                      <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
+                        Ops, can't find this SubGroup...
                       </td>
                     </tr>
-                  );
-                })
-              )
-            }
-          </tbody>
-        </table>
+                  ) : (
+                    filteredSubGroups.map(element => {
+                      return (
+                        <tr key={element.id}>
+                          <td className={`${styles.cell} ${styles.subgroup_cell}`}>
+                            {element.name}
+                          </td>
+                          <td className={`${styles.cell} ${styles.subgroup_cell}`}>
+                            <div className={styles.action_wrapper}>
+                              <button
+                                className={`${styles.button} ${styles.button__edit}`}
+                                onClick={() => {
+                                  setIsOpen(!isOpen);
+                                  setSelectedId(element.id);
+                                }}>
+                                Edit
+                              </button>
+                              <button
+                                className={`${styles.button} ${styles.button__delete}`}
+                                onClick={() => handleDelete(element.id, element.name)}>
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )
+                }
+              </tbody>
+            </table>
+          </>
+        ) : (
+          <>
+            <div className={styles.date_selector}>
+              <button onClick={() => handleDateChange(-1)}>{'<<'}</button>
+              <span>{formatDate(currentDate)}</span>
+              <button onClick={() => handleDateChange(1)}>{'>>'}</button>
+            </div>
+            <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
+              <tr className={styles.tableHeader}>
+                <th>Час</th>
+                <th>Потоки</th>
+              </tr>
+              {scheduleTable.map(({time, names}) => (
+                <tr key={time}>
+                  <td className={`${styles.cell} ${styles.available_cell}`}>{time}</td>
+                  <td className={`${styles.cell} ${styles.available_cell}`}>{names.join(', ')}</td>
+                </tr>
+              ))}
+            </table>
+          </>
+        )}
+
         <ChangeSubGroup
           isOpen={isOpen}
           handleClose={() => setIsOpen(!isOpen)}

@@ -191,7 +191,6 @@ export default function UsersPage() {
           </label>
           <Switch
             onChange={() => {
-              console.log(isReplacement);
               setIsReplacement(!isReplacement);
             }}
             checked={isReplacement}
