@@ -223,7 +223,6 @@ const Form = ({
         });
       }
       if (type.type === 'post') {
-        console.log(data);
         return await requests
           .post(data)
           .catch(e => {
@@ -231,9 +230,10 @@ const Form = ({
           })
           .then(() => {
             success(status.successMessage);
-            SetNeedToRender(true);
+            if (SetNeedToRender) SetNeedToRender(true);
             return !errorsuccessMessage && onSubmit && onSubmit();
-          });
+          })
+          .catch(e => {});
       }
 
       await requests[type.type](data, requests.additional)
@@ -246,7 +246,7 @@ const Form = ({
         });
     } catch (e) {
       setError(!errorsuccessMessage);
-      error(`${e.response.data.message ? e.response.data.message : e.message}`);
+      error(`${e?.response?.data?.message ? e?.response?.data?.message : e?.message}`);
       console.error(e);
     }
   };
