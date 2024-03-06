@@ -3,7 +3,7 @@ import FormInput from '../../FormInput/FormInput';
 import React, {useEffect, useState} from 'react';
 import styles from './slotDetails.module.scss';
 import {getSlotDetails} from '../../../helpers/subgroup/subgroup';
-import {addMinutes, format} from 'date-fns';
+import {format} from 'date-fns';
 import {getCourseById} from '../../../helpers/course/course';
 import {getReplacementDetails} from '../../../helpers/replacement/replacement';
 const SlotDetails = ({
@@ -41,13 +41,15 @@ const SlotDetails = ({
   }, [subGroupId, replacementId]);
   useEffect(() => {
     const fetchCourse = async () => {
-      const courseData = await getCourseById(
-        !isReplacement ? slot.CourseId : replacementDetails?.SubGroup?.CourseId
-      );
-      setCourse(courseData.data);
+      try {
+        const courseData = await getCourseById(
+          !isReplacement ? slot?.CourseId : replacementDetails?.SubGroup?.CourseId
+        );
+        setCourse(courseData.data);
+      } catch (error) {}
     };
     if ((!isReplacement && slot?.CourseId) || replacementDetails?.SubGroup?.CourseId) fetchCourse();
-  }, [slot]);
+  }, [slot, isReplacement]);
   return (
     <>
       {isOpen && (slot || replacementDetails) && (
@@ -85,7 +87,7 @@ const SlotDetails = ({
               title="Призначення:"
               type="text"
               name="course"
-              value={slot?.Admin?.name}
+              value={slot?.Admin?.name || replacementDetails?.SubGroup?.Admin?.name}
               placeholder="Administrator"
               disabled={true}
             />
