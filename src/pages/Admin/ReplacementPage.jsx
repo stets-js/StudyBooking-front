@@ -109,7 +109,7 @@ export default function ReplacementsPage() {
                         {element?.SubGroup?.name}
                       </td>
                       <td className={`${styles.cell} ${styles.available_cell}`}>
-                        {element?.SubGroup?.Mentor?.name}
+                        {element?.Mentor?.name}
                       </td>
                       <td className={`${styles.cell} ${styles.available_cell}`}>
                         {element?.schedule}
