@@ -26,12 +26,23 @@
 }
 .filter_wrapper{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr auto;
     margin-bottom: 20px;
+    column-gap: 10px;
     align-items: flex-end;
 }
 .grid_item{
     width:100%;
+}
+.one_day_wrapper{
+    display: grid;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    :has(div){
+        display: flex;
+        margin-left: 13%;
+    }
 }
 .subgroup_selector{
    

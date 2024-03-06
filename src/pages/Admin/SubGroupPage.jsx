@@ -79,7 +79,6 @@ export default function SubGroupPage() {
     const data = await getSlots(
       `type&weekDay=${selectedWeekDay}&endSubGroup=${format(currentDate, 'yyyy-MM-dd')}`
     );
-    console.log(data);
     setScheduleTable(prevSchedule => {
       const newSchedule = [...prevSchedule];
       data.data.forEach(el => {
@@ -153,18 +152,19 @@ export default function SubGroupPage() {
             placeholder={'Select course'}
             onChange={el => setSelectedCourse(el?.value || null)}
             isClearable></Select>
+          <div className={styles.one_day_wrapper}>
+            <label>
+              <span className={styles.date_selector}>One day</span>
+            </label>
+            <Switch
+              onChange={() => {
+                setIsChecked(!isChecked);
+              }}
+              checked={isChecked}
+            />
+          </div>
         </div>
-        <div>
-          <label>
-            <span className={styles.date_selector}>Today</span>
-          </label>
-          <Switch
-            onChange={() => {
-              setIsChecked(!isChecked);
-            }}
-            checked={isChecked}
-          />
-        </div>
+
         {!isChecked ? (
           <>
             <table className={styles.table}>
