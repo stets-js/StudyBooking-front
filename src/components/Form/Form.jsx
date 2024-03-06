@@ -109,7 +109,7 @@ const Form = ({
         }_${Number(jsonData.appointmentType) === 0 ? 'group' : 'private'}`;
         const appointmentType = await getAppointmentTypes(searchQuery);
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
-          ? createReplacement(jsonData)
+          ? createReplacement(jsonData, userId)
           : postSubGroup(jsonData, userId)
         )
           .then(async data => {

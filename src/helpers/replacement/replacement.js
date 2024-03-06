@@ -4,12 +4,14 @@ axios.create({
   withCredentials: true
 });
 
-const createReplacement = credentials => {
+const createReplacement = (credentials, userId) => {
+  console.log(userId, credentials);
   return axios
     .post(`/replacement`, {
       description: credentials.description,
       SubGroupId: credentials.selectedSubGroup,
-      schedule: credentials.schedule
+      schedule: credentials.schedule,
+      mentorId: userId
     })
     .then(res => res.data)
     .catch(error => {

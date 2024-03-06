@@ -6,7 +6,7 @@ import Select from 'react-select';
 
 import Form from '../../Form/Form';
 import {getUsers} from '../../../helpers/user/user';
-import {addMinutes, addMonths, format} from 'date-fns';
+import {addMinutes, format} from 'date-fns';
 import {useSelector} from 'react-redux';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 const SetAppointment = ({
@@ -16,7 +16,6 @@ const SetAppointment = ({
   teachersIds,
   course,
   appointmentType,
-  setSelectedCourse,
   startDate,
   endDate,
   isReplacement,
@@ -61,7 +60,6 @@ const SetAppointment = ({
         if (teachersIds.length > 0) {
           fetchTeachers();
         }
-        console.log(selectedSlots);
 
         for (let i = 0; i <= 6; i++) {
           let day = '';
@@ -105,7 +103,7 @@ const SetAppointment = ({
     setSchedule([]);
     handleClose();
   };
-
+  console.log(selectedTeacher);
   const adminId = useSelector(state => state.auth.user.id) || 0;
   return (
     <>
@@ -146,7 +144,7 @@ const SetAppointment = ({
             <Select
               name="teacher"
               className={styles.selector}
-              defaultValue={teachers[0]}
+              value={teachers.filter(el => el.value === selectedTeacher)}
               options={teachers}
               required
               key={Math.random() * 100 - 10}
