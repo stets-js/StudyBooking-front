@@ -1,24 +1,59 @@
 import Modal from '../../Modal/Modal';
 import React, {useState, useEffect} from 'react';
+import Select from 'react-select';
 
+import styles from '../../../styles/teacher.module.scss';
 import Form from '../../Form/Form';
 import {getSlotDetails} from '../../../helpers/subgroup/subgroup';
 import FormInput from '../../FormInput/FormInput';
+import {getUsersForSubGroupReplacements} from '../../../helpers/user/user';
 
 const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
+  console.log(id);
   const [element, setElement] = useState({});
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log(id);
-        const data = await getSlotDetails(id);
-        setElement(data.data);
-      } catch (error) {
-        console.log(error);
+  const [mentorsForReplacements, setMentorsForReplacements] = useState([]);
+  const [selectedMentor, setSelectedMentor] = useState({});
+  const fetchUsersForReplacemenmt = async () => {
+    try {
+      console.log(element.id, element.CourseId);
+      if (element.id && element.CourseId) {
+        const users = await getUsersForSubGroupReplacements(element.id, element.CourseId);
+        setMentorsForReplacements(
+          users.data.map(el => {
+            return {value: el.id, label: el.name};
+          })
+        );
+        console.log(mentorsForReplacements);
+        console.log(mentorsForReplacements.find(el => el.value === element.id));
+        setSelectedMentor(mentorsForReplacements.find(el => el.value === element.id));
+        console.log(selectedMentor);
+      } else {
+        setMentorsForReplacements([]);
       }
-    };
-    if (id) fetchData();
+    } catch (error) {}
+  };
+  const fetchData = async () => {
+    try {
+      console.log(id);
+      const data = await getSlotDetails(id);
+      setElement(data.data);
+      console.log(id, element);
+      // fetchUsersForReplacemenmt();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (id && isOpen) {
+      fetchData();
+    }
   }, [id]);
+  useEffect(() => {
+    if (element.id) {
+      fetchUsersForReplacemenmt();
+    }
+  }, [element.id]);
+  console.log(id, element.id);
   return (
     <>
       {isOpen && (
@@ -68,6 +103,16 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
                   link: e
                 }))
               }></FormInput>
+            <br />
+            <label htmlFor="mentors" className={styles.input__label}>
+              Замінити викладача
+            </label>
+            <Select
+              name="mentors"
+              className={styles.selector}
+              options={mentorsForReplacements}
+              value={selectedMentor}
+              onChange={e => setSelectedMentor(e)}></Select>
           </Form>
         </Modal>
       )}

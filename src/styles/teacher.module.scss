@@ -8,6 +8,13 @@
     column-gap: 4px;
     padding: 2px;
 }
+.input__label {
+    font-family: $poppins;
+    font-size: 20px;
+    width: 45%;
+    margin-bottom: 10px;
+    display: flex;
+  }
 .selectedCell {
     background-color: #9cc7f5; 
   }

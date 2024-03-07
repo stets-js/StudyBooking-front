@@ -81,9 +81,9 @@ const deleteUser = id => {
     });
 };
 
-const deleteManager = id => {
+const getUsersForSubGroupReplacements = (subGroupId, courseId) => {
   return axios
-    .delete(`/remove_manager/${id}`)
+    .get(`/users/${subGroupId}/mentorsForReplacement?courseId=${courseId}`)
     .then(res => res.data)
     .catch(error => {
       throw error;
@@ -99,6 +99,6 @@ export {
   getUserById,
   getUserByName,
   getUsers,
-  deleteManager,
+  getUsersForSubGroupReplacements,
   getFreeUsers
 };

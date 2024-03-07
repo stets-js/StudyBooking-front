@@ -103,7 +103,6 @@ const SetAppointment = ({
     setSchedule([]);
     handleClose();
   };
-  console.log(selectedTeacher);
   const adminId = useSelector(state => state.auth.user.id) || 0;
   return (
     <>
