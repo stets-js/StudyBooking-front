@@ -40,8 +40,7 @@ const ChangeManagerCourses = ({
 
   const handleCheckboxChange = async (courseId, id) => {
     if (!forFilters) {
-      console.log(id);
-      if (teacherCourses.some(el => el.id === id)) {
+      if (teacherCourses.some(el => el.id === courseId)) {
         await deleteTeacherCourse(id, courseId);
         dispatch(setTeacherCourses(teacherCourses.filter(el => el.id !== courseId)));
       } else {
