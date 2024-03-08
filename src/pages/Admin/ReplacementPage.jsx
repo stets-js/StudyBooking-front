@@ -83,11 +83,12 @@ export default function ReplacementsPage() {
               title={'Search by name'}
               placeholder="Name..."
               value={searchQuery}
+              classname={'green'}
               handler={setSearchQuery}
             />
           </div>
           <Select
-            className={`${styles.selector} ${styles.subgroup_selector}`}
+            className={`${styles.selector} ${styles.selector__filtering} ${styles.subgroup_selector}`}
             options={courses}
             placeholder={'Select course'}
             onChange={el => setSelectedCourse(el?.value || null)}

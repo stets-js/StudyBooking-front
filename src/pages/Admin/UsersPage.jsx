@@ -244,12 +244,13 @@ export default function UsersPage() {
                     <FormInput
                       type={'text'}
                       placeholder={`Name`}
+                      classname={'green'}
                       value={filterName}
                       handler={handleFilterNameChange}></FormInput>
                     <FormInput
                       value={'Courses'}
                       type={'button'}
-                      classname={styles.courses_filter}
+                      classname={'green'}
                       handler={() => {
                         setCoursesModal(!coursesModal);
                       }}

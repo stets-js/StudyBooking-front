@@ -156,7 +156,7 @@ export default function UsersPage() {
             options={courses}
             placeholder="Select course"
             required
-            className={styles.selector}
+            className={`${styles.selector} ${styles.selector__filtering}`}
             onChange={choice => {
               setSelectedSlots(Array.from({length: 7}, _ => []));
               setTeachersIds([]);
@@ -167,7 +167,7 @@ export default function UsersPage() {
         <div className={styles.chooser_selector__item}>
           <Select
             key={Math.random() * 1000 - 10}
-            className={styles.selector}
+            className={`${styles.selector} ${styles.selector__filtering}`}
             placeholder="Select type"
             defaultValue={[
               {label: 'Group', value: 0},
@@ -203,6 +203,7 @@ export default function UsersPage() {
           <FormInput
             type={'date'}
             title={'Start'}
+            classname={'green'}
             value={startDate}
             defaultValue={isReplacement ? startDate : null}
             // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
@@ -213,6 +214,7 @@ export default function UsersPage() {
             type={'date'}
             title={'End'}
             value={endDate}
+            classname={'green'}
             pattern="\d{2}.\d{2}.\d{4}"
             handler={setEndDate}></FormInput>
         </div>

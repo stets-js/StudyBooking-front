@@ -33,6 +33,7 @@
 }
 .filter_wrapper{
     display: grid;
+    background-color: white;
     grid-template-columns: 1fr 1fr auto;
     margin-bottom: 20px;
     column-gap: 10px;
@@ -40,6 +41,9 @@
 }
 .grid_item{
     width:100%;
+}
+.green{
+    background-color: $tableItem-greenHover;
 }
 .one_day_wrapper{
     display: grid;
@@ -105,7 +109,8 @@
 }
 .chooser_selector__item {
     &__date{
-    width:160px;
+    min-width:160px;
+    max-width: 200px;
 }
 }
 .type_selector{
@@ -248,7 +253,7 @@ justify-content: center;
     padding:10px;
     margin:2px;
     text-align: center;
-    width: 80px;
+    width: auto;
     &__add{
         color:#33A64C ;
         border:1px solid #33A64C;
@@ -275,24 +280,29 @@ justify-content: center;
     margin-top: 10px;    
     font-family: $poppins;
     :has(span){
-        height: 45px;
+    height: auto;
     }
     :has(svg){
         color:black
     }
     
     :has(div){
-        margin-left: 5px;
         background-color: $grey;
         font-size: 20px;
+        min-height: 50px;
         font-family: $poppins;
       
     }
+    &__filtering{
+        :has(div){
+        background-color: $tableItem-greenHover;
+    }
+}
+
 }
 .selector [class*="menu"] {
     /* Your styles for the specific div with a class containing 'menu' */
-    width: auto;
-
+    width: inherit;
 }
 .reset_wrapper{
     width: 60%;

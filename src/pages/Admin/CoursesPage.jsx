@@ -32,6 +32,7 @@ const CoursesPage = () => {
         <FormInput
           title={'Сортування за назвою'}
           placeholder={'Назва..'}
+          classname={'green'}
           value={filterName}
           handler={setFilterName}></FormInput>
       </div>
