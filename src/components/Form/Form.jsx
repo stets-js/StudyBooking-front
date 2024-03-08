@@ -113,6 +113,7 @@ const Form = ({
       }
       if (type.type === 'appointment') {
         jsonData.slots = JSON.parse(jsonData.slots);
+        console.log(jsonData.slots, userId);
         // 0 - group, 1 - private
         const searchQuery = `name=${
           JSON.parse(jsonData.isReplacement) ? 'replacement' : 'appointed'
@@ -125,6 +126,7 @@ const Form = ({
           .then(async data => {
             success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
+              console.log(jsonData.slots[i]);
               // week itterating
               if (jsonData.slots[i].length > 0) {
                 const body = {
@@ -135,10 +137,8 @@ const Form = ({
                   startDate: jsonData.startDate,
                   endDate: jsonData.endDate
                 };
-                console.log(JSON.parse(jsonData.isReplacement));
                 body[JSON.parse(jsonData.isReplacement) ? 'replacementId' : 'subgroupId'] =
                   data.data.id;
-                console.log(body);
                 await bulkUpdate(body);
               }
             }

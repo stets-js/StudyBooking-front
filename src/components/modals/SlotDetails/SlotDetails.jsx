@@ -15,7 +15,6 @@ const SlotDetails = ({
   isReplacement
 }) => {
   const [slot, setSlot] = useState(null);
-  const [course, setCourse] = useState(null);
   const [replacementDetails, setReplacementDetails] = useState(null);
   useEffect(() => {
     const fetchSubGroupDetails = async () => {
@@ -39,17 +38,7 @@ const SlotDetails = ({
       if (replacementId) fetchReplacementDetails();
     }
   }, [subGroupId, replacementId]);
-  useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const courseData = await getCourseById(
-          !isReplacement ? slot?.CourseId : replacementDetails?.SubGroup?.CourseId
-        );
-        setCourse(courseData.data);
-      } catch (error) {}
-    };
-    if ((!isReplacement && slot?.CourseId) || replacementDetails?.SubGroup?.CourseId) fetchCourse();
-  }, [slot, isReplacement]);
+
   return (
     <>
       {isOpen && (slot || replacementDetails) && (
@@ -70,7 +59,7 @@ const SlotDetails = ({
               title="Курс:"
               type="text"
               name="course"
-              value={course && course?.name}
+              value={slot ? slot.Course.name : replacementDetails?.SubGroup?.Course.name}
               placeholder="Course"
               disabled={true}
             />
