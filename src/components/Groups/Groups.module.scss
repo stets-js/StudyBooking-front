@@ -17,6 +17,7 @@
   justify-content: center;
   border-bottom: 1px solid $font-black;
   width: 100%;
+  column-gap: 10px;
   align-items: center;
 }
 
@@ -39,7 +40,8 @@
   flex-direction: column;
   height: 100%;
   flex-grow: 1;
-  width: 232px;
+
+  // width: 232px;
 
   &:nth-last-child(1) {
     border-right: 0;
