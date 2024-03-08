@@ -51,6 +51,11 @@ export default function ReplacementsPage() {
       setRender(false);
     }
   }, [render]);
+
+  useEffect(() => {
+    fetchData(selectedCourse ? 'CourseId=' + selectedCourse : '');
+  }, [selectedCourse]);
+
   const handleDelete = async id => {
     confirm({
       description: 'Are you sure you want to delete this replacement?',
