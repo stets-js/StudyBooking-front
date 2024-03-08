@@ -166,8 +166,8 @@ export default function SubGroupPage() {
             <table className={styles.table}>
               <thead className={styles.tableHeader}>
                 <tr>
-                  <th>Name</th>
-                  <th>Action</th>
+                  <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Name</th>
+                  <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -226,8 +226,8 @@ export default function SubGroupPage() {
             </div>
             <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
               <tr className={styles.tableHeader}>
-                <th>Time</th>
-                <th>Subgroups</th>
+                <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Time</th>
+                <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Subgroups</th>
               </tr>
               {scheduleTable.map(({time, names}) => (
                 <tr key={time}>

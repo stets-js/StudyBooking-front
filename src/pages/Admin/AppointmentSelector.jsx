@@ -189,14 +189,17 @@ export default function UsersPage() {
           <label>
             <span className={styles.date_selector}>Replacement</span>
           </label>
-          <Switch
-            onChange={() => {
-              setIsReplacement(!isReplacement);
-            }}
-            checked={isReplacement}
-          />
+          <div className={styles.replacement_wrapper__switch}>
+            <Switch
+              onChange={() => {
+                setIsReplacement(!isReplacement);
+              }}
+              checked={isReplacement}
+            />
+          </div>
         </div>
-        <div className={styles.chooser_selector__item}>
+
+        <div className={styles.chooser_selector__item__date}>
           <FormInput
             type={'date'}
             title={'Start'}
@@ -205,7 +208,7 @@ export default function UsersPage() {
             // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
             handler={setStartDate}></FormInput>
         </div>
-        <div className={styles.chooser_selector__item}>
+        <div className={styles.chooser_selector__item__date}>
           <FormInput
             type={'date'}
             title={'End'}
@@ -213,20 +216,21 @@ export default function UsersPage() {
             pattern="\d{2}.\d{2}.\d{4}"
             handler={setEndDate}></FormInput>
         </div>
-
-        <button
-          onClick={handleClose}
-          className={`${styles.button} ${styles.button__add} ${styles.chooser_selector__item}`}
-          disabled={selectedSlotsAmount === 0}>
-          Create{' '}
-        </button>
-        <button
-          onClick={() => {
-            clearTable();
-          }}
-          className={`${styles.button} ${styles.button__delete} ${styles.chooser_selector__item}`}>
-          Clear
-        </button>
+        <div className={styles.chooser_selector__item}>
+          <button
+            onClick={handleClose}
+            className={`${styles.button} ${styles.button__add}`}
+            disabled={selectedSlotsAmount === 0}>
+            Create{' '}
+          </button>
+          <button
+            onClick={() => {
+              clearTable();
+            }}
+            className={`${styles.button} ${styles.button__delete}`}>
+            Clear
+          </button>
+        </div>
       </div>
       <div className={styles.scroller}>
         <table className={styles.calendar}>

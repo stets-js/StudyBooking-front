@@ -96,10 +96,10 @@ export default function ReplacementsPage() {
         <table className={styles.table}>
           <thead className={styles.tableHeader}>
             <tr>
-              <th>Subgroup</th>
-              <th>Mentor</th>
-              <th>Schedule</th>
-              <th>Action</th>
+              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Subgroup</th>
+              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Mentor</th>
+              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Schedule</th>
+              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Action</th>
             </tr>
           </thead>
           <tbody>

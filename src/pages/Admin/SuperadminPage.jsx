@@ -16,7 +16,7 @@ const SuperAdministrator = () => {
           {text: 'Users', path: path.users},
           {text: 'Courses', path: path.courses},
           {text: 'Appointment', path: path.appointments},
-          {text: 'Availaable mentors', path: path.avaliableTable},
+          {text: 'Available mentors', path: path.avaliableTable},
           {text: 'Subgroups', path: path.subgroups},
           {text: 'Replacements', path: path.replacements}
         ]}

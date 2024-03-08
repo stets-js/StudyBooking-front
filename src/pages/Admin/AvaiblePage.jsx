@@ -90,11 +90,11 @@ export default function AvaliableTable() {
           setSelectedCourse(choice.value);
         }}
       />
-
+      <br />
       <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
         <tr className={styles.tableHeader}>
-          <th>Time</th>
-          <th>Mentors</th>
+          <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Time</th>
+          <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Mentors</th>
         </tr>
         {scheduleTable.map(({time, names}) => (
           <tr key={time}>
