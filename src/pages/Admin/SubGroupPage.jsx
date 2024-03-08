@@ -4,7 +4,6 @@ import Select from 'react-select';
 import {success} from '@pnotify/core';
 import Switch from 'react-switch';
 import {addDays, addMinutes, format, getDay} from 'date-fns';
-import ukLocale from 'date-fns/locale/uk';
 
 import {deleteSubGroup, getSubGroups} from '../../helpers/subgroup/subgroup';
 import styles from '../../styles/teacher.module.scss';
@@ -19,7 +18,6 @@ export default function SubGroupPage() {
   const confirm = useConfirm();
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courses, setCourses] = useState([]);
-  const [loader, setLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [render, setRender] = useState(false);
@@ -29,9 +27,7 @@ export default function SubGroupPage() {
 
   const fetchData = async (query = '') => {
     try {
-      setLoader(true);
       const data = await getSubGroups(query);
-      setLoader(false);
       setSubGroups(data.data);
     } catch (e) {
       // error('Something went wrong');
@@ -130,7 +126,7 @@ export default function SubGroupPage() {
     setSelectedWeekDay(getDay(newDate) - 1 < 0 ? 6 : getDay(newDate) - 1);
   };
   const formatDate = date => {
-    return format(date, 'iiii, dd.MM', {locale: ukLocale});
+    return format(date, 'iiii, dd.MM');
   };
 
   return (
@@ -170,8 +166,8 @@ export default function SubGroupPage() {
             <table className={styles.table}>
               <thead className={styles.tableHeader}>
                 <tr>
-                  <th>Назва</th>
-                  <th>Дія</th>
+                  <th>Name</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -230,8 +226,8 @@ export default function SubGroupPage() {
             </div>
             <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
               <tr className={styles.tableHeader}>
-                <th>Час</th>
-                <th>Потоки</th>
+                <th>Time</th>
+                <th>Subgroups</th>
               </tr>
               {scheduleTable.map(({time, names}) => (
                 <tr key={time}>

@@ -152,8 +152,7 @@ export default function UsersPage() {
           <div className={styles.wrapper} key={'index0'}>
             <React.Fragment key={1}>
               <div key={'index'}>
-                <p className={styles.mini_title}>Супер адміністратор</p>
-
+                <p className={styles.mini_title}>Super admin </p>
                 <ul className={styles.main_wrapper}>
                   {(superAdmins || []).map(item => {
                     return (
@@ -192,7 +191,7 @@ export default function UsersPage() {
           <div className={styles.wrapper} key={'index1'}>
             <React.Fragment key={1}>
               <div key={'index'}>
-                <p className={styles.mini_title}>Призначення</p>
+                <p className={styles.mini_title}>Appointers</p>
 
                 <ul className={styles.main_wrapper}>
                   {(admins || []).map(item => {
@@ -231,7 +230,7 @@ export default function UsersPage() {
           </div>
           <React.Fragment key={2}>
             <div className={styles.wrapper} key={'index1'}>
-              <p className={styles.mini_title}>Ментори</p>
+              <p className={styles.mini_title}>Mentors</p>
 
               <ul className={`${styles.main_wrapper} ${styles.filter_wrapper}`}>
                 <li className={styles.ul_items}>
@@ -244,11 +243,11 @@ export default function UsersPage() {
                     key={`item.id`}>
                     <FormInput
                       type={'text'}
-                      placeholder={`Ім'я`}
+                      placeholder={`Name`}
                       value={filterName}
                       handler={handleFilterNameChange}></FormInput>
                     <FormInput
-                      value={'Курси'}
+                      value={'Courses'}
                       type={'button'}
                       classname={styles.courses_filter}
                       handler={() => {

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {format, addDays, getDay, addMinutes} from 'date-fns';
 import Select from 'react-select';
-import ukLocale from 'date-fns/locale/uk';
 import styles from '../../styles/teacher.module.scss';
 import {getCourses} from '../../helpers/course/course';
 import {getFreeUsers} from '../../helpers/user/user';
@@ -10,7 +9,6 @@ export default function AvaliableTable() {
   const [selectedCourse, setSelectedCourse] = useState();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedWeekDay, setSelectedWeekDay] = useState(getDay(currentDate));
-  const [users, setUsers] = useState([]);
 
   const generateTimeSlots = () => {
     const startTime = new Date().setHours(9, 0, 0, 0);
@@ -66,7 +64,7 @@ export default function AvaliableTable() {
   }, [selectedCourse, selectedWeekDay]);
 
   const formatDate = date => {
-    return format(date, 'iiii, dd.MM', {locale: ukLocale});
+    return format(date, 'iiii, dd.MM');
   };
 
   const handleDateChange = daysToAdd => {
@@ -95,8 +93,8 @@ export default function AvaliableTable() {
 
       <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
         <tr className={styles.tableHeader}>
-          <th>Час</th>
-          <th>Викладачі</th>
+          <th>Time</th>
+          <th>Mentors</th>
         </tr>
         {scheduleTable.map(({time, names}) => (
           <tr key={time}>

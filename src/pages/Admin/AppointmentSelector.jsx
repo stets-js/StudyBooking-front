@@ -170,12 +170,12 @@ export default function UsersPage() {
             className={styles.selector}
             placeholder="Select type"
             defaultValue={[
-              {label: 'Група', value: 0},
-              {label: 'Індив', value: 1}
+              {label: 'Group', value: 0},
+              {label: 'individual', value: 1}
             ].filter(el => el.value === selectedClassType)}
             options={[
-              {label: 'Група', value: 0},
-              {label: 'Індив', value: 1}
+              {label: 'Group', value: 0},
+              {label: 'individual', value: 1}
             ]}
             required
             onChange={choice => {
@@ -187,7 +187,7 @@ export default function UsersPage() {
 
         <div className={styles.replacement_wrapper}>
           <label>
-            <span className={styles.date_selector}>Заміна</span>
+            <span className={styles.date_selector}>Replacement</span>
           </label>
           <Switch
             onChange={() => {
@@ -199,7 +199,7 @@ export default function UsersPage() {
         <div className={styles.chooser_selector__item}>
           <FormInput
             type={'date'}
-            title={'Початок'}
+            title={'Start'}
             value={startDate}
             defaultValue={isReplacement ? startDate : null}
             // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
@@ -208,7 +208,7 @@ export default function UsersPage() {
         <div className={styles.chooser_selector__item}>
           <FormInput
             type={'date'}
-            title={'Кінець'}
+            title={'End'}
             value={endDate}
             pattern="\d{2}.\d{2}.\d{4}"
             handler={setEndDate}></FormInput>
@@ -218,14 +218,14 @@ export default function UsersPage() {
           onClick={handleClose}
           className={`${styles.button} ${styles.button__add} ${styles.chooser_selector__item}`}
           disabled={selectedSlotsAmount === 0}>
-          Додати{' '}
+          Create{' '}
         </button>
         <button
           onClick={() => {
             clearTable();
           }}
           className={`${styles.button} ${styles.button__delete} ${styles.chooser_selector__item}`}>
-          Очистити
+          Clear
         </button>
       </div>
       <div className={styles.scroller}>

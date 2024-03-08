@@ -27,7 +27,7 @@ const SetAppointment = ({
   const [description, setDescription] = useState('');
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(teachersIds[0]);
-  const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
+  const weekNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const [schedule, setSchedule] = useState([]);
   const [subGroups, setSubGroups] = useState([]);
   const [selectedSubGroup, setSelectedSubGroup] = useState(0);
@@ -138,7 +138,7 @@ const SetAppointment = ({
               failMessage: `Failed to create ${appointmentType === 0 ? 'group' : 'private'}`
             }}>
             <label htmlFor="teacher" className={styles.input__label}>
-              Ментор:
+              Mentor:
             </label>
             <Select
               name="teacher"
@@ -151,7 +151,7 @@ const SetAppointment = ({
               onChange={el => setSelectedTeacher(el.value)}
             />
             <FormInput
-              title="Курс:"
+              title="Course:"
               type="text"
               name="course"
               value={course.label}
@@ -161,7 +161,7 @@ const SetAppointment = ({
             {!isReplacement && isOpen ? (
               <>
                 <FormInput
-                  title="Посилання на CRM/LMS:"
+                  title="Link to CRM/LMS:"
                   type="text"
                   name="link"
                   placeholder="link"
@@ -171,7 +171,7 @@ const SetAppointment = ({
                 <div className={styles.input__block}>
                   <FormInput
                     classname="input__bottom"
-                    title="Початок:"
+                    title="Start:"
                     type="date"
                     name="startDate"
                     value={startDate}
@@ -180,7 +180,7 @@ const SetAppointment = ({
                   />
                   <FormInput
                     classname="input__bottom"
-                    title="Кінець:"
+                    title="End:"
                     type="date"
                     name="EndDate"
                     disabled={true}
@@ -192,7 +192,7 @@ const SetAppointment = ({
                 <div className={styles.input__block}>
                   <FormInput
                     classname="input__bottom"
-                    title="Графік:"
+                    title="Schedule:"
                     type="text"
                     name="schedule"
                     value={schedule.join('\n')}
@@ -202,7 +202,7 @@ const SetAppointment = ({
                   />
                   <FormInput
                     classname="input__bottom"
-                    title="Потік:"
+                    title="Subgroup:"
                     type="text"
                     name="subgroup"
                     handler={setSubGroup}
@@ -211,7 +211,7 @@ const SetAppointment = ({
                 </div>
                 <FormInput
                   classname="input__bottom"
-                  title="Повідомлення:"
+                  title="Description:"
                   type="text"
                   name="description"
                   textArea={true}
@@ -222,7 +222,7 @@ const SetAppointment = ({
               <>
                 <br />
                 <label htmlFor="subGroupSelector" className={styles.input__label}>
-                  Потік:
+                  Subgroup:
                 </label>
                 <Select
                   name="subGroupSelector"
@@ -237,7 +237,7 @@ const SetAppointment = ({
                 <div className={styles.input__block}>
                   <FormInput
                     classname="input__bottom"
-                    title="Початок:"
+                    title="Start:"
                     type="date"
                     name="schedule"
                     value={startDate}
@@ -246,18 +246,17 @@ const SetAppointment = ({
                   />
                   <FormInput
                     classname="input__bottom"
-                    title="Кінець:"
+                    title="End:"
                     type="date"
                     name="schedule"
                     disabled={true}
-                    // if appointmentType is group +6 month, else +1
                     value={endDate}
                     isRequired={true}
                   />
                 </div>
                 <FormInput
                   classname="input__bottom"
-                  title="Повідомлення:"
+                  title="Decription:"
                   type="text"
                   name="description"
                   textArea={true}

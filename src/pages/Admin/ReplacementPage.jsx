@@ -96,10 +96,10 @@ export default function ReplacementsPage() {
         <table className={styles.table}>
           <thead className={styles.tableHeader}>
             <tr>
-              <th>Назва Потока</th>
-              <th>Ім'я ментора</th>
-              <th>Графік</th>
-              <th>Дія</th>
+              <th>Subgroup</th>
+              <th>Mentor</th>
+              <th>Schedule</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>

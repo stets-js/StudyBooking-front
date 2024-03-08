@@ -13,12 +13,12 @@ const SuperAdministrator = () => {
     <>
       <Header
         endpoints={[
-          {text: 'Користувачі', path: path.users},
-          {text: 'Курси', path: path.courses},
-          {text: 'Призначення', path: path.appointments},
-          {text: 'Доступні ментори', path: path.avaliableTable},
-          {text: 'Потоки', path: path.subgroups},
-          {text: 'Заміни', path: path.replacements}
+          {text: 'Users', path: path.users},
+          {text: 'Courses', path: path.courses},
+          {text: 'Appointment', path: path.appointments},
+          {text: 'Availaable mentors', path: path.avaliableTable},
+          {text: 'Subgroups', path: path.subgroups},
+          {text: 'Replacements', path: path.replacements}
         ]}
       />
       <section className={styles.main_wrapper}>

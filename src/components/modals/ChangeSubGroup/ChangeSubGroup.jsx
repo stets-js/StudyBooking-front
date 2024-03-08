@@ -9,13 +9,12 @@ import FormInput from '../../FormInput/FormInput';
 import {getUsersForSubGroupReplacements} from '../../../helpers/user/user';
 
 const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
-  console.log(id);
   const [element, setElement] = useState({});
   const [mentorsForReplacements, setMentorsForReplacements] = useState([]);
   const [selectedMentor, setSelectedMentor] = useState({});
+
   const fetchUsersForReplacemenmt = async () => {
     try {
-      console.log(element.id, element.CourseId);
       if (element.id && element.CourseId) {
         const users = await getUsersForSubGroupReplacements(element.id, element.CourseId);
         setMentorsForReplacements(
@@ -23,10 +22,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
             return {value: el.id, label: el.name};
           })
         );
-        console.log(mentorsForReplacements);
-        console.log(mentorsForReplacements.find(el => el.value === element.id));
         setSelectedMentor(mentorsForReplacements.find(el => el.value === element.id));
-        console.log(selectedMentor);
       } else {
         setMentorsForReplacements([]);
       }
@@ -53,7 +49,6 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
       fetchUsersForReplacemenmt();
     }
   }, [element.id]);
-  console.log(id, element.id);
   return (
     <>
       {isOpen && (
@@ -62,19 +57,19 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
             id={id}
             type={{type: 'subGroup'}}
             status={{
-              successMessage: 'Відредаговано потік!',
-              failMessage: 'Не вийщло відредагувати потік!'
+              successMessage: 'Edited subgroup!',
+              failMessage: 'Failed to edit  subgroup!'
             }}
             name={element.name}
             description={element.description}
             link={element.link}
-            title="Редагування потока "
+            title="Subgroup edit"
             onSubmit={() => {
               handleClose();
               setRender(true);
             }}>
             <FormInput
-              title="Назва"
+              title="Name"
               value={element.name}
               placeholder={'Wait..'}
               handler={e =>
@@ -84,7 +79,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
                 }))
               }></FormInput>
             <FormInput
-              title="Опис"
+              title="Descripion"
               value={element.description}
               placeholder={'Wait..'}
               handler={e =>
@@ -94,7 +89,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
                 }))
               }></FormInput>
             <FormInput
-              title="Посилання на CRM/LMS"
+              title="Link to CRM/LMS"
               value={element.link}
               placeholder={'Wait..'}
               handler={e =>
@@ -104,15 +99,16 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
                 }))
               }></FormInput>
             <br />
-            <label htmlFor="mentors" className={styles.input__label}>
+            {/* <label htmlFor="mentors" className={styles.input__label}>
               Замінити викладача
             </label>
+            
             <Select
               name="mentors"
               className={styles.selector}
               options={mentorsForReplacements}
               value={selectedMentor}
-              onChange={e => setSelectedMentor(e)}></Select>
+              onChange={e => setSelectedMentor(e)}></Select> */}
           </Form>
         </Modal>
       )}

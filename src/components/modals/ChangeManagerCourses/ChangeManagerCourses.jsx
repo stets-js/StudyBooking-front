@@ -22,7 +22,6 @@ const ChangeManagerCourses = ({
   setFilteringCourses,
   forFilters = false
 }) => {
-  console.log('hello?');
   const dispatch = useDispatch();
   const courses = useSelector(state => state.courses.courses);
   const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
@@ -67,7 +66,7 @@ const ChangeManagerCourses = ({
           {forFilters
             ? `Pick courses for filtering, and close this window
           to apply changes:`
-            : 'Виберіть курси'}
+            : 'Choose courses'}
           {/* Teacher :TODO: make href */}
           {/* <a className={styles.managerLink} href={`/user/${managerInfo.id}/planning`}>
             {managerInfo.name}
