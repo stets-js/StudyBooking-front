@@ -11,6 +11,8 @@ import {postSubGroup, updateSubGroup} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
+import {cleanTeacherCourses} from '../../redux/action/course.action';
+import {useDispatch} from 'react-redux';
 
 defaults.delay = 1000;
 
@@ -51,7 +53,7 @@ const Form = ({
   const [isChangeManagerCoursesOpen, setIsChangeManagerCoursesOpen] = useState(false);
   const [errorsuccessMessage, setError] = useState(false);
   const [inputCancelClicked, setInputCancelClicked] = useState(false);
-
+  const dispatch = useDispatch();
   const handleSubmit = async event => {
     event.preventDefault();
     if (type.type === 'no-request-test') {
@@ -258,6 +260,7 @@ const Form = ({
                 <ChangeManagerCourses
                   teacherId={userId}
                   handleClose={() => {
+                    dispatch(cleanTeacherCourses([]));
                     setIsChangeManagerCoursesOpen(!isChangeManagerCoursesOpen);
                   }}
                 />

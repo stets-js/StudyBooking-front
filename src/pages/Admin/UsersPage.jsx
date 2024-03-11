@@ -3,11 +3,13 @@ import styles from '../../styles/SuperAdminPage.module.scss';
 import NewUser from '../../components/modals/NewUser/NewUser';
 import {getRoles, getUsers} from '../../helpers/user/user';
 // import { getManagers } from "../../helpers/manager/manager";
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
 import FormInput from '../../components/FormInput/FormInput';
 import ChangeManagerCourses from '../../components/modals/ChangeManagerCourses/ChangeManagerCourses';
+import {getCourses} from '../../helpers/course/course';
+import {setCourses} from '../../redux/action/course.action';
 
 export default function UsersPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +30,16 @@ export default function UsersPage() {
   const [prevFilterCourses, setPrevFilterCourses] = useState(filterCourses);
   const [debounceTimer, setDebounceTimer] = useState();
   const [superAdmins, setSuperAdmins] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const updateAllCourses = async () => {
+    try {
+      const corses = await getCourses();
+      dispatch(setCourses(corses.data));
+    } catch (error) {}
+  };
+
   const fetchAdmins = async () => {
     try {
       const res = await getUsers(`role=administrator`);
@@ -71,21 +83,26 @@ export default function UsersPage() {
   };
 
   useEffect(() => {
-    fetchAdmins();
-    fetchTeachers();
-    fetchSuperAdmins();
-    SetNeedToRender(false);
+    if (needToRender) {
+      fetchAdmins();
+      fetchTeachers();
+      fetchSuperAdmins();
+      SetNeedToRender(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [needToRender]);
 
   useEffect(() => {
-    fetchTeachers();
-    setRenderTeachers(false);
+    if (renderTeachers) {
+      fetchTeachers();
+      setRenderTeachers(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderTeachers]);
 
   useEffect(() => {
     if (coursesModal) {
       // before open modal window
-      console.log('open');
       setPrevFilterCourses(filterCourses);
     }
     if (!coursesModal) {
@@ -94,6 +111,7 @@ export default function UsersPage() {
         setRenderTeachers(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coursesModal]);
   const [roles, setRoles] = useState([]);
 
@@ -112,6 +130,7 @@ export default function UsersPage() {
         }
       };
       fetchRoles();
+      updateAllCourses();
     } catch (error) {}
   }, []);
   return (
@@ -273,7 +292,6 @@ export default function UsersPage() {
                           className={styles.ul_items_btn}
                           // data-modal="change-user"
                           onClick={() => {
-                            console.log(item);
                             setIsOpen(!isOpen);
                             setTitle(`Edit ${item.name}`);
                             setName(item.name);

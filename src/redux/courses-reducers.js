@@ -12,6 +12,9 @@ const courseReducer = (state = initialState, action) => {
 
     case 'SET_TEACHER_COURSES':
       return {...state, teacherCourses: action.payload};
+    case 'CLEAN_TEACHER_COURSES':
+      return {...state, teacherCourses: action.payload};
+
     case 'ADD_TEACHER_COURSE':
       return {
         ...state,

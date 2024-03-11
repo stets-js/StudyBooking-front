@@ -27,8 +27,6 @@ const ChangeManagerCourses = ({
   const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
   useEffect(() => {
     const fetchAllCourses = async () => {
-      const allCourses = await getCourses();
-      dispatch(setCourses(allCourses.data));
       if (!forFilters) {
         const teachersCrs = await getTeacherCourses(teacherId);
         dispatch(setTeacherCourses(teachersCrs.data));
