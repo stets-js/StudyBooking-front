@@ -12,12 +12,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import managerReducer from './manager/manager-reducers';
-import callerReducer from './caller/caller-reducers';
-import confirmatorReducer from './confirmator/confirmator-reducers';
-import avaliableReducer from './confirmator/avaliable-reducers';
 import authReducer from './auth-reducers';
-import courseReducer from './course-reducers'; // TODO: MERGE IT TO
 import coursesReducer from './courses-reducers';
 import teacherReducer from './teacher-reducers';
 import weekScheduler from './week-scheduler.reducers';
@@ -32,11 +27,6 @@ const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
     auth: authReducer,
-    manager: managerReducer,
-    caller: callerReducer,
-    confirmator: confirmatorReducer,
-    avaliable: avaliableReducer,
-    course: courseReducer,
     teacher: teacherReducer,
     courses: coursesReducer,
     weekScheduler: weekScheduler
