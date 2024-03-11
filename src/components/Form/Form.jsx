@@ -1,14 +1,10 @@
 import {defaults, error, success} from '@pnotify/core';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Fade} from 'react-awesome-reveal';
-import {removeSlot} from '../../helpers/confirmation/avaliable';
-import {getUserByName, postUser} from '../../helpers/user/user';
 
-import InputCancel from '../InputCancel/InputCancel';
 import InputDelete from '../InputDelete/InputDelete';
 import InputSubmit from '../InputSubmit/InputSubmit';
 import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeManagerCourses';
-import ChangeAppointment from '../modals/ChangeAppointment/ChangeAppointment';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 import styles from './Form.module.scss';
 import {postSubGroup, updateSubGroup} from '../../helpers/subgroup/subgroup';
@@ -27,7 +23,6 @@ const Form = ({
   SetNeedToRender,
   title,
   id,
-  startRole,
   requests,
   children,
   width,
@@ -56,7 +51,6 @@ const Form = ({
   const [isChangeManagerCoursesOpen, setIsChangeManagerCoursesOpen] = useState(false);
   const [errorsuccessMessage, setError] = useState(false);
   const [inputCancelClicked, setInputCancelClicked] = useState(false);
-  const [selectedReason, setSelectedReason] = useState('');
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -66,12 +60,6 @@ const Form = ({
     if (type.type === 'no-request') {
       if (onSubmit && !inputCancelClicked) {
         return onSubmit();
-        // .catch((e) => {
-        //   error(`${status.failMessage}, ${e.message}`);
-        // })
-        // .then(() => {
-        //   // success(status.successMessage);
-        // });
       }
       setInputCancelClicked(false);
       return;
@@ -88,9 +76,8 @@ const Form = ({
         data.append(i, formData[i]);
       }
       let jsonData = {};
-      for (var pair of data.entries()) {
-        jsonData[pair[0]] = pair[1];
-      }
+      for (var pair of data.entries()) jsonData[pair[0]] = pair[1];
+
       if (type.type === 'subGroup') {
         return await updateSubGroup(id, jsonData)
           .then(() => {
@@ -149,32 +136,7 @@ const Form = ({
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
-      if (+role === 2 && type.type === 'put' && startRole !== 2) {
-        const res = await getUserByName(startName);
-        await requests.delete(res.data.id);
-        return await postUser(data)
-          .then(() => {
-            success(status.successMessage);
-            return !errorsuccessMessage && onSubmit && onSubmit();
-          })
-          .catch(e => {
-            return error(`${status.failMessage}, ${e.message}`);
-          });
-      }
-      if (+role !== 2 && type.type === 'put' && startRole === 2) {
-        const manager = await requests.getByName(startName.trim());
-        await requests.managerDelete(manager.data.id);
 
-        return await requests
-          .post(data)
-          .then(() => {
-            success(status.successMessage);
-            return !errorsuccessMessage && onSubmit && onSubmit();
-          })
-          .catch(e => {
-            return error(`${status.failMessage}, ${e.message}`);
-          });
-      }
       if (type.type === 'put') {
         return await requests
           .put(jsonData, requests.additional)
@@ -187,24 +149,7 @@ const Form = ({
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
-      if (+role === 2 && type.type === 'put') {
-        const res = await requests.getByName(startName.trim());
-        if (data.get('role_id')) data.delete('role_id');
-        return await requests
-          .user(data, res.data.id)
-          .then(() => {
-            success(status.successMessage);
-            return !errorsuccessMessage && onSubmit && onSubmit();
-          })
-          .catch(e => {
-            return error(`${status.failMessage}, ${e.message}`);
-          });
-      }
 
-      // if (+role === 2 && type.type === 'post') {
-      //   onSubmit();
-      //   return await requests.post(data);
-      // }
       if (type.type === 'login') {
         onSubmit();
         return await requests.login(data);
@@ -224,14 +169,7 @@ const Form = ({
         success({text: 'Created/edited user', delay: 1000});
         return newUser;
       }
-      if (manager) {
-        console.log('123');
-        const res = await requests.getByName(startName.trim());
-        onSubmit();
-        return await requests.user(data, res.data.id).catch(() => {
-          return error(status.failMessage);
-        });
-      }
+
       if (type.type === 'post') {
         return await requests
           .post(data)
@@ -262,19 +200,6 @@ const Form = ({
   };
 
   const handleDelete = async () => {
-    // if (role === 2) {
-    //   const res = await requests.getByName(startName.trim());
-    //   onSubmit();
-    //   return await requests
-    //     .managerDelete(res.data.id)
-    //     .catch(() => {
-    //       return error(status.failMessageDelete);
-    //     })
-    //     .then(() => {
-    //       return success(status.successMessageDelete);
-    //     });
-    // }
-
     await requests
       .delete(requests.additional)
       .catch(e => {
@@ -321,17 +246,7 @@ const Form = ({
               Postpone
             </button>
           )}
-          {isCancel ? (
-            <InputCancel
-              InputCancelFunc={reason => {
-                setInputCancelClicked(true);
-                removeSlot(slotId, reason, removeMessage);
-                onClose();
-              }}
-            />
-          ) : (
-            ''
-          )}
+          {isCancel ? <></> : ''}
           {!isSetAppointment && edit ? (
             <>
               <OpenChangeManagerCourses
@@ -359,24 +274,7 @@ const Form = ({
             return (
               <React.Fragment key={i}>
                 <Fade cascade triggerOnce duration={300} direction="up">
-                  <ChangeAppointment
-                    isOpen={isOpen}
-                    setIsOpenModal={setIsOpen}
-                    handleClose={() => setIsOpen(!isOpen)}
-                    manager={item.manager_name}
-                    managerIdInit={item.manager_id}
-                    id={item.appointment_id}
-                    weekId={item.week_id}
-                    course={item.course_id}
-                    crm={item.crm_link}
-                    day={item.day}
-                    hour={item.hour}
-                    slotId={item.slot_id}
-                    number={item.phone}
-                    messageInit={item.comments}
-                    age={item.age}
-                    isFollowUp={item.follow_up}
-                  />
+                  <></>
                   <div className={styles.appointment} onClick={() => setIsOpen(!isOpen)}>
                     <p className={styles.appointment__data}>
                       {item.date.slice(0, 11)}, {item.hour > 9 ? item.hour : '0' + item.hour}:00{' '}
