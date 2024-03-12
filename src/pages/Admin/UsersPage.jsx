@@ -136,7 +136,7 @@ export default function UsersPage() {
   return (
     <>
       <div className={styles.main_wrapper}>
-        <h3 className={styles.main_title}>Manage users.</h3>
+        <h3 className={styles.main_title}>Manage users</h3>
         {['administrator', 'superAdmin'].includes(userRole) && (
           <div className={styles.new_user}>
             <div className={styles.btn_wrapper}>
@@ -252,7 +252,7 @@ export default function UsersPage() {
               <p className={styles.mini_title}>Mentors</p>
 
               <ul className={`${styles.main_wrapper} ${styles.filter_wrapper}`}>
-                <li className={styles.ul_items}>
+                <li className={`${styles.ul_items} ${styles.filter_wrapper}`}>
                   <Fade
                     style={{marginBottom: '10px'}}
                     cascade

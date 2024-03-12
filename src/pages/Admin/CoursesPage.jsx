@@ -15,19 +15,16 @@ const CoursesPage = () => {
 
   return (
     <div className={styles.main_wrapper}>
-      <div className={`${styles.main_title} ${styles.header_wrapper}`}>
-        Manage courses{' '}
-        <button
-          className={styles.add_btn}
-          data-modal="new-user"
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}>
-          New
-        </button>
-        <NewCourses isOpen={isOpen} handleClose={() => handleClose()} />
-      </div>
-
+      <div className={`${styles.main_title} ${styles.header_wrapper}`}>Manage courses </div>
+      <button
+        className={styles.add_btn}
+        data-modal="new-user"
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}>
+        New
+      </button>
+      <NewCourses isOpen={isOpen} handleClose={() => handleClose()} />
       <div className={styles.filter_block}>
         <FormInput
           title={'Сортування за назвою'}
