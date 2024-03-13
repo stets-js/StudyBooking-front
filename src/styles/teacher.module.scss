@@ -8,6 +8,35 @@
     column-gap: 4px;
     padding: 2px;
 }
+.ul_items {
+    color: $font-black;
+    transition: 200ms linear;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    margin: 5px;
+    
+  }
+  .ul_items_text:hover{
+    color:$blue;
+  }
+.teacher_name{
+    margin: 0 !important;
+}
+  .ul_items_link {
+    margin: 12px auto;
+    color: $font-black;
+    transition: 200ms linear;
+  }
+  .ul_items_text {
+    font-family: "Poppins";
+    font-weight: 400;
+    font-size: 20px;
+    text-align: center;
+    flex:1;
+    margin-right: 10px;
+  }
+
 .input__label {
     font-family: $poppins;
     font-size: 20px;
@@ -67,11 +96,15 @@
     background-color: white;
     font-family: $poppins;
     &__available{
-        width: 60% !important;
-        margin-left:20% !important;
+        width: 80% !important;
+        margin-left:10% !important;
 
     }
 }
+.mentors_wrapper{
+    word-wrap: normal;
+}
+
 .available_cell:first-child{
     width: 35% !important;
 }
@@ -97,7 +130,7 @@
     background-color: white;
 }
 .tableHeader{
-    font-size: 18px;
+    font-size: 20px;
     background-color: $tableItem-darkOrangeColor;
     height: 20px;
     font-weight: 600;
@@ -193,6 +226,9 @@
     height: 35px;
     font-size: 20px;
     border: 1px solid rgba(0, 0, 0, 0.438);
+    &__available{
+        width: 30% !important;
+    }
 }
 .big_cell{
     height: 100% !important;

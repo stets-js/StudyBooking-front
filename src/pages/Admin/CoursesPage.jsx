@@ -27,8 +27,7 @@ const CoursesPage = () => {
       <NewCourses isOpen={isOpen} handleClose={() => handleClose()} />
       <div className={styles.filter_block}>
         <FormInput
-          title={'Сортування за назвою'}
-          placeholder={'Назва..'}
+          placeholder={'Filter by name...'}
           classname={'green'}
           value={filterName}
           handler={setFilterName}></FormInput>

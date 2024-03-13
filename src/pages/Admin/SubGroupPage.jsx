@@ -136,8 +136,7 @@ export default function SubGroupPage() {
           <div className={styles.grid_item}>
             <FormInput
               type="text"
-              title={'Search by name'}
-              placeholder="Name..."
+              placeholder="Filter by name..."
               value={searchQuery}
               classname={'green'}
               handler={setSearchQuery}
@@ -231,13 +230,15 @@ export default function SubGroupPage() {
             </div>
             <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
               <tr className={styles.tableHeader}>
-                <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Time</th>
+                <th className={`${styles.sticky} ${styles.cell} ${styles.cell__available}`}>
+                  Time
+                </th>
                 <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Subgroups</th>
               </tr>
               {scheduleTable.map(({time, names}) => (
                 <tr key={time}>
-                  <td className={`${styles.cell} ${styles.available_cell}`}>{time}</td>
-                  <td className={`${styles.cell} ${styles.available_cell}`}>{names.join(', ')}</td>
+                  <td className={`${styles.cell} ${styles.cell__available}`}>{time}</td>
+                  <td className={`${styles.cell}`}>{names.join(', ')}</td>
                 </tr>
               ))}
             </table>

@@ -80,8 +80,7 @@ export default function ReplacementsPage() {
           <div className={styles.grid_item}>
             <FormInput
               type="text"
-              title={'Search by name'}
-              placeholder="Name..."
+              placeholder="Filter by name..."
               value={searchQuery}
               classname={'green'}
               handler={setSearchQuery}
