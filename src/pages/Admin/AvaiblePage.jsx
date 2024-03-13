@@ -77,9 +77,13 @@ export default function AvaliableTable() {
   return (
     <div>
       <div className={styles.date_selector}>
-        <button onClick={() => handleDateChange(-1)}>{'<<'}</button>
+        <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
+          {'<<'}
+        </button>
         <span>{formatDate(currentDate)}</span>
-        <button onClick={() => handleDateChange(1)}>{'>>'}</button>
+        <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
+          {'>>'}
+        </button>
       </div>
       <Select
         options={courses}

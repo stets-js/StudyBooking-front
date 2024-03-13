@@ -221,7 +221,7 @@ export default function TeacherPage() {
   return (
     <div>
       {!teacherId && <LoginBox loggedUser={loggedUser} />}
-      <div className={styles.dates_wrapper}>
+      <div className={`${styles.dates_wrapper} ${styles.date_selector}`}>
         <button onClick={handlePrevWeek} className={styles.week_selector}>
           {`<<`}
         </button>

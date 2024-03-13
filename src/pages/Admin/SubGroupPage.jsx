@@ -220,10 +220,14 @@ export default function SubGroupPage() {
           </>
         ) : (
           <>
-            <div className={styles.date_selector}>
-              <button onClick={() => handleDateChange(-1)}>{'<<'}</button>
+            <div className={`${styles.dates_wrapper} ${styles.date_selector}`}>
+              <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
+                {'<<'}
+              </button>
               <span>{formatDate(currentDate)}</span>
-              <button onClick={() => handleDateChange(1)}>{'>>'}</button>
+              <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
+                {'>>'}
+              </button>
             </div>
             <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
               <tr className={styles.tableHeader}>
