@@ -283,6 +283,14 @@ export default function UsersPage() {
                         <Link
                           className={styles.ul_items_link}
                           target="_self"
+                          onClick={() => {
+                            dispatch({
+                              type: 'ADD_SELECTED_USER',
+                              payload: {
+                                id: item.id
+                              }
+                            });
+                          }}
                           to={`../teacher/${item.id}`}>
                           <p className={styles.ul_items_text}>
                             {item.name} ({item.id})

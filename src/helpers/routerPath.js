@@ -1,6 +1,7 @@
 const path = {
   all: '*',
   home: '/',
+  mySubgroups: 'mySubgroups/',
   resetPassword: '/resetPassword/:token',
   avaliableTable: 'available/',
   modals: '/modals/',

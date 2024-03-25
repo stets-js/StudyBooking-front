@@ -41,10 +41,10 @@ const SetAppointment = ({
   };
   const fetchTeachers = async () => {
     try {
-      getUsers(`users=${JSON.stringify(teachersIds)}`).then(teachersData => {
+      getUsers(`users=${JSON.stringify(teachersIds)}&sortBySubgroups=true`).then(teachersData => {
         setTeachers(
           teachersData.data.map(el => {
-            return {label: el.name, value: el.id};
+            return {label: `${el.name} (${el.subgroupCount})`, value: el.id};
           })
         );
         setSelectedTeacher(teachers[0]?.value || teachersIds[0]);
@@ -64,7 +64,6 @@ const SetAppointment = ({
         for (let i = 0; i <= 6; i++) {
           let day = '';
           if (selectedSlots[i].length > 0) {
-            console.log(i);
             for (let j = 0; j < selectedSlots[i].length; j += appointmentLength) {
               // loop for case of several appointments on one day
               day += `${weekNames[i]}: `;

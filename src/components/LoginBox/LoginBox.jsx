@@ -51,6 +51,9 @@ export default function LoginBox({loggedUser}) {
             dispatch({
               type: 'LOGOUT'
             });
+            dispatch({
+              type: 'REMOVE_SELECTED_USER'
+            });
           }}>
           <img src={logout} alt="logout" />
         </button>

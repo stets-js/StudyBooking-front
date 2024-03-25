@@ -23,17 +23,23 @@ import Cookies from 'js-cookie';
 import SubGroupPage from './pages/Admin/SubGroupPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ReplacementsPage from './pages/Admin/ReplacementPage';
+import TeacherWrapper from './pages/Teacher/TeacherWrapper';
+import TeacherSubgroupPage from './pages/Teacher/TeacherSubgroupsPage';
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const jwtExp = useSelector(state => state.auth.user.exp);
   const userRole = useSelector(state => state.auth.user.role);
   const token = useSelector(state => state.auth.token);
-  const dispatch = useDispatch();
   const auth = isAuthenticated && jwtExp * 1000 > Date.now() && token;
   if (isAuthenticated && !auth) {
     dispatch({
       type: 'LOGOUT'
+    });
+    dispatch({
+      type: 'REMOVE_SELECTED_USER'
     });
   }
   // useEffect(() => {
@@ -65,7 +71,15 @@ const App = () => {
                 <Route path={path.courses} element={<CoursesPage />} />
                 <Route path={path.appointments} element={<Appointment />} />
                 <Route path={path.avaliableTable} element={<AvaliableTable />} />
-                <Route path={`teacher/:teacherId`} element={<TeacherPage />} />
+                <Route
+                  path={path.superAdmin + path.teacher}
+                  element={<TeacherWrapper hideLogo={true} hideLogin={true} />}>
+                  <Route
+                    path={`${path.superAdmin + 'teacher/'}:teacherId`}
+                    element={<TeacherPage />}
+                  />
+                  <Route path={`mySubGroups/:teacherId`} element={<TeacherSubgroupPage />} />
+                </Route>
                 <Route path={path.subgroups} element={<SubGroupPage />} />
                 <Route path={path.replacements} element={<ReplacementsPage />} />
               </Route>
@@ -73,7 +87,10 @@ const App = () => {
           ) : auth && userRole === 'teacher' ? (
             <>
               <Route path={path.home} element={<Navigate to={`${path.teacher}`} />}></Route>
-              <Route path={path.teacher} element={<TeacherPage />}></Route>
+              <Route path={path.home} element={<TeacherWrapper />}>
+                <Route path={path.teacher} element={<TeacherPage />}></Route>
+                <Route path={path.mySubgroups} element={<TeacherSubgroupPage />}></Route>
+              </Route>
             </>
           ) : (
             <>

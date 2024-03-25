@@ -96,8 +96,11 @@ export default function UsersPage() {
   //   setStartDates(startDates.map(startDate => addDays(startDate, 7)));
   // };
   const clearTable = () => {
-    setSelectedSlots(Array.from({length: 7}, _ => []));
-    setRenderTeachers(true);
+    if (selectedSlotsAmount !== 0) {
+      setSelectedSlots(Array.from({length: 7}, _ => []));
+      setRenderTeachers(true);
+      setSelectedSlotsAmount(0);
+    }
   };
 
   const handleCellClick = async (weekDay, timeStr) => {
@@ -226,7 +229,7 @@ export default function UsersPage() {
             Create{' '}
           </button>
           <button
-            onClick={() => {
+            onClick={e => {
               clearTable();
             }}
             className={`${styles.button} ${styles.button__delete}`}>

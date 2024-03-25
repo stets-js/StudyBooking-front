@@ -48,15 +48,15 @@ const SlotDetails = ({
               <div className={styles.input__block}>
                 <a href="data.link">{slot?.name}</a>
                 <div className={styles.date_wrapper}>
-                  <span>Старт: {format(slot.startDate, 'dd.MM.yyyy')}</span>
+                  <span>Start: {format(slot.startDate, 'dd.MM.yyyy')}</span>
                   <br />
-                  <span>Кінець: {format(slot.endDate, 'dd.MM.yyyy')}</span>
+                  <span>End: {format(slot.endDate, 'dd.MM.yyyy')}</span>
                 </div>
               </div>
             )}
 
             <FormInput
-              title="Курс:"
+              title="Course:"
               type="text"
               name="course"
               value={slot ? slot.Course.name : replacementDetails?.SubGroup?.Course.name}
@@ -65,7 +65,7 @@ const SlotDetails = ({
             />
 
             <FormInput
-              title="Назва потока:"
+              title="Name:"
               type="text"
               name="subgroupName"
               value={!isReplacement ? slot?.name : replacementDetails?.SubGroup?.name}
@@ -73,7 +73,7 @@ const SlotDetails = ({
               disabled={true}
             />
             <FormInput
-              title="Призначення:"
+              title="Appointer:"
               type="text"
               name="course"
               value={slot?.Admin?.name || replacementDetails?.SubGroup?.Admin?.name}
@@ -83,7 +83,7 @@ const SlotDetails = ({
             {!isReplacement && (
               <FormInput
                 classname="input__bottom"
-                title="Графік:"
+                title="Schedule:"
                 type="text"
                 name="schedule"
                 value={slot?.schedule.split(',').join('\n')}
@@ -94,7 +94,7 @@ const SlotDetails = ({
 
             <FormInput
               classname="input__bottom"
-              title="Повідомлення до потока:"
+              title="Description:"
               type="text"
               value={!isReplacement ? slot.description : replacementDetails?.SubGroup?.description}
               disabled={true}
@@ -103,7 +103,7 @@ const SlotDetails = ({
             {isReplacement && (
               <FormInput
                 classname="input__bottom"
-                title="Повідомлення до заміни:"
+                title="Description to replacement:"
                 type="text"
                 value={replacementDetails?.description}
                 disabled={true}

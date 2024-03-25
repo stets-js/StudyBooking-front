@@ -8,6 +8,15 @@
     column-gap: 4px;
     padding: 2px;
 }
+.filters{
+    display: grid;
+    width: 50%;
+    margin-left: 25%;
+    &__item{
+        align-items: end;
+        width: 100% !important;
+    }
+}
 .ul_items {
     color: $font-black;
     transition: 200ms linear;
@@ -228,6 +237,15 @@
     border: 1px solid rgba(0, 0, 0, 0.438);
     &__available{
         width: 30% !important;
+    }
+    &__mySubgroup{
+       width: auto !important;
+       &__description{
+        width: 50% !important;
+       }
+    }
+    &__description{
+        word-break:break-word;
     }
 }
 .big_cell{

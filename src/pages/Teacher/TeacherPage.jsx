@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import styles from '../../styles/teacher.module.scss';
-import {uk} from 'date-fns/locale';
 import {
   getSlotsForUser,
   createSlotForUser,
@@ -10,7 +9,6 @@ import {
 } from '../../helpers/teacher/slots';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {useDispatch, useSelector} from 'react-redux';
-import LoginBox from '../../components/LoginBox/LoginBox';
 import {addNewSlot, cleanOccupiedSlots, setOccupiedSlots} from '../../redux/action/teacher.action';
 import {
   DeleteSlotFromWeek,
@@ -195,23 +193,23 @@ export default function TeacherPage() {
   const translateAppointmentTypeName = name => {
     switch (name) {
       case 'universal':
-        return 'Універсальний';
+        return 'Universal';
       case 'appointed_group':
-        return 'Запланована група';
+        return 'Appointed group';
       case 'appointed_private':
-        return 'Запланований індив';
+        return 'Appointed private';
       case 'group':
-        return 'Група';
+        return 'Group';
       case 'private':
-        return 'Індивід';
+        return 'Private';
       case 'replacement':
         return 'Заміна';
       case 'free':
-        return 'Вільно';
+        return 'Remove';
       case 'replacement_group':
-        return 'Заміна групи';
+        return 'Group replacement';
       case 'replacement_private':
-        return 'Заміна індива';
+        return 'Private replacement';
       default:
         return name;
     }
@@ -220,7 +218,6 @@ export default function TeacherPage() {
 
   return (
     <div>
-      {!teacherId && <LoginBox loggedUser={loggedUser} />}
       <div className={`${styles.dates_wrapper} ${styles.date_selector}`}>
         <button onClick={handlePrevWeek} className={styles.week_selector}>
           {`<<`}
@@ -247,7 +244,7 @@ export default function TeacherPage() {
             {translateAppointmentTypeName(appointmentType.name)}
           </button>
         ))}
-        <div className={styles.teacherInfo}>Викладач: {teacherId ? userName : nameFromRedux}</div>
+        <div className={styles.teacherInfo}>Mentor: {teacherId ? userName : nameFromRedux}</div>
       </div>
 
       <div className={styles.scroller}>
@@ -258,8 +255,8 @@ export default function TeacherPage() {
                 <td key={dateIndex} className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>
                   <div>
                     <div>
-                      {format(startDate, 'EEEE', {locale: uk}).charAt(0).toUpperCase() +
-                        format(startDate, 'EEEE', {locale: uk}).slice(1)}
+                      {format(startDate, 'EEEE').charAt(0).toUpperCase() +
+                        format(startDate, 'EEEE').slice(1)}
                     </div>
 
                     <div>{format(startDate, 'dd.MM')}</div>
