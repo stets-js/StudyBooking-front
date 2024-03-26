@@ -17,6 +17,8 @@ import coursesReducer from './courses-reducers';
 import teacherReducer from './teacher-reducers';
 import weekScheduler from './week-scheduler.reducers';
 import selectedUserReducer from './selected-user-reducers';
+import subgroupReducer from './subgroup-reducers';
+
 const persistConfig = {
   key: 'booking-system',
   storage
@@ -31,7 +33,8 @@ const persistedReducer = persistReducer(
     teacher: teacherReducer,
     courses: coursesReducer,
     weekScheduler: weekScheduler,
-    selectedUser: selectedUserReducer
+    selectedUser: selectedUserReducer,
+    subgroups: subgroupReducer
   })
 );
 

@@ -1,52 +1,19 @@
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from './slotDetails.module.scss';
-import {getSlotDetails} from '../../../helpers/subgroup/subgroup';
 import {format} from 'date-fns';
-import {getCourseById} from '../../../helpers/course/course';
-import {getReplacementDetails} from '../../../helpers/replacement/replacement';
-const SlotDetails = ({
-  isOpen,
-  handleClose,
-  subGroupId,
-  appointmentDetails,
-  replacementId,
-  isReplacement
-}) => {
-  const [slot, setSlot] = useState(null);
-  const [replacementDetails, setReplacementDetails] = useState(null);
-  useEffect(() => {
-    const fetchSubGroupDetails = async () => {
-      try {
-        const data = await getSlotDetails(subGroupId);
-        setSlot(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const fetchReplacementDetails = async () => {
-      const data = await getReplacementDetails(replacementId);
-      setReplacementDetails(data.data);
-    };
-
-    if (!isReplacement) {
-      if (subGroupId) {
-        fetchSubGroupDetails();
-      }
-    } else {
-      if (replacementId) fetchReplacementDetails();
-    }
-  }, [subGroupId, replacementId]);
+const SlotDetails = ({isOpen, handleClose, slot}) => {
+  console.log(slot);
 
   return (
     <>
-      {isOpen && (slot || replacementDetails) && (
+      {isOpen && slot && (
         <Modal open={isOpen} onClose={handleClose} className={styles.modal_wrapper}>
           <div>
-            {!isReplacement && (
+            {!slot.ReplacementId && (
               <div className={styles.input__block}>
-                <a href="data.link">{slot?.name}</a>
+                <a href={slot?.SubGroup.link}>{slot?.SubGroup.name}</a>
                 <div className={styles.date_wrapper}>
                   <span>Start: {format(slot.startDate, 'dd.MM.yyyy')}</span>
                   <br />
@@ -59,7 +26,11 @@ const SlotDetails = ({
               title="Course:"
               type="text"
               name="course"
-              value={slot ? slot.Course.name : replacementDetails?.SubGroup?.Course.name}
+              value={
+                slot.ReplacementId
+                  ? slot.Replacement.SubGroup.Course.name
+                  : slot?.SubGroup?.Course.name
+              }
               placeholder="Course"
               disabled={true}
             />
@@ -68,7 +39,7 @@ const SlotDetails = ({
               title="Name:"
               type="text"
               name="subgroupName"
-              value={!isReplacement ? slot?.name : replacementDetails?.SubGroup?.name}
+              value={slot.ReplacementId ? slot.Replacement.SubGroup.name : slot?.SubGroup.name}
               placeholder="Course"
               disabled={true}
             />
@@ -76,17 +47,21 @@ const SlotDetails = ({
               title="Appointer:"
               type="text"
               name="course"
-              value={slot?.Admin?.name || replacementDetails?.SubGroup?.Admin?.name}
+              value={
+                slot.ReplacementId
+                  ? slot?.Replacement?.SubGroup?.Admin?.name
+                  : slot?.SubGroup?.Admin.name
+              }
               placeholder="Administrator"
               disabled={true}
             />
-            {!isReplacement && (
+            {!slot.ReplacementId && (
               <FormInput
                 classname="input__bottom"
                 title="Schedule:"
                 type="text"
                 name="schedule"
-                value={slot?.schedule.split(',').join('\n')}
+                value={slot?.SubGroup.schedule.split(',').join('\n')}
                 disabled={true}
                 textArea={true}
               />
@@ -96,16 +71,20 @@ const SlotDetails = ({
               classname="input__bottom"
               title="Description:"
               type="text"
-              value={!isReplacement ? slot.description : replacementDetails?.SubGroup?.description}
+              value={
+                slot.ReplacementId
+                  ? slot?.Replacement?.SubGroup?.description
+                  : slot.SubGroup.description
+              }
               disabled={true}
               textArea={true}
             />
-            {isReplacement && (
+            {slot.ReplacementId && (
               <FormInput
                 classname="input__bottom"
                 title="Description to replacement:"
                 type="text"
-                value={replacementDetails?.description}
+                value={slot.Replacement.description}
                 disabled={true}
                 textArea={true}
               />
