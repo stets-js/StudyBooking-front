@@ -3,9 +3,9 @@ import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 
 import styles from '../../styles/teacher.module.scss';
+import tableStyles from '../../styles/table.module.scss';
 
 import {getSlotsForUser} from '../../helpers/teacher/slots';
-import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {cleanOccupiedSlots} from '../../redux/action/teacher.action';
 import {setWeekScheduler} from '../../redux/action/weekScheduler.action';
 import SlotDetails from '../../components/modals/SlotDetails/SlotDetails';
@@ -66,56 +66,56 @@ export default function TeacherTable({userId}) {
         user={user}
         setSelectedAppointment={setSelectedAppointment}></AppointmentList>
 
-      <div className={styles.scroller}>
-        <table className={styles.calendar}>
-          <thead className={styles.tableHeader}>
-            <tr>
-              {startDates.map((startDate, dateIndex) => (
-                <td key={dateIndex} className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>
+      {/* <div className={tableStyles.scroller}> */}
+      <table className={tableStyles.calendar}>
+        <thead className={tableStyles.tableHeader}>
+          <tr>
+            {startDates.map((startDate, dateIndex) => (
+              <th key={dateIndex} className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>
+                <div>
                   <div>
-                    <div>
-                      {format(startDate, 'EEEE').charAt(0).toUpperCase() +
-                        format(startDate, 'EEEE').slice(1)}
-                    </div>
-
-                    <div>{format(startDate, 'dd.MM')}</div>
+                    {format(startDate, 'EEEE').charAt(0).toUpperCase() +
+                      format(startDate, 'EEEE').slice(1)}
                   </div>
-                </td>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({length: 25}, (_, timeIndex) => {
-              const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
-              if (currentTime.getHours() >= startingHour)
-                return (
-                  <tr key={Math.random() * 100 - 1}>
-                    {startDates.map((date, dateIndex) => {
-                      const slot = (weekSchedule[dateIndex] || []).find(
-                        el => el.time === format(currentTime, 'HH:mm')
-                      );
-                      return (
-                        <ScheduleCell
-                          key={`${dateIndex}_${currentTime}`}
-                          userId={userId}
-                          slot={slot}
-                          currentTime={currentTime}
-                          date={date}
-                          dateIndex={dateIndex}
-                          startDates={startDates}
-                          setOpenSlotDetails={setOpenSlotDetails}
-                          setSelectedSlotDetails={setSelectedSlotDetails}
-                          selectedAppointment={selectedAppointment}
-                          dispatch={dispatch}
-                        />
-                      );
-                    })}
-                  </tr>
-                );
-            })}
-          </tbody>
-        </table>
-      </div>
+
+                  <div>{format(startDate, 'dd.MM')}</div>
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({length: 25}, (_, timeIndex) => {
+            const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+            if (currentTime.getHours() >= startingHour)
+              return (
+                <tr key={Math.random() * 100 - 1}>
+                  {startDates.map((date, dateIndex) => {
+                    const slot = (weekSchedule[dateIndex] || []).find(
+                      el => el.time === format(currentTime, 'HH:mm')
+                    );
+                    return (
+                      <ScheduleCell
+                        key={`${dateIndex}_${currentTime}`}
+                        userId={userId}
+                        slot={slot}
+                        currentTime={currentTime}
+                        date={date}
+                        dateIndex={dateIndex}
+                        startDates={startDates}
+                        setOpenSlotDetails={setOpenSlotDetails}
+                        setSelectedSlotDetails={setSelectedSlotDetails}
+                        selectedAppointment={selectedAppointment}
+                        dispatch={dispatch}
+                      />
+                    );
+                  })}
+                </tr>
+              );
+          })}
+        </tbody>
+      </table>
+      {/* </div> */}
       <SlotDetails
         isOpen={openSlotDetails}
         handleClose={() => {
