@@ -25,6 +25,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import ReplacementsPage from './pages/Admin/ReplacementPage';
 import TeacherWrapper from './pages/Teacher/TeacherWrapper';
 import TeacherSubgroupPage from './pages/Teacher/TeacherSubgroupsPage';
+import Spreadsheet from './pages/Admin/SpreadsheetPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -67,6 +68,9 @@ const App = () => {
 
               <Route path={path.superAdmin} element={<Navigate to={path.users} />} />
               <Route path={path.superAdmin} element={<SuperAdministratorPage />}>
+                {userRole === 'superAdmin' && (
+                  <Route path={path.spreadsheet} element={<Spreadsheet></Spreadsheet>} />
+                )}
                 <Route path={path.users} element={<UsersPage />} />
                 <Route path={path.courses} element={<CoursesPage />} />
                 <Route path={path.appointments} element={<Appointment />} />

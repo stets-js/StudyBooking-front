@@ -18,7 +18,8 @@ const SuperAdministrator = () => {
           {text: 'Appointment', path: path.appointments},
           {text: 'Available mentors', path: path.avaliableTable},
           {text: 'Subgroups', path: path.subgroups},
-          {text: 'Replacements', path: path.replacements}
+          {text: 'Replacements', path: path.replacements},
+          userRole === 'superAdmin' ? {text: 'Spreadsheet', path: path.spreadsheet} : {}
         ]}
       />
       <section className={styles.main_wrapper}>

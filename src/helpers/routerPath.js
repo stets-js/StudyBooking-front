@@ -1,6 +1,7 @@
 const path = {
   all: '*',
   home: '/',
+  spreadsheet: 'spreadsheet',
   mySubgroups: 'mySubgroups/',
   resetPassword: '/resetPassword/:token',
   avaliableTable: 'available/',
