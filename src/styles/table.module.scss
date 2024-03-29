@@ -1,6 +1,7 @@
 @import './App.scss';
 
 .scroller {
+  margin-top: 40px;
   overflow-y: auto;
   height: 600px;
   border:2px solid black;
@@ -21,7 +22,6 @@
   table-layout: fixed;
   margin-left: 5%;
 
-  padding: 10px;
   background-color: white;
   font-family: $poppins;
   border-spacing: 0 !important;
@@ -65,7 +65,7 @@ tr:last-child {
 }
 .tableHeader {
   border: 2px solid transparent;
-  width: 91%;
+  width: 90%;
 }
 .tableBody {
   border-collapse: collapse;
@@ -105,7 +105,7 @@ tr:last-child td:last-child .cell {
     width: 99%;
     border-left: 2px solid black;
     
-    border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
+    // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
   }
 
 

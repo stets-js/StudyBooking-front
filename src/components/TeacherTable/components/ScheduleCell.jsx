@@ -2,6 +2,7 @@ import React from 'react';
 import {format, addMinutes} from 'date-fns';
 
 import tableStyles from '../../../styles/table.module.scss';
+import appointmentStyles from '../../../styles/appointment.module.scss';
 import {HandleCellClick} from '../scripts/handleCellClick';
 
 export default function ScheduleCell({
@@ -33,10 +34,10 @@ export default function ScheduleCell({
           }
           className={`${tableStyles.cell} ${
             // key can be generated only for appointed
-            !slot?.rowSpan ? tableStyles[`hover__${selectedAppointment.name}`] : ''
+            !slot?.rowSpan ? appointmentStyles[`hover__${selectedAppointment.name}`] : ''
           }  ${
             slot && slot.AppointmentType
-              ? tableStyles[`type_selector__${slot.AppointmentType.name}`]
+              ? appointmentStyles[`type_selector__${slot.AppointmentType.name}`]
               : ''
           } `}
           onClick={() => {
