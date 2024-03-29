@@ -28,11 +28,11 @@ export default function ScheduleCell({
           style={
             slot?.rowSpan
               ? {
-                  height: `${35 * slot?.rowSpan + (slot?.rowSpan === 3 ? 3 : 2) * slot?.rowSpan}px`
+                  height: `${58 * slot?.rowSpan}px`
                 }
               : {}
           }
-          className={`${tableStyles.cell} ${
+          className={`${tableStyles.cell} ${tableStyles.black_borders} ${
             // key can be generated only for appointed
             !slot?.rowSpan ? appointmentStyles[`hover__${selectedAppointment.name}`] : ''
           }  ${
@@ -56,7 +56,7 @@ export default function ScheduleCell({
           }}
           value={
             slot?.rowSpan
-              ? `${format(currentTime, 'HH:mm')} - ${format(
+              ? `${format(currentTime, 'HH:mm')}\n-\n${format(
                   addMinutes(currentTime, 30 * slot?.rowSpan),
                   'HH:mm'
                 )} `

@@ -9,13 +9,19 @@
   padding: 2px;
 }
 .filters {
-  display: grid;
-  width: 50%;
-  margin-left: 25%;
+  width:80;
+  margin-left: 5%;
+  margin-right: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &__item {
-    align-items: end;
-    width: 100% !important;
+    width: 25% !important;
+
   }
+}
+.filters__item:last-child{
+  margin-left:auto;
 }
 .ul_items {
   color: $font-black;
@@ -153,7 +159,7 @@
 }
 .dates_wrapper {
   margin-top: 30px;
-  margin-bottom:30px;
+  margin-bottom: 30px;
   height: 40px;
   display: flex;
 }
@@ -230,15 +236,12 @@
     min-height: 50px;
     font-family: $poppins;
   }
-  &__filtering {
-    :has(div) {
-      background-color: $tableItem-greenHover;
-    }
-  }
+
 }
 .selector [class*='menu'] {
   /* Your styles for the specific div with a class containing 'menu' */
-  width: inherit;
+  min-width: 100%;
+  
 }
 .reset_wrapper {
   width: 60%;

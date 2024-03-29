@@ -77,7 +77,9 @@ const App = () => {
                 <Route path={path.avaliableTable} element={<AvaliableTable />} />
                 <Route
                   path={path.superAdmin + path.teacher}
-                  element={<TeacherWrapper hideLogo={true} hideLogin={true} />}>
+                  element={
+                    <TeacherWrapper hideLogo={true} hideLogin={true} bottom_padding={true} />
+                  }>
                   <Route
                     path={`${path.superAdmin + 'teacher/'}:teacherId`}
                     element={<TeacherPage />}

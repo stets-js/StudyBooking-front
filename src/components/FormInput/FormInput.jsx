@@ -65,7 +65,6 @@ const FormInput = ({
           autoComplete="off"
           onClick={type === 'button' ? handler : () => {}}
           onChange={e => {
-            console.log(123);
             handler(e.currentTarget.value);
           }}
         />

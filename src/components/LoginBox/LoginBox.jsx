@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import styles from './LoginBox.module.scss';
-import SettingsModal from '../modals/SettingsModal/SettingsModal';
 import Login from '../modals/Login/Login';
 import SignUp from '../modals/SignUp/SignUp';
-import settingsIco from '../../img/icons/settings.png';
 import {useDispatch, useSelector} from 'react-redux';
 import logout from '../../img/logout.svg';
 
@@ -29,7 +27,25 @@ export default function LoginBox({loggedUser}) {
         {modal === 'login' && <Login isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />}
         {modal === 'signup' && <SignUp isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />}
         {auth ? (
-          <p className={styles.role}>Logged: {name}</p>
+          <>
+            <span className={styles.role}>Logged: {name}</span>
+            {auth && (
+              <button
+                type="button"
+                className={styles.logout}
+                onClick={() => {
+                  localStorage.removeItem('booking');
+                  dispatch({
+                    type: 'LOGOUT'
+                  });
+                  dispatch({
+                    type: 'REMOVE_SELECTED_USER'
+                  });
+                }}>
+                <img src={logout} alt="logout" />
+              </button>
+            )}
+          </>
         ) : (
           <button
             type="button"
@@ -42,22 +58,6 @@ export default function LoginBox({loggedUser}) {
           </button>
         )}
       </div>
-      {auth && (
-        <button
-          type="button"
-          className={styles.logout}
-          onClick={() => {
-            localStorage.removeItem('booking');
-            dispatch({
-              type: 'LOGOUT'
-            });
-            dispatch({
-              type: 'REMOVE_SELECTED_USER'
-            });
-          }}>
-          <img src={logout} alt="logout" />
-        </button>
-      )}
     </div>
   );
 }

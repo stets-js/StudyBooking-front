@@ -6,7 +6,7 @@ import path from '../../helpers/routerPath';
 import {Outlet} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
-const TeacherWrapper = ({hideLogo = false, hideLogin = false}) => {
+const TeacherWrapper = ({hideLogo = false, hideLogin = false, bottom_padding = false}) => {
   const id = useSelector(state => state.selectedUser.id);
   return (
     <>
@@ -20,7 +20,7 @@ const TeacherWrapper = ({hideLogo = false, hideLogin = false}) => {
             path: id ? `${path.mySubgroups}${id}` : path.mySubgroups
           }
         ]}
-        bottom_padding={true}
+        bottom_padding={bottom_padding}
       />
       <section>
         <Outlet />
