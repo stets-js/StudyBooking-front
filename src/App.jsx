@@ -54,7 +54,7 @@ const App = () => {
     }
   );
   // }, [token]);
-
+  console.log(userRole);
   return (
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 
-import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
 
 import {getSlotsForUser} from '../../helpers/teacher/slots';
@@ -65,7 +64,10 @@ export default function TeacherTable({userId}) {
         user={user}
         setSelectedAppointment={setSelectedAppointment}></AppointmentList>
 
-      <WeekChanger startDates={startDates} setStartDates={setStartDates}></WeekChanger>
+      <WeekChanger
+        startDates={startDates}
+        setStartDates={setStartDates}
+        userName={user.name}></WeekChanger>
       {/* <div className={tableStyles.scroller}> */}
       {/* <div className={tableStyles.calendar}> */}
       <div>

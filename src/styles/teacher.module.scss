@@ -144,13 +144,17 @@
 .occupied {
   background-color: red;
 }
-
+.flex {
+  display: flex;
+  align-self: center;
+  flex: 1;
+  justify-content: center;
+  margin-left: 290px;
+}
 .dates_wrapper {
   margin-top: 30px;
   height: 40px;
-  align-items: center;
   display: flex;
-  justify-content: center;
 }
 
 .teacherInfo {
@@ -251,4 +255,10 @@
 .reset_button:disabled {
   border-color: grey;
   color: grey;
+}
+
+.mentor_name {
+  margin-left: 0;
+  width: 200px;
+  margin-right: 70px;
 }
