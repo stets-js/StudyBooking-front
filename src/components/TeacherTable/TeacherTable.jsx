@@ -59,63 +59,65 @@ export default function TeacherTable({userId}) {
 
   return (
     <div>
-      <WeekChanger startDates={startDates} setStartDates={setStartDates}></WeekChanger>
       <AppointmentList
         setAppointmentTypes={setAppointmentTypes}
         appointmentTypes={appointmentTypes}
         user={user}
         setSelectedAppointment={setSelectedAppointment}></AppointmentList>
 
+      <WeekChanger startDates={startDates} setStartDates={setStartDates}></WeekChanger>
       {/* <div className={tableStyles.scroller}> */}
-      <table className={tableStyles.calendar}>
-        <thead className={tableStyles.tableHeader}>
-          <tr>
-            {startDates.map((startDate, dateIndex) => (
-              <th key={dateIndex} className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>
-                <div>
-                  <div>
+      {/* <div className={tableStyles.calendar}> */}
+      <div>
+        <table className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}>
+          <thead>
+            <tr>
+              {startDates.map((startDate, dateIndex) => (
+                <th key={dateIndex} className={`${tableStyles.columns} ${tableStyles.sticky}`}>
+                  <div className={tableStyles.cell__header}>
                     {format(startDate, 'EEEE').charAt(0).toUpperCase() +
-                      format(startDate, 'EEEE').slice(1)}
+                      format(startDate, 'EEEE').slice(1, 3)}
                   </div>
-
-                  <div>{format(startDate, 'dd.MM')}</div>
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {Array.from({length: 25}, (_, timeIndex) => {
-            const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
-            if (currentTime.getHours() >= startingHour)
-              return (
-                <tr key={Math.random() * 100 - 1}>
-                  {startDates.map((date, dateIndex) => {
-                    const slot = (weekSchedule[dateIndex] || []).find(
-                      el => el.time === format(currentTime, 'HH:mm')
-                    );
-                    return (
-                      <ScheduleCell
-                        key={`${dateIndex}_${currentTime}`}
-                        userId={userId}
-                        slot={slot}
-                        currentTime={currentTime}
-                        date={date}
-                        dateIndex={dateIndex}
-                        startDates={startDates}
-                        setOpenSlotDetails={setOpenSlotDetails}
-                        setSelectedSlotDetails={setSelectedSlotDetails}
-                        selectedAppointment={selectedAppointment}
-                        dispatch={dispatch}
-                      />
-                    );
-                  })}
-                </tr>
-              );
-          })}
-        </tbody>
-      </table>
-      {/* </div> */}
+                </th>
+              ))}
+            </tr>
+          </thead>
+        </table>
+        <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
+          <table className={tableStyles.tableBody}>
+            <tbody>
+              {Array.from({length: 25}, (_, timeIndex) => {
+                const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+                if (currentTime.getHours() >= startingHour)
+                  return (
+                    <tr key={Math.random() * 100 - 1}>
+                      {startDates.map((date, dateIndex) => {
+                        const slot = (weekSchedule[dateIndex] || []).find(
+                          el => el.time === format(currentTime, 'HH:mm')
+                        );
+                        return (
+                          <ScheduleCell
+                            key={`${dateIndex}_${currentTime}`}
+                            userId={userId}
+                            slot={slot}
+                            currentTime={currentTime}
+                            date={date}
+                            dateIndex={dateIndex}
+                            startDates={startDates}
+                            setOpenSlotDetails={setOpenSlotDetails}
+                            setSelectedSlotDetails={setSelectedSlotDetails}
+                            selectedAppointment={selectedAppointment}
+                            dispatch={dispatch}
+                          />
+                        );
+                      })}
+                    </tr>
+                  );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
       <SlotDetails
         isOpen={openSlotDetails}
         handleClose={() => {

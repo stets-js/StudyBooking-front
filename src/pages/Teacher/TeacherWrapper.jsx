@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../styles/SuperAdminPage.module.scss';
+import teacherStyles from '../../styles/teacher.module.scss';
 import Header from '../../components/Header/Header';
 import path from '../../helpers/routerPath';
 import {Outlet} from 'react-router-dom';
@@ -9,7 +10,6 @@ const TeacherWrapper = ({hideLogo = false, hideLogin = false}) => {
   const id = useSelector(state => state.selectedUser.id);
   return (
     <>
-      {/* TODO: Remove login box from header in case of teacher!! */}
       <Header
         hideLogo={hideLogo}
         hideLogin={hideLogin}
@@ -20,8 +20,9 @@ const TeacherWrapper = ({hideLogo = false, hideLogin = false}) => {
             path: id ? `${path.mySubgroups}${id}` : path.mySubgroups
           }
         ]}
+        bottom_padding={true}
       />
-      <section className={styles.main_wrapper}>
+      <section>
         <Outlet />
       </section>
     </>

@@ -5,10 +5,10 @@ import Navigation from '../Navigation/Navigation';
 import styles from './Header.module.scss';
 import {useSelector} from 'react-redux';
 
-export default function Header({endpoints = [], user, hideLogo, hideLogin}) {
+export default function Header({endpoints = [], user, hideLogo, hideLogin, bottom_padding}) {
   const loggedUser = useSelector(state => state.auth);
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${bottom_padding ? styles.nav_header : ''}`}>
       {!hideLogo && (
         <a
           className={styles['logoLink']}

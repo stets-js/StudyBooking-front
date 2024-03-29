@@ -1,271 +1,254 @@
-@import "./App.scss";
+@import './App.scss';
 
 // #d5e8d4 / #d5e8d4 - group collor
 // #d5e8d4 / #d5e8d4- indiv
 // #d5e8d4 / #d5e8d4 -zamina
-.action_wrapper{
-    display: flex;
-    column-gap: 4px;
-    padding: 2px;
+.action_wrapper {
+  display: flex;
+  column-gap: 4px;
+  padding: 2px;
 }
-.filters{
-    display: grid;
-    width: 50%;
-    margin-left: 25%;
-    &__item{
-        align-items: end;
-        width: 100% !important;
-    }
+.filters {
+  display: grid;
+  width: 50%;
+  margin-left: 25%;
+  &__item {
+    align-items: end;
+    width: 100% !important;
+  }
 }
 .ul_items {
-    color: $font-black;
-    transition: 200ms linear;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:center;
-    margin: 5px;
-    
-  }
-  .ul_items_text:hover{
-    color:$blue;
-  }
-.teacher_name{
-    margin: 0 !important;
+  color: $font-black;
+  transition: 200ms linear;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 5px;
 }
-  .ul_items_link {
-    margin: 12px auto;
-    color: $font-black;
-    transition: 200ms linear;
-  }
-  .ul_items_text {
-    font-family: "Poppins";
-    font-weight: 400;
-    font-size: 20px;
-    text-align: center;
-    flex:1;
-    margin-right: 10px;
-  }
+.ul_items_text:hover {
+  color: $blue;
+}
+.teacher_name {
+  margin: 0 !important;
+}
+.ul_items_link {
+  margin: 12px auto;
+  color: $font-black;
+  transition: 200ms linear;
+}
+.ul_items_text {
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 20px;
+  text-align: center;
+  flex: 1;
+  margin-right: 10px;
+}
 
 .input__label {
-    font-family: $poppins;
-    font-size: 20px;
-    width: 45%;
-    margin-bottom: 10px;
-    display: flex;
-  }
+  font-family: $poppins;
+  font-size: 20px;
+  width: 45%;
+  margin-bottom: 10px;
+  display: flex;
+}
 .selectedCell {
-    background-color: #9cc7f5; 
+  background-color: #9cc7f5;
+}
+.half_width {
+  width: 50% !important;
+  left: 26%;
+}
+.date_selector {
+  font-size: 26px;
+  font-family: $poppins;
+  font-weight: 500;
+}
+.replacement_wrapper {
+  font-size: 20px;
+  font-family: $poppins;
+  display: grid;
+}
+.filter_wrapper {
+  display: grid;
+  background-color: white;
+  grid-template-columns: 1fr 1fr auto;
+  margin-bottom: 20px;
+  column-gap: 10px;
+  align-items: flex-end;
+}
+.grid_item {
+  width: 100%;
+}
+.green {
+  background-color: $tableItem-greenHover;
+}
+.one_day_wrapper {
+  display: grid;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  :has(div) {
+    display: flex;
+    margin-left: 13%;
   }
-  .half_width{
-    width: 50% !important;
-    left:26%;
-  }
-.date_selector{
-    font-size: 26px;
-    font-family: $poppins;
-    font-weight: 500;
 }
-.replacement_wrapper{
-    font-size: 20px;
-    font-family: $poppins;
-    display: grid;
-}
-.filter_wrapper{
-    display: grid;
-    background-color: white;
-    grid-template-columns: 1fr 1fr auto;
-    margin-bottom: 20px;
-    column-gap: 10px;
-    align-items: flex-end;
-}
-.grid_item{
-    width:100%;
-}
-.green{
-    background-color: $tableItem-greenHover;
-}
-.one_day_wrapper{
-    display: grid;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    :has(div){
-        display: flex;
-        margin-left: 13%;
-    }
-}
-.subgroup_selector{
-   
-    width: 100% !important;
-    margin-left: 0 !important;
+.subgroup_selector {
+  width: 100% !important;
+  margin-left: 0 !important;
 }
 
-.mentors_wrapper{
-    word-wrap: normal;
+.mentors_wrapper {
+  word-wrap: normal;
 }
 
-.available_cell:first-child{
-    width: 35% !important;
+.available_cell:first-child {
+  width: 35% !important;
 }
-.available_cell:not(:first-child){
-    width: 40%;
-}
-
-.replacement_cell:first{
-    width: 20%;
-}
-.subgroup_cell:last-child{
-    width: 25% !important;
+.available_cell:not(:first-child) {
+  width: 40%;
 }
 
+.replacement_cell:first {
+  width: 20%;
+}
+.subgroup_cell:last-child {
+  width: 25% !important;
+}
 
-.tableHeader{
-    font-size: 20px;
-    background-color: $tableItem-darkOrangeColor;
-    height: 20px;
-    font-weight: 600;
+.tableHeader {
+  font-size: 20px;
+  background-color: $tableItem-darkOrangeColor;
+  height: 20px;
+  font-weight: 600;
 }
-.sticky{
-    position: sticky;
-    top: 0px;
-    background: $tableItem-darkOrangeColor;
-    
-}
+
 .chooser_selector__item {
-    &__date{
-    min-width:160px;
+  &__date {
+    min-width: 160px;
     max-width: 200px;
+  }
 }
-}
-.choosed{
-    opacity: 1;
+.choosed {
+  opacity: 1;
 }
 
-
-.big_cell{
-    height: 100% !important;
-    width: 100%;
+.big_cell {
+  height: 100% !important;
+  width: 100%;
 }
-.columns{
-    width:150px;
+.columns {
+  width: 150px;
 }
 
 .occupied {
-    background-color: red;
-  }
-  
-
-.buttons_header{
-    display: flex;
-}
-.dates_wrapper{
-    height: 40px;
-    align-items: center;
-    display:flex;
-justify-content: center;
+  background-color: red;
 }
 
-.teacherInfo{
-    margin-left: auto;
-    margin-right:20px;
-    font-size: 20px;
-}
-.week_selector{
-    // background-color: #6ca7df;
-    font-size: 26px;
-    background-color: transparent;    
+.dates_wrapper {
+  margin-top: 30px;
+  height: 40px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
-.chooser_selector{
+.teacherInfo {
+  margin-left: auto;
+  margin-right: 20px;
+  font-size: 20px;
+}
+.week_selector {
+  // background-color: #6ca7df;
+  font-size: 26px;
+  background-color: transparent;
+}
+
+.chooser_selector {
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr 2fr 2fr 2fr 1fr;
+  align-items: end;
+  margin-left: 2%;
+  width: 100%;
+  column-gap: 10px;
+  margin-right: 10%;
+  &__item:last-child {
+    grid-template-columns: 1fr 1fr;
     display: grid;
-    grid-template-columns: 3fr 2fr 2fr 2fr 2fr 2fr 1fr ;
-    align-items: end;
-    margin-left: 2%;
-    width: 100%;
-    column-gap: 10px;
-    margin-right: 10%;
-    &__item:last-child{
-        grid-template-columns: 1fr 1fr;
-        display: grid;
-    }
+  }
 }
 
-.search_wrapper{
-    width: 60%;
-    
+.search_wrapper {
+  width: 60%;
 }
 
-.button{
-    font-size: 20px;
-    border-radius: 10px;
-    padding:10px;
-    margin:2px;
-    text-align: center;
-    width: auto;
-    &__add{
-        color:#33A64C ;
-        border:1px solid #33A64C;
-        
-    }
-    &__add:disabled{
-        color:#7c7c7c ;
-        border:1px solid #7c7c7c;
-        background-color: white;
-    }
-    &__edit{
-        color: green;
-        border:1px solid green;
-    }
-    &__delete{
-        color:red ;
-        border:1px solid red;
-
-}
-}
-
-.selector{
-    width:100%;
-    margin-top: 10px;    
-    font-family: $poppins;
-    :has(span){
-    height: auto;
-    }
-    :has(svg){
-        color:black
-    }
-    
-    :has(div){
-        background-color: $grey;
-        font-size: 20px;
-        min-height: 50px;
-        font-family: $poppins;
-      
-    }
-    &__filtering{
-        :has(div){
-        background-color: $tableItem-greenHover;
-    }
-}
-
-}
-.selector [class*="menu"] {
-    /* Your styles for the specific div with a class containing 'menu' */
-    width: inherit;
-}
-.reset_wrapper{
-    width: 60%;
-    margin-left: 20%;
-}
-.reset_button{
-    font-family: $poppins;
-    font-size: 20px;
-    padding: 10px;
+.button {
+  font-size: 20px;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 2px;
+  text-align: center;
+  width: auto;
+  &__add {
+    color: #33a64c;
+    border: 1px solid #33a64c;
+  }
+  &__add:disabled {
+    color: #7c7c7c;
+    border: 1px solid #7c7c7c;
+    background-color: white;
+  }
+  &__edit {
     color: green;
-    border: 2px solid green;
-    border-radius: 10px;
-    margin-top: 10px;
+    border: 1px solid green;
+  }
+  &__delete {
+    color: red;
+    border: 1px solid red;
+  }
 }
-.reset_button:disabled{
-    border-color: grey;
-    color:grey
+
+.selector {
+  width: 100%;
+  margin-top: 10px;
+  font-family: $poppins;
+  :has(span) {
+    height: auto;
+  }
+  :has(svg) {
+    color: black;
+  }
+
+  :has(div) {
+    background-color: $grey;
+    font-size: 20px;
+    min-height: 50px;
+    font-family: $poppins;
+  }
+  &__filtering {
+    :has(div) {
+      background-color: $tableItem-greenHover;
+    }
+  }
+}
+.selector [class*='menu'] {
+  /* Your styles for the specific div with a class containing 'menu' */
+  width: inherit;
+}
+.reset_wrapper {
+  width: 60%;
+  margin-left: 20%;
+}
+.reset_button {
+  font-family: $poppins;
+  font-size: 20px;
+  padding: 10px;
+  color: green;
+  border: 2px solid green;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.reset_button:disabled {
+  border-color: grey;
+  color: grey;
 }

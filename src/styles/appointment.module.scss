@@ -1,0 +1,79 @@
+@import './App.scss';
+
+.buttons_header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  column-gap: 10px;
+}
+.type_selector {
+  height: 88px;
+  padding: 10px;
+  font-size: 24px;
+  font-family: $poppins;
+  width: 180px;
+  border-radius: 10px;
+
+  &__group {
+    background-color: $group-color;
+    border: 1px solid $group-color-border;
+    // opacity: 0.75;
+  }
+  &__replacement {
+    &_group {
+      background-color: $zamina-color;
+      border: 1px solid $zamina-color-border;
+    }
+    &_private {
+      background-color: $indiv-color;
+      border: 1px solid $indiv-color-border;
+    }
+  }
+  &__appointed {
+    &_group {
+      background-color: $appointed_group;
+    }
+    &_private {
+      background-color: $appointed_private;
+    }
+  }
+  &__private {
+    background-color: $indiv-color;
+    border: 1px solid $indiv-color-border;
+    // opacity: 0.75;
+  }
+
+  &__replacement {
+    background-color: $zamina-color;
+    border: 1px solid $zamina-color-border;
+    // opacity: 0.75;
+  }
+  &__free {
+    background-color: transparent;
+    border: 1px solid black;
+    // opacity: 0.75;
+  }
+  &__universal {
+    background-color: $universal-color;
+    border: 1px solid $universal-color-border;
+  }
+}
+.hover {
+  &__private:hover {
+    background-color: $indiv-color;
+  }
+  &__free:hover {
+    background-color: transparent;
+  }
+  &__group:hover {
+    background-color: $group-color;
+  }
+  &__replacement:hover {
+    background-color: $zamina-color;
+  }
+  &__universal:hover {
+    background-color: $universal-color;
+    border: 1px solid $universal-color-border;
+  }
+}

@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 
 import styles from '../../../styles/teacher.module.scss';
+import appointmentStyles from '../../../styles/appointment.module.scss';
 import {getAppointmentTypes} from '../../../helpers/teacher/appointment-type';
 
 export default function AppointmentList({
@@ -56,18 +57,20 @@ export default function AppointmentList({
   };
 
   return (
-    <div className={styles.buttons_header}>
+    <div className={appointmentStyles.buttons_header}>
       {appointmentTypes.map(appointmentType => (
         <button
           key={appointmentType.id}
           onClick={() => {
             setSelectedAppointment({name: appointmentType.name, id: appointmentType.id});
           }}
-          className={`${styles.type_selector} ${styles[`type_selector__${appointmentType.name}`]}`}>
+          className={`${appointmentStyles.type_selector} ${
+            appointmentStyles[`type_selector__${appointmentType.name}`]
+          }`}>
           {translateAppointmentTypeName(appointmentType.name)}
         </button>
       ))}
-      <div className={styles.teacherInfo}>Mentor: {user?.name}</div>
+      {/* <div className={styles.teacherInfo}>Mentor: {user?.name}</div> */}
     </div>
   );
 }

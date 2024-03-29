@@ -15,13 +15,13 @@ export default function WeekChanger({startDates, setStartDates}) {
   return (
     <div className={`${styles.dates_wrapper} ${styles.date_selector}`}>
       <button onClick={handlePrevWeek} className={styles.week_selector}>
-        {`<<`}
+        {`<`}&nbsp;
       </button>
       <div>
         {format(startDates[0], 'dd.MM')} - {format(startDates[6], 'dd.MM')}
       </div>
       <button onClick={handleNextWeek} className={styles.week_selector}>
-        {`>>`}
+        &nbsp;{`>`}
       </button>
     </div>
   );
