@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 
 import styles from '../../styles/teacher.module.scss';
+import tableStyles from '../../styles/table.module.scss';
 import {deleteReplacement, getReplacements} from '../../helpers/replacement/replacement';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
@@ -75,86 +76,80 @@ export default function ReplacementsPage() {
   );
   return (
     <div>
-      <div className={styles.calendar__available}>
-        <div className={styles.filter_wrapper}>
-          <div className={styles.grid_item}>
-            <FormInput
-              type="text"
-              placeholder="Filter by name..."
-              value={searchQuery}
-              classname={'green'}
-              handler={setSearchQuery}
-            />
-          </div>
-          <Select
-            className={`${styles.selector} ${styles.selector__filtering} ${styles.subgroup_selector}`}
-            options={courses}
-            placeholder={'Select course'}
-            onChange={el => setSelectedCourse(el?.value || null)}
-            isClearable></Select>
+      <div className={`${styles.filter_wrapper} ${styles.filter_wrapper__subgroup}`}>
+        <Select
+          className={`${styles.selector} ${styles.selector__filtering}`}
+          options={courses}
+          placeholder={'Select course'}
+          onChange={el => setSelectedCourse(el?.value || null)}
+          isClearable></Select>
+        <div className={`${styles.name_long} ${styles.flex_to_right}`}>
+          <FormInput
+            type="text"
+            placeholder="Filter by name..."
+            value={searchQuery}
+            height={'52px'}
+            handler={setSearchQuery}
+          />
         </div>
-        <table className={styles.table}>
-          <thead className={styles.tableHeader}>
+      </div>
+      <table className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar}`}>
+        <tbody>
+          {filteredReplacements.length === 0 ? (
             <tr>
-              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Subgroup</th>
-              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Mentor</th>
-              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Schedule</th>
-              <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Action</th>
+              <td
+                colSpan={4}
+                className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                Ops, can't find Replacement...
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {
-              // loader ? (
-              //   <tr>
-              //     <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
-              //       Loading...
-              //     </td>
-              //   </tr>
-              // ) :
-              filteredReplacements.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className={`${styles.cell} ${styles.subgroup_cell}`}>
-                    Ops, can't find Replacement...
+          ) : (
+            filteredReplacements.map(element => {
+              return (
+                <tr key={element.id}>
+                  <td
+                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                    {element?.SubGroup?.name}
+                  </td>
+                  <td
+                    key={element?.id}
+                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                    {element?.Mentor?.name}
+                  </td>
+                  <td
+                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                    {element?.schedule.split(',').map(date => {
+                      return (
+                        <>
+                          {date} <br />
+                        </>
+                      );
+                    })}
+                  </td>
+                  <td
+                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                    <div className={styles.action_wrapper}>
+                      <button
+                        className={`${styles.button} ${styles.button__edit}`}
+                        onClick={() => {
+                          setSelectedId(element.id);
+                          setIsOpen(!isOpen);
+                        }}>
+                        Edit
+                      </button>
+                      <button
+                        className={`${styles.button} ${styles.button__delete}`}
+                        onClick={() => handleDelete(element.id)}>
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
-              ) : (
-                filteredReplacements.map(element => {
-                  return (
-                    <tr key={element.id}>
-                      <td className={`${styles.cell} ${styles.available_cell}`}>
-                        {element?.SubGroup?.name}
-                      </td>
-                      <td className={`${styles.cell} ${styles.available_cell}`}>
-                        {element?.Mentor?.name}
-                      </td>
-                      <td className={`${styles.cell} ${styles.available_cell}`}>
-                        {element?.schedule}
-                      </td>
-                      <td className={`${styles.cell} ${styles.available_cell}`}>
-                        <div className={styles.action_wrapper}>
-                          <button
-                            className={`${styles.button} ${styles.button__edit}`}
-                            onClick={() => {
-                              setSelectedId(element.id);
-                              setIsOpen(!isOpen);
-                            }}>
-                            Edit
-                          </button>
-                          <button
-                            className={`${styles.button} ${styles.button__delete}`}
-                            onClick={() => handleDelete(element.id)}>
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              )
-            }
-          </tbody>
-        </table>
-      </div>
+              );
+            })
+          )}
+        </tbody>
+      </table>
       <ChangeReplacement
         isOpen={isOpen}
         handleClose={() => setIsOpen(!isOpen)}

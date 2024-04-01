@@ -137,11 +137,11 @@ export default function SubGroupPage() {
           <Select
             className={`${styles.selector} ${styles.selector__filtering} ${styles.filter_wrapper__available__item}`}
             options={courses}
-            placeholder={'Select course'}
+            placeholder={'Course'}
             onChange={el => setSelectedCourse(el?.value || null)}
             isDisabled={isOneDay}
             isClearable></Select>
-          <div className={styles.filter_wrapper__available__item}>
+          <div className={`${styles.filter_wrapper__available__item} ${styles.name_long}`}>
             <FormInput
               type="text"
               placeholder="Name..."

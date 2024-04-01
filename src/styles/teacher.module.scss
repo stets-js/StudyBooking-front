@@ -82,6 +82,11 @@
   margin-bottom: 20px;
   column-gap: 10px;
   align-items: flex-end;
+  &__subgroup{
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+  }
   &__available {
     width: 70%;
     margin-left: 15%;
@@ -95,7 +100,15 @@
     }
   }
 }
-
+.name_long{
+  width:374px;
+}
+.name_long::placeholder{
+  text-align: center;
+}
+.flex_to_right{
+  margin-left: auto;
+}
 .green {
   background-color: $tableItem-greenHover;
 }
