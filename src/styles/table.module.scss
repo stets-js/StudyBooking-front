@@ -37,37 +37,37 @@ th,
 td {
   padding: 0;
 }
-tr:nth-child(2) {
-  td:not(:first-child):not(:last-child) {
-    border-top: 1px solid black;
-  }
-}
+// tr:nth-child(2) {
+//   td:not(:first-child):not(:last-child) {
+//     border-top: 1px solid black;
+//   }
+// }
 
-tr:first-child {
-  .cell {
-    border-top: 0 !important;
-    border-bottom: 0 !important;
-  }
+// tr:first-child {
+//   .cell {
+//     border-top: 0 !important;
+//     border-bottom: 0 !important;
+//   }
 
-  td:last-child .cell,
-  td:first-child .cell {
-    border-top: 0;
-    border-bottom: 1px solid black;
-  }
-  td:not(:first-child):not(:last-child) .cell {
-    border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
-  }
-}
+//   td:last-child .cell,
+//   td:first-child .cell {
+//     border-top: 0;
+//     border-bottom: 1px solid black;
+//   }
+//   td:not(:first-child):not(:last-child) .cell {
+//     // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
+//   }
+// }
 
-tr:last-child {
-  td:first-child .cell {
-    border-bottom: 0;
-    border-image: linear-gradient(to left, #000 77%, transparent 77%) 100% 1 !important;
-  }
-  td .cell {
-    border-bottom: 0;
-  }
-}
+// tr:last-child {
+//   td:first-child .cell {
+//     // border-bottom: 0;
+//     // border-image: linear-gradient(to left, #000 77%, transparent 77%) 100% 1 !important;
+//   }
+//   td .cell {
+//     border-bottom: 0;
+//   }
+// }
 .tableHeader {
   border: 2px solid transparent;
   width: 90%;
@@ -84,28 +84,30 @@ tr:last-child {
   border-collapse: collapse;
   width: 100%;
 }
-tr {
-  td:first-child .cell {
-    border: 1px solid black;
-    border-image: linear-gradient(to left, #000 77%, transparent 77%) 100% 1 !important;
-  }
-  td:last-child .cell {
-    border: 1px solid black;
-    border-image: linear-gradient(to right, #000 77%, transparent 77%) 100% 1 !important;
-  }
-  td:nth-last-child(2) .cell {
-    border-right: 2px solid black;
-  }
-  td:nth-child(2) .cell {
-    border-left: 2px solid black;
-  }
-}
-tr:last-child td:last-child .cell {
-  border-bottom: 0px;
-  border-image: linear-gradient(to right, #000 77%, transparent 77%) 100% 1 !important;
-}
+// tr {
+//   td:first-child .cell {
+//     border-left: 0;
+//     // border: 1px solid black;
+//     // border-image: linear-gradient(to left, #000 77%, transparent 77%) 100% 1 !important;
+//   }
+//   td:last-child .cell {
+//     // border: 1px solid black;
+//     border-right: 0 !important;
+//     // border-image: linear-gradient(to right, #000 77%, transparent 77%) 100% 1 !important;
+//   }
+//   // td:nth-last-child(2) .cell {
+//   //   border-right: 2px solid black;
+//   // }
+//   // td:nth-child(2) .cell {
+//   //   border-left: 2px solid black;
+//   // }
+// }
+// tr:last-child td:last-child .cell {
+//   border-bottom: 0px;
+//   // border-image: linear-gradient(to right, #000 77%, transparent 77%) 100% 1 !important;
+// }
 
-.cell__header__mySubgroup:first-child{
+.cell__header__mySubgroup:first-child {
   border-left: 0;
 }
 
@@ -117,6 +119,10 @@ tr:last-child td:last-child .cell {
   height: 58px;
   text-align: center;
   font-size: 24px;
+  &__inner {
+  }
+  &__outer {
+  }
   &__header {
     border-collapse: collapse;
     font-family: $poppins;
@@ -126,7 +132,7 @@ tr:last-child td:last-child .cell {
     &__mySubgroup {
       padding: 10px;
       text-align: center;
-      width:auto !important;
+      width: auto !important;
       font-size: 30px !important;
     }
     // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
@@ -136,7 +142,6 @@ tr:last-child td:last-child .cell {
     width: 30% !important;
   }
   &__mySubgroup {
-    
     font-size: 20px;
     word-break: break-word;
     width: auto !important;
@@ -151,8 +156,20 @@ tr:last-child td:last-child .cell {
     word-break: break-word;
   }
 }
+tr:first-child .cell__outer{
+  border-top: 0;
+}
+tr:last-child .cell__outer{
+  border-bottom: 0;
+}
+tr td:first-child .cell__outer{
+  border-left: 0;
+}
+tr td:last-child .cell__outer{
+  border-right: 0;
+}
 
- th:first-child .cell__header {
+th:first-child .cell__header {
   border-left: 0;
   // margin-left:2px;
   // border-right:2px solid black;

@@ -11,6 +11,7 @@ export default function ScheduleCell({
   currentTime,
   date,
   dateIndex,
+  timeIndex,
   startDates,
   setOpenSlotDetails,
   selectedAppointment,
@@ -33,6 +34,10 @@ export default function ScheduleCell({
               : {}
           }
           className={`${tableStyles.cell} ${tableStyles.black_borders} ${
+            timeIndex === 0 || timeIndex === 24 || dateIndex === 0 || dateIndex === 6
+              ? tableStyles.cell__outer
+              : tableStyles.cell__inner
+          } ${
             // key can be generated only for appointed
             !slot?.rowSpan ? appointmentStyles[`hover__${selectedAppointment.name}`] : ''
           }  ${

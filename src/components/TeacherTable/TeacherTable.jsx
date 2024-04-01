@@ -99,6 +99,7 @@ export default function TeacherTable({userId}) {
                         );
                         return (
                           <ScheduleCell
+                            timeIndex={timeIndex}
                             key={`${dateIndex}_${currentTime}`}
                             userId={userId}
                             slot={slot}
