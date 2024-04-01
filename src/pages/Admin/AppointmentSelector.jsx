@@ -214,14 +214,13 @@ export default function UsersPage() {
             />
           </div>
         </div>
-
         <div
           className={`${styles.chooser_selector__item} ${styles.chooser_selector__item__buttons}`}>
           <button
             onClick={handleClose}
             className={`${styles.button} ${styles.button__add}`}
             disabled={selectedSlotsAmount === 0}>
-            Create{' '}
+            Create
           </button>
           <button
             onClick={e => {
