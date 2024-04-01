@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import styles from '../../styles/teacher.module.scss';
 import Select from 'react-select';
 import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {uk} from 'date-fns/locale';
 import Switch from 'react-switch';
 import {error} from '@pnotify/core';
+
+import styles from '../../styles/teacher.module.scss';
+import tableStyles from '../../styles/table.module.scss';
 import {getCourses, getTeachersByCourse} from '../../helpers/course/course';
 import {getSlotsForUsers} from '../../helpers/teacher/slots';
 import SetAppointment from '../../components/modals/setAppointment/setAppointment';
@@ -238,75 +240,84 @@ export default function UsersPage() {
         </div>
       </div>
       <div className={styles.scroller}>
-        <table className={styles.calendar}>
-          <thead className={styles.tableHeader}>
+        <table className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}>
+          <thead>
             <tr>
               {startDates.map((startDate, dateIndex) => (
-                <td key={dateIndex} className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>
-                  <div>
-                    <div>
-                      {format(startDate, 'EEEE', {locale: uk}).charAt(0).toUpperCase() +
-                        format(startDate, 'EEEE', {locale: uk}).slice(1)}
-                    </div>
-
-                    <div>{format(startDate, 'dd.MM')}</div>
+                <th key={dateIndex} className={`${tableStyles.columns} ${tableStyles.sticky}`}>
+                  <div className={tableStyles.cell__header}>
+                    {format(startDate, 'EEEE').charAt(0).toUpperCase() +
+                      format(startDate, 'EEEE').slice(1, 3)}
                   </div>
-                </td>
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody>
-            {Array.from({length: 25}, (_, timeIndex) => {
-              const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
-              if (currentTime.getHours() >= startingHour)
-                return (
-                  <tr key={timeIndex}>
-                    {Array.from({length: 7}, (_, dayIndex) => {
-                      const weekDay = dayIndex;
-                      const timeStr = format(currentTime, 'HH:mm');
-
-                      const numPeople = slotsData[weekDay]?.[timeStr]?.length || 0;
-                      const element = selectedSlots[weekDay].find(el => el.time === timeStr);
-                      if (element) {
-                        if (element.rowSpan <= 0) {
-                          return <></>;
-                        }
-                      }
-                      return (
-                        <td key={dayIndex} rowSpan={element ? element?.rowSpan : 1}>
-                          <button
-                            style={
-                              element
-                                ? {
-                                    height: `${
-                                      35 * element.rowSpan + element.rowSpan * element.rowSpan
-                                    }px`
-                                  }
-                                : // slot && slot.rowSpan !== undefined
-                                  // ? {
-                                  //     height: `${35 * slot.rowSpan + 3 * slot.rowSpan}px`
-                                  //   }
-                                  // :
-                                  {}
-                            }
-                            className={`${styles.cell} ${element ? styles.selectedCell : ''}`}
-                            disabled={!(numPeople > 0)}
-                            onClick={() => handleCellClick(weekDay, timeStr)}>
-                            {element
-                              ? `${timeStr} - ${format(
-                                  addMinutes(currentTime, 30 * element.rowSpan),
-                                  'HH:mm'
-                                )} (${numPeople})`
-                              : `${timeStr} (${numPeople})`}
-                          </button>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-            })}
-          </tbody>
         </table>
+        <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
+          <table className={tableStyles.tableBody}>
+            <tbody>
+              {Array.from({length: 25}, (_, timeIndex) => {
+                const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+                if (currentTime.getHours() >= startingHour)
+                  return (
+                    <tr key={timeIndex}>
+                      {Array.from({length: 7}, (_, dateIndex) => {
+                        const weekDay = dateIndex;
+                        const timeStr = format(currentTime, 'HH:mm');
+
+                        const numPeople = slotsData[weekDay]?.[timeStr]?.length || 0;
+                        const element = selectedSlots[weekDay].find(el => el.time === timeStr);
+                        if (element) {
+                          if (element.rowSpan <= 0) {
+                            return <></>;
+                          }
+                        }
+                        return (
+                          <td key={dateIndex} rowSpan={element ? element?.rowSpan : 1}>
+                            <button
+                              style={
+                                element
+                                  ? {
+                                      height: `${58 * element.rowSpan}px`
+                                    }
+                                  : {}
+                              }
+                              className={`${tableStyles.cell} ${tableStyles.black_borders} ${
+                                timeIndex === 0 ||
+                                timeIndex === 24 ||
+                                dateIndex === 0 ||
+                                dateIndex === 6
+                                  ? tableStyles.cell__outer
+                                  : tableStyles.cell__inner
+                              }   ${element ? styles.selectedCell : ''} `}
+                              disabled={!(numPeople > 0)}
+                              onClick={() => handleCellClick(weekDay, timeStr)}>
+                              <span>
+                                {element ? (
+                                  <>
+                                    {timeStr}
+                                    <br />-<br />
+                                    {format(
+                                      addMinutes(currentTime, 30 * element.rowSpan),
+                                      'HH:mm'
+                                    )}{' '}
+                                    ({numPeople})
+                                  </>
+                                ) : (
+                                  `${timeStr} (${numPeople})`
+                                )}
+                              </span>
+                            </button>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <SetAppointment

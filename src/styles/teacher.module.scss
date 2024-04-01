@@ -183,6 +183,7 @@
   width: 100%;
   column-gap: 10px;
   margin-right: 10%;
+  margin-bottom: 40px;
   &__item:last-child {
     grid-template-columns: 1fr 1fr;
     display: grid;
