@@ -157,6 +157,7 @@ export default function SubGroupPage() {
             </label>
             <Switch
               className={styles.remove_svg_switch}
+              trackColor={{true: 'red', false: 'grey'}}
               onChange={() => {
                 setIsOneDay(!isOneDay);
               }}

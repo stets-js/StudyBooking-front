@@ -86,7 +86,7 @@ export default function ReplacementsPage() {
         <div className={`${styles.name_long} ${styles.flex_to_right}`}>
           <FormInput
             type="text"
-            placeholder="Filter by name..."
+            placeholder="Name..."
             value={searchQuery}
             height={'52px'}
             handler={setSearchQuery}
