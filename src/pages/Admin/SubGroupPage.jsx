@@ -22,7 +22,7 @@ export default function SubGroupPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [render, setRender] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isOneDay, setIsOneDay] = useState(false);
   const [selectedWeekDay, setSelectedWeekDay] = useState(0);
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -89,15 +89,15 @@ export default function SubGroupPage() {
   };
 
   useEffect(() => {
-    if (isChecked) fetchSubGroupsByTime();
-  }, [isChecked, selectedWeekDay]);
+    if (isOneDay) fetchSubGroupsByTime();
+  }, [isOneDay, selectedWeekDay]);
 
   useEffect(() => {
     if (render) {
       fetchData('');
       setRender(false);
     }
-  }, [render, isChecked]);
+  }, [render, isOneDay]);
   useEffect(() => {
     fetchData(selectedCourse !== null ? `CourseId=${selectedCourse}` : '');
   }, [selectedCourse]);
@@ -139,12 +139,14 @@ export default function SubGroupPage() {
             options={courses}
             placeholder={'Select course'}
             onChange={el => setSelectedCourse(el?.value || null)}
+            isDisabled={isOneDay}
             isClearable></Select>
           <div className={styles.filter_wrapper__available__item}>
             <FormInput
               type="text"
               placeholder="Name..."
               height={'52px'}
+              disabled={isOneDay}
               value={searchQuery}
               handler={setSearchQuery}
             />
@@ -156,14 +158,14 @@ export default function SubGroupPage() {
             <Switch
               className={styles.remove_svg_switch}
               onChange={() => {
-                setIsChecked(!isChecked);
+                setIsOneDay(!isOneDay);
               }}
-              checked={isChecked}
+              checked={isOneDay}
             />
           </div>
         </div>
 
-        {!isChecked ? (
+        {!isOneDay ? (
           <>
             {/* <table className={styles.table}>
               <thead className={styles.tableHeader}>
@@ -227,7 +229,7 @@ export default function SubGroupPage() {
           </>
         ) : (
           <>
-            <div className={`${styles.dates_wrapper} ${styles.date_selector}`}>
+            <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
               <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
                 {'<'}
               </button>
@@ -236,19 +238,22 @@ export default function SubGroupPage() {
                 {'>'}
               </button>
             </div>
-            <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
-              <tr className={styles.tableHeader}>
-                <th className={`${styles.sticky} ${styles.cell} ${styles.cell__available}`}>
-                  Time
-                </th>
-                <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Subgroups</th>
-              </tr>
-              {scheduleTable.map(({time, names}) => (
-                <tr key={time}>
-                  <td className={`${styles.cell} ${styles.cell__available}`}>{time}</td>
-                  <td className={`${styles.cell}`}>{names.join(', ')}</td>
-                </tr>
-              ))}
+            <table
+              className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}>
+              <tbody className={tableStyles.tableBody}>
+                {scheduleTable.map(({time, names}) => (
+                  <tr key={time}>
+                    <td
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                      {time}
+                    </td>
+                    <td
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__big}`}>
+                      {names.join(', ')}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </>
         )}
