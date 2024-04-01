@@ -252,7 +252,7 @@
 }
 
 .selector {
-  width: 100%;
+  width: 214px;
   margin-top: 10px;
   font-family: $poppins;
   :has(span) {
@@ -264,6 +264,7 @@
 
   :has(div) {
     background-color: $grey;
+    border-radius: 25px;
     font-size: 20px;
     min-height: 50px;
     font-family: $poppins;
@@ -295,4 +296,14 @@
   margin-left: 0;
   width: 200px;
   margin-right: 70px;
+}
+.available_nav_wrapper{
+  display: flex;
+  width: 70%;
+  margin-left: 15%;
+  align-items: center;
+  justify-content: start;
+}
+.available_nav__item:first-of-type{
+  margin-right: 20%;
 }

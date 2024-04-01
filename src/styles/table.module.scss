@@ -31,6 +31,10 @@
     width: 80% !important;
     margin-left: 10% !important;
   }
+  &__small{
+    width: 70% !important;
+    margin-left:15% !important;
+  }
 }
 tr,
 th,
@@ -119,10 +123,7 @@ td {
   height: 58px;
   text-align: center;
   font-size: 24px;
-  &__inner {
-  }
-  &__outer {
-  }
+
   &__header {
     border-collapse: collapse;
     font-family: $poppins;
@@ -157,15 +158,15 @@ td {
   }
 }
 tr:first-child .cell__outer{
-  border-top: 0;
+  border-top: 0 ;
 }
 tr:last-child .cell__outer{
   border-bottom: 0;
 }
-tr td:first-child .cell__outer{
-  border-left: 0;
+tr td:first-child .cell__outer, tr .cell__outer:first-child{
+  border-left: 0 !important;
 }
-tr td:last-child .cell__outer{
+tr td:last-child .cell__outer,  tr .cell__outer:last-child{
   border-right: 0;
 }
 

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {format, addDays, getDay, addMinutes} from 'date-fns';
 import Select from 'react-select';
 import styles from '../../styles/teacher.module.scss';
+import tableStyles from '../../styles/table.module.scss';
 import {getCourses} from '../../helpers/course/course';
 import {getFreeUsers} from '../../helpers/user/user';
 import {Link} from 'react-router-dom';
@@ -80,56 +81,75 @@ export default function AvaliableTable() {
 
   return (
     <div>
-      <div className={styles.date_selector}>
-        <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
-          {'<<'}
-        </button>
-        <span>{formatDate(currentDate)}</span>
-        <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
-          {'>>'}
-        </button>
+      <div className={styles.available_nav_wrapper}>
+        <Select
+          options={courses}
+          placeholder="Select course"
+          required
+          className={`${styles.selector} ${styles.selector__filtering} ${styles.available_nav__item}`}
+          onChange={choice => {
+            setSelectedCourse(choice.value);
+          }}
+        />{' '}
+        <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
+          <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
+            {'<'}
+          </button>
+          <span>{formatDate(currentDate)}</span>
+          <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
+            {'>'}
+          </button>
+        </div>
       </div>
-      <Select
-        options={courses}
-        placeholder="Select course"
-        required
-        className={`${styles.selector} ${styles.half_width} ${styles.selector__filtering}`}
-        onChange={choice => {
-          setSelectedCourse(choice.value);
-        }}
-      />
-      <br />
-      <table className={styles.calendar__available} key={Math.random() * 100 - 1}>
-        <tr className={styles.tableHeader}>
-          <th className={`${styles.sticky} ${styles.cell} ${styles.cell__available}`}>Time</th>
-          <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Mentors</th>
-        </tr>
-        {scheduleTable.map(({time, users}) => {
-          return (
-            <tr key={time}>
-              <td className={`${styles.cell} ${styles.cell__available}`}>{time}</td>
-              <td className={`${styles.cell}`}>
-                <div className={styles.ul_items}>
-                  {users.length > 0 &&
-                    users.map((user, index) => (
-                      <React.Fragment key={user.id}>
-                        <Link
-                          className={`${styles.teacher_name} ${styles.ul_items} ${styles.ul_items_link} `}
-                          target="_self"
-                          to={`../teacher/${user.id}`}>
-                          <span className={styles.ul_items_text}>
-                            {user.name}
-                            {index !== users.length - 1 && ', '}{' '}
-                          </span>
-                        </Link>
-                      </React.Fragment>
-                    ))}
-                </div>
-              </td>
-            </tr>
-          );
-        })}
-      </table>
+      {/* <table
+        className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}
+        key={Math.random() * 100 - 1}>
+        <thead>
+          <tr>
+            <th className={`${tableStyles.columns} ${tableStyles.sticky}`}>
+              <div className={tableStyles.cell__header}>Time</div>
+            </th>
+            <th className={`${tableStyles.columns} ${tableStyles.sticky}`}>
+              <div className={tableStyles.cell__header}>Mentors</div>
+            </th>
+          </tr>
+        </thead>
+      </table> */}
+      <div
+        className={`${tableStyles.calendar} ${tableStyles.calendar__small} ${tableStyles.scroller}`}>
+        <table className={tableStyles.tableBody}>
+          {scheduleTable.map(({time, users}, index) => {
+            return (
+              <tr key={time}>
+                <td
+                  className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__available}`}>
+                  {time}
+                </td>
+                <td
+                  className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                  <div className={styles.ul_items}>
+                    {users.length > 0
+                      ? users.map((user, index) => (
+                          <React.Fragment key={user.id}>
+                            <Link
+                              className={`${styles.teacher_name} ${styles.ul_items} ${styles.ul_items_link} `}
+                              target="_self"
+                              to={`../teacher/${user.id}`}>
+                              <span className={styles.ul_items_text}>
+                                {user.name}
+                                {index !== users.length - 1 && ', '}{' '}
+                              </span>
+                            </Link>
+                          </React.Fragment>
+                        ))
+                      : 'Mentors'}
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </table>
+      </div>
     </div>
   );
 }
