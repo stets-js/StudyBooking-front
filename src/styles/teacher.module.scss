@@ -9,7 +9,7 @@
   padding: 2px;
 }
 .filters {
-  width:80;
+  width: 80;
   margin-left: 5%;
   margin-right: 5%;
   display: flex;
@@ -17,11 +17,10 @@
   justify-content: center;
   &__item {
     width: 25% !important;
-
   }
 }
-.filters__item:last-child{
-  margin-left:auto;
+.filters__item:last-child {
+  margin-left: auto;
 }
 .ul_items {
   color: $font-black;
@@ -74,6 +73,7 @@
   font-size: 20px;
   font-family: $poppins;
   display: grid;
+  margin-left: auto;
 }
 .filter_wrapper {
   display: grid;
@@ -176,18 +176,46 @@
 }
 
 .chooser_selector {
-  display: grid;
-  grid-template-columns: 3fr 2fr 2fr 2fr 2fr 2fr 1fr;
-  align-items: end;
-  margin-left: 2%;
-  width: 100%;
+  display: flex;
+  // margin-left: 2%;
+  width: 90%;
+  margin-left: 5%;
   column-gap: 10px;
   margin-right: 10%;
   margin-bottom: 40px;
-  &__item:last-child {
-    grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  &__container {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px;
   }
+  &__item {
+    width: 205px !important;
+    &__buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      margin-left: auto;
+      column-gap: 20px;
+      width: 310px !important;
+    }
+  }
+&__date_wrapper{
+  display: flex;
+  justify-content: center;
+  column-gap: 200px;
+  margin-left: 100px;
+  margin-bottom: 40px;
+  .chooser_selector__item__date:first-child{
+    text-align: left !important;
+
+  }
+  .chooser_selector__item__date:last-child{
+    text-align-last: right !important;
+  }
+}
+
 }
 
 .search_wrapper {
@@ -196,11 +224,14 @@
 
 .button {
   font-size: 20px;
-  border-radius: 10px;
+  font-family: $poppins;
+  border-radius: 25px;
   padding: 10px;
   margin: 2px;
   text-align: center;
-  width: auto;
+  width: 148px;
+  height: 48px;
+
   &__add {
     color: #33a64c;
     border: 1px solid #33a64c;
@@ -237,12 +268,10 @@
     min-height: 50px;
     font-family: $poppins;
   }
-
 }
 .selector [class*='menu'] {
   /* Your styles for the specific div with a class containing 'menu' */
   min-width: 100%;
-  
 }
 .reset_wrapper {
   width: 60%;

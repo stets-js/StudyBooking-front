@@ -10,6 +10,9 @@
   font-size: 20px;
   font-family: $poppins;
 }
+.right{
+  text-align-last: right !important;
+}
 input.green{
   background-color: $tableItem-greenHover;
 }

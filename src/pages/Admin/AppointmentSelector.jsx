@@ -144,53 +144,63 @@ export default function UsersPage() {
   };
   return (
     <div>
-      {/* <div className={styles.dates_wrapper}>
-        <button onClick={handlePrevWeek} className={styles.week_selector}>
-          {`<<`}
-        </button>
-        <div>
-          {format(startDates[0], 'dd.MM')} - {format(startDates[6], 'dd.MM')}
+      <div className={styles.chooser_selector__date_wrapper}>
+        <div className={styles.chooser_selector__item__date}>
+          <FormInput
+            type={'date'}
+            title={'Start'}
+            value={startDate}
+            defaultValue={isReplacement ? startDate : null}
+            // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
+            handler={setStartDate}></FormInput>
         </div>
-        <button onClick={handleNextWeek} className={styles.week_selector}>
-          {`>>`}
-        </button>
-      </div> */}
+        <div className={styles.chooser_selector__item__date}>
+          <FormInput
+            type={'date'}
+            title={'End'}
+            classname={'right'}
+            value={endDate}
+            pattern="\d{2}.\d{2}.\d{4}"
+            handler={setEndDate}></FormInput>
+        </div>
+      </div>
       <div className={styles.chooser_selector}>
-        <div className={styles.chooser_selector__item}>
-          <Select
-            options={courses}
-            placeholder="Select course"
-            required
-            className={`${styles.selector} ${styles.selector__filtering}`}
-            onChange={choice => {
-              setSelectedSlots(Array.from({length: 7}, _ => []));
-              setTeachersIds([]);
-              setSelectedCourse(choice.value);
-            }}
-          />
+        <div className={styles.chooser_selector__container}>
+          <div className={styles.chooser_selector__item}>
+            <Select
+              options={courses}
+              placeholder="Select course"
+              required
+              className={`${styles.selector} ${styles.selector__filtering}`}
+              onChange={choice => {
+                setSelectedSlots(Array.from({length: 7}, _ => []));
+                setTeachersIds([]);
+                setSelectedCourse(choice.value);
+              }}
+            />
+          </div>
+          <div className={styles.chooser_selector__item}>
+            <Select
+              key={Math.random() * 1000 - 10}
+              className={`${styles.selector} ${styles.selector__filtering}`}
+              placeholder="Select type"
+              defaultValue={[
+                {label: 'Group', value: 0},
+                {label: 'individual', value: 1}
+              ].filter(el => el.value === selectedClassType)}
+              options={[
+                {label: 'Group', value: 0},
+                {label: 'individual', value: 1}
+              ]}
+              required
+              onChange={choice => {
+                setSelectedSlots(Array.from({length: 7}, _ => []));
+                setSelectedClassType(choice.value);
+              }}
+            />
+          </div>
         </div>
-        <div className={styles.chooser_selector__item}>
-          <Select
-            key={Math.random() * 1000 - 10}
-            className={`${styles.selector} ${styles.selector__filtering}`}
-            placeholder="Select type"
-            defaultValue={[
-              {label: 'Group', value: 0},
-              {label: 'individual', value: 1}
-            ].filter(el => el.value === selectedClassType)}
-            options={[
-              {label: 'Group', value: 0},
-              {label: 'individual', value: 1}
-            ]}
-            required
-            onChange={choice => {
-              setSelectedSlots(Array.from({length: 7}, _ => []));
-              setSelectedClassType(choice.value);
-            }}
-          />
-        </div>
-
-        <div className={styles.replacement_wrapper}>
+        <div className={`${styles.replacement_wrapper}`}>
           <label>
             <span className={styles.date_selector}>Replacement</span>
           </label>
@@ -204,26 +214,8 @@ export default function UsersPage() {
           </div>
         </div>
 
-        <div className={styles.chooser_selector__item__date}>
-          <FormInput
-            type={'date'}
-            title={'Start'}
-            classname={'green'}
-            value={startDate}
-            defaultValue={isReplacement ? startDate : null}
-            // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
-            handler={setStartDate}></FormInput>
-        </div>
-        <div className={styles.chooser_selector__item__date}>
-          <FormInput
-            type={'date'}
-            title={'End'}
-            value={endDate}
-            classname={'green'}
-            pattern="\d{2}.\d{2}.\d{4}"
-            handler={setEndDate}></FormInput>
-        </div>
-        <div className={styles.chooser_selector__item}>
+        <div
+          className={`${styles.chooser_selector__item} ${styles.chooser_selector__item__buttons}`}>
           <button
             onClick={handleClose}
             className={`${styles.button} ${styles.button__add}`}
