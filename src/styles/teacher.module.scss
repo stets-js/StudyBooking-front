@@ -6,7 +6,9 @@
 .action_wrapper {
   display: flex;
   column-gap: 4px;
-  padding: 10px;
+  align-items: center;
+  // width: 200px;
+  justify-content: center;
 }
 .filters {
   width: 80;
@@ -28,7 +30,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 5px;
+  align-items: center;
 }
 .ul_items_text:hover {
   color: $blue;

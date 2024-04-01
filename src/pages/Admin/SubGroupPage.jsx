@@ -166,7 +166,8 @@ export default function SubGroupPage() {
         </div>
 
         {!isOneDay ? (
-          <>
+          <div
+            className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}>
             {/* <table className={styles.table}>
               <thead className={styles.tableHeader}>
                 <tr>
@@ -174,9 +175,9 @@ export default function SubGroupPage() {
                   <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Action</th>
                 </tr>
               </thead></table */}
-            <table
-              className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}>
-              <tbody className={tableStyles.tableBody}>
+
+            <table className={tableStyles.tableBody}>
+              <tbody>
                 {
                   // loader ? (
                   //   <tr>
@@ -197,13 +198,15 @@ export default function SubGroupPage() {
                     filteredSubGroups.map(element => {
                       return (
                         <tr key={element.id}>
-                          <td
-                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__big}`}>
-                            {element.name}
+                          <td className={tableStyles.cell__big}>
+                            <div
+                              className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} `}>
+                              {element.name}
+                            </div>
                           </td>
-                          <td
-                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
-                            <div className={styles.action_wrapper}>
+                          <td>
+                            <div
+                              className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.action_wrapper}`}>
                               <button
                                 className={`${styles.button} ${styles.button__edit} ${styles.button__edit__small}`}
                                 onClick={() => {
@@ -226,7 +229,7 @@ export default function SubGroupPage() {
                 }
               </tbody>
             </table>
-          </>
+          </div>
         ) : (
           <>
             <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
@@ -238,23 +241,29 @@ export default function SubGroupPage() {
                 {'>'}
               </button>
             </div>
-            <table
-              className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}>
-              <tbody className={tableStyles.tableBody}>
-                {scheduleTable.map(({time, names}) => (
-                  <tr key={time}>
-                    <td
-                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
-                      {time}
-                    </td>
-                    <td
-                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__big}`}>
-                      {names.join(', ')}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div
+              className={`${tableStyles.calendar} ${tableStyles.calendar__small} ${tableStyles.scroller}`}>
+              <table className={tableStyles.tableBody}>
+                <tbody>
+                  {scheduleTable.map(({time, names}) => (
+                    <tr key={time}>
+                      <td className={tableStyles.cell__available}>
+                        <div
+                          className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                          {time}
+                        </div>
+                      </td>
+                      <td className={tableStyles.cell__big}>
+                        <div
+                          className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                          {names.join(', ')}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
 

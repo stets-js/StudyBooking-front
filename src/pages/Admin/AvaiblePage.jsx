@@ -121,13 +121,15 @@ export default function AvaliableTable() {
           {scheduleTable.map(({time, users}, index) => {
             return (
               <tr key={time}>
-                <td
-                  className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__available}`}>
-                  {time}
+                <td className={tableStyles.cell__available}>
+                  <div
+                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} `}>
+                    {time}
+                  </div>
                 </td>
-                <td
-                  className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
-                  <div className={styles.ul_items}>
+                <td>
+                  <div
+                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.ul_items}`}>
                     {users.length > 0
                       ? users.map((user, index) => (
                           <React.Fragment key={user.id}>

@@ -93,63 +93,70 @@ export default function ReplacementsPage() {
           />
         </div>
       </div>
-      <table className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar}`}>
-        <tbody>
-          {filteredReplacements.length === 0 ? (
-            <tr>
-              <td
-                colSpan={4}
-                className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
-                Ops, can't find Replacement...
-              </td>
-            </tr>
-          ) : (
-            filteredReplacements.map(element => {
-              return (
-                <tr key={element.id}>
-                  <td
-                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
-                    {element?.SubGroup?.name}
-                  </td>
-                  <td
-                    key={element?.id}
-                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
-                    {element?.Mentor?.name}
-                  </td>
-                  <td
-                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
-                    {element?.schedule.split(',').map(date => {
-                      return (
-                        <>
-                          {date} <br />
-                        </>
-                      );
-                    })}
-                  </td>
-                  <td
-                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
-                    <div className={styles.action_wrapper}>
-                      <button
-                        className={`${styles.button} ${styles.button__edit}`}
-                        onClick={() => {
-                          setSelectedId(element.id);
-                          setIsOpen(!isOpen);
-                        }}>
-                        Edit
-                      </button>
-                      <button
-                        className={`${styles.button} ${styles.button__delete}`}
-                        onClick={() => handleDelete(element.id)}>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })
-          )}
-        </tbody>
-      </table>
+      <div className={`${tableStyles.calendar} ${tableStyles.scroller} `}>
+        <table className={tableStyles.tableBody}>
+          <tbody>
+            {filteredReplacements.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={4}
+                  className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                  Ops, can't find Replacement...
+                </td>
+              </tr>
+            ) : (
+              filteredReplacements.map(element => {
+                return (
+                  <tr key={element.id}>
+                    <td>
+                      <div
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                        {element?.SubGroup?.name}
+                      </div>
+                    </td>
+                    <td key={element?.id}>
+                      <div
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                        {element?.Mentor?.name}
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                        {element?.schedule.split(',').map(date => {
+                          return (
+                            <>
+                              {date} <br />
+                            </>
+                          );
+                        })}
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell} ${styles.action_wrapper}`}>
+                        <button
+                          className={`${styles.button} ${styles.button__edit}`}
+                          onClick={() => {
+                            setSelectedId(element.id);
+                            setIsOpen(!isOpen);
+                          }}>
+                          Edit
+                        </button>
+                        <button
+                          className={`${styles.button} ${styles.button__delete}`}
+                          onClick={() => handleDelete(element.id)}>
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
       <ChangeReplacement
         isOpen={isOpen}
         handleClose={() => setIsOpen(!isOpen)}
