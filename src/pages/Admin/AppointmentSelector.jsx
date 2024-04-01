@@ -206,6 +206,7 @@ export default function UsersPage() {
           </label>
           <div className={styles.replacement_wrapper__switch}>
             <Switch
+              className={styles.remove_svg_switch}
               onChange={() => {
                 setIsReplacement(!isReplacement);
               }}

@@ -136,9 +136,12 @@ td {
       width: auto !important;
       font-size: 30px !important;
     }
+ 
     // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
   }
-
+  &__big{
+    width:300% !important;
+  }
   &__available {
     width: 30% !important;
   }

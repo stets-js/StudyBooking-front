@@ -7,6 +7,7 @@ import {addDays, addMinutes, format, getDay} from 'date-fns';
 
 import {deleteSubGroup, getSubGroups} from '../../helpers/subgroup/subgroup';
 import styles from '../../styles/teacher.module.scss';
+import tableStyles from '../../styles/table.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
 import ChangeSubGroup from '../../components/modals/ChangeSubGroup/ChangeSubGroup';
@@ -131,28 +132,29 @@ export default function SubGroupPage() {
 
   return (
     <div>
-      <div className={styles.calendar__available}>
-        <div className={styles.filter_wrapper}>
-          <div className={styles.grid_item}>
-            <FormInput
-              type="text"
-              placeholder="Filter by name..."
-              value={searchQuery}
-              classname={'green'}
-              handler={setSearchQuery}
-            />
-          </div>
+      <div>
+        <div className={`${styles.filter_wrapper} ${styles.filter_wrapper__available}`}>
           <Select
-            className={`${styles.selector} ${styles.selector__filtering} ${styles.subgroup_selector}`}
+            className={`${styles.selector} ${styles.selector__filtering} ${styles.filter_wrapper__available__item}`}
             options={courses}
             placeholder={'Select course'}
             onChange={el => setSelectedCourse(el?.value || null)}
             isClearable></Select>
-          <div className={styles.one_day_wrapper}>
+          <div className={styles.filter_wrapper__available__item}>
+            <FormInput
+              type="text"
+              placeholder="Name..."
+              height={'52px'}
+              value={searchQuery}
+              handler={setSearchQuery}
+            />
+          </div>
+          <div className={`${styles.one_day_wrapper} ${styles.filter_wrapper__available__item}`}>
             <label>
               <span className={styles.date_selector}>One day</span>
             </label>
             <Switch
+              className={styles.remove_svg_switch}
               onChange={() => {
                 setIsChecked(!isChecked);
               }}
@@ -163,14 +165,16 @@ export default function SubGroupPage() {
 
         {!isChecked ? (
           <>
-            <table className={styles.table}>
+            {/* <table className={styles.table}>
               <thead className={styles.tableHeader}>
                 <tr>
                   <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Name</th>
                   <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Action</th>
                 </tr>
-              </thead>
-              <tbody>
+              </thead></table */}
+            <table
+              className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}>
+              <tbody className={tableStyles.tableBody}>
                 {
                   // loader ? (
                   //   <tr>
@@ -181,7 +185,9 @@ export default function SubGroupPage() {
                   // ) :
                   filteredSubGroups.length === 0 ? (
                     <tr>
-                      <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
+                      <td
+                        colSpan={2}
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
                         Ops, can't find this SubGroup...
                       </td>
                     </tr>
@@ -189,13 +195,15 @@ export default function SubGroupPage() {
                     filteredSubGroups.map(element => {
                       return (
                         <tr key={element.id}>
-                          <td className={`${styles.cell} ${styles.subgroup_cell}`}>
+                          <td
+                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__big}`}>
                             {element.name}
                           </td>
-                          <td className={`${styles.cell} ${styles.subgroup_cell}`}>
+                          <td
+                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
                             <div className={styles.action_wrapper}>
                               <button
-                                className={`${styles.button} ${styles.button__edit}`}
+                                className={`${styles.button} ${styles.button__edit} ${styles.button__edit__small}`}
                                 onClick={() => {
                                   setIsOpen(!isOpen);
                                   setSelectedId(element.id);
@@ -203,7 +211,7 @@ export default function SubGroupPage() {
                                 Edit
                               </button>
                               <button
-                                className={`${styles.button} ${styles.button__delete}`}
+                                className={`${styles.button} ${styles.button__delete} ${styles.button__delete__small}`}
                                 onClick={() => handleDelete(element.id, element.name)}>
                                 Delete
                               </button>
@@ -221,11 +229,11 @@ export default function SubGroupPage() {
           <>
             <div className={`${styles.dates_wrapper} ${styles.date_selector}`}>
               <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
-                {'<<'}
+                {'<'}
               </button>
               <span>{formatDate(currentDate)}</span>
               <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
-                {'>>'}
+                {'>'}
               </button>
             </div>
             <table className={styles.calendar__available} key={Math.random() * 100 - 1}>

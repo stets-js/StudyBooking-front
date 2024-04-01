@@ -14,6 +14,7 @@ const FormInput = ({
   pattern,
   min,
   width,
+  height,
   max,
   disabled,
   alignValue,
@@ -22,7 +23,7 @@ const FormInput = ({
 }) => {
   return (
     <label className={styles.input__label} style={{width: width}}>
-      <p className={classnames(styles.input__title, styles[`${classname}`])}>{title}</p>
+      {title && <p className={classnames(styles.input__title, styles[`${classname}`])}>{title}</p>}
       {textArea ? (
         <textarea
           className={classnames(
@@ -60,6 +61,7 @@ const FormInput = ({
           value={value}
           pattern={pattern}
           minLength={min}
+          style={{height: height}}
           maxLength={max}
           placeholder={placeholder}
           autoComplete="off"

@@ -6,7 +6,7 @@
 .action_wrapper {
   display: flex;
   column-gap: 4px;
-  padding: 2px;
+  padding: 10px;
 }
 .filters {
   width: 80;
@@ -82,22 +82,37 @@
   margin-bottom: 20px;
   column-gap: 10px;
   align-items: flex-end;
+  &__available {
+    width: 70%;
+    margin-left: 15%;
+    display: flex;
+    &__item {
+      align-items: center;
+      height: auto !important;
+    }
+    &__item:first-child {
+      margin-right: 20px;
+    }
+  }
 }
-.grid_item {
-  width: 100%;
-}
+
 .green {
   background-color: $tableItem-greenHover;
 }
 .one_day_wrapper {
-  display: grid;
   align-items: center;
   text-align: center;
-  width: 100%;
+  width: 120px;
+  font-size: 20px;
+  margin-left: auto;
   :has(div) {
     display: flex;
     margin-left: 13%;
   }
+}
+.remove_svg_switch svg {
+  width: 0;
+  height: 0;
 }
 .subgroup_selector {
   width: 100% !important;
@@ -201,21 +216,19 @@
       width: 310px !important;
     }
   }
-&__date_wrapper{
-  display: flex;
-  justify-content: center;
-  column-gap: 200px;
-  margin-left: 100px;
-  margin-bottom: 40px;
-  .chooser_selector__item__date:first-child{
-    text-align: left !important;
-
+  &__date_wrapper {
+    display: flex;
+    justify-content: center;
+    column-gap: 200px;
+    margin-left: 100px;
+    margin-bottom: 40px;
+    .chooser_selector__item__date:first-child {
+      text-align: left !important;
+    }
+    .chooser_selector__item__date:last-child {
+      text-align-last: right !important;
+    }
   }
-  .chooser_selector__item__date:last-child{
-    text-align-last: right !important;
-  }
-}
-
 }
 
 .search_wrapper {
@@ -228,10 +241,9 @@
   border-radius: 25px;
   padding: 10px;
   margin: 2px;
-  text-align: center;
   width: 148px;
   height: 48px;
-
+  text-align: center;
   &__add {
     color: #33a64c;
     border: 1px solid #33a64c;
@@ -244,10 +256,20 @@
   &__edit {
     color: green;
     border: 1px solid green;
+    &__small {
+      width: 69px;
+      height: 39px;
+      font-size: 16px;
+    }
   }
   &__delete {
     color: red;
     border: 1px solid red;
+    &__small {
+      width: 91px;
+      height: 39px;
+      font-size: 16px;
+    }
   }
 }
 
@@ -297,13 +319,13 @@
   width: 200px;
   margin-right: 70px;
 }
-.available_nav_wrapper{
+.available_nav_wrapper {
   display: flex;
   width: 70%;
   margin-left: 15%;
   align-items: center;
   justify-content: start;
 }
-.available_nav__item:first-of-type{
+.available_nav__item:first-of-type {
   margin-right: 20%;
 }
