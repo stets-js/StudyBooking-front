@@ -62,7 +62,8 @@ export default function AppointmentList({
         <button
           key={appointmentType.id}
           onClick={() => {
-            setSelectedAppointment({name: appointmentType.name, id: appointmentType.id});
+            if (['free', 'universal'].includes(appointmentType.name))
+              setSelectedAppointment({name: appointmentType.name, id: appointmentType.id});
           }}
           className={`${appointmentStyles.type_selector} ${
             appointmentStyles.type_selector__borders
