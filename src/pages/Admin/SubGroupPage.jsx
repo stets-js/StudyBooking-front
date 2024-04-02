@@ -169,65 +169,48 @@ export default function SubGroupPage() {
         {!isOneDay ? (
           <div
             className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}>
-            {/* <table className={styles.table}>
-              <thead className={styles.tableHeader}>
-                <tr>
-                  <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Name</th>
-                  <th className={`${styles.columns} ${styles.sticky} ${styles.cell}`}>Action</th>
-                </tr>
-              </thead></table */}
-
             <table className={tableStyles.tableBody}>
               <tbody>
-                {
-                  // loader ? (
-                  //   <tr>
-                  //     <td colSpan={2} className={`${styles.cell} ${styles.subgroup_cell}`}>
-                  //       Loading...
-                  //     </td>
-                  //   </tr>
-                  // ) :
-                  filteredSubGroups.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={2}
-                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
-                        Ops, can't find this SubGroup...
-                      </td>
-                    </tr>
-                  ) : (
-                    filteredSubGroups.map(element => {
-                      return (
-                        <tr key={element.id}>
-                          <td className={tableStyles.cell__big}>
-                            <div
-                              className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
-                              {element.name}
-                            </div>
-                          </td>
-                          <td>
-                            <div
-                              className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.action_wrapper}`}>
-                              <button
-                                className={`${styles.button} ${styles.button__edit} ${styles.button__edit__small}`}
-                                onClick={() => {
-                                  setIsOpen(!isOpen);
-                                  setSelectedId(element.id);
-                                }}>
-                                Edit
-                              </button>
-                              <button
-                                className={`${styles.button} ${styles.button__delete} ${styles.button__delete__small}`}
-                                onClick={() => handleDelete(element.id, element.name)}>
-                                Delete
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )
-                }
+                {filteredSubGroups.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={2}
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                      Ops, can't find this SubGroup...
+                    </td>
+                  </tr>
+                ) : (
+                  filteredSubGroups.map(element => {
+                    return (
+                      <tr key={element.id}>
+                        <td className={tableStyles.cell__big}>
+                          <div
+                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
+                            {element.name}
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.action_wrapper}`}>
+                            <button
+                              className={`${styles.button} ${styles.button__edit} ${styles.button__edit__small}`}
+                              onClick={() => {
+                                setIsOpen(!isOpen);
+                                setSelectedId(element.id);
+                              }}>
+                              Edit
+                            </button>
+                            <button
+                              className={`${styles.button} ${styles.button__delete} ${styles.button__delete__small}`}
+                              onClick={() => handleDelete(element.id, element.name)}>
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
@@ -256,7 +239,7 @@ export default function SubGroupPage() {
                       </td>
                       <td className={tableStyles.cell__big}>
                         <div
-                          className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
+                          className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
                           {names.join(', ')}
                         </div>
                       </td>

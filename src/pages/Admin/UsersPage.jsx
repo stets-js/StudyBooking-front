@@ -18,12 +18,7 @@ export default function UsersPage() {
   const [admins, setAdmins] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [item, setItem] = useState({});
-  const [name, setName] = useState('');
-  const [role, setRole] = useState(0);
-  const [rating, setRating] = useState(0);
-  const [email, setEmail] = useState('');
   const [edit, setEdit] = useState(false);
-  const [id, setId] = useState(0);
   const [needToRender, SetNeedToRender] = useState(true);
   const [filterName, setFilterName] = useState('');
   const [coursesModal, setCoursesModal] = useState(false);

@@ -6,6 +6,7 @@ import tableStyles from '../../styles/table.module.scss';
 import {getCourses} from '../../helpers/course/course';
 import {getFreeUsers} from '../../helpers/user/user';
 import {Link} from 'react-router-dom';
+
 export default function AvaliableTable() {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState();
@@ -41,6 +42,7 @@ export default function AvaliableTable() {
       );
     });
   }, []);
+
   useEffect(() => {
     const fetchUsers = async () => {
       setScheduleTable(generateTimeSlots());
@@ -48,7 +50,6 @@ export default function AvaliableTable() {
       const freeUsers = (
         await getFreeUsers(selectedCourse, selectedWeekDay - 1 < 0 ? 6 : selectedWeekDay - 1)
       ).availableSlots;
-      console.log(freeUsers);
       setScheduleTable(prevSchedule => {
         const newSchedule = [...prevSchedule];
         freeUsers.forEach(el => {
@@ -101,20 +102,7 @@ export default function AvaliableTable() {
           </button>
         </div>
       </div>
-      {/* <table
-        className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}
-        key={Math.random() * 100 - 1}>
-        <thead>
-          <tr>
-            <th className={`${tableStyles.columns} ${tableStyles.sticky}`}>
-              <div className={tableStyles.cell__header}>Time</div>
-            </th>
-            <th className={`${tableStyles.columns} ${tableStyles.sticky}`}>
-              <div className={tableStyles.cell__header}>Mentors</div>
-            </th>
-          </tr>
-        </thead>
-      </table> */}
+
       <div
         className={`${tableStyles.calendar} ${tableStyles.calendar__small} ${tableStyles.scroller}`}>
         <table className={tableStyles.tableBody}>
