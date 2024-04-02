@@ -17,6 +17,7 @@ export default function UsersPage() {
   const [title, setTitle] = useState('New User');
   const [admins, setAdmins] = useState([]);
   const [teachers, setTeachers] = useState([]);
+  const [item, setItem] = useState({});
   const [name, setName] = useState('');
   const [role, setRole] = useState(0);
   const [rating, setRating] = useState(0);
@@ -68,6 +69,7 @@ export default function UsersPage() {
   };
 
   const handleClose = () => {
+    setItem({});
     setIsOpen(!isOpen);
   };
 
@@ -156,12 +158,8 @@ export default function UsersPage() {
                 isAdmin={false}
                 SetNeedToRender={SetNeedToRender}
                 title={title}
-                name={name}
-                role={role}
-                email={email}
-                rating={rating}
                 edit={edit}
-                id={id}
+                item={item}
                 roles={roles}
               />
             </div>
@@ -189,11 +187,14 @@ export default function UsersPage() {
                                 onClick={() => {
                                   setIsOpen(!isOpen);
                                   setTitle(`Edit ${item.name}`);
-                                  setName(item.name);
-                                  setRole(item.RoleId);
-                                  setEmail(item.email);
-                                  setRating(item.rating);
-                                  setId(item.id);
+
+                                  setItem({
+                                    name: item.name,
+                                    role: item.RoleId,
+                                    email: item.email,
+                                    rating: item.rating,
+                                    id: item.id
+                                  });
                                   setEdit(true);
                                 }}
                               />
@@ -229,11 +230,13 @@ export default function UsersPage() {
                                 onClick={() => {
                                   setIsOpen(!isOpen);
                                   setTitle(`Edit ${item.name}`);
-                                  setName(item.name);
-                                  setRole(item.RoleId);
-                                  setEmail(item.email);
-                                  setRating(item.rating);
-                                  setId(item.id);
+                                  setItem({
+                                    name: item.name,
+                                    role: item.RoleId,
+                                    email: item.email,
+                                    rating: item.rating,
+                                    id: item.id
+                                  });
                                   setEdit(true);
                                 }}
                               />
@@ -302,11 +305,13 @@ export default function UsersPage() {
                           onClick={() => {
                             setIsOpen(!isOpen);
                             setTitle(`Edit ${item.name}`);
-                            setName(item.name);
-                            setRole(item.RoleId);
-                            setEmail(item.email);
-                            setRating(item.rating);
-                            setId(item.id);
+                            setItem({
+                              name: item.name,
+                              role: item.RoleId,
+                              email: item.email,
+                              rating: item.rating,
+                              id: item.id
+                            });
                             setEdit(true);
                           }}
                         />

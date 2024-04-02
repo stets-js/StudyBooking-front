@@ -17,7 +17,7 @@ const NewUser = ({
   edit,
   SetNeedToRender,
   roles,
-  ...item
+  item
 }) => {
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
@@ -29,17 +29,21 @@ const NewUser = ({
     roles.find(el => el.label === 'teacher')?.value || 1
   );
   useEffect(() => {
+    console.log(item);
     setName(item.name);
     setRating(item.rating);
     setEmail(item.email);
     setRole(item.role);
+    setPassword('');
   }, [isOpen]);
 
   useEffect(() => {
     if (!edit) {
       setName('');
-      setRating(0);
+      setRating(5);
       setEmail('');
+      console.log('asdasdasd');
+      setPassword('');
     }
   }, [edit]);
   const handlePasswordReset = async () => {
