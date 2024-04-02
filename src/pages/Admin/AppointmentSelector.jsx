@@ -80,7 +80,11 @@ export default function UsersPage() {
       setSlotsData(organizedSlots);
     };
     if (endDate < startDate) {
+      console.log(+endDate[0]);
       // add snackebar for alerting  user about wrong input
+      // case when full data is setted, but its wrong formatted
+      if (endDate && +endDate[0] !== 0)
+        error({text: 'End date can`t be less than start', delay: 1000});
       return;
     }
     if (selectedCourse && teachersIds && startDate && endDate) {
@@ -90,13 +94,7 @@ export default function UsersPage() {
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
-  // const handlePrevWeek = () => {
-  //   setStartDates(startDates.map(startDate => addDays(startDate, -7)));
-  // };
 
-  // const handleNextWeek = () => {
-  //   setStartDates(startDates.map(startDate => addDays(startDate, 7)));
-  // };
   const clearTable = () => {
     if (selectedSlotsAmount !== 0) {
       setSelectedSlots(Array.from({length: 7}, _ => []));
@@ -249,7 +247,7 @@ export default function UsersPage() {
         <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
           <table className={tableStyles.tableBody}>
             <tbody>
-              {Array.from({length: 25}, (_, timeIndex) => {
+              {Array.from({length: 24}, (_, timeIndex) => {
                 const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
                 if (currentTime.getHours() >= startingHour)
                   return (
@@ -277,7 +275,7 @@ export default function UsersPage() {
                               }
                               className={`${tableStyles.cell} ${tableStyles.black_borders} ${
                                 timeIndex === 0 ||
-                                timeIndex === 24 ||
+                                timeIndex === 23 ||
                                 dateIndex === 0 ||
                                 dateIndex === 6
                                   ? tableStyles.cell__outer
