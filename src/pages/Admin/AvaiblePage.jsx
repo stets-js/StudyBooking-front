@@ -129,7 +129,7 @@ export default function AvaliableTable() {
                 </td>
                 <td>
                   <div
-                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.ul_items}`}>
+                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big} ${styles.ul_items}`}>
                     {users.length > 0
                       ? users.map((user, index) => (
                           <React.Fragment key={user.id}>

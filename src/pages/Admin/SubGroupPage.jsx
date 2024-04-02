@@ -201,7 +201,7 @@ export default function SubGroupPage() {
                         <tr key={element.id}>
                           <td className={tableStyles.cell__big}>
                             <div
-                              className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} `}>
+                              className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
                               {element.name}
                             </div>
                           </td>

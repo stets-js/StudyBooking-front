@@ -23,7 +23,6 @@
   width: 90%;
   table-layout: fixed;
   margin-left: 5%;
-
   background-color: white;
   font-family: $poppins;
   border-spacing: 0 !important;
@@ -31,9 +30,9 @@
     width: 80% !important;
     margin-left: 10% !important;
   }
-  &__small{
+  &__small {
     width: 70% !important;
-    margin-left:15% !important;
+    margin-left: 15% !important;
   }
 }
 tr,
@@ -117,7 +116,6 @@ td {
 
 .cell {
   background-color: transparent;
-  border: 1px solid black;
   font-family: $poppins;
   width: 100%;
   height: 58px;
@@ -126,7 +124,7 @@ td {
   justify-content: center;
   text-align: center;
   font-size: 24px;
-
+  position: relative;
   &__header {
     border-collapse: collapse;
     font-family: $poppins;
@@ -139,11 +137,11 @@ td {
       width: auto !important;
       font-size: 30px !important;
     }
- 
+
     // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
   }
-  &__big{
-    width:300% !important;
+  &__big {
+    width: 300% !important;
   }
   &__available {
     width: 30% !important;
@@ -162,24 +160,108 @@ td {
   &__description {
     word-break: break-word;
   }
+  &__outer {
+    position: relative;
+  }
+  &__inner {
+    border: 1px solid black;
+  }
 }
-tr:first-child .cell__outer{
-  border-top: 0 ;
+tr:first-child .cell__outer::before {
+  // first row, with half-borders
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70% !important;
+border: 1px solid black;
+  // border-right: 2px solid black !important;
+  // border-bottom: 1px solid black;
+  border-top: 0;
+  z-index: 1;
 }
-tr:last-child .cell__outer{
-  border-bottom: 0;
+tr:first-child td:first-child .cell__outer {
+  &::before {
+    border-left-color: transparent;
+    right: 0;
+  }
 }
-tr td:first-child .cell__outer
-// , tr .cell__outer:first-child
-{
-  border-left: 0 !important;
-}
-tr td:last-child .cell__outer
-// ,  tr .cell__outer:last-child
-{
-  border-right: 0;
+tr:first-child td:last-child .cell__outer {
+  &::before {
+    border-right: 0 !important;
+  }
 }
 
+tr td:first-child .cell__outer {
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -1px;
+    right: 0;
+    // left: 30%;
+    width: 70%;
+    height: calc(100%);
+    border-right: 1px solid black;
+    border-bottom: 2px solid black;
+    z-index: 1;
+  }
+  border-left: 0 !important;
+}
+tr td:last-child .cell__outer {
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -1px;
+    right: 0;
+    left: 0;
+    width: 70%;
+    height: calc(100%);
+    border-bottom: 2px solid black;
+    border-left: 1px solid black;
+    z-index: 1;
+  }
+  border-right: 0;
+}
+tr:last-child td:not(:first-child):not(:last-child) {
+  .cell__outer {
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 30%;
+      width: 100%;
+      height: 70%;
+      border: 1px solid black;
+      border-bottom: 0 !important;
+      z-index: 1;
+    }
+    border-bottom: 0;
+  }
+}
+tr:last-child td:first-child {
+  .cell__outer {
+    &::before {
+      border-bottom: 0 !important;
+      bottom: 30%;
+    }
+  }
+}
+tr:last-child td:last-child {
+  .cell__outer {
+    &::before {
+      border-bottom: 0 !important;
+      bottom: 30%;
+    }
+  }
+}
+.cell__outer__big{
+  &::before{
+    width: 90% !important;
+  }
+}
 th:first-child .cell__header {
   border-left: 0;
   // margin-left:2px;

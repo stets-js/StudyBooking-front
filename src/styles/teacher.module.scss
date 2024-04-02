@@ -323,6 +323,7 @@
 .selector [class*='menu'] {
   /* Your styles for the specific div with a class containing 'menu' */
   
+  z-index: 2 !important;
   :has(div){
     background-color: white;
     -ms-overflow-style: none; /* IE and Edge */

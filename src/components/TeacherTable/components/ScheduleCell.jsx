@@ -24,7 +24,7 @@ export default function ScheduleCell({
   return (
     <td key={slot?.weekDay} rowSpan={slot?.rowSpan || 1}>
       {
-        <input
+        <button
           type="button"
           style={
             slot?.rowSpan
@@ -58,16 +58,19 @@ export default function ScheduleCell({
               userId,
               dispatch
             });
-          }}
-          value={
-            slot?.rowSpan
-              ? `${format(currentTime, 'HH:mm')}\n-\n${format(
-                  addMinutes(currentTime, 30 * slot?.rowSpan),
-                  'HH:mm'
-                )} `
-              : format(currentTime, 'HH:mm')
-          }
-        />
+          }}>
+          <span>
+            {slot?.rowSpan ? (
+              <>
+                {format(currentTime, 'HH:mm')}
+                <br />-<br />
+                {format(addMinutes(currentTime, 30 * slot?.rowSpan), 'HH:mm')}
+              </>
+            ) : (
+              format(currentTime, 'HH:mm')
+            )}
+          </span>
+        </button>
       }
     </td>
   );

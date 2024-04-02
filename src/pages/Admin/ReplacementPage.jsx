@@ -74,6 +74,7 @@ export default function ReplacementsPage() {
   const filteredReplacements = replacements.filter(element =>
     element?.SubGroup?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   return (
     <div>
       <div className={`${styles.filter_wrapper} ${styles.filter_wrapper__subgroup}`}>
@@ -105,24 +106,32 @@ export default function ReplacementsPage() {
                 </td>
               </tr>
             ) : (
-              filteredReplacements.map(element => {
+              filteredReplacements.map((element, index) => {
                 return (
                   <tr key={element.id}>
                     <td>
                       <div
-                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
                         {element?.SubGroup?.name}
                       </div>
                     </td>
                     <td key={element?.id}>
                       <div
-                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${
+                          index === 0 || index === filteredReplacements.length - 1
+                            ? tableStyles.cell__outer
+                            : tableStyles.cell__inner
+                        } `}>
                         {element?.Mentor?.name}
                       </div>
                     </td>
                     <td>
                       <div
-                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell}`}>
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${
+                          index === 0 || index === filteredReplacements.length - 1
+                            ? tableStyles.cell__outer
+                            : tableStyles.cell__inner
+                        }`}>
                         {element?.schedule.split(',').map(date => {
                           return (
                             <>
@@ -134,7 +143,7 @@ export default function ReplacementsPage() {
                     </td>
                     <td>
                       <div
-                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell} ${styles.action_wrapper}`}>
+                        className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big} ${styles.action_wrapper}`}>
                         <button
                           className={`${styles.button} ${styles.button__edit}`}
                           onClick={() => {

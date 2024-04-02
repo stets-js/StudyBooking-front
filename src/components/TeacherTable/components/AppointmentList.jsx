@@ -65,8 +65,8 @@ export default function AppointmentList({
             setSelectedAppointment({name: appointmentType.name, id: appointmentType.id});
           }}
           className={`${appointmentStyles.type_selector} ${
-            appointmentStyles[`type_selector__${appointmentType.name}`]
-          }`}>
+            appointmentStyles.type_selector__borders
+          } ${appointmentStyles[`type_selector__${appointmentType.name}`]}`}>
           {translateAppointmentTypeName(appointmentType.name)}
         </button>
       ))}
