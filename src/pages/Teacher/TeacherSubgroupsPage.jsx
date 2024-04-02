@@ -91,36 +91,57 @@ export default function TeacherSubgroupPage() {
           <table className={tableStyles.tableBody}>
             <tbody>
               {filteredSubgroups.length > 0 &&
-                filteredSubgroups.map(group => {
+                filteredSubgroups.map((group, index) => {
                   return (
                     <tr key={group.id}>
                       <td className={tableStyles.cell__mySubgroup}>
-                        <div className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup}`}>
+                        <div
+                          className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
                           {group.name}
                         </div>
                       </td>
                       <td className={tableStyles.cell__mySubgroup}>
-                        <div className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup}`}>
+                        <div
+                          className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup} ${
+                            index === 0 || index === filteredSubgroups.length - 1
+                              ? tableStyles.cell__outer
+                              : tableStyles.cell__inner
+                          }`}>
                           {group.Course.name}
                         </div>
                       </td>
                       <td className={tableStyles.cell__mySubgroup}>
-                        <div className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup}`}>
+                        <div
+                          className={`${tableStyles.cell} ${
+                            index === 0 || index === filteredSubgroups.length - 1
+                              ? tableStyles.cell__outer
+                              : tableStyles.cell__inner
+                          } ${tableStyles.cell__mySubgroup}`}>
                           {group.Admin.name}
                         </div>
                       </td>
                       <td className={tableStyles.cell__mySubgroup__description}>
-                        <div className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup}`}>
+                        <div
+                          className={`${tableStyles.cell} ${
+                            index === 0 || index === filteredSubgroups.length - 1
+                              ? tableStyles.cell__outer
+                              : tableStyles.cell__inner
+                          } ${tableStyles.cell__mySubgroup}`}>
                           {group.description}
                         </div>
                       </td>
-                      <td className={tableStyles.cell__mySubgroup}>
-                        <div className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup}`}>
-                          {format(group.startDate, 'dd.MM.yyyy') +
-                            '-' +
-                            format(group.endDate, 'dd.MM.yyyy')}
+                      <td className={tableStyles.cell__mySubgroup} key={group.id}>
+                        <div
+                          className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
+                          {format(group.startDate, 'dd.MM') + '-' + format(group.endDate, 'dd.MM')}
                           <br />
-                          {group.schedule.replace(',', '\n')}
+                          {group.schedule.split(',').map(el => {
+                            return (
+                              <>
+                                {el} <br />
+                              </>
+                            );
+                          })}
                         </div>
                       </td>
                     </tr>
