@@ -40,37 +40,7 @@ th,
 td {
   padding: 0;
 }
-// tr:nth-child(2) {
-//   td:not(:first-child):not(:last-child) {
-//     border-top: 1px solid black;
-//   }
-// }
 
-// tr:first-child {
-//   .cell {
-//     border-top: 0 !important;
-//     border-bottom: 0 !important;
-//   }
-
-//   td:last-child .cell,
-//   td:first-child .cell {
-//     border-top: 0;
-//     border-bottom: 1px solid black;
-//   }
-//   td:not(:first-child):not(:last-child) .cell {
-//     // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
-//   }
-// }
-
-// tr:last-child {
-//   td:first-child .cell {
-//     // border-bottom: 0;
-//     // border-image: linear-gradient(to left, #000 77%, transparent 77%) 100% 1 !important;
-//   }
-//   td .cell {
-//     border-bottom: 0;
-//   }
-// }
 .tableHeader {
   border: 2px solid transparent;
   width: 90%;
@@ -87,28 +57,6 @@ td {
   border-collapse: collapse;
   width: 100%;
 }
-// tr {
-//   td:first-child .cell {
-//     border-left: 0;
-//     // border: 1px solid black;
-//     // border-image: linear-gradient(to left, #000 77%, transparent 77%) 100% 1 !important;
-//   }
-//   td:last-child .cell {
-//     // border: 1px solid black;
-//     border-right: 0 !important;
-//     // border-image: linear-gradient(to right, #000 77%, transparent 77%) 100% 1 !important;
-//   }
-//   // td:nth-last-child(2) .cell {
-//   //   border-right: 2px solid black;
-//   // }
-//   // td:nth-child(2) .cell {
-//   //   border-left: 2px solid black;
-//   // }
-// }
-// tr:last-child td:last-child .cell {
-//   border-bottom: 0px;
-//   // border-image: linear-gradient(to right, #000 77%, transparent 77%) 100% 1 !important;
-// }
 
 .cell__header__mySubgroup:first-child {
   border-left: 0;
@@ -125,6 +73,7 @@ td {
   text-align: center;
   font-size: 24px;
   position: relative;
+  box-sizing: border-box;
   &__header {
     border-collapse: collapse;
     font-family: $poppins;
@@ -175,7 +124,7 @@ tr:first-child .cell__outer::before {
   bottom: 0;
   width: 100%;
   height: 70% !important;
-border: 1px solid black;
+  border: 1px solid black;
   // border-right: 2px solid black !important;
   // border-bottom: 1px solid black;
   border-top: 0;
@@ -257,8 +206,8 @@ tr:last-child td:last-child {
     }
   }
 }
-.cell__outer__big{
-  &::before{
+.cell__outer__big {
+  &::before {
     width: 90% !important;
   }
 }
