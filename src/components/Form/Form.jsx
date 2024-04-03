@@ -158,11 +158,11 @@ const Form = ({
       }
       if (type.type === 'user') {
         const user = {
-          name: data.get('name'),
-          email: data.get('email'),
-          password: data.get('password'),
+          name: jsonData.name,
+          email: jsonData.email,
+          password: jsonData.password,
           RoleId: role,
-          rating: data.get('rating'),
+          rating: jsonData.rating,
           id: userId
         };
         onSubmit();

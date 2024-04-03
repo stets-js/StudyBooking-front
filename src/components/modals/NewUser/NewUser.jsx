@@ -29,7 +29,6 @@ const NewUser = ({
     roles.find(el => el.label === 'teacher')?.value || 1
   );
   useEffect(() => {
-    console.log(item);
     setName(item.name);
     setRating(item.rating);
     setEmail(item.email);
@@ -42,7 +41,6 @@ const NewUser = ({
       setName('');
       setRating(5);
       setEmail('');
-      console.log('asdasdasd');
       setPassword('');
     }
   }, [edit]);
@@ -54,6 +52,7 @@ const NewUser = ({
       console.log(error);
     }
   };
+  console.log(rating);
   return (
     <>
       {isOpen && (
@@ -112,7 +111,7 @@ const NewUser = ({
               isRequired={true}
               handler={setEmail}
             />
-            {!edit && (
+            {/* {!edit && (
               <FormInput
                 classname="input__bottom"
                 title="Password:"
@@ -124,7 +123,7 @@ const NewUser = ({
                 isRequired={true}
                 handler={setPassword}
               />
-            )}
+            )} */}
             {!edit && (
               <Select
                 title="Role:"

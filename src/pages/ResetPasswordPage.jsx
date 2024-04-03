@@ -18,12 +18,12 @@ export default function ResetPasswordPage() {
         // redirect to homePage
         if (res) {
           success({text: 'Successfuly changed password', delay: 1000});
-          dispatch({
-            type: 'LOGIN_SUCCESS',
-            payload: {
-              token: res.token
-            }
-          });
+          // dispatch({
+          //   type: 'LOGIN_SUCCESS',
+          //   payload: {
+          //     token: res.token
+          //   }
+          // });
           navigate('/');
         }
       } catch (e) {
@@ -40,9 +40,7 @@ export default function ResetPasswordPage() {
           title="New password"
           value={newPassword}
           placeholder={'Start typing'}
-          handler={setNewPassword}>
-          {' '}
-        </FormInput>
+          handler={setNewPassword}></FormInput>
         <button
           className={styles.reset_button}
           onClick={() => handleSubmit()}
