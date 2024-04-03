@@ -19,7 +19,7 @@ const Spreadsheet = () => {
       <h2>
         <Link
           className={styles.ul_items_link}
-          target="_self"
+          target="_blank"
           to={
             'https://docs.google.com/spreadsheets/d/1sK-u4d-rjwRZ4MN78ag_o8f2fhUDAgBKdA5XXDMk2YI/edit#gid=0'
           }>

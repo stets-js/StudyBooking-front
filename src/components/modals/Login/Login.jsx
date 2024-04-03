@@ -110,7 +110,7 @@ const Login = ({isOpen, handleClose}) => {
               </div>
             </label> */}
             <button
-              type="button"
+              type="submit"
               onClick={e => {
                 handleSubmit(e);
               }}
