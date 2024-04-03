@@ -163,7 +163,10 @@ const Form = ({
           password: jsonData.password,
           RoleId: role,
           rating: jsonData.rating,
-          id: userId
+          id: userId,
+          city: jsonData.city,
+          phone: jsonData.phone,
+          teachingType: jsonData.teachingType
         };
         onSubmit();
         const newUser = await requests.user(user);

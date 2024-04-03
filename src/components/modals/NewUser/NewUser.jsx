@@ -3,9 +3,10 @@ import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import Select from 'react-select';
 import React, {useEffect, useState} from 'react';
-import {getRoles, postUser, patchUser, deleteUser} from '../../../helpers/user/user';
-import {defaults, error, success} from '@pnotify/core';
-
+import {postUser, patchUser, deleteUser} from '../../../helpers/user/user';
+import {success} from '@pnotify/core';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import Form from '../../Form/Form';
 import {forgotPassword} from '../../../helpers/auth/auth';
 
@@ -23,6 +24,9 @@ const NewUser = ({
   const [rating, setRating] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [city, setCity] = useState('');
+  const [teachingType, setTeachingType] = useState('');
   // console.log(roles.find(el => el.label === 'teacher'));
   const [role, setRole] = useState(
     // (1);
@@ -30,6 +34,9 @@ const NewUser = ({
   );
   useEffect(() => {
     setName(item.name);
+    setCity(item.city);
+    setTeachingType(item.teachingType);
+    setPhone(item.phone);
     setRating(item.rating);
     setEmail(item.email);
     setRole(item.role);
@@ -52,7 +59,6 @@ const NewUser = ({
       console.log(error);
     }
   };
-  console.log(rating);
   return (
     <>
       {isOpen && (
@@ -72,6 +78,9 @@ const NewUser = ({
             email={email}
             password={password}
             rating={rating}
+            city={city}
+            phone={phone}
+            teachingType={teachingType}
             userId={!edit ? undefined : item.id}
             status={{
               successMessage: 'Successfully created user',
@@ -100,6 +109,35 @@ const NewUser = ({
               handler={setRating}
             />
 
+            <PhoneInput
+              preferredCountries={['ua']}
+              placeholder={'(096)-12-34567'}
+              required={true}
+              value={phone}
+              onChange={phone => setPhone(phone)}
+            />
+            <FormInput
+              classname="input__bottom"
+              title="City:"
+              type="text"
+              name="city"
+              max={50}
+              value={city}
+              placeholder="City"
+              isRequired={true}
+              handler={setCity}
+            />
+            <Select
+              name="teachingType"
+              options={[
+                {label: 'soft', value: 'soft'},
+                {label: 'tech', value: 'tech'}
+              ]}
+              value={teachingType?.length > 0 ? {label: teachingType} : ''}
+              required={true}
+              placeholder={'Teaching type'}
+              className={styles.selector}
+              onChange={e => setTeachingType(e.value)}></Select>
             <FormInput
               classname="input__bottom"
               title="Email:"
@@ -129,9 +167,10 @@ const NewUser = ({
                 title="Role:"
                 className={styles.selector}
                 options={roles}
-                required
+                required={true}
                 value={roles.find(el => el.value === role)}
                 key={Math.random() * 1000 - 10}
+                placeholder={'Role'}
                 onChange={el => setRole(el.value)}></Select>
             )}
             {edit && (

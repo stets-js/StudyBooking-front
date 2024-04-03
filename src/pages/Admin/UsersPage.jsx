@@ -305,7 +305,10 @@ export default function UsersPage() {
                               role: item.RoleId,
                               email: item.email,
                               rating: item.rating,
-                              id: item.id
+                              id: item.id,
+                              city: item.city,
+                              phone: item.phone,
+                              teachingType: item.teachingType
                             });
                             setEdit(true);
                           }}
