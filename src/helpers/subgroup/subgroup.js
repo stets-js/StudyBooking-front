@@ -3,9 +3,7 @@ import axios from '../axios-config';
 axios.create({
   withCredentials: true
 });
-
-const postSubGroup = (credentials, userId) => {
-  console.log(credentials);
+const generateDataForReq = (credentials, userId) => {
   const data = {};
   try {
     data.link = credentials.link;
@@ -19,6 +17,12 @@ const postSubGroup = (credentials, userId) => {
     data.userId = userId;
     data.mentorId = userId;
   } catch (error) {}
+  return data;
+};
+const postSubGroup = ({credentials, userId}) => {
+  let data = {};
+  // first case creating subgroup from button on subgroup page, second case of creating it from appointment selector
+  data = JSON.parse(credentials.get('subgroup')) || generateDataForReq(credentials, userId);
   console.log(data);
   return axios
     .post('/subgroups', data)
@@ -53,7 +57,8 @@ const deleteSubGroup = id => {
       throw error;
     });
 };
-const updateSubGroup = (id, body) => {
+const updateSubGroup = ({id, body}) => {
+  console.log(id, body);
   return axios
     .patch(`/subgroups/${id}`, body)
     .then(res => res.data)

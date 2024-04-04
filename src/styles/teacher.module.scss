@@ -263,6 +263,7 @@
   margin: 2px;
   width: 148px;
   height: 48px;
+  z-index: 2;
   text-align: center;
   &__add {
     color: #33a64c;
@@ -365,4 +366,16 @@
 }
 .available_nav__item:first-of-type {
   margin-right: 20%;
+}
+
+.add_btn {
+  padding: 11px 39px;
+  border-radius: 20px;
+  color: $font-white;
+  background-color: $font-black;
+  font-family: $poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  margin: 0 auto;
 }
