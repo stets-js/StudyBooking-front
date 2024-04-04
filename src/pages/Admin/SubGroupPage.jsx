@@ -12,6 +12,7 @@ import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
 import ChangeSubGroup from '../../components/modals/ChangeSubGroup/ChangeSubGroup';
 import {getSlots} from '../../helpers/teacher/slots';
+import NewSubgroup from '../../components/modals/NewSubgroup/NewSubgroup';
 
 export default function SubGroupPage() {
   const [subGroups, setSubGroups] = useState([]);
@@ -20,12 +21,12 @@ export default function SubGroupPage() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courses, setCourses] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenCreation, setIsOpenCreation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [render, setRender] = useState(false);
   const [isOneDay, setIsOneDay] = useState(false);
   const [selectedWeekDay, setSelectedWeekDay] = useState(0);
   const [currentDate, setCurrentDate] = useState(new Date());
-
   const fetchData = async (query = '') => {
     try {
       const data = await getSubGroups(query);
@@ -133,6 +134,13 @@ export default function SubGroupPage() {
   return (
     <div>
       <div>
+        <button
+          className={styles.add_btn}
+          onClick={() => {
+            setIsOpenCreation(!isOpenCreation);
+          }}>
+          New
+        </button>
         <div className={`${styles.filter_wrapper} ${styles.filter_wrapper__available}`}>
           <Select
             className={`${styles.selector} ${styles.selector__filtering} ${styles.filter_wrapper__available__item}`}
@@ -250,7 +258,9 @@ export default function SubGroupPage() {
             </div>
           </>
         )}
-
+        <NewSubgroup
+          isOpen={isOpenCreation}
+          handleClose={() => setIsOpenCreation(false)}></NewSubgroup>
         <ChangeSubGroup
           isOpen={isOpen}
           handleClose={() => setIsOpen(!isOpen)}

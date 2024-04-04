@@ -108,26 +108,26 @@ const Form = ({
           JSON.parse(jsonData.isReplacement) ? 'replacement' : 'appointed'
         }_${Number(jsonData.appointmentType) === 0 ? 'group' : 'private'}`;
         const appointmentType = await getAppointmentTypes(searchQuery);
+        console.log(jsonData);
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData, userId)
-          : postSubGroup(jsonData, userId)
+          : updateSubGroup({id: jsonData.subGroup, body: jsonData, userId})
         )
           .then(async data => {
             success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
-              console.log(jsonData.slots[i]);
               // week itterating
               if (jsonData.slots[i].length > 0) {
                 const body = {
                   weekDay: i,
                   time: jsonData.slots[i].map(el => el.time),
                   appointmentTypeId: appointmentType.data[0]['id'],
-                  userId: userId,
+                  userId: jsonData.mentorId,
                   startDate: jsonData.startDate,
                   endDate: jsonData.endDate
                 };
                 body[JSON.parse(jsonData.isReplacement) ? 'replacementId' : 'subgroupId'] =
-                  data.data.id;
+                  jsonData.subGroup;
                 await bulkUpdate(body);
               }
             }
@@ -177,12 +177,12 @@ const Form = ({
 
       if (type.type === 'post') {
         return await requests
-          .post(data)
+          .post({credentials: data, jsonData})
           .catch(e => {
             return error(`${e.response.data.message ? e.response.data.message : e.message}`);
           })
           .then(() => {
-            success(status.successMessage);
+            success({text: status.successMessage, delay: 1000});
             if (SetNeedToRender) SetNeedToRender(true);
             return !errorsuccessMessage && onSubmit && onSubmit();
           })

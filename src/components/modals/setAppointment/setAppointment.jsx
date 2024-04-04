@@ -23,10 +23,12 @@ const SetAppointment = ({
 }) => {
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
-  const [subGroup, setSubGroup] = useState('');
+  const [subGroup, setSubGroup] = useState(null);
   const [description, setDescription] = useState('');
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(teachersIds[0]);
+  const [selectedAdmin, setSelectedAdmin] = useState({});
+  const [admins, setAdmins] = useState([]);
   const weekNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const [schedule, setSchedule] = useState([]);
   const [subGroups, setSubGroups] = useState([]);
@@ -36,8 +38,21 @@ const SetAppointment = ({
     setTeachers([]);
     setDescription('');
     setSchedule([]);
-    setSubGroup([]);
+    setSubGroup(null);
     setSelectedSubGroup(0);
+  };
+  const fetchAdmins = async () => {
+    try {
+      const res = await getUsers(`role=administrator`);
+
+      setAdmins(
+        res.data.map(el => {
+          return {label: el.name, value: el.id};
+        })
+      );
+    } catch (e) {
+      console.error('Error fetching teachers:', e);
+    }
   };
   const fetchTeachers = async () => {
     try {
@@ -49,8 +64,8 @@ const SetAppointment = ({
         );
         setSelectedTeacher(teachers[0]?.value || teachersIds[0]);
       });
-    } catch (error) {
-      console.error('Error fetching teachers:', error);
+    } catch (e) {
+      console.error('Error fetching teachers:', e);
     }
   };
 
@@ -79,6 +94,7 @@ const SetAppointment = ({
           }
         }
       }
+      fetchAdmins();
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +102,7 @@ const SetAppointment = ({
   useEffect(() => {
     const fetchSubGroups = async () => {
       try {
-        const res = await getSubGroups();
+        const res = await getSubGroups(`CourseId=${course.value}`);
         setSubGroups(
           res.data.map(el => {
             return {label: el.name, value: el.id};
@@ -94,15 +110,14 @@ const SetAppointment = ({
         );
       } catch (error) {}
     };
-    if (isReplacement && isOpen) {
+    if (isOpen) {
       fetchSubGroups();
     }
-  }, [isReplacement, isOpen]);
+  }, [isOpen]);
   const close = () => {
     setSchedule([]);
     handleClose();
   };
-  const adminId = useSelector(state => state.auth.user.id) || 0;
   return (
     <>
       {isOpen && (
@@ -110,11 +125,11 @@ const SetAppointment = ({
           <Form
             link={link}
             subGroup={subGroup}
-            description={description}
+            // description={description}
             startDate={startDate}
             endDate={endDate}
-            userId={selectedTeacher}
-            selectedAdmin={adminId}
+            mentorId={selectedTeacher}
+            adminId={selectedAdmin}
             selectedCourse={course.value}
             slots={JSON.stringify(selectedSlots)}
             type={{type: 'appointment'}}
@@ -148,6 +163,19 @@ const SetAppointment = ({
               key={Math.random() * 100 - 10}
               placeholder="Select teacher"
               onChange={el => setSelectedTeacher(el.value)}
+            />
+            <label htmlFor="teacher" className={styles.input__label}>
+              Appointer:
+            </label>
+            <Select
+              name="appointer"
+              className={styles.selector}
+              value={admins.filter(el => el.value === selectedAdmin)}
+              options={admins}
+              required
+              key={Math.random() * 100 - 10}
+              placeholder="Select appointer"
+              onChange={el => setSelectedAdmin(el.value)}
             />
             <FormInput
               title="Course:"
@@ -188,34 +216,38 @@ const SetAppointment = ({
                     isRequired={true}
                   />
                 </div>
-                <div className={styles.input__block}>
-                  <FormInput
-                    classname="input__bottom"
-                    title="Schedule:"
-                    type="text"
-                    name="schedule"
-                    value={schedule.join('\n')}
-                    disabled={true}
-                    textArea={true}
-                    appointmentLength={schedule.length}
-                  />
-                  <FormInput
-                    classname="input__bottom"
-                    title="Subgroup:"
-                    type="text"
-                    name="subgroup"
-                    handler={setSubGroup}
-                    isRequired={true}
-                  />
-                </div>
+
                 <FormInput
+                  classname="input__bottom"
+                  title="Schedule:"
+                  type="text"
+                  name="schedule"
+                  value={schedule.join('\n')}
+                  disabled={true}
+                  textArea={true}
+                  appointmentLength={schedule.length}
+                />
+                <label htmlFor="subGroupSelector" className={styles.input__label}>
+                  Subgroup:
+                </label>
+                <Select
+                  name="subGroupSelector"
+                  className={styles.selector}
+                  value={subGroups.filter(el => el.value === subGroup)}
+                  options={subGroups}
+                  key={Math.random() * 100 - 10}
+                  required
+                  placeholder="Select subgroup"
+                  onChange={el => setSubGroup(el.value)}
+                />
+                {/* <FormInput
                   classname="input__bottom"
                   title="Description:"
                   type="text"
                   name="description"
                   textArea={true}
                   handler={setDescription}
-                />
+                /> */}
               </>
             ) : (
               <>
