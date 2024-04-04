@@ -14,7 +14,15 @@ const courseReducer = (state = initialState, action) => {
       return {...state, teacherCourses: action.payload};
     case 'CLEAN_TEACHER_COURSES':
       return {...state, teacherCourses: action.payload};
-
+    case 'UPDATE_TEACHER_COURSE':
+      console.log(action.payload);
+      return {
+        ...state,
+        teacherCourses: [
+          ...(state.teacherCourses.map(el => el.id !== action.payload.CourseId) || []),
+          action.payload
+        ]
+      };
     case 'ADD_TEACHER_COURSE':
       return {
         ...state,

@@ -13,7 +13,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   addTeacherCourses,
   setCourses,
-  setTeacherCourses
+  setTeacherCourses,
+  updateTeacherCourse
 } from '../../../redux/action/course.action';
 
 const ChangeManagerCourses = ({
@@ -74,39 +75,48 @@ const ChangeManagerCourses = ({
         </h3>
         <div className={styles.coursesBox}>
           {courses.length > 0 &&
-            courses.map(course => (
-              <div key={course.id} className={styles.checkBoxDiv}>
-                <div className={styles.checkBoxLabel}>
-                  <input
-                    className={styles.checkBox}
-                    type="checkbox"
-                    key={Math.random() * 100000 - 10}
-                    checked={
-                      !forFilters
-                        ? (teacherCourses || []).length > 0 &&
-                          teacherCourses.some(el => {
-                            return el.id === course.id;
-                          })
-                        : (filteringCourses || []).length > 0 &&
-                          filteringCourses.some(el => {
-                            return el === course.id;
-                          })
-                    }
-                    onChange={() => handleCheckboxChange(course.id, teacherId)}
-                  />
-                  {course.name}
+            courses.map(course => {
+              const teacherCourse = (teacherCourses || []).filter(
+                el => el.courseId === course.id
+              )[0];
+              console.log(teacherCourses);
+              if (teacherCourse) {
+                teacherCourse.courseId = 69;
+                dispatch(updateTeacherCourse(teacherCourse));
+              }
+              return (
+                <div key={course.id} className={styles.checkBoxDiv}>
+                  <div className={styles.checkBoxLabel}>
+                    <input
+                      className={styles.checkBox}
+                      type="checkbox"
+                      key={Math.random() * 100000 - 10}
+                      checked={
+                        !forFilters
+                          ? teacherCourse && teacherCourse.courseId
+                          : (filteringCourses || []).length > 0 &&
+                            filteringCourses.some(el => {
+                              return el === course.id;
+                            })
+                      }
+                      onChange={() => handleCheckboxChange(course.id, teacherId)}
+                    />
+                    {course.name}
+                  </div>
+                  {!forFilters &&
+                    teacherCourses.some(el => {
+                      return el.courseId === course.id;
+                    }) && (
+                      <div className={styles.switch_wrapper}>
+                        <Switch
+                          className={teacherStyles.remove_svg_switch}
+                          onChange={e => {}}></Switch>
+                        <span className={teacherStyles.switch_label}>tech</span>
+                      </div>
+                    )}
                 </div>
-                {!forFilters &&
-                  teacherCourses.some(el => {
-                    return el.id === course.id;
-                  }) && (
-                    <div className={styles.switch_wrapper}>
-                      <Switch className={teacherStyles.remove_svg_switch}></Switch>
-                      <span className={teacherStyles.switch_label}>tech</span>
-                    </div>
-                  )}
-              </div>
-            ))}
+              );
+            })}
         </div>
         {/* <button className={styles.input__submit} onClick={handleSave}>
           Save

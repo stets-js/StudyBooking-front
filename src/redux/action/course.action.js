@@ -7,6 +7,11 @@ export const setTeacherCourses = teacherCourses => ({
   type: 'SET_TEACHER_COURSES',
   payload: teacherCourses
 });
+
+export const updateTeacherCourse = course => ({
+  type: 'UPDATE_TEACHER_COURSE',
+  payload: course
+});
 export const cleanTeacherCourses = () => ({
   type: 'CLEAN_TEACHER_COURSES',
   payload: []
