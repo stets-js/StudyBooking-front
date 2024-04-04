@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Select from 'react-select';
 import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
-import {uk} from 'date-fns/locale';
 import Switch from 'react-switch';
 import {error} from '@pnotify/core';
 

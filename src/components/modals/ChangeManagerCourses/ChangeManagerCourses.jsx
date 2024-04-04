@@ -1,6 +1,8 @@
 import styles from './ChangeManagerCourses.module.scss';
+import teacherStyles from '../../../styles/teacher.module.scss';
 import Modal from '../../Modal/Modal';
 import React, {useState, useEffect} from 'react';
+import Switch from 'react-switch';
 import {
   getCourses,
   getTeacherCourses,
@@ -74,7 +76,7 @@ const ChangeManagerCourses = ({
           {courses.length > 0 &&
             courses.map(course => (
               <div key={course.id} className={styles.checkBoxDiv}>
-                <label className={styles.checkBoxLabel}>
+                <div className={styles.checkBoxLabel}>
                   <input
                     className={styles.checkBox}
                     type="checkbox"
@@ -93,7 +95,16 @@ const ChangeManagerCourses = ({
                     onChange={() => handleCheckboxChange(course.id, teacherId)}
                   />
                   {course.name}
-                </label>
+                </div>
+                {!forFilters &&
+                  teacherCourses.some(el => {
+                    return el.id === course.id;
+                  }) && (
+                    <div className={styles.switch_wrapper}>
+                      <Switch className={teacherStyles.remove_svg_switch}></Switch>
+                      <span className={teacherStyles.switch_label}>tech</span>
+                    </div>
+                  )}
               </div>
             ))}
         </div>
