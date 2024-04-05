@@ -7,7 +7,8 @@ import {
   getCourses,
   getTeacherCourses,
   postTeacherCourse,
-  deleteTeacherCourse
+  deleteTeacherCourse,
+  patchTeacherCourse
 } from '../../../helpers/course/course';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -16,6 +17,7 @@ import {
   setTeacherCourses,
   updateTeacherCourse
 } from '../../../redux/action/course.action';
+import { getTeacherTypes } from '../../../helpers/teacher/teacher-type';
 
 const ChangeManagerCourses = ({
   isOpen,
@@ -28,6 +30,14 @@ const ChangeManagerCourses = ({
   const dispatch = useDispatch();
   const courses = useSelector(state => state.courses.courses);
   const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
+  const [teacherTypes,setTeacherTypes] = useState([])
+  const [teacherTypesId, setTeacherTypesId] = useState({'tech': null, 'soft':null})
+  const fetchTeacherTypes = async() => {
+    const res = await getTeacherTypes();
+    setTeacherTypes(res.data)
+    if (teacherTypes.length > 0)
+    setTeacherTypesId({tech: (teacherTypes.filter(type => type.type === 'tech'))[0].id, soft: (teacherTypes.filter(type => type.type === 'soft'))[0].id})
+  }
   useEffect(() => {
     const fetchAllCourses = async () => {
       if (!forFilters) {
@@ -36,17 +46,18 @@ const ChangeManagerCourses = ({
       }
     };
     fetchAllCourses();
+    fetchTeacherTypes()
   }, [teacherId, dispatch]);
 
   const handleCheckboxChange = async (courseId, id) => {
     if (!forFilters) {
-      if (teacherCourses.some(el => el.id === courseId)) {
+      if (teacherCourses.some(el => el.courseId === courseId)) {
         await deleteTeacherCourse(id, courseId);
-        dispatch(setTeacherCourses(teacherCourses.filter(el => el.id !== courseId)));
+        dispatch(setTeacherCourses(teacherCourses.filter(el => el.courseId !== courseId)));
       } else {
-        await postTeacherCourse(id, courseId);
-        const newTeacherCourses = courses.filter(el => el.id === courseId)[0];
-        dispatch(addTeacherCourses(newTeacherCourses));
+        const res = await postTeacherCourse(id, courseId);
+      
+        dispatch(addTeacherCourses(res.data));
       }
     } else {
       setFilteringCourses(prevCourses => {
@@ -58,6 +69,17 @@ const ChangeManagerCourses = ({
       });
     }
   };
+  // const [flag, setFlag] = useState(0)
+  const handleTeacherTypeChange = async ({element, teacherId, teacherCourse}) =>{
+    const TeacherTypeId = element ? teacherTypesId['tech'] : teacherTypesId['soft'];
+    try {
+      const res = await patchTeacherCourse(teacherId, teacherCourse.courseId, {TeacherTypeId})
+      dispatch(updateTeacherCourse({...teacherCourse,TeacherTypeId} ))
+    } catch (error) {
+      
+    }
+
+  }
   if (forFilters && !isOpen) return <></>;
   return (
     <>
@@ -79,18 +101,14 @@ const ChangeManagerCourses = ({
               const teacherCourse = (teacherCourses || []).filter(
                 el => el.courseId === course.id
               )[0];
-              console.log(teacherCourses);
-              if (teacherCourse) {
-                teacherCourse.courseId = 69;
-                dispatch(updateTeacherCourse(teacherCourse));
-              }
+              
               return (
                 <div key={course.id} className={styles.checkBoxDiv}>
                   <div className={styles.checkBoxLabel}>
                     <input
                       className={styles.checkBox}
                       type="checkbox"
-                      key={Math.random() * 100000 - 10}
+                      key={Math.random() * 1000 - 10}
                       checked={
                         !forFilters
                           ? teacherCourse && teacherCourse.courseId
@@ -109,8 +127,12 @@ const ChangeManagerCourses = ({
                     }) && (
                       <div className={styles.switch_wrapper}>
                         <Switch
+                        checked={teacherCourse?.TeacherTypeId === teacherTypesId['tech']}
+                        // checked={flag}
                           className={teacherStyles.remove_svg_switch}
-                          onChange={e => {}}></Switch>
+                          // onChange={()=>{setFlag(!flag)}}
+                          onChange={element => {handleTeacherTypeChange({element, teacherId, teacherCourse})}}
+                          ></Switch>
                         <span className={teacherStyles.switch_label}>tech</span>
                       </div>
                     )}

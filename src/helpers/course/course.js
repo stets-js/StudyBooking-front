@@ -81,6 +81,16 @@ const postTeacherCourse = (userId, courseId) => {
     });
 };
 
+const patchTeacherCourse = (userId, courseId, data) => {
+  return axios
+  .patch(`/users/${userId}/courses/${courseId}`, data)
+  .then(res => res.data)
+  .catch(error => {
+    throw error;
+  });
+
+}
+
 const deleteTeacherCourse = (userId, courseId) => {
   return axios
     .delete(`/users/${userId}/courses/${courseId}`)
@@ -100,5 +110,6 @@ export {
   getCourseIdByName,
   getCourseById,
   deleteTeacherCourse,
-  getTeachersByCourse
+  getTeachersByCourse, 
+  patchTeacherCourse
 };

@@ -8,7 +8,8 @@ export const setTeacherCourses = teacherCourses => ({
   payload: teacherCourses
 });
 
-export const updateTeacherCourse = course => ({
+export const updateTeacherCourse = (course) => ({
+  // For now its only support updating TeacherTypeId 
   type: 'UPDATE_TEACHER_COURSE',
   payload: course
 });
