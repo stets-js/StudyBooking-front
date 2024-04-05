@@ -36,7 +36,8 @@ const ChangeManagerCourses = ({
     const res = await getTeacherTypes();
     setTeacherTypes(res.data)
     if (teacherTypes.length > 0)
-    setTeacherTypesId({tech: (teacherTypes.filter(type => type.type === 'tech'))[0].id, soft: (teacherTypes.filter(type => type.type === 'soft'))[0].id})
+    {setTeacherTypesId({tech: (teacherTypes.filter(type => type.type === 'tech'))[0].id, soft: (teacherTypes.filter(type => type.type === 'soft'))[0].id});
+}
   }
   useEffect(() => {
     const fetchAllCourses = async () => {
