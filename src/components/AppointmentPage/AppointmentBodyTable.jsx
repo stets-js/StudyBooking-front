@@ -36,7 +36,7 @@ export default function AppointmentBodyTable({
           }
          }
          return (
-          <td key={dateIndex} rowSpan={element ? element?.rowSpan : 1}>
+          <td key={`${dateIndex}${currentTime}`} rowSpan={element ? element?.rowSpan : 1}>
            <button
             style={
              element
