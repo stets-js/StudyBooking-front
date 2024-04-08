@@ -1,0 +1,90 @@
+import React from 'react';
+import { format, addMinutes } from 'date-fns';
+import { useSelector, useDispatch } from 'react-redux';
+
+import styles from '../../styles/teacher.module.scss';
+import tableStyles from '../../styles/table.module.scss';
+import { HandleCellClick } from './HandleCellClick';
+
+export default function AppointmentBodyTable({
+ selectedClassType,
+ selectedSlotsAmount,
+ slotsData,
+ setSelectedSlotsAmount,
+ setTeachersIds,
+}) {
+ const selectedSlots = useSelector((state) => state.selectedSlots);
+ const startingHour = 9;
+ const dispatch = useDispatch();
+ return (
+  <table className={tableStyles.tableBody}>
+   <tbody>
+    {Array.from({ length: 24 }, (_, timeIndex) => {
+     const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+     if (currentTime.getHours() >= startingHour)
+      return (
+       <tr key={timeIndex}>
+        {Array.from({ length: 7 }, (_, dateIndex) => {
+         const weekDay = dateIndex;
+         const timeStr = format(currentTime, 'HH:mm');
+
+         const numPeople = slotsData[weekDay]?.[timeStr]?.length || 0;
+         const element = selectedSlots.selectedSlots[weekDay]?.find((el) => el.time === timeStr);
+         if (element) {
+          if (element.rowSpan <= 0) {
+           return <></>;
+          }
+         }
+         return (
+          <td key={`${dateIndex}${currentTime}`} rowSpan={element ? element?.rowSpan : 1}>
+           <button
+            style={
+             element
+              ? {
+                 height: `${58 * element.rowSpan}px`,
+                }
+              : {}
+            }
+            className={`${element ? styles.selectedCell : ''} 
+			${tableStyles.cell} ${tableStyles.black_borders} ${
+             timeIndex === 0 || timeIndex === 23 || dateIndex === 0 || dateIndex === 6
+              ? tableStyles.cell__outer
+              : tableStyles.cell__inner
+            }`}
+            disabled={!(numPeople > 0)}
+            onClick={() =>
+             HandleCellClick({
+              weekDay,
+              timeStr,
+              numSlotsToCheck: selectedClassType === 0 ? 3 : 2,
+              setSelectedSlotsAmount,
+              selectedSlotsAmount,
+              setTeachersIds,
+              selectedSlots,
+              dispatch,
+              slotsData,
+             })
+            }
+           >
+            <span>
+             {element ? (
+              <>
+               {timeStr}
+               <br />-<br />
+               {format(addMinutes(currentTime, 30 * element.rowSpan), 'HH:mm')} ({numPeople})
+              </>
+             ) : (
+              `${timeStr} (${numPeople})`
+             )}
+            </span>
+           </button>
+          </td>
+         );
+        })}
+       </tr>
+      );
+    })}
+   </tbody>
+  </table>
+ );
+}

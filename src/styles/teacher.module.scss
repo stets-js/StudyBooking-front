@@ -60,7 +60,7 @@
   display: flex;
 }
 .selectedCell {
-  background-color: #9cc7f5;
+  background-color: #9cc7f5 !important;
 }
 .half_width {
   width: 50% !important;
@@ -378,4 +378,11 @@
   font-weight: 400;
   font-size: 20px;
   margin: 0 auto;
+}
+
+.switch_label{
+  font-size:16px;
+  text-align: center;
+  display: flex;
+  align-items: center;
 }
