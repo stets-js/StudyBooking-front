@@ -63,9 +63,9 @@ const getTeacherCourses = id => {
     });
 };
 
-const getTeachersByCourse = id => {
+const getTeachersByCourse = (id, teacherType) => {
   return axios
-    .get(`/courses/${id}/users`)
+    .get(`/courses/${id}/users${teacherType ? '?TeacherTypeId=' + teacherType : ''}`)
     .then(res => res.data)
     .catch(error => {
       throw error;
@@ -83,13 +83,12 @@ const postTeacherCourse = (userId, courseId) => {
 
 const patchTeacherCourse = (userId, courseId, data) => {
   return axios
-  .patch(`/users/${userId}/courses/${courseId}`, data)
-  .then(res => res.data)
-  .catch(error => {
-    throw error;
-  });
-
-}
+    .patch(`/users/${userId}/courses/${courseId}`, data)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
 
 const deleteTeacherCourse = (userId, courseId) => {
   return axios
@@ -110,6 +109,6 @@ export {
   getCourseIdByName,
   getCourseById,
   deleteTeacherCourse,
-  getTeachersByCourse, 
+  getTeachersByCourse,
   patchTeacherCourse
 };
