@@ -7,7 +7,6 @@ import Select from 'react-select';
 import Form from '../../Form/Form';
 import {getUsers} from '../../../helpers/user/user';
 import {addMinutes, format} from 'date-fns';
-import {useSelector} from 'react-redux';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 const SetAppointment = ({
   isOpen,
@@ -19,8 +18,10 @@ const SetAppointment = ({
   startDate,
   endDate,
   isReplacement,
-  onSubmit
+  onSubmit,
+  teacherType
 }) => {
+  console.log(teacherType);
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
   const [subGroup, setSubGroup] = useState(null);
@@ -56,7 +57,11 @@ const SetAppointment = ({
   };
   const fetchTeachers = async () => {
     try {
-      getUsers(`users=${JSON.stringify(teachersIds)}&sortBySubgroups=true`).then(teachersData => {
+      getUsers(
+        `users=${JSON.stringify(teachersIds)}&sortBySubgroups=${
+          teacherType === 2 ? 'tech' : 'soft'
+        }`
+      ).then(teachersData => {
         setTeachers(
           teachersData.data.map(el => {
             return {label: `${el.name} (${el.subgroupCount})`, value: el.id};

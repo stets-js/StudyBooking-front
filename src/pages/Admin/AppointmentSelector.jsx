@@ -102,7 +102,7 @@ export default function UsersPage() {
       setSelectedSlotsAmount(0);
     }
   };
-
+  console.log(teacherType);
   return (
     <div>
       <AppointmentButtons
@@ -149,6 +149,7 @@ export default function UsersPage() {
         onSubmit={() => {
           clearTable();
         }}
+        teacherType={teacherType}
       />
     </div>
   );

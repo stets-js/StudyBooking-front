@@ -17,7 +17,11 @@ export default function TeacherSubgroupPage() {
   const userId = useSelector(state => state.auth.user.id);
   const fetchSubgroups = async () => {
     try {
-      const data = await getSubGroups(`mentorId=${teacherId ? teacherId : userId}`);
+      const data = await getSubGroups(
+        `softMentorId=${teacherId ? teacherId : userId}&techMentorId=${
+          teacherId ? teacherId : userId
+        }`
+      );
       setSubgroups(data.data);
     } catch (error) {
       console.log(error);
