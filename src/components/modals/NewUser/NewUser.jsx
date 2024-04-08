@@ -105,26 +105,34 @@ const NewUser = ({
               isRequired={true}
               handler={setRating}
             />
-
-            <PhoneInput
-              preferredCountries={['ua']}
-              placeholder={'(096)-12-34567'}
-              required={true}
-              value={phone}
-              onChange={phone => setPhone(phone)}
-            />
-            <FormInput
-              classname="input__bottom"
-              title="City:"
-              type="text"
-              name="city"
-              max={50}
-              value={city}
-              placeholder="City"
-              isRequired={true}
-              handler={setCity}
-            />
-
+            <div className={styles.input__block}>
+              <div className={styles.phone__wrapper}>
+                <span className={styles.phone__label}>Phone:</span>
+                <PhoneInput
+                  label="Phone"
+                  name={'phone'}
+                  preferredCountries={['ua']}
+                  placeholder={'(096)-12-34567'}
+                  required={true}
+                  value={phone}
+                  className={styles.phone}
+                  inputStyle={{height: '45px', borderRadius: '25px', backgroundColor: '#d9d9d9'}}
+                  buttonStyle={{borderRadius: '25px', borderRight: '0', backgroundColor: '#bdbdbd'}}
+                  onChange={phone => setPhone(phone)}
+                />
+              </div>
+              <FormInput
+                classname="input__bottom"
+                title="City:"
+                type="text"
+                name="city"
+                max={50}
+                value={city}
+                placeholder="City"
+                isRequired={true}
+                handler={setCity}
+              />
+            </div>
             <FormInput
               classname="input__bottom"
               title="Email:"

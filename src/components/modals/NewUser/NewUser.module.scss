@@ -4,6 +4,7 @@
 .input__block {
   display: flex;
   margin: 0 auto;
+  align-items: end;
   justify-content: space-between;
 }
 .input__block > .input__label {
@@ -44,5 +45,29 @@
       background-color: $grey;
       font-size: 20px;
       font-family: $poppins;
+  }
+}
+
+
+.phone{
+  align-items: end;
+  height: 100%;
+  margin-bottom: 10px;
+  margin-top:10px;
+  > input{
+    font-family: $poppins;
+    font-size: 20px !important;
+    width: 100% !important;
+
+  }
+  &__wrapper{
+    width: 50%;
+  text-align: left;
+    justify-content: left;
+  }
+  &__label{
+    font-family: $poppins;
+    font-size: 20px;
+    text-align-last: left;
   }
 }
