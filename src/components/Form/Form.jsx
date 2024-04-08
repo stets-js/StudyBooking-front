@@ -165,8 +165,7 @@ const Form = ({
           rating: jsonData.rating,
           id: userId,
           city: jsonData.city,
-          phone: jsonData.phone,
-          teachingType: jsonData.teachingType
+          phone: jsonData.phone
         };
         onSubmit();
         const newUser = await requests.user(user);

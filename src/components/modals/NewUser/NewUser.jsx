@@ -26,7 +26,6 @@ const NewUser = ({
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [city, setCity] = useState('');
-  const [teachingType, setTeachingType] = useState('');
   // console.log(roles.find(el => el.label === 'teacher'));
   const [role, setRole] = useState(
     // (1);
@@ -35,7 +34,6 @@ const NewUser = ({
   useEffect(() => {
     setName(item.name);
     setCity(item.city);
-    setTeachingType(item.teachingType);
     setPhone(item.phone);
     setRating(item.rating);
     setEmail(item.email);
@@ -80,7 +78,6 @@ const NewUser = ({
             rating={rating}
             city={city}
             phone={phone}
-            teachingType={teachingType}
             userId={!edit ? undefined : item.id}
             status={{
               successMessage: 'Successfully created user',
@@ -127,17 +124,7 @@ const NewUser = ({
               isRequired={true}
               handler={setCity}
             />
-            <Select
-              name="teachingType"
-              options={[
-                {label: 'soft', value: 'soft'},
-                {label: 'tech', value: 'tech'}
-              ]}
-              value={teachingType?.length > 0 ? {label: teachingType} : ''}
-              required={true}
-              placeholder={'Teaching type'}
-              className={styles.selector}
-              onChange={e => setTeachingType(e.value)}></Select>
+
             <FormInput
               classname="input__bottom"
               title="Email:"

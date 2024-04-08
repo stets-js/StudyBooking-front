@@ -26,6 +26,7 @@ export const filterAndUpdateSlots = slots => {
         start: slot.time,
         leftSlotsForOneBlock: slot.rowSpan - 1
       };
+      console.log(group);
       slot.SubGroupId
         ? appointedSubgroupsIds.push({id: slot.SubGroupId, ...group})
         : appointedReplacementsIds.push({id: slot.ReplacementId, ...group});
@@ -43,5 +44,6 @@ export const filterAndUpdateSlots = slots => {
     }
     updatedWeekSchedule[slot.weekDay].push(slot);
   });
+  console.log(updatedWeekSchedule);
   return updatedWeekSchedule;
 };
