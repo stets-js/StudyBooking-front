@@ -18,7 +18,7 @@ export default function ScheduleCell({
   setSelectedSlotDetails,
   dispatch
 }) {
-  if ((slot?.SubGroupId || slot?.ReplacementId) && !slot.rowSpan) {
+  if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
   }
   return (
@@ -68,7 +68,8 @@ export default function ScheduleCell({
               </>
             ) : (
               format(currentTime, 'HH:mm')
-            )}
+            )}{' '}
+            ({dateIndex})
           </span>
         </button>
       }

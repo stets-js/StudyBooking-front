@@ -11,9 +11,9 @@ export const filterAndUpdateSlots = slots => {
 
   slots.data.forEach(slot => {
     if (
-      (slot.SubGroupId &&
+      (slot.subgroupId &&
         !appointedSubgroupsIds.some(
-          el => el.id === slot.SubGroupId && el.weekDay === slot.weekDay
+          el => el.id === slot.subgroupId && el.weekDay === slot.weekDay
         )) || // if subgroup event
       (slot.ReplacementId &&
         !appointedReplacementsIds.some(
@@ -27,14 +27,14 @@ export const filterAndUpdateSlots = slots => {
         leftSlotsForOneBlock: slot.rowSpan - 1
       };
       console.log(group);
-      slot.SubGroupId
-        ? appointedSubgroupsIds.push({id: slot.SubGroupId, ...group})
+      slot.subgroupId
+        ? appointedSubgroupsIds.push({id: slot.subgroupId, ...group})
         : appointedReplacementsIds.push({id: slot.ReplacementId, ...group});
-    } else if (slot.SubGroupId || slot.ReplacementId) {
-      const arr = slot.SubGroupId ? appointedSubgroupsIds : appointedReplacementsIds;
+    } else if (slot.subgroupId || slot.ReplacementId) {
+      const arr = slot.subgroupId ? appointedSubgroupsIds : appointedReplacementsIds;
       const indexOfId = arr.findIndex(
         el =>
-          el.id === (slot.SubGroupId ? slot.SubGroupId : slot.ReplacementId) &&
+          el.id === (slot.subgroupId ? slot.subgroupId : slot.ReplacementId) &&
           el.weekDay === slot.weekDay
       );
       arr[indexOfId].leftSlotsForOneBlock -= 1;

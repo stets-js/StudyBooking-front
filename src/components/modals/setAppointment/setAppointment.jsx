@@ -58,9 +58,8 @@ const SetAppointment = ({
   const fetchTeachers = async () => {
     try {
       getUsers(
-        `users=${JSON.stringify(teachersIds)}&sortBySubgroups=${
-          teacherType === 2 ? 'tech' : 'soft'
-        }`
+        `users=${JSON.stringify(teachersIds)}`
+        // &sortBySubgroups=${teacherType === 2 ? 'tech' : 'soft'}
       ).then(teachersData => {
         setTeachers(
           teachersData.data.map(el => {
@@ -129,7 +128,7 @@ const SetAppointment = ({
         <Modal open={isOpen} onClose={close}>
           <Form
             link={link}
-            subGroup={subGroup}
+            subgroupId={subGroup}
             // description={description}
             startDate={startDate}
             endDate={endDate}
@@ -143,6 +142,7 @@ const SetAppointment = ({
             isReplacement={isReplacement}
             selectedSubGroup={selectedSubGroup.value}
             schedule={schedule}
+            TeacherTypeId={teacherType}
             // requests={}
             onSubmit={() => {
               onSubmit();

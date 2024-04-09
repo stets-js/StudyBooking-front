@@ -57,7 +57,6 @@ const deleteSubGroup = id => {
     });
 };
 const updateSubGroup = ({id, body}) => {
-  console.log(id, body);
   return axios
     .patch(`/subgroups/${id}`, body)
     .then(res => res.data)

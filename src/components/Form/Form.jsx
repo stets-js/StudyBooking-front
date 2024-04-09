@@ -111,7 +111,7 @@ const Form = ({
         console.log(jsonData);
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData, userId)
-          : updateSubGroup({id: jsonData.subGroup, body: jsonData, userId})
+          : updateSubGroup({id: jsonData.subgroupId, body: jsonData, userId})
         )
           .then(async data => {
             success({text: status.successMessage || 'Success', delay: 1000});
@@ -127,7 +127,7 @@ const Form = ({
                   endDate: jsonData.endDate
                 };
                 body[JSON.parse(jsonData.isReplacement) ? 'replacementId' : 'subgroupId'] =
-                  jsonData.subGroup;
+                  jsonData.subgroupId;
                 await bulkUpdate(body);
               }
             }

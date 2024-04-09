@@ -20,7 +20,7 @@ export const HandleCellClick = async ({
   dispatch
 }) => {
   // case for opening  the details of a occupied cell
-  if (slot && (slot.SubGroupId || slot.ReplacementId)) {
+  if (slot && (slot.subgroupId || slot.ReplacementId)) {
     setSelectedSlotDetails(slot);
     setOpenSlotDetails(true);
     return;
