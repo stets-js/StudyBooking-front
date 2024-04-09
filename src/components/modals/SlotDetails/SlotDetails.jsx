@@ -3,10 +3,11 @@ import FormInput from '../../FormInput/FormInput';
 import React from 'react';
 import styles from './slotDetails.module.scss';
 import {format} from 'date-fns';
-const SlotDetails = ({isOpen, handleClose, slot}) => {
+const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
-  const subgroupMentors = slot?.SubGroup?.SubgroupMentors[0];
-  console.log(subgroupMentors);
+  const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || []).filter(
+    el => el.mentorId === +userId
+  )[0]; // filter only need user and get first item from new array
   return (
     <>
       {isOpen && slot && (

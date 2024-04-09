@@ -123,6 +123,7 @@ export default function TeacherTable({userId}) {
         </div>
       </div>
       <SlotDetails
+        userId={userId}
         isOpen={openSlotDetails}
         handleClose={() => {
           setSelectedSlotDetails(null);
