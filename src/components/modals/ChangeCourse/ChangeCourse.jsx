@@ -13,7 +13,7 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
   const [teamLead, setTeamLead] = useState([{label: 'a', value: 0}]);
   const [teamLeadId, setTeamLeadId] = useState(0);
   const [author, setAuthor] = useState({label: '', value: 0});
-
+  const [shortening, setShortening] = useState('');
   useEffect(() => {
     const fectchUsers = async () => {
       setTeamLead(
@@ -36,6 +36,7 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
           setName(courseData.name);
           setNumber(courseData.group_amount);
           setTeamLeadId(courseData.teamLeadId);
+          setShortening(courseData.shortening);
         } catch (error) {}
       }
     };
@@ -68,6 +69,7 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
             name={name}
             number={number}
             teamLeadId={teamLeadId}
+            shortening={shortening}
             title="Change course's info">
             <FormInput
               title="Name:"
@@ -77,6 +79,15 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
               placeholder="Name"
               isRequired={true}
               handler={setName}
+            />
+            <FormInput
+              title="Shortening:"
+              type="text"
+              name="shortening"
+              value={shortening}
+              placeholder="Shortening"
+              isRequired={true}
+              handler={setShortening}
             />
             <FormInput
               title="Group number:"

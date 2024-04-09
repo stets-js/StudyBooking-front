@@ -42,7 +42,7 @@ export default function Courses({text, isOpenModal, role, filterName}) {
         <p className={styles.mini_title}>{text}</p>
         {filteredCourses?.length > 0 && (
           <ul className={styles.main_wrapper}>
-            <Fade cascade triggerOnce duration={300} direction="up">
+            <Fade cascade triggerOnce duration={100} direction="up">
               {filteredCourses.map(item => {
                 return (
                   <li className={styles.ul_items} key={item.name}>

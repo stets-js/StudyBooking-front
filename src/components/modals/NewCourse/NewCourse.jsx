@@ -14,7 +14,7 @@ const NewCourse = ({isOpen, handleClose}) => {
   const [number, setNumber] = useState(0);
   const [teamLead, setTeamLead] = useState({label: '', value: null});
   const [selectedTeamLead, setSelectedTeamLead] = useState(userId);
-
+  const [shortening, setShortening] = useState('');
   useEffect(() => {
     try {
       getUsers('role=administrator').then(data => {
@@ -49,6 +49,7 @@ const NewCourse = ({isOpen, handleClose}) => {
             name={name}
             group_number={number}
             team_lead_id={selectedTeamLead}
+            shortening={shortening}
             title="New course">
             <FormInput
               title="Name:"
@@ -59,6 +60,16 @@ const NewCourse = ({isOpen, handleClose}) => {
               placeholder="Name"
               isRequired={true}
               handler={setName}
+            />
+            <FormInput
+              title="Shortening:"
+              type="text"
+              name="Shortening"
+              max={50}
+              value={shortening}
+              placeholder="Shortening"
+              isRequired={true}
+              handler={setShortening}
             />
             <FormInput
               title="Group number:"
