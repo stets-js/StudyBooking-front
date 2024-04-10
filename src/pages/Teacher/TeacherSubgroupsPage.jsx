@@ -18,7 +18,8 @@ export default function TeacherSubgroupPage() {
   const fetchSubgroups = async () => {
     try {
       const data = await getMentorSubgroups(`mentorId=${teacherId ? teacherId : userId}`);
-      setSubgroups(data.data);
+      console.log(data.data.data);
+      setSubgroups(data.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -42,8 +43,10 @@ export default function TeacherSubgroupPage() {
 
   const filteredSubgroups = subgroups.filter(group => {
     return (
-      group.name.toLowerCase().includes(filterName.toLowerCase()) &&
-      (filterCourse.length > 0 ? filterCourse.map(el => el.value).includes(group.CourseId) : true)
+      group?.SubGroup.name.toLowerCase().includes(filterName.toLowerCase()) &&
+      (filterCourse.length > 0
+        ? filterCourse.map(el => el.value).includes(group?.SubGroup.CourseId)
+        : true)
     );
   });
   return (
@@ -97,7 +100,7 @@ export default function TeacherSubgroupPage() {
                       <td className={tableStyles.cell__mySubgroup}>
                         <div
                           className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
-                          {group.name}
+                          {group?.SubGroup.name}
                         </div>
                       </td>
                       <td className={tableStyles.cell__mySubgroup}>
@@ -107,7 +110,7 @@ export default function TeacherSubgroupPage() {
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           }`}>
-                          {group.Course.name}
+                          {group?.SubGroup.Course.name}
                         </div>
                       </td>
                       <td className={tableStyles.cell__mySubgroup}>
@@ -117,7 +120,7 @@ export default function TeacherSubgroupPage() {
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           } ${tableStyles.cell__mySubgroup}`}>
-                          {group.Admin.name}
+                          {group?.SubGroup.Admin.name}
                         </div>
                       </td>
                       <td className={tableStyles.cell__mySubgroup__description}>
@@ -127,13 +130,15 @@ export default function TeacherSubgroupPage() {
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           } ${tableStyles.cell__mySubgroup}`}>
-                          {group.description}
+                          {group?.SubGroup.description}
                         </div>
                       </td>
-                      <td className={tableStyles.cell__mySubgroup} key={group.id}>
+                      <td className={tableStyles.cell__mySubgroup}>
                         <div
                           className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
-                          {format(group.startDate, 'dd.MM') + '-' + format(group.endDate, 'dd.MM')}
+                          {format(group?.SubGroup.startDate, 'dd.MM') +
+                            '-' +
+                            format(group?.SubGroup.endDate, 'dd.MM')}
                           <br />
                           {group.schedule.split(',').map(el => {
                             return (
