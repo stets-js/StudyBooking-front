@@ -61,19 +61,23 @@ export default function AppointmentList({
 
   return (
     <div className={appointmentStyles.buttons_header}>
-      {appointmentTypes.map(appointmentType => (
-        <button
-          key={appointmentType.id}
-          onClick={() => {
-            if (['free', 'universal'].includes(appointmentType.name))
-              setSelectedAppointment({name: appointmentType.name, id: appointmentType.id});
-          }}
-          className={`${appointmentStyles.type_selector} ${
-            appointmentStyles.type_selector__borders
-          } ${appointmentStyles[`type_selector__${appointmentType.name}`]}`}>
-          {translateAppointmentTypeName(appointmentType.name)}
-        </button>
-      ))}
+      {appointmentTypes.map(appointmentType => {
+        if (['replacement_junior_group', 'appointed_junior_group'].includes(appointmentType.name))
+          return <></>;
+        return (
+          <button
+            key={appointmentType.id}
+            onClick={() => {
+              if (['free', 'universal'].includes(appointmentType.name))
+                setSelectedAppointment({name: appointmentType.name, id: appointmentType.id});
+            }}
+            className={`${appointmentStyles.type_selector} ${
+              appointmentStyles.type_selector__borders
+            } ${appointmentStyles[`type_selector__${appointmentType.name}`]}`}>
+            {translateAppointmentTypeName(appointmentType.name)}
+          </button>
+        );
+      })}
       {/* <div className={styles.teacherInfo}>Mentor: {user?.name}</div> */}
     </div>
   );
