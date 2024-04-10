@@ -9,7 +9,7 @@ export default function LoginBox({loggedUser}) {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
-    user: {name, role}
+    user: {name}
   } = loggedUser;
   const jwtExp = useSelector(state => state.auth.user.exp);
   const auth = isAuthenticated && jwtExp * 1000 > Date.now();

@@ -78,10 +78,10 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin-left: auto;
-  &__switch__teacher_type{
-display: flex;
-align-items: end;
-height: 92%;
+  &__switch__teacher_type {
+    display: flex;
+    align-items: flex-end;
+    height: 92%;
   }
 }
 .filter_wrapper {
@@ -138,7 +138,7 @@ height: 92%;
 }
 .remove_svg_switch {
   :has(div) {
-    background: #f06a6a ;
+    background: #f06a6a;
   }
 }
 .subgroup_selector {
@@ -307,8 +307,6 @@ height: 92%;
   font-family: $poppins;
   word-wrap: break-word;
 
-
-
   :has(span) {
     height: auto;
   }
@@ -330,15 +328,15 @@ height: 92%;
 }
 .selector [class*='menu'] {
   /* Your styles for the specific div with a class containing 'menu' */
-  
+
   z-index: 2 !important;
-  :has(div){
+  :has(div) {
     background-color: white;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
-  border:1px solid black;
+
+  border: 1px solid black;
   min-width: 100%;
 }
 .reset_wrapper {
@@ -369,7 +367,7 @@ height: 92%;
   width: 70%;
   margin-left: 15%;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .available_nav__item:first-of-type {
   margin-right: 20%;
@@ -387,8 +385,8 @@ height: 92%;
   margin: 0 auto;
 }
 
-.switch_label{
-  font-size:16px;
+.switch_label {
+  font-size: 16px;
   text-align: center;
   display: flex;
   align-items: center;

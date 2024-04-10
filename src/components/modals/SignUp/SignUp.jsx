@@ -2,7 +2,6 @@ import styles from './SignUp.module.scss';
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import React, {useState} from 'react';
-import {postManager} from '../../../helpers/manager/manager';
 import {getRoles, postUser} from '../../../helpers/user/user';
 import Form from '../../Form/Form';
 import Select from '../../Select/Select';

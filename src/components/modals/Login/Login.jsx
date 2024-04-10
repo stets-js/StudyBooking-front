@@ -2,10 +2,9 @@ import styles from './Login.module.scss';
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import React, {useState} from 'react';
-import Form from '../../Form/Form';
 import {loginUser} from '../../../helpers/manager/manager';
 import {useDispatch} from 'react-redux';
-import {success, error, defaults} from '@pnotify/core';
+import {error} from '@pnotify/core';
 
 const Login = ({isOpen, handleClose}) => {
   const dispatch = useDispatch();

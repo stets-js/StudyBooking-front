@@ -18,11 +18,10 @@
 
 // export default InputDelete;
 
-import React, { useState } from "react";
-import styles from "./InputDelete.module.scss";
-import { error } from "@pnotify/core";
+import React, {useState} from 'react';
+import styles from './InputDelete.module.scss';
 
-const InputDelete = ({ handleDelete }) => {
+const InputDelete = ({handleDelete}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -46,7 +45,7 @@ const InputDelete = ({ handleDelete }) => {
     closeModal();
   };
 
-  const handleModalClick = (e) => {
+  const handleModalClick = e => {
     // Закриваємо модальне вікно при кліку на зовнішній області (div.modal)
     if (e.target === e.currentTarget) {
       closeModal();
@@ -55,11 +54,7 @@ const InputDelete = ({ handleDelete }) => {
 
   return (
     <div>
-      <button
-        type="button"
-        className={styles.input__delete}
-        onClick={handleDeleteClick}
-      >
+      <button type="button" className={styles.input__delete} onClick={handleDeleteClick}>
         Delete
       </button>
 
@@ -68,8 +63,12 @@ const InputDelete = ({ handleDelete }) => {
           <div className={styles.modal__content}>
             <p className={styles.label}>Delete this item?</p>
             <div className={styles.btn_wrapper}>
-              <button className={styles.btn_yes} onClick={handleConfirmDelete}>Yes</button>
-              <button className={styles.btn_no} onClick={handleCancelDelete}>Nooo</button>
+              <button className={styles.btn_yes} onClick={handleConfirmDelete}>
+                Yes
+              </button>
+              <button className={styles.btn_no} onClick={handleCancelDelete}>
+                Nooo
+              </button>
             </div>
           </div>
         </div>

@@ -39,6 +39,7 @@ const NewUser = ({
     setEmail(item.email);
     setRole(item.role);
     setPassword('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const NewUser = ({
   }, [edit]);
   const handlePasswordReset = async () => {
     try {
-      const res = await forgotPassword(email);
+      await forgotPassword(email);
       success({text: 'email sent successfully!', delay: 1000});
     } catch (error) {
       console.log(error);

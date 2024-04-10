@@ -86,6 +86,7 @@ export default function AppointmentBodyTable({
                 })}
               </tr>
             );
+          return <></>;
         })}
       </tbody>
     </table>
