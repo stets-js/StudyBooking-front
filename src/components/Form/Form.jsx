@@ -101,8 +101,8 @@ const Form = ({
           });
       }
       if (type.type === 'appointment') {
+        console.log(jsonData);
         jsonData.slots = JSON.parse(jsonData.slots);
-        console.log(jsonData.slots, userId);
         // 0 - group, 1 - private, 2 - junior_group
         const searchQuery = `name=${
           JSON.parse(jsonData.isReplacement) ? 'replacement' : 'appointed'
@@ -119,6 +119,7 @@ const Form = ({
           : updateSubGroup({id: jsonData.subgroupId, body: jsonData, userId})
         )
           .then(async data => {
+            const newDocId = data.data.id;
             success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
               // week itterating
@@ -131,8 +132,8 @@ const Form = ({
                   startDate: jsonData.startDate,
                   endDate: jsonData.endDate
                 };
-                body[JSON.parse(jsonData.isReplacement) ? 'replacementId' : 'subgroupId'] =
-                  jsonData.subgroupId;
+                body[JSON.parse(jsonData.isReplacement) ? 'ReplacementId' : 'subgroupId'] =
+                  newDocId;
                 await bulkUpdate(body);
               }
             }

@@ -101,6 +101,7 @@ const SetAppointment = ({
     } catch (error) {
       console.log(error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
   useEffect(() => {
     const fetchSubGroups = async () => {
@@ -116,6 +117,7 @@ const SetAppointment = ({
     if (isOpen) {
       fetchSubGroups();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
   const close = () => {
     setSchedule([]);
@@ -128,7 +130,7 @@ const SetAppointment = ({
           <Form
             link={link}
             subgroupId={subGroup}
-            // description={description}
+            description={description}
             startDate={startDate}
             endDate={endDate}
             mentorId={selectedTeacher}

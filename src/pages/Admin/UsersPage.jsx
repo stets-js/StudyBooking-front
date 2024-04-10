@@ -129,6 +129,7 @@ export default function UsersPage() {
       fetchRoles();
       updateAllCourses();
     } catch (error) {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>

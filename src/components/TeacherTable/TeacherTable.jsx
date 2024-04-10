@@ -117,6 +117,7 @@ export default function TeacherTable({userId}) {
                       })}
                     </tr>
                   );
+                return <></>;
               })}
             </tbody>
           </table>

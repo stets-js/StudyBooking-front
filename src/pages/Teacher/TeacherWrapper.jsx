@@ -1,6 +1,4 @@
 import React from 'react';
-import styles from '../../styles/SuperAdminPage.module.scss';
-import teacherStyles from '../../styles/teacher.module.scss';
 import Header from '../../components/Header/Header';
 import path from '../../helpers/routerPath';
 import {Outlet} from 'react-router-dom';

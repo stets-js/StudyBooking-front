@@ -11,7 +11,7 @@ const createReplacement = (credentials, userId) => {
       description: credentials.description,
       SubGroupId: credentials.selectedSubGroup,
       schedule: credentials.schedule,
-      mentorId: userId
+      mentorId: credentials.mentorId
     })
     .then(res => res.data)
     .catch(error => {

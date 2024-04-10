@@ -5,6 +5,7 @@ import styles from './slotDetails.module.scss';
 import {format} from 'date-fns';
 const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
+  if (slot.Replacement) console.log(slot);
   const subgroupMentors = slot?.SubGroup?.SubgroupMentors[0]; // filter only need user and get first item from new array
   return (
     <>
@@ -72,11 +73,7 @@ const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
               classname="input__bottom"
               title="Description:"
               type="text"
-              value={
-                slot.ReplacementId
-                  ? slot?.Replacement?.SubGroup?.description
-                  : slot.SubGroup.description
-              }
+              value={slot?.SubGroup?.description}
               disabled={true}
               textArea={true}
             />

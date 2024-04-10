@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
-import {getMentorSubgroups, getSubGroups} from '../../helpers/subgroup/subgroup';
+import {getMentorSubgroups} from '../../helpers/subgroup/subgroup';
 import {useSelector} from 'react-redux';
 import {format} from 'date-fns';
 import styles from '../../styles/teacher.module.scss';
@@ -18,7 +18,6 @@ export default function TeacherSubgroupPage() {
   const fetchSubgroups = async () => {
     try {
       const data = await getMentorSubgroups(`mentorId=${teacherId ? teacherId : userId}`);
-      console.log(data.data.data);
       setSubgroups(data.data.data);
     } catch (error) {
       console.log(error);
@@ -39,7 +38,8 @@ export default function TeacherSubgroupPage() {
       fetchSubgroups();
       fetchCourses();
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   const filteredSubgroups = subgroups.filter(group => {
     return (

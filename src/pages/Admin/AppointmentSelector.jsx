@@ -26,9 +26,7 @@ export default function UsersPage() {
   const [selectedSlotsAmount, setSelectedSlotsAmount] = useState(0);
   const [teacherType, setTeacherType] = useState(1); // soft/tech
   initialStartDate.setHours(startingHour, 0, 0, 0);
-  const [startDates, setStartDates] = useState(
-    Array.from({length: 7}, (_, i) => addDays(initialStartDate, i))
-  );
+  const [startDates] = useState(Array.from({length: 7}, (_, i) => addDays(initialStartDate, i)));
   const [startDate, setStartDate] = useState(format(startDates[0], 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState(null);
 

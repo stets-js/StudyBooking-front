@@ -1,6 +1,6 @@
 import React from 'react';
 import {addBorders, resizeTable, updateTable} from '../../helpers/spreadsheet/spreadsheet';
-import {defaults, error, success} from '@pnotify/core';
+import {error, success} from '@pnotify/core';
 import styles from '../../styles/teacher.module.scss';
 import {Link} from 'react-router-dom';
 

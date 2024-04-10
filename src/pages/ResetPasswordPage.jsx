@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import FormInput from '../components/FormInput/FormInput';
 import styles from '../styles/teacher.module.scss';
-import {useDispatch} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import {resetPassword} from '../helpers/auth/auth';
 import {success, error} from '@pnotify/core';
@@ -10,7 +9,6 @@ export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
   const token = useParams('token').token;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const handleSubmit = async () => {
     if (newPassword.length >= 3) {
       try {

@@ -12,7 +12,7 @@ export default function AvaliableTable() {
   const [selectedCourse, setSelectedCourse] = useState();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedWeekDay, setSelectedWeekDay] = useState(getDay(currentDate));
-  const [valueGenerated, setValueGenerated] = useState(false);
+  // const [valueGenerated, setValueGenerated] = useState(false);
   const generateTimeSlots = () => {
     const startTime = new Date().setHours(9, 0, 0, 0);
     const endTime = new Date().setHours(20, 30, 0, 0);
@@ -60,12 +60,11 @@ export default function AvaliableTable() {
         });
         return newSchedule;
       });
-      console.log(scheduleTable);
     };
 
     if (selectedCourse) {
       fetchUsers();
-      setValueGenerated(true);
+      // setValueGenerated(true);
     }
   }, [selectedCourse, selectedWeekDay]);
 
@@ -118,21 +117,23 @@ export default function AvaliableTable() {
                 <td>
                   <div
                     className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big} ${styles.ul_items}`}>
-                    {users.length > 0
-                      ? users.map((user, index) => (
-                          <React.Fragment key={user.id}>
-                            <Link
-                              className={`${styles.teacher_name} ${styles.ul_items} ${styles.ul_items_link} `}
-                              target="_self"
-                              to={`../teacher/${user.id}`}>
-                              <span className={styles.ul_items_text}>
-                                {user.name}
-                                {index !== users.length - 1 && ', '}{' '}
-                              </span>
-                            </Link>
-                          </React.Fragment>
-                        ))
-                      : 'Mentors'}
+                    {users.length > 0 ? (
+                      users.map((user, index) => (
+                        <React.Fragment key={user.id}>
+                          <Link
+                            className={`${styles.teacher_name} ${styles.ul_items} ${styles.ul_items_link} `}
+                            target="_self"
+                            to={`../teacher/${user.id}`}>
+                            <span className={styles.ul_items_text}>
+                              {user.name}
+                              {index !== users.length - 1 && ', '}{' '}
+                            </span>
+                          </Link>
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <span className={styles.ul_items_text}>...</span>
+                    )}
                   </div>
                 </td>
               </tr>
