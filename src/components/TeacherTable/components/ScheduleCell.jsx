@@ -20,7 +20,7 @@ export default function ScheduleCell({
 }) {
   if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
-  } else if ((slot?.subgroupId || slot?.ReplacementId) && slot.rowSpan) console.log(slot);
+  } else if (slot?.ReplacementId && slot.rowSpan) console.log(slot);
   return (
     <td key={slot?.weekDay} rowSpan={slot?.rowSpan || 1}>
       {
@@ -69,11 +69,15 @@ export default function ScheduleCell({
                 </div>
                 <div className={tableStyles.tags__wrapper}>
                   <span className={tableStyles.tags__item}>
-                    {slot?.SubGroup?.Course.shortening}
+                    {!slot.ReplacementId
+                      ? slot?.SubGroup?.Course.shortening
+                      : slot?.Replacement?.SubGroup?.Course.shortening}
                   </span>
-                  <span className={tableStyles.tags__item}>
-                    {slot?.SubGroup?.SubgroupMentors[0].TeacherType.type}
-                  </span>
+                  {!slot.Replacement && (
+                    <span className={tableStyles.tags__item}>
+                      {slot?.SubGroup?.SubgroupMentors[0].TeacherType.type}
+                    </span>
+                  )}
                 </div>
               </>
             ) : (
