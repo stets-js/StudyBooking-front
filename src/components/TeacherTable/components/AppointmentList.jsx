@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 
-import styles from '../../../styles/teacher.module.scss';
 import appointmentStyles from '../../../styles/appointment.module.scss';
 import {getAppointmentTypes} from '../../../helpers/teacher/appointment-type';
 
@@ -45,12 +44,16 @@ export default function AppointmentList({
         return 'Appointed group';
       case 'appointed_private':
         return 'Appointed private';
+      case 'appointed_junior_group':
+        return 'Appointed jun group';
       case 'free':
         return 'Remove';
       case 'replacement_group':
         return 'Group replacement';
       case 'replacement_private':
         return 'Private replacement';
+      case 'replacement_junior_group':
+        return 'Jun group replacement';
       default:
         return name;
     }

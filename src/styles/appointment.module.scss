@@ -24,6 +24,10 @@
     // opacity: 0.75;
   }
   &__replacement {
+    &_junior_group{
+      background-color: $replacement-junior-group;
+      border-color: $replacement-junior-group-border;
+    }
     &_group {
       background-color: $zamina-color;
       border-color: $zamina-color-border;
@@ -34,6 +38,10 @@
     }
   }
   &__appointed {
+    &_junior_group{
+      background-color: $appointed_junior_group;
+      
+    }
     &_group {
       background-color: $appointed_group;
     }

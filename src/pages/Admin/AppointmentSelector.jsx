@@ -102,7 +102,6 @@ export default function UsersPage() {
       setSelectedSlotsAmount(0);
     }
   };
-  console.log(teacherType);
   return (
     <div>
       <AppointmentButtons

@@ -7,7 +7,7 @@ import InputSubmit from '../InputSubmit/InputSubmit';
 import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeManagerCourses';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 import styles from './Form.module.scss';
-import {postSubGroup, updateSubGroup} from '../../helpers/subgroup/subgroup';
+import {updateSubGroup} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
@@ -103,12 +103,17 @@ const Form = ({
       if (type.type === 'appointment') {
         jsonData.slots = JSON.parse(jsonData.slots);
         console.log(jsonData.slots, userId);
-        // 0 - group, 1 - private
+        // 0 - group, 1 - private, 2 - junior_group
         const searchQuery = `name=${
           JSON.parse(jsonData.isReplacement) ? 'replacement' : 'appointed'
-        }_${Number(jsonData.appointmentType) === 0 ? 'group' : 'private'}`;
+        }_${
+          Number(jsonData.appointmentType) === 0
+            ? 'group'
+            : Number(jsonData.appointmentType) === 1
+            ? 'private'
+            : 'junior_group'
+        }`;
         const appointmentType = await getAppointmentTypes(searchQuery);
-        console.log(jsonData);
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData, userId)
           : updateSubGroup({id: jsonData.subgroupId, body: jsonData, userId})

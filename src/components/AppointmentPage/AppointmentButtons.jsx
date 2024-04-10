@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import Switch from 'react-switch';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import styles from '../../styles/teacher.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
 
@@ -24,6 +24,11 @@ export default function AppointmentButtons({
   teacherType
 }) {
   const dispatch = useDispatch();
+  const appointmentTypes = [
+    {label: 'Group', value: 0},
+    {label: 'Individual', value: 1},
+    {label: 'Junior group', value: 2}
+  ];
   return (
     <>
       <div className={styles.chooser_selector__date_wrapper}>
@@ -68,15 +73,9 @@ export default function AppointmentButtons({
               placeholder="Lesson Type"
               value={
                 selectedClassType !== null &&
-                [
-                  {label: 'Group', value: 0},
-                  {label: 'Individual', value: 1}
-                ].filter(el => el.value === selectedClassType)
+                appointmentTypes.filter(el => el.value === selectedClassType)
               }
-              options={[
-                {label: 'Group', value: 0},
-                {label: 'Individual', value: 1}
-              ]}
+              options={appointmentTypes}
               required
               onChange={choice => {
                 dispatch({type: 'CLEAN_SELECTED_SLOTS'});

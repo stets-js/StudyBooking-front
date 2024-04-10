@@ -20,13 +20,16 @@ export const filterAndUpdateSlots = slots => {
           el => el.id === slot.ReplacementId && el.weekDay === slot.weekDay
         )) // if replacement event
     ) {
-      slot.rowSpan = slot.AppointmentType.name.includes('group') ? 3 : 2; // if group -> 3 slots, else 2 slots
+      slot.rowSpan = !slot.AppointmentType.name.includes('group')
+        ? 2
+        : slot.AppointmentType.name.includes('junior')
+        ? 2
+        : 3; // if group -> 3 slots, else 2 slots
       const group = {
         weekDay: slot.weekDay,
         start: slot.time,
         leftSlotsForOneBlock: slot.rowSpan - 1
       };
-      console.log(group);
       slot.subgroupId
         ? appointedSubgroupsIds.push({id: slot.subgroupId, ...group})
         : appointedReplacementsIds.push({id: slot.ReplacementId, ...group});
@@ -44,6 +47,5 @@ export const filterAndUpdateSlots = slots => {
     }
     updatedWeekSchedule[slot.weekDay].push(slot);
   });
-  console.log(updatedWeekSchedule);
   return updatedWeekSchedule;
 };

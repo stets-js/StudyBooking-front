@@ -21,7 +21,6 @@ const SetAppointment = ({
   onSubmit,
   teacherType
 }) => {
-  console.log(teacherType);
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
   const [subGroup, setSubGroup] = useState(null);
@@ -34,7 +33,7 @@ const SetAppointment = ({
   const [schedule, setSchedule] = useState([]);
   const [subGroups, setSubGroups] = useState([]);
   const [selectedSubGroup, setSelectedSubGroup] = useState(0);
-  const appointmentLength = !appointmentType ? 3 : 2;
+  const appointmentLength = appointmentType === 0 ? 3 : 2; // 0 - is group (3 slots), 1 and 2 is indiv/jun_group (2 slots)
   const freeVariables = () => {
     setTeachers([]);
     setDescription('');
@@ -152,9 +151,17 @@ const SetAppointment = ({
             }}
             status={{
               successMessage: `Successfully created ${
-                isReplacement ? 'replacement' : appointmentType === 0 ? 'group' : 'private'
+                isReplacement
+                  ? 'replacement'
+                  : appointmentType === 0
+                  ? 'group'
+                  : appointmentType === 1
+                  ? 'private'
+                  : 'junior group'
               }`,
-              failMessage: `Failed to create ${appointmentType === 0 ? 'group' : 'private'}`
+              failMessage: `Failed to create ${
+                appointmentType === 0 ? 'group' : appointmentType === 1 ? 'private' : 'junior group'
+              }`
             }}>
             <label htmlFor="teacher" className={styles.input__label}>
               Mentor:

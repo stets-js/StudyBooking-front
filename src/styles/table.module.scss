@@ -89,6 +89,12 @@ td {
 
     // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
   }
+  &__content {
+    &__wrapper {
+      position: relative;
+      width: 100%;
+    }
+  }
   &__big {
     width: 300% !important;
   }
@@ -219,3 +225,28 @@ th:first-child .cell__header {
 // tr th:last-child .cell__header {
 //   border-right: 0;
 // }
+
+.tags {
+  &__wrapper {
+    font-size: 14px;
+    width: inherit;
+    height: 30px;
+    text-align: center;
+    align-items: center;
+    position: relative;
+    left: 0;
+    
+    grid-template-columns: repeat(2, auto);
+  }
+  &__item {
+    position: absolute;
+    left: 0;
+    border: 1px solid black;
+    border-radius: 25px;
+    width: 50px;
+    background-color: rgb(244, 248, 214);
+    &:not(:first-of-type) {
+      margin-left: 50px;
+    }
+  }
+}

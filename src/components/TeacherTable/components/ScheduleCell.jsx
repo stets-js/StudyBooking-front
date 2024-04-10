@@ -20,7 +20,7 @@ export default function ScheduleCell({
 }) {
   if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
-  }
+  } else if ((slot?.subgroupId || slot?.ReplacementId) && slot.rowSpan) console.log(slot);
   return (
     <td key={slot?.weekDay} rowSpan={slot?.rowSpan || 1}>
       {
@@ -59,18 +59,27 @@ export default function ScheduleCell({
               dispatch
             });
           }}>
-          <span>
+          <div className={tableStyles.cell__content__wrapper}>
             {slot?.rowSpan ? (
               <>
-                {format(currentTime, 'HH:mm')}
-                <br />-<br />
-                {format(addMinutes(currentTime, 30 * slot?.rowSpan), 'HH:mm')}
+                <div>
+                  {format(currentTime, 'HH:mm')}
+                  <br />-<br />
+                  {format(addMinutes(currentTime, 30 * slot?.rowSpan), 'HH:mm')}
+                </div>
+                <div className={tableStyles.tags__wrapper}>
+                  <span className={tableStyles.tags__item}>
+                    {slot?.SubGroup?.Course.shortening}
+                  </span>
+                  <span className={tableStyles.tags__item}>
+                    {slot?.SubGroup?.SubgroupMentors[0].TeacherType.type}
+                  </span>
+                </div>
               </>
             ) : (
               format(currentTime, 'HH:mm')
-            )}{' '}
-            ({dateIndex})
-          </span>
+            )}
+          </div>
         </button>
       }
     </td>
