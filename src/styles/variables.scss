@@ -60,16 +60,16 @@ $indiv-color-border: #572121;
 $free-color-border:#572121;
 $universal-color:#C5FFB0;
 $universal-color-border: #99A9C0;
-$replacement-junior-group:#8F6208;
-$replacement-junior-group-border:#8F6208;
+$replacement-junior-group:$group-color;
+$replacement-junior-group-border:$group-color-border;
 
 $appointed_group: #70BF20;
 $appointed_group_border:#3D6515;
 $appointed_private: #E2A7FF;
 $appointed_private_border: #A096A5;
 
-$appointed_junior_group: #5c8334;
-$appointed_junior_group_border: #273617;
+$appointed_junior_group:$appointed_group;
+$appointed_junior_group_border: $appointed_group_border;
 
 $zamina-color-border:#8F6208;
 $zamina-color: #7FA8E3;

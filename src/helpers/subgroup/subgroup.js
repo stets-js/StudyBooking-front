@@ -40,6 +40,10 @@ const getSlotDetails = id => {
     });
 };
 
+const getMentorSubgroups = (options = '') => {
+  return axios.get(`/subgroup-mentor` + (options ? `?${options}` : ''));
+};
+
 const getSubGroups = (options = '') => {
   return axios
     .get(`/subgroups` + (options ? `?${options}` : ''))
@@ -64,4 +68,11 @@ const updateSubGroup = ({id, body}) => {
       throw error;
     });
 };
-export {updateSubGroup, postSubGroup, getSubGroups, getSlotDetails, deleteSubGroup};
+export {
+  updateSubGroup,
+  postSubGroup,
+  getSubGroups,
+  getSlotDetails,
+  deleteSubGroup,
+  getMentorSubgroups
+};
