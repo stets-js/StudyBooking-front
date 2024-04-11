@@ -80,10 +80,7 @@ const App = () => {
                   element={
                     <TeacherWrapper hideLogo={true} hideLogin={true} bottom_padding={true} />
                   }>
-                  <Route
-                    path={`${path.superAdmin + 'teacher/'}:teacherId`}
-                    element={<TeacherPage />}
-                  />
+                  <Route path={`:teacherId`} element={<TeacherPage />} />
                   <Route path={`mySubGroups/:teacherId`} element={<TeacherSubgroupPage />} />
                 </Route>
                 <Route path={path.subgroups} element={<SubGroupPage />} />
