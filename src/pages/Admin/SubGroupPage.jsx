@@ -75,7 +75,10 @@ export default function SubGroupPage() {
   const fetchSubGroupsByTime = async () => {
     setScheduleTable(generateTimeSlots());
     const data = await getSlots(
-      `type&weekDay=${selectedWeekDay}&endSubGroup=${format(currentDate, 'yyyy-MM-dd')}`
+      `type&weekDay=${selectedWeekDay}&startSubGroup=${format(
+        currentDate,
+        'yyyy-MM-dd'
+      )}&endSubGroup=${format(currentDate, 'yyyy-MM-dd')}`
     );
     setScheduleTable(prevSchedule => {
       const newSchedule = [...prevSchedule];
