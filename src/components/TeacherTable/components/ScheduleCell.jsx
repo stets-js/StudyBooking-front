@@ -75,7 +75,8 @@ export default function ScheduleCell({
                   </span>
                   {!slot.Replacement && (
                     <span className={tableStyles.tags__item}>
-                      {slot?.SubGroup?.SubgroupMentors[0].TeacherType.type}
+                      {slot?.SubGroup?.SubgroupMentors &&
+                        (slot?.SubGroup?.SubgroupMentors || [])[0].TeacherType.type}
                     </span>
                   )}
                 </div>
