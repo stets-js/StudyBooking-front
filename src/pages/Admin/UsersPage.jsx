@@ -290,7 +290,7 @@ export default function UsersPage() {
                               }
                             });
                           }}
-                          to={`../teacher/${item.id}`}>
+                          to={`../teacher/calendar/${item.id}`}>
                           <p className={styles.ul_items_text}>
                             {item.name} ({item.id})
                           </p>

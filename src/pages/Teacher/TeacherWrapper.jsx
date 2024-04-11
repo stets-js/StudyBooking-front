@@ -12,7 +12,10 @@ const TeacherWrapper = ({hideLogo = false, hideLogin = false, bottom_padding = f
         hideLogo={hideLogo}
         hideLogin={hideLogin}
         endpoints={[
-          {text: 'Timetable', path: id ? `/admin/teacher/${id}` : path.teacher},
+          {
+            text: 'Timetable',
+            path: id ? `/admin/teacher/calendar/${id}` : path.teacher
+          },
           {
             text: 'My subgroups',
             path: id ? `${path.mySubgroups}${id}` : path.mySubgroups
