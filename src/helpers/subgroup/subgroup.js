@@ -68,11 +68,20 @@ const updateSubGroup = ({id, body}) => {
       throw error;
     });
 };
+const updateSubGroupAndAddMentor = ({id, body}) => {
+  return axios
+    .patch(`/subgroups/${id}/creation`, body)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
 export {
   updateSubGroup,
   postSubGroup,
   getSubGroups,
   getSlotDetails,
   deleteSubGroup,
-  getMentorSubgroups
+  getMentorSubgroups,
+  updateSubGroupAndAddMentor
 };

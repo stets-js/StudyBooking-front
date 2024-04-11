@@ -10,10 +10,8 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
 
   const fetchData = async () => {
     try {
-      console.log(id);
       const data = await getSlotDetails(id);
       setElement(data.data);
-      console.log(id, element);
       // fetchUsersForReplacemenmt();
     } catch (error) {
       console.log(error);
@@ -24,13 +22,13 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
       fetchData();
     }
   }, [id]);
-
+  console.log(element);
   return (
     <>
       {isOpen && (
         <Modal open={isOpen} onClose={handleClose}>
           <Form
-            id={id}
+            id={element.id}
             type={{type: 'subGroup'}}
             status={{
               successMessage: 'Edited subgroup!',

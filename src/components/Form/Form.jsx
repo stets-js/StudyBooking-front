@@ -7,7 +7,7 @@ import InputSubmit from '../InputSubmit/InputSubmit';
 import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeManagerCourses';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 import styles from './Form.module.scss';
-import {updateSubGroup} from '../../helpers/subgroup/subgroup';
+import {updateSubGroup, updateSubGroupAndAddMentor} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
@@ -81,7 +81,7 @@ const Form = ({
       for (var pair of data.entries()) jsonData[pair[0]] = pair[1];
 
       if (type.type === 'subGroup') {
-        return await updateSubGroup(id, jsonData)
+        return await updateSubGroup({id, body: jsonData})
           .then(() => {
             success({text: status.successMessage || 'Success', delay: 1000});
             return !errorsuccessMessage && onSubmit && onSubmit();
@@ -116,10 +116,11 @@ const Form = ({
         const appointmentType = await getAppointmentTypes(searchQuery);
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData, userId)
-          : updateSubGroup({id: jsonData.subgroupId, body: jsonData, userId})
+          : updateSubGroupAndAddMentor({id: jsonData.subgroupId, body: jsonData, userId})
         )
           .then(async data => {
-            const newDocId = data.data.id;
+            const newDocId = data.subgroupMentor.subgroupId;
+            // console.log(data, newDocId);
             success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
               // week itterating
@@ -134,6 +135,7 @@ const Form = ({
                 };
                 body[JSON.parse(jsonData.isReplacement) ? 'ReplacementId' : 'subgroupId'] =
                   newDocId;
+                // console.log(body);
                 await bulkUpdate(body);
               }
             }
