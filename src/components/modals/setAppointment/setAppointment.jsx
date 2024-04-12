@@ -32,14 +32,12 @@ const SetAppointment = ({
   const weekNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const [schedule, setSchedule] = useState([]);
   const [subGroups, setSubGroups] = useState([]);
-  const [selectedSubGroup, setSelectedSubGroup] = useState(0);
   const appointmentLength = appointmentType === 0 ? 3 : 2; // 0 - is group (3 slots), 1 and 2 is indiv/jun_group (2 slots)
   const freeVariables = () => {
     setTeachers([]);
     setDescription('');
     setSchedule([]);
     setSubGroup(null);
-    setSelectedSubGroup(0);
   };
   const fetchAdmins = async () => {
     try {
@@ -141,7 +139,6 @@ const SetAppointment = ({
             appointmentType={appointmentType}
             isSetAppointment={true}
             isReplacement={isReplacement}
-            selectedSubGroup={selectedSubGroup.value}
             schedule={schedule}
             TeacherTypeId={teacherType}
             // requests={}
@@ -272,12 +269,12 @@ const SetAppointment = ({
                 <Select
                   name="subGroupSelector"
                   className={styles.selector}
-                  value={selectedSubGroup}
+                  value={subGroups.filter(el => el.value === subGroup)}
                   options={subGroups}
                   key={Math.random() * 100 - 10}
                   required
                   placeholder="Select subgroup"
-                  onChange={el => setSelectedSubGroup(el)}
+                  onChange={el => setSubGroup(el.value)}
                 />
                 <div className={styles.input__block}>
                   <FormInput

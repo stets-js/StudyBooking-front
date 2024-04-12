@@ -101,7 +101,6 @@ const Form = ({
           });
       }
       if (type.type === 'appointment') {
-        console.log(jsonData);
         jsonData.slots = JSON.parse(jsonData.slots);
         // 0 - group, 1 - private, 2 - junior_group
         const searchQuery = `name=${
@@ -119,7 +118,7 @@ const Form = ({
           : updateSubGroupAndAddMentor({id: jsonData.subgroupId, body: jsonData, userId})
         )
           .then(async data => {
-            const newDocId = data.subgroupMentor.subgroupId;
+            const newDocId = data?.subgroupMentor?.subgroupId || data?.data?.id;
             // console.log(data, newDocId);
             success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
@@ -143,6 +142,7 @@ const Form = ({
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
           .catch(e => {
+            console.log(e);
             return error(`${status.failMessage}, ${e.message}`);
           });
       }

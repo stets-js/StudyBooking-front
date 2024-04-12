@@ -73,7 +73,7 @@ const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
               classname="input__bottom"
               title="Description:"
               type="text"
-              value={slot?.SubGroup?.description}
+              value={slot?.SubGroup?.description || slot?.Replacement?.SubGroup?.description}
               disabled={true}
               textArea={true}
             />

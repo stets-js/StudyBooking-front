@@ -27,7 +27,6 @@ export default function AppointmentBodyTable({
                 {Array.from({length: 7}, (_, dateIndex) => {
                   const weekDay = dateIndex;
                   const timeStr = format(currentTime, 'HH:mm');
-                  console.log(selectedClassType);
                   if (selectedClassType === null)
                     return (
                       <td key={`${dateIndex}${currentTime}`}>

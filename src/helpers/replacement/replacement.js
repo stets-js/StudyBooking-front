@@ -9,13 +9,13 @@ const createReplacement = (credentials, userId) => {
   return axios
     .post(`/replacement`, {
       description: credentials.description,
-      SubGroupId: credentials.selectedSubGroup,
+      SubGroupId: credentials.subgroupId,
       schedule: credentials.schedule,
       mentorId: credentials.mentorId
     })
     .then(res => res.data)
     .catch(error => {
-      throw error;
+      console.log(error);
     });
 };
 
