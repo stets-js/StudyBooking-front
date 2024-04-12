@@ -27,7 +27,24 @@ export default function AppointmentBodyTable({
                 {Array.from({length: 7}, (_, dateIndex) => {
                   const weekDay = dateIndex;
                   const timeStr = format(currentTime, 'HH:mm');
-
+                  console.log(selectedClassType);
+                  if (selectedClassType === null)
+                    return (
+                      <td key={`${dateIndex}${currentTime}`}>
+                        <button
+                          className={`${tableStyles.cell} ${tableStyles.black_borders} ${
+                            timeIndex === 0 ||
+                            timeIndex === 23 ||
+                            dateIndex === 0 ||
+                            dateIndex === 6
+                              ? tableStyles.cell__outer
+                              : tableStyles.cell__inner
+                          }`}
+                          disabled={1}>
+                          <span>{timeStr} (0)</span>
+                        </button>
+                      </td>
+                    );
                   const numPeople = slotsData[weekDay]?.[timeStr]?.length || 0;
                   const element = selectedSlots.selectedSlots[weekDay]?.find(
                     el => el.time === timeStr

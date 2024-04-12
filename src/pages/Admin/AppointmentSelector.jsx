@@ -55,7 +55,7 @@ export default function UsersPage() {
       fetchUsersIds();
     }
     if (renderTeachers) setRenderTeachers(false);
-  }, [selectedCourse, selectedClassType, renderTeachers, teacherType]);
+  }, [selectedCourse, renderTeachers, teacherType]);
   useEffect(() => {
     const fetchData = async () => {
       const slotsResponse = await getSlotsForUsers({userIds: teachersIds, startDate, endDate});
@@ -88,7 +88,7 @@ export default function UsersPage() {
     if (selectedCourse && teachersIds && startDate && endDate) {
       fetchData();
     }
-  }, [selectedCourse, selectedClassType, teachersIds, startDate, endDate]);
+  }, [selectedCourse, teachersIds, startDate, endDate]);
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
