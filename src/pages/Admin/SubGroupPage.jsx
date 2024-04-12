@@ -94,6 +94,7 @@ export default function SubGroupPage() {
 
   useEffect(() => {
     if (isOneDay) fetchSubGroupsByTime();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOneDay, selectedWeekDay]);
 
   useEffect(() => {
@@ -263,7 +264,10 @@ export default function SubGroupPage() {
         )}
         <NewSubgroup
           isOpen={isOpenCreation}
-          handleClose={() => setIsOpenCreation(false)}></NewSubgroup>
+          handleClose={() => {
+            setIsOpenCreation(false);
+            setRender(true);
+          }}></NewSubgroup>
         <ChangeSubGroup
           isOpen={isOpen}
           handleClose={() => setIsOpen(!isOpen)}
