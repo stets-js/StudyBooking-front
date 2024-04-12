@@ -20,7 +20,7 @@ export default function ScheduleCell({
 }) {
   if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
-  } else if (slot?.ReplacementId && slot.rowSpan) console.log(slot);
+  }
   return (
     <td key={slot?.weekDay} rowSpan={slot?.rowSpan || 1}>
       {

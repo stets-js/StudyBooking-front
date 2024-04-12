@@ -93,6 +93,8 @@ td {
     &__wrapper {
       position: relative;
       width: 100%;
+      display: flex;
+      flex-direction: column;
     }
   }
   &__big {
@@ -228,25 +230,27 @@ th:first-child .cell__header {
 
 .tags {
   &__wrapper {
-    font-size: 14px;
+    font-size: 13px;
     width: inherit;
-    height: 30px;
+    margin-top: auto;
+    margin-bottom: 10px;
     text-align: center;
     align-items: center;
     position: relative;
     left: 0;
     
-    grid-template-columns: repeat(2, auto);
   }
   &__item {
     position: absolute;
     left: 0;
-    border: 1px solid black;
     border-radius: 25px;
     width: 50px;
     background-color: rgb(244, 248, 214);
     &:not(:first-of-type) {
-      margin-left: 55px;
+      margin-left: 65px;
+    }
+    &:first-of-type{
+      margin-left: 10px;
     }
   }
 }
