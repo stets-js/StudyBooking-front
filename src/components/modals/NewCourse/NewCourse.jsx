@@ -11,7 +11,6 @@ import {useSelector} from 'react-redux';
 const NewCourse = ({isOpen, handleClose}) => {
   const userId = useSelector(state => state.auth.user.id);
   const [name, setName] = useState('');
-  const [number, setNumber] = useState(0);
   const [teamLead, setTeamLead] = useState({label: '', value: null});
   const [selectedTeamLead, setSelectedTeamLead] = useState(userId);
   const [shortening, setShortening] = useState('');
@@ -35,7 +34,6 @@ const NewCourse = ({isOpen, handleClose}) => {
             onSubmit={() => {
               handleClose();
               setName('');
-              setNumber(0);
             }}
             isDescription={true}
             type={{type: 'post'}}
@@ -47,7 +45,6 @@ const NewCourse = ({isOpen, handleClose}) => {
               failMessage: 'Failed to create course'
             }}
             name={name}
-            group_number={number}
             team_lead_id={selectedTeamLead}
             shortening={shortening}
             title="New course">
@@ -71,16 +68,7 @@ const NewCourse = ({isOpen, handleClose}) => {
               isRequired={true}
               handler={setShortening}
             />
-            <FormInput
-              title="Group number:"
-              type="number"
-              name="group_number"
-              min={0}
-              value={number}
-              placeholder="Group number"
-              isRequired={true}
-              handler={setNumber}
-            />
+
             <label htmlFor="teamLead" className={styles.input__label}>
               <p className={styles.input__title}>Administator: </p>
             </label>

@@ -95,6 +95,7 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
               name="group_number"
               min={0}
               value={number}
+              disabled={1}
               placeholder="Group number"
               isRequired={true}
               handler={setNumber}

@@ -24,7 +24,6 @@ const getCourseById = id => {
 const postCourse = ({credentials}) => {
   const cours = {
     name: credentials.get('name'),
-    group_amount: credentials.get('group_number'),
     teamLeadId: credentials.get('team_lead_id'),
     shortening: credentials.get('shortening')
   };
