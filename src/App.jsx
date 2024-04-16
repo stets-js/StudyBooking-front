@@ -26,6 +26,7 @@ import ReplacementsPage from './pages/Admin/ReplacementPage';
 import TeacherWrapper from './pages/Teacher/TeacherWrapper';
 import TeacherSubgroupPage from './pages/Teacher/TeacherSubgroupsPage';
 import Spreadsheet from './pages/Admin/SpreadsheetPage';
+import AddMySubgroup from './pages/Teacher/AddMySubgroup';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ const App = () => {
               <Route path={path.home} element={<Navigate to={`${path.teacher}`} />}></Route>
               <Route path={path.home} element={<TeacherWrapper />}>
                 <Route path={path.teacher} element={<TeacherPage />}></Route>
+                <Route path={path.addMySubgroup} element={<AddMySubgroup />}></Route>
                 <Route path={path.mySubgroups} element={<TeacherSubgroupPage />}></Route>
               </Route>
             </>

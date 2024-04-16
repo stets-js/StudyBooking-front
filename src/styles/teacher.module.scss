@@ -391,3 +391,20 @@
   display: flex;
   align-items: center;
 }
+
+.add_my_subgroup {
+  &__wrapper {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  &__date_wrapper{
+    display: flex;
+  }
+  &__intro{
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-family: $poppins;
+  }
+}

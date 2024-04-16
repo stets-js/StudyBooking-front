@@ -16,6 +16,7 @@ const path = {
   groups: 'groups/',
   appointments: 'appointments/',
   courses: 'courses/',
+  addMySubgroup: 'addMySubgroup/',
   actions: 'actions/',
   manager: '/manager/:managerId/',
   consultations: 'consultations/',
