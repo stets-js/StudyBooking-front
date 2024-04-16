@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
+import {error} from '@pnotify/core';
 
 import {getCourses} from '../../helpers/course/course';
 import styles from '../../styles/teacher.module.scss';
@@ -99,7 +100,13 @@ export default function AddMySubgroup() {
                     classname={'right'}
                     value={endDate}
                     pattern="\d{2}.\d{2}.\d{4}"
-                    handler={setEndDate}></FormInput>
+                    handler={e => {
+                      setEndDate(e);
+                      setTimeout(() => {
+                        if (endDate < startDate && endDate[0] !== 2)
+                          error({text: 'Something wrong with start/end date', delay: 1000});
+                      }, 2000);
+                    }}></FormInput>
                 </div>
               </div>
 
@@ -119,7 +126,8 @@ export default function AddMySubgroup() {
                   }}
                 />
               </div>
-              {startDate && endDate && selectedClassType !== null && (
+
+              {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
                 <>
                   {slots.length > 0 && (
                     <button
@@ -162,7 +170,9 @@ export default function AddMySubgroup() {
                                       );
                                       if (curr_slot && curr_slot.rowSpan === 0) return <></>;
                                       return (
-                                        <td rowSpan={curr_slot ? curr_slot.rowSpan : 1}>
+                                        <td
+                                          rowSpan={curr_slot ? curr_slot.rowSpan : 1}
+                                          key={`${dateIndex}${currentTime}`}>
                                           {
                                             <button
                                               type="button"
@@ -205,36 +215,47 @@ export default function AddMySubgroup() {
                                                   i < (selectedClassType === 0 ? 3 : 2);
                                                   i++
                                                 ) {
-                                                  if (isSelected) {
-                                                    console.log(isSelected);
-                                                    const tmp = slots.filter(slot => {
-                                                      console.log(slot);
-                                                      return (
-                                                        slot.day !== isSelected.day &&
-                                                        slot.time !== isSelected.time
-                                                      );
-                                                    });
-                                                    setSlots([...tmp]);
-                                                  } else
-                                                    selectedSlotsTMP.push({
-                                                      day,
-                                                      time: format(
-                                                        addMinutes(time, 30 * i),
-                                                        'HH:mm'
-                                                      ),
-                                                      rowSpan:
-                                                        i === 0
-                                                          ? selectedClassType === 0
-                                                            ? 3
-                                                            : 2
-                                                          : 0
-                                                    });
+                                                  //   if (isSelected) {
+                                                  //     const tmp = slots.filter(slot => {
+                                                  //       return (
+                                                  //         slot.day !== isSelected.day &&
+                                                  //         slot.time !== isSelected.time
+                                                  //       );
+                                                  //     });
+                                                  //     setSlots([...tmp]);
+                                                  //   } else
+                                                  selectedSlotsTMP.push({
+                                                    day,
+                                                    time: format(addMinutes(time, 30 * i), 'HH:mm'),
+                                                    rowSpan:
+                                                      i === 0
+                                                        ? selectedClassType === 0
+                                                          ? 3
+                                                          : 2
+                                                        : 0
+                                                  });
                                                 }
                                                 if (!isSelected)
                                                   setSlots([...slots, ...selectedSlotsTMP]);
                                               }}>
                                               <div className={tableStyles.cell__content__wrapper}>
-                                                {format(currentTime, 'HH:mm')}
+                                                {curr_slot ? (
+                                                  <>
+                                                    <div>
+                                                      {format(currentTime, 'HH:mm')}
+                                                      <br />-<br />
+                                                      {format(
+                                                        addMinutes(
+                                                          currentTime,
+                                                          30 * curr_slot?.rowSpan
+                                                        ),
+                                                        'HH:mm'
+                                                      )}
+                                                    </div>
+                                                  </>
+                                                ) : (
+                                                  format(currentTime, 'HH:mm')
+                                                )}
                                               </div>
                                             </button>
                                           }
