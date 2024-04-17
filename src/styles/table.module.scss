@@ -254,3 +254,11 @@ th:first-child .cell__header {
     }
   }
 }
+
+.button{
+  &__wrapper{
+   margin-top: 20px;
+   margin-bottom:20px;
+    // margin-right: 0;
+  }
+}

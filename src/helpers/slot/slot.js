@@ -12,6 +12,10 @@ const updateSlotComment = credentials => {
       throw error;
     });
 };
+
+const bulkSlotCreate = credentials => {
+  return axios.post('/slots/bulk', JSON.parse(credentials.jsonData.slots));
+};
 const bulkUpdate = credentials => {
   return axios
     .patch('/slots/bulk', credentials)
@@ -30,4 +34,4 @@ const getSlot = ({id}) => {
     });
 };
 
-export {getSlot, updateSlotComment, bulkUpdate};
+export {getSlot, updateSlotComment, bulkUpdate, bulkSlotCreate};

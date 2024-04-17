@@ -70,8 +70,8 @@ export default function ScheduleCell({
                 <div className={tableStyles.tags__wrapper}>
                   <span className={tableStyles.tags__item}>
                     {!slot.ReplacementId
-                      ? slot?.SubGroup?.Course.shortening
-                      : slot?.Replacement?.SubGroup?.Course.shortening}
+                      ? slot?.SubGroup?.Course?.shortening
+                      : slot?.Replacement?.SubGroup?.Course?.shortening}
                   </span>
                   {!slot.Replacement && (
                     <span className={tableStyles.tags__item}>

@@ -15,7 +15,6 @@ const generateDataForReq = (credentials, userId) => {
     data.endDate = new Date(credentials.endDate);
     data.schedule = credentials.schedule;
     data.userId = userId;
-    data[`${credentials.teacherType === 2 ? 'tech' : 'soft'}MentorId`] = userId;
   } catch (error) {}
   return data;
 };

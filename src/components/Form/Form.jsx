@@ -183,9 +183,11 @@ const Form = ({
       }
 
       if (type.type === 'post') {
+        console.log(jsonData.slots);
         return await requests
           .post({credentials: data, jsonData})
           .catch(e => {
+            console.log(e);
             return error(`${e.response.data.message ? e.response.data.message : e.message}`);
           })
           .then(() => {

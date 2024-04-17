@@ -6,7 +6,7 @@ import {format} from 'date-fns';
 const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
   if (slot.Replacement) console.log(slot);
-  const subgroupMentors = slot?.SubGroup?.SubgroupMentors[0]; // filter only need user and get first item from new array
+  const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
   return (
     <>
       {isOpen && slot && (
