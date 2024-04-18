@@ -75,6 +75,10 @@ const updateSubGroupAndAddMentor = ({id, body}) => {
       throw error;
     });
 };
+
+const createSubgroupMentor = ({subgroupId, mentorId, TeacherTypeId, schedule}) => {
+  return axios.post(`/subgroup-mentor`, {subgroupId, mentorId, TeacherTypeId, schedule});
+};
 export {
   updateSubGroup,
   postSubGroup,
@@ -82,5 +86,6 @@ export {
   getSlotDetails,
   deleteSubGroup,
   getMentorSubgroups,
-  updateSubGroupAndAddMentor
+  updateSubGroupAndAddMentor,
+  createSubgroupMentor
 };

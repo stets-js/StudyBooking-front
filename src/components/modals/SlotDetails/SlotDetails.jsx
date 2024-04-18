@@ -15,7 +15,7 @@ const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
             {!slot.ReplacementId && (
               <div className={styles.input__block}>
                 <a href={slot?.SubGroup.link}>{slot?.SubGroup?.name}</a>
-                {subgroupMentors?.TeacherType.type}
+                {subgroupMentors?.TeacherType?.type}
                 <div className={styles.date_wrapper}>
                   <span>Start: {format(slot.startDate, 'dd.MM.yyyy')}</span>
                   <br />

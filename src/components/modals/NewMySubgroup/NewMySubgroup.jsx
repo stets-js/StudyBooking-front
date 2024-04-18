@@ -3,10 +3,11 @@ import React, {useEffect, useState} from 'react';
 import FormInput from '../../FormInput/FormInput';
 import Form from '../../Form/Form';
 import {bulkSlotCreate} from '../../../helpers/slot/slot';
+import {createSubgroupMentor} from '../../../helpers/subgroup/subgroup';
 
 const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
   const [schedule, setSchedule] = useState('');
-
+  console.log(info);
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const calculateSchedule = () => {
     let tmpSchedule = '';
@@ -30,7 +31,15 @@ const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
             }}
             type={{type: 'post'}}
             requests={{
-              post: bulkSlotCreate
+              post: () => {
+                bulkSlotCreate(slots);
+                createSubgroupMentor({
+                  subgroupId: info.subGroup.value,
+                  mentorId: info.userId,
+                  TeacherTypeId: info.selectedCourse.TeacherTypeId,
+                  schedule
+                });
+              }
             }}
             slots={JSON.stringify(slots)}
             status={{

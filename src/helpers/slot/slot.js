@@ -14,7 +14,7 @@ const updateSlotComment = credentials => {
 };
 
 const bulkSlotCreate = credentials => {
-  return axios.post('/slots/bulk', JSON.parse(credentials.jsonData.slots));
+  return axios.post('/slots/bulk', credentials);
 };
 const bulkUpdate = credentials => {
   return axios

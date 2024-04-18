@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
+import {useSelector} from 'react-redux';
 // import {error} from '@pnotify/core';
 
-import {getCourses} from '../../helpers/course/course';
+import {getCourses, getTeacherCourses} from '../../helpers/course/course';
 import styles from '../../styles/teacher.module.scss';
 import {getSubGroups} from '../../helpers/subgroup/subgroup';
 import FormInput from '../../components/FormInput/FormInput';
@@ -10,7 +11,7 @@ import tableStyles from '../../styles/table.module.scss';
 import {addMinutes, format} from 'date-fns';
 import appointmentStyles from '../../styles/appointment.module.scss';
 import NewMySubgroup from '../../components/modals/NewMySubgroup/NewMySubgroup';
-import {useSelector} from 'react-redux';
+
 export default function AddMySubgroup() {
   const userId = useSelector(state => state.auth.user.id);
   const [courses, setCourses] = useState(null);
@@ -29,16 +30,31 @@ export default function AddMySubgroup() {
     {label: 'Individual', value: 8},
     {label: 'Junior group', value: 11}
   ];
+  const [userCourses, setUserCourses] = useState([]);
   useEffect(() => {
     getCourses().then(data => {
       setCourses(
-        data.data.map(el => {
-          return {label: el.name, value: el.id};
-        })
+        data.data
+        // .map(el => {
+        //   return {label: el.name, value: el.id, TeacherTypeId: el.TeacherTypeId};
+        // })
       );
     });
   }, []);
 
+  useEffect(() => {
+    getTeacherCourses(userId).then(data => {
+      const newUserCourses = data.data;
+      newUserCourses.forEach(userCourse => {
+        const course = (courses || []).find(el => el.id === userCourse.courseId);
+        if (course)
+          setUserCourses([
+            ...userCourses,
+            {label: course.name, value: course.id, TeacherTypeId: userCourse.TeacherTypeId}
+          ]);
+      });
+    });
+  }, [courses]);
   useEffect(() => {
     const fetchSubGroups = async () => {
       try {
@@ -84,7 +100,7 @@ export default function AddMySubgroup() {
 
         <Select
           name="courses"
-          options={courses}
+          options={userCourses}
           placeholder="Select course"
           required
           className={`${styles.selector} ${styles.selector__filtering}`}
@@ -279,7 +295,14 @@ export default function AddMySubgroup() {
         slots={slots}
         isOpen={isOpen}
         handleClose={handleClose}
-        info={{selectedClassType, selectedCourse, subGroup, startDate, endDate}}></NewMySubgroup>
+        info={{
+          selectedClassType,
+          selectedCourse,
+          subGroup,
+          startDate,
+          endDate,
+          userId
+        }}></NewMySubgroup>
     </div>
   );
 }
