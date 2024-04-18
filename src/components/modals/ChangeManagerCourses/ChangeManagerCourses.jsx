@@ -40,6 +40,8 @@ const ChangeManagerCourses = ({
       });
     }
   };
+  console.log(teacherTypes);
+  console.log(teacherTypesId);
   useEffect(() => {
     const fetchAllCourses = async () => {
       if (!forFilters) {
@@ -75,6 +77,7 @@ const ChangeManagerCourses = ({
   // const [flag, setFlag] = useState(0)
   const handleTeacherTypeChange = async ({element, teacherId, teacherCourse}) => {
     const TeacherTypeId = element ? teacherTypesId['tech'] : teacherTypesId['soft'];
+    console.log(TeacherTypeId);
     try {
       await patchTeacherCourse(teacherId, teacherCourse.courseId, {TeacherTypeId});
       dispatch(updateTeacherCourse({...teacherCourse, TeacherTypeId}));

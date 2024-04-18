@@ -81,9 +81,9 @@ const postTeacherCourse = (userId, courseId) => {
     });
 };
 
-const patchTeacherCourse = (userId, courseId, data) => {
+const patchTeacherCourse = (userId, courseId, TeacherTypeId) => {
   return axios
-    .patch(`/users/${userId}/courses/${courseId}`, data)
+    .patch(`/users/${userId}/courses/${courseId}`, TeacherTypeId)
     .then(res => res.data)
     .catch(error => {
       throw error;
