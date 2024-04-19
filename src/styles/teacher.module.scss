@@ -401,7 +401,9 @@
   }
   &__date_wrapper{
     display: flex;
+  column-gap: 20px;
   }
+
   &__intro{
     margin-bottom: 20px;
     font-size: 24px;
