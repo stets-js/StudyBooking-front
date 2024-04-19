@@ -29,19 +29,17 @@ const ChangeManagerCourses = ({
   const courses = useSelector(state => state.courses.courses);
   const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
   const [teacherTypes, setTeacherTypes] = useState([]);
-  const [teacherTypesId, setTeacherTypesId] = useState({tech: null, soft: null});
-  const fetchTeacherTypes = async () => {
-    const res = await getTeacherTypes();
-    setTeacherTypes(res.data);
-    if (teacherTypes.length > 0) {
-      setTeacherTypesId({
-        tech: teacherTypes.filter(type => type.type === 'tech')[0].id,
-        soft: teacherTypes.filter(type => type.type === 'soft')[0].id
-      });
-    }
-  };
-  console.log(teacherTypes);
-  console.log(teacherTypesId);
+  const [teacherTypesId, setTeacherTypesId] = useState({tech: 2, soft: 1});
+  // const fetchTeacherTypes = async () => {
+  //   const res = await getTeacherTypes();
+  //   setTeacherTypes(res.data);
+  //   if (teacherTypes.length > 0) {
+  //     setTeacherTypesId({
+  //       tech: teacherTypes.filter(type => type.type === 'tech')[0].id,
+  //       soft: teacherTypes.filter(type => type.type === 'soft')[0].id
+  //     });
+  //   }
+  // };
   useEffect(() => {
     const fetchAllCourses = async () => {
       if (!forFilters) {
@@ -50,7 +48,7 @@ const ChangeManagerCourses = ({
       }
     };
     fetchAllCourses();
-    fetchTeacherTypes();
+    // fetchTeacherTypes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teacherId, dispatch]);
 
@@ -104,7 +102,7 @@ const ChangeManagerCourses = ({
               const teacherCourse = (teacherCourses || []).filter(
                 el => el.courseId === course.id
               )[0];
-
+              console.log(course.id, teacherCourse);
               return (
                 <div key={course.id} className={styles.checkBoxDiv}>
                   <div className={styles.checkBoxLabel}>
@@ -124,13 +122,16 @@ const ChangeManagerCourses = ({
                     />
                     {course.name}
                   </div>
-                  {!forFilters &&
-                    teacherCourses.some(el => {
-                      return el.courseId === course.id;
-                    }) && (
+                  {!forFilters && teacherCourse && (
+                    <>
+                      {console.log(
+                        teacherCourse.TeacherTypeId,
+                        teacherCourse.TeacherTypeId === teacherTypesId['tech']
+                      )}
                       <div className={styles.switch_wrapper}>
                         <Switch
-                          checked={teacherCourse?.TeacherTypeId === teacherTypesId['tech']}
+                          key={Math.random() * 1000 - 10}
+                          checked={teacherCourse.TeacherTypeId === teacherTypesId['tech']}
                           // checked={flag}
                           className={teacherStyles.remove_svg_switch}
                           // onChange={()=>{setFlag(!flag)}}
@@ -139,7 +140,8 @@ const ChangeManagerCourses = ({
                           }}></Switch>
                         <span className={teacherStyles.switch_label}>tech</span>
                       </div>
-                    )}
+                    </>
+                  )}
                 </div>
               );
             })}
