@@ -114,6 +114,7 @@ export default function AddMySubgroup() {
    {selectedCourse && (
     <>
      <div>
+      <br />
       <h2>2. Select subgroup: </h2>
       <Select
        name="subGroupSelector"
@@ -130,6 +131,7 @@ export default function AddMySubgroup() {
      </div>
      {selectedCourse && subGroup && (
       <>
+       <br />
        <h2>3. Select time period and type of subgroup: </h2>
        <div className={styles.add_my_subgroup__date_wrapper}>
         <div>
@@ -157,6 +159,7 @@ export default function AddMySubgroup() {
          ></FormInput>
         </div>
        </div>
+       <br />
        <div className={styles.add_my_subgroup__date_wrapper}>
         <Select
          key={Math.random() * 1000 - 10}
@@ -187,6 +190,7 @@ export default function AddMySubgroup() {
          <span className={styles.switch_label}>tech</span>
         </div>
        </div>
+       <br />
        {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
         <>
          <div className={tableStyles.button__wrapper}>
