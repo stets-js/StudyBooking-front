@@ -78,3 +78,19 @@
   align-items: center;
   column-gap: 5px;
 }
+
+.radio{
+  &__group{
+    column-gap: 5px;
+    display: flex;
+    align-items: flex-end;
+    height: 92%;
+    column-gap: 5px;
+  }
+  &__button{
+    align-items: center;
+    border:1px solid black;
+    padding: 3px;
+    border-radius: 2px;
+  }
+}

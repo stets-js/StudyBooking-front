@@ -3,7 +3,7 @@ import styles from './ChangeManagerCourses.module.scss';
 import Modal from '../../Modal/Modal';
 import React, {useEffect} from 'react';
 // import Switch from 'react-switch';
-import {RadioGroup, RadioButton} from 'react-radio-buttons';
+import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
 
 import {
   getTeacherCourses,
@@ -122,45 +122,26 @@ const ChangeManagerCourses = ({
                   </div>
                   {!forFilters && teacherCourse && (
                     <>
-                      <div>
+                      <div className={styles.radio__group}>
                         <RadioGroup
-                          onChange={e => {
+                          name="teacherType"
+                          value={String(teacherCourse.TeacherTypeId)}
+                          onChange={event => {
                             handleTeacherTypeChange({
                               teacherId,
                               teacherCourse,
-                              TeacherTypeId: e
+                              TeacherTypeId: +event.target.value
                             });
-                            console.log(course.id, e);
                           }}
-                          value={`${teacherCourse.TeacherTypeId}`}
-                          horizontal
-                          className={styles.switch_wrapper}>
-                          <RadioButton
-                            value="1"
-                            rootColor="black"
-                            pointColor="green"
-                            iconSize="3px"
-                            iconInnerSize="3px"
-                            padding="5px">
-                            Soft
+                          className={styles.radio__group}>
+                          <RadioButton value="1" className={styles.radio__button}>
+                            soft
                           </RadioButton>
-                          <RadioButton
-                            value="2"
-                            rootColor="black"
-                            pointColor="green"
-                            iconSize="3px"
-                            iconInnerSize="3px"
-                            padding="5px">
-                            Tech
+                          <RadioButton value="2" className={styles.radio__button}>
+                            tech
                           </RadioButton>
-                          <RadioButton
-                            value="3"
-                            rootColor="black"
-                            pointColor="green"
-                            iconSize="3px"
-                            iconInnerSize="3px"
-                            padding="5px">
-                            ultra
+                          <RadioButton value="3" className={styles.radio__button}>
+                            ulti
                           </RadioButton>
                         </RadioGroup>
                         {/* 
