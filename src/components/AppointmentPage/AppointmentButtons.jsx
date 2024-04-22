@@ -118,9 +118,9 @@ export default function AppointmentButtons({
                 <RadioButton value="2" className={styles.radio__button}>
                   tech
                 </RadioButton>
-                <RadioButton value="3" className={styles.radio__button}>
+                {/* <RadioButton value="3" className={styles.radio__button}>
                   ulti
-                </RadioButton>
+                </RadioButton> */}
               </RadioGroup>
             </div>
           </div>
