@@ -1,8 +1,10 @@
 import styles from './ChangeManagerCourses.module.scss';
-import teacherStyles from '../../../styles/teacher.module.scss';
+// import teacherStyles from '../../../styles/teacher.module.scss';
 import Modal from '../../Modal/Modal';
-import React, {useState, useEffect} from 'react';
-import Switch from 'react-switch';
+import React, {useEffect} from 'react';
+// import Switch from 'react-switch';
+import {RadioGroup, RadioButton} from 'react-radio-buttons';
+
 import {
   getTeacherCourses,
   postTeacherCourse,
@@ -15,7 +17,6 @@ import {
   setTeacherCourses,
   updateTeacherCourse
 } from '../../../redux/action/course.action';
-import {getTeacherTypes} from '../../../helpers/teacher/teacher-type';
 
 const ChangeManagerCourses = ({
   isOpen,
@@ -28,8 +29,8 @@ const ChangeManagerCourses = ({
   const dispatch = useDispatch();
   const courses = useSelector(state => state.courses.courses);
   const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
-  const [teacherTypes, setTeacherTypes] = useState([]);
-  const [teacherTypesId, setTeacherTypesId] = useState({tech: 2, soft: 1});
+  // const [teacherTypes, setTeacherTypes] = useState([]);
+  // const [teacherTypesId, setTeacherTypesId] = useState({tech: 2, soft: 1});
   // const fetchTeacherTypes = async () => {
   //   const res = await getTeacherTypes();
   //   setTeacherTypes(res.data);
@@ -73,9 +74,7 @@ const ChangeManagerCourses = ({
     }
   };
   // const [flag, setFlag] = useState(0)
-  const handleTeacherTypeChange = async ({element, teacherId, teacherCourse}) => {
-    const TeacherTypeId = element ? teacherTypesId['tech'] : teacherTypesId['soft'];
-    console.log(TeacherTypeId);
+  const handleTeacherTypeChange = async ({teacherId, teacherCourse, TeacherTypeId}) => {
     try {
       await patchTeacherCourse(teacherId, teacherCourse.courseId, {TeacherTypeId});
       dispatch(updateTeacherCourse({...teacherCourse, TeacherTypeId}));
@@ -102,7 +101,6 @@ const ChangeManagerCourses = ({
               const teacherCourse = (teacherCourses || []).filter(
                 el => el.courseId === course.id
               )[0];
-              console.log(course.id, teacherCourse);
               return (
                 <div key={course.id} className={styles.checkBoxDiv}>
                   <div className={styles.checkBoxLabel}>
@@ -124,21 +122,49 @@ const ChangeManagerCourses = ({
                   </div>
                   {!forFilters && teacherCourse && (
                     <>
-                      {console.log(
-                        teacherCourse.TeacherTypeId,
-                        teacherCourse.TeacherTypeId === teacherTypesId['tech']
-                      )}
-                      <div className={styles.switch_wrapper}>
-                        <Switch
-                          key={Math.random() * 1000 - 10}
-                          checked={teacherCourse.TeacherTypeId === teacherTypesId['tech']}
-                          // checked={flag}
-                          className={teacherStyles.remove_svg_switch}
-                          // onChange={()=>{setFlag(!flag)}}
-                          onChange={element => {
-                            handleTeacherTypeChange({element, teacherId, teacherCourse});
-                          }}></Switch>
-                        <span className={teacherStyles.switch_label}>tech</span>
+                      <div>
+                        <RadioGroup
+                          onChange={e => {
+                            handleTeacherTypeChange({
+                              teacherId,
+                              teacherCourse,
+                              TeacherTypeId: e
+                            });
+                            console.log(course.id, e);
+                          }}
+                          value={`${teacherCourse.TeacherTypeId}`}
+                          horizontal
+                          className={styles.switch_wrapper}>
+                          <RadioButton
+                            value="1"
+                            rootColor="black"
+                            pointColor="green"
+                            iconSize="3px"
+                            iconInnerSize="3px"
+                            padding="5px">
+                            Soft
+                          </RadioButton>
+                          <RadioButton
+                            value="2"
+                            rootColor="black"
+                            pointColor="green"
+                            iconSize="3px"
+                            iconInnerSize="3px"
+                            padding="5px">
+                            Tech
+                          </RadioButton>
+                          <RadioButton
+                            value="3"
+                            rootColor="black"
+                            pointColor="green"
+                            iconSize="3px"
+                            iconInnerSize="3px"
+                            padding="5px">
+                            ultra
+                          </RadioButton>
+                        </RadioGroup>
+                        {/* 
+                        <span className={teacherStyles.switch_label}>tech</span> */}
                       </div>
                     </>
                   )}

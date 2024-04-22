@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+
 import styles from '../../styles/SuperAdminPage.module.scss';
 import NewUser from '../../components/modals/NewUser/NewUser';
 import {getRoles, getUsers} from '../../helpers/user/user';
@@ -131,6 +132,7 @@ export default function UsersPage() {
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <>
       <div className={styles.main_wrapper}>
