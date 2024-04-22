@@ -1,308 +1,322 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 // import {error} from '@pnotify/core';
+import Switch from 'react-switch';
 
-import {getCourses, getTeacherCourses} from '../../helpers/course/course';
+import { getCourses, getTeacherCourses } from '../../helpers/course/course';
 import styles from '../../styles/teacher.module.scss';
-import {getSubGroups} from '../../helpers/subgroup/subgroup';
+import { getSubGroups } from '../../helpers/subgroup/subgroup';
 import FormInput from '../../components/FormInput/FormInput';
 import tableStyles from '../../styles/table.module.scss';
-import {addMinutes, format} from 'date-fns';
+import { addMinutes, format } from 'date-fns';
 import appointmentStyles from '../../styles/appointment.module.scss';
 import NewMySubgroup from '../../components/modals/NewMySubgroup/NewMySubgroup';
 
 export default function AddMySubgroup() {
-  const userId = useSelector(state => state.auth.user.id);
-  const [courses, setCourses] = useState(null);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [subGroup, setSubGroup] = useState(null);
-  const [subGroups, setSubGroups] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [selectedClassType, setSelectedClassType] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleClose = () => {
-    setIsOpen(!isOpen);
+ const userId = useSelector((state) => state.auth.user.id);
+ const [courses, setCourses] = useState(null);
+ const [selectedCourse, setSelectedCourse] = useState(null);
+ const [subGroup, setSubGroup] = useState(null);
+ const [subGroups, setSubGroups] = useState([]);
+ const [startDate, setStartDate] = useState(null);
+ const [endDate, setEndDate] = useState(null);
+ const [selectedClassType, setSelectedClassType] = useState(null);
+ const [isOpen, setIsOpen] = useState(false);
+ const [teacherType, setTeacherType] = useState(2);
+ const handleClose = () => {
+  setIsOpen(!isOpen);
+ };
+ const appointmentTypes = [
+  { label: 'Group', value: 7 },
+  { label: 'Individual', value: 8 },
+  { label: 'Junior group', value: 11 },
+ ];
+ const [userCourses, setUserCourses] = useState([]);
+ useEffect(() => {
+  getCourses().then((data) => {
+   setCourses(
+    data.data
+    // .map(el => {
+    //   return {label: el.name, value: el.id, TeacherTypeId: el.TeacherTypeId};
+    // })
+   );
+  });
+ }, []);
+
+ useEffect(() => {
+  getTeacherCourses(userId).then((data) => {
+   const newUserCourses = data.data;
+   newUserCourses.forEach((userCourse) => {
+    const course = (courses || []).find((el) => el.id === userCourse.courseId);
+    if (course)
+     setUserCourses([
+      ...userCourses,
+      { label: course.name, value: course.id, TeacherTypeId: userCourse.TeacherTypeId },
+     ]);
+   });
+  });
+ }, [courses]);
+ useEffect(() => {
+  const fetchSubGroups = async () => {
+   try {
+    const res = await getSubGroups(`CourseId=${selectedCourse.value}`);
+    setSubGroups(
+     res.data.map((el) => {
+      return { label: el.name, value: el.id };
+     })
+    );
+   } catch (error) {}
   };
-  const appointmentTypes = [
-    {label: 'Group', value: 7},
-    {label: 'Individual', value: 8},
-    {label: 'Junior group', value: 11}
-  ];
-  const [userCourses, setUserCourses] = useState([]);
-  useEffect(() => {
-    getCourses().then(data => {
-      setCourses(
-        data.data
-        // .map(el => {
-        //   return {label: el.name, value: el.id, TeacherTypeId: el.TeacherTypeId};
-        // })
-      );
-    });
-  }, []);
+  fetchSubGroups();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [selectedCourse]);
+ const [slots, setSlots] = useState([]);
 
-  useEffect(() => {
-    getTeacherCourses(userId).then(data => {
-      const newUserCourses = data.data;
-      newUserCourses.forEach(userCourse => {
-        const course = (courses || []).find(el => el.id === userCourse.courseId);
-        if (course)
-          setUserCourses([
-            ...userCourses,
-            {label: course.name, value: course.id, TeacherTypeId: userCourse.TeacherTypeId}
-          ]);
-      });
-    });
-  }, [courses]);
-  useEffect(() => {
-    const fetchSubGroups = async () => {
-      try {
-        const res = await getSubGroups(`CourseId=${selectedCourse.value}`);
-        setSubGroups(
-          res.data.map(el => {
-            return {label: el.name, value: el.id};
-          })
-        );
-      } catch (error) {}
-    };
-    fetchSubGroups();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCourse]);
-  const [slots, setSlots] = useState([]);
+ const handleCellClick = ({ time, weekDay, isSelected }) => {
+  if (selectedClassType === null || !selectedCourse || !subGroup) return;
+  const selectedSlotsTMP = [];
+  for (let i = 0; i < (selectedClassType.value === 7 ? 3 : 2); i++) {
+   selectedSlotsTMP.push({
+    weekDay,
+    time: format(addMinutes(time, 30 * i), 'HH:mm'),
+    timeEnd: format(addMinutes(time, 30 * (selectedClassType.value === 7 ? 3 : 2)), 'HH:mm'),
+    startDate,
+    endDate,
+    userId,
+    subgroupId: subGroup.value,
+    appointmentTypeId: selectedClassType.value,
+    rowSpan: i === 0 ? (selectedClassType.value === 7 ? 3 : 2) : 0,
+   });
+  }
+  if (!isSelected) setSlots([...slots, ...selectedSlotsTMP]);
+ };
+ return (
+  <div className={styles.add_my_subgroup__wrapper}>
+   <div className={styles.add_my_subgroup__intro}>
+    Hello, this is the page with instructions for mentors. You should fill in the fields with info
+    about the groups you already have in your scedule
+   </div>
+   <div>
+    <h2>1. Select course: </h2>
 
-  const handleCellClick = ({time, weekDay, isSelected}) => {
-    if (selectedClassType === null || !selectedCourse || !subGroup) return;
-    const selectedSlotsTMP = [];
-    for (let i = 0; i < (selectedClassType.value === 7 ? 3 : 2); i++) {
-      selectedSlotsTMP.push({
-        weekDay,
-        time: format(addMinutes(time, 30 * i), 'HH:mm'),
-        timeEnd: format(addMinutes(time, 30 * (selectedClassType.value === 7 ? 3 : 2)), 'HH:mm'),
-        startDate,
-        endDate,
-        userId,
-        subgroupId: subGroup.value,
-        appointmentTypeId: selectedClassType.value,
-        rowSpan: i === 0 ? (selectedClassType.value === 7 ? 3 : 2) : 0
-      });
-    }
-    if (!isSelected) setSlots([...slots, ...selectedSlotsTMP]);
-  };
-  return (
-    <div className={styles.add_my_subgroup__wrapper}>
-      <div className={styles.add_my_subgroup__intro}>
-        Hello, this is the page with instructions for mentors. You should fill in the fields with
-        info about the groups you already have in your scedule
-      </div>
-      <div>
-        <h2>1. Select course: </h2>
-
-        <Select
-          name="courses"
-          options={userCourses}
-          placeholder="Select course"
-          required
-          className={`${styles.selector} ${styles.selector__filtering}`}
-          onChange={choice => {
-            setSelectedCourse(choice);
+    <Select
+     name="courses"
+     options={userCourses}
+     placeholder="Select course"
+     required
+     className={`${styles.selector} ${styles.selector__filtering}`}
+     onChange={(choice) => {
+      setSelectedCourse(choice);
+     }}
+    />
+   </div>
+   {selectedCourse && (
+    <>
+     <div>
+      <br />
+      <h2>2. Select subgroup: </h2>
+      <Select
+       name="subGroupSelector"
+       className={styles.selector}
+       value={subGroups.filter((el) => el.value === subGroup?.value)}
+       options={subGroups}
+       key={Math.random() * 100 - 10}
+       required
+       placeholder="Select subgroup"
+       onChange={(el) => {
+        setSubGroup(el);
+       }}
+      />
+     </div>
+     {selectedCourse && subGroup && (
+      <>
+       <br />
+       <h2>3. Select time period and type of subgroup: </h2>
+       <div className={styles.add_my_subgroup__date_wrapper}>
+        <div>
+         <FormInput
+          type={'date'}
+          title={'Start'}
+          value={startDate}
+          handler={setStartDate}
+         ></FormInput>
+        </div>
+        <div>
+         <FormInput
+          type={'date'}
+          title={'End'}
+          classname={'right'}
+          value={endDate}
+          pattern="\d{2}.\d{2}.\d{4}"
+          handler={(e) => {
+           setEndDate(e);
+           // setTimeout(() => {
+           //   if (endDate < startDate && endDate[0] !== 2)
+           //     error({text: 'Something wrong with start/end date', delay: 1000});
+           // }, 2000);
           }}
+         ></FormInput>
+        </div>
+       </div>
+       <br />
+       <div className={styles.add_my_subgroup__date_wrapper}>
+        <Select
+         key={Math.random() * 1000 - 10}
+         className={`${styles.selector} ${styles.selector__filtering}`}
+         placeholder="Lesson Type"
+         value={
+          selectedClassType !== null &&
+          appointmentTypes.filter((el) => el.value === selectedClassType.value)
+         }
+         options={appointmentTypes}
+         required
+         onChange={(choice) => {
+          setSelectedClassType(choice);
+          setSlots([]);
+         }}
         />
-      </div>
-      {selectedCourse && (
+        <div className={styles.switch_wrapper}>
+         <Switch
+          key={Math.random() * 1000 - 10}
+          checked={teacherType === 2}
+          // checked={flag}
+          className={styles.remove_svg_switch}
+          // onChange={()=>{setFlag(!flag)}}
+          onChange={(element) => {
+           setTeacherType(teacherType === 2 ? 1 : 2);
+          }}
+         ></Switch>
+         <span className={styles.switch_label}>tech</span>
+        </div>
+       </div>
+       <br />
+       {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
         <>
-          <div>
-            <h2>2. Select subgroup: </h2>
-            <Select
-              name="subGroupSelector"
-              className={styles.selector}
-              value={subGroups.filter(el => el.value === subGroup?.value)}
-              options={subGroups}
-              key={Math.random() * 100 - 10}
-              required
-              placeholder="Select subgroup"
-              onChange={el => {
-                setSubGroup(el);
-              }}
-            />
-          </div>
-          {selectedCourse && subGroup && (
-            <>
-              <div className={styles.add_my_subgroup__date_wrapper}>
-                <div>
-                  <FormInput
-                    type={'date'}
-                    title={'Start'}
-                    value={startDate}
-                    handler={setStartDate}></FormInput>
-                </div>
-                <div>
-                  <FormInput
-                    type={'date'}
-                    title={'End'}
-                    classname={'right'}
-                    value={endDate}
-                    pattern="\d{2}.\d{2}.\d{4}"
-                    handler={e => {
-                      setEndDate(e);
-                      // setTimeout(() => {
-                      //   if (endDate < startDate && endDate[0] !== 2)
-                      //     error({text: 'Something wrong with start/end date', delay: 1000});
-                      // }, 2000);
-                    }}></FormInput>
-                </div>
-              </div>
-
-              <div>
-                <Select
-                  key={Math.random() * 1000 - 10}
-                  className={`${styles.selector} ${styles.selector__filtering}`}
-                  placeholder="Lesson Type"
-                  value={
-                    selectedClassType !== null &&
-                    appointmentTypes.filter(el => el.value === selectedClassType.value)
-                  }
-                  options={appointmentTypes}
-                  required
-                  onChange={choice => {
-                    setSelectedClassType(choice);
-                    setSlots([]);
-                  }}
-                />
-              </div>
-
-              {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
-                <>
-                  <div className={tableStyles.button__wrapper}>
-                    <button
-                      onClick={() => setIsOpen(true)}
-                      disabled={slots.length === 0}
-                      className={`${styles.button} ${styles.button__add}`}>
-                      Create
-                    </button>
-                    <button
+         <div className={tableStyles.button__wrapper}>
+          <button
+           onClick={() => setIsOpen(true)}
+           disabled={slots.length === 0}
+           className={`${styles.button} ${styles.button__add}`}
+          >
+           Create
+          </button>
+          <button
+           onClick={() => {
+            setSlots([]);
+           }}
+           className={`${styles.button} ${styles.button__delete}`}
+          >
+           Clear
+          </button>
+         </div>
+         <div>
+          <table className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}>
+           <thead>
+            <tr>
+             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dateIndex) => (
+              <th key={dateIndex} className={`${tableStyles.columns} ${tableStyles.sticky}`}>
+               <div className={tableStyles.cell__header}>{day}</div>
+              </th>
+             ))}
+            </tr>
+           </thead>
+          </table>
+          <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
+           <table className={tableStyles.tableBody} key="calendar">
+            <tbody>
+             {Array.from({ length: 24 }, (_, timeIndex) => {
+              // 24 - for making 20:30 last cell
+              const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+              if (currentTime.getHours() >= 9)
+               return (
+                <tr key={Math.random() * 1000 - 1}>
+                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((date, dateIndex) => {
+                  const curr_slot = slots.find(
+                   (slot) =>
+                    slot.time === format(currentTime, 'HH:mm') && slot.weekDay === dateIndex
+                  );
+                  if (curr_slot && curr_slot.rowSpan === 0) return <></>;
+                  return (
+                   <td
+                    rowSpan={curr_slot ? curr_slot.rowSpan : 1}
+                    key={`${dateIndex}${currentTime}`}
+                   >
+                    {
+                     <button
+                      type="button"
+                      style={
+                       curr_slot?.rowSpan
+                        ? {
+                           height: `${58 * curr_slot?.rowSpan}px`,
+                          }
+                        : {}
+                      }
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${
+                       timeIndex === 0 || timeIndex === 23 || dateIndex === 0 || dateIndex === 6
+                        ? tableStyles.cell__outer
+                        : tableStyles.cell__inner
+                      } ${
+                       // key can be generated only for appointed
+                       !curr_slot?.rowSpan && selectedCourse && subGroup
+                        ? appointmentStyles[`hover__group`]
+                        : ''
+                      } ${curr_slot ? styles.selectedCell : ''}`}
                       onClick={() => {
-                        setSlots([]);
+                       handleCellClick({
+                        time: currentTime,
+                        weekDay: dateIndex,
+                        isSelected: curr_slot,
+                       });
                       }}
-                      className={`${styles.button} ${styles.button__delete}`}>
-                      Clear
-                    </button>
-                  </div>
-                  <div>
-                    <table className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}>
-                      <thead>
-                        <tr>
-                          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
-                            (day, dateIndex) => (
-                              <th
-                                key={dateIndex}
-                                className={`${tableStyles.columns} ${tableStyles.sticky}`}>
-                                <div className={tableStyles.cell__header}>{day}</div>
-                              </th>
-                            )
-                          )}
-                        </tr>
-                      </thead>
-                    </table>
-                    <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
-                      <table className={tableStyles.tableBody} key="calendar">
-                        <tbody>
-                          {Array.from({length: 24}, (_, timeIndex) => {
-                            // 24 - for making 20:30 last cell
-                            const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
-                            if (currentTime.getHours() >= 9)
-                              return (
-                                <tr key={Math.random() * 1000 - 1}>
-                                  {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
-                                    (date, dateIndex) => {
-                                      const curr_slot = slots.find(
-                                        slot =>
-                                          slot.time === format(currentTime, 'HH:mm') &&
-                                          slot.weekDay === dateIndex
-                                      );
-                                      if (curr_slot && curr_slot.rowSpan === 0) return <></>;
-                                      return (
-                                        <td
-                                          rowSpan={curr_slot ? curr_slot.rowSpan : 1}
-                                          key={`${dateIndex}${currentTime}`}>
-                                          {
-                                            <button
-                                              type="button"
-                                              style={
-                                                curr_slot?.rowSpan
-                                                  ? {
-                                                      height: `${58 * curr_slot?.rowSpan}px`
-                                                    }
-                                                  : {}
-                                              }
-                                              className={`${tableStyles.cell} ${
-                                                tableStyles.black_borders
-                                              } ${
-                                                timeIndex === 0 ||
-                                                timeIndex === 23 ||
-                                                dateIndex === 0 ||
-                                                dateIndex === 6
-                                                  ? tableStyles.cell__outer
-                                                  : tableStyles.cell__inner
-                                              } ${
-                                                // key can be generated only for appointed
-                                                !curr_slot?.rowSpan && selectedCourse && subGroup
-                                                  ? appointmentStyles[`hover__group`]
-                                                  : ''
-                                              } ${curr_slot ? styles.selectedCell : ''}`}
-                                              onClick={() => {
-                                                handleCellClick({
-                                                  time: currentTime,
-                                                  weekDay: dateIndex,
-                                                  isSelected: curr_slot
-                                                });
-                                              }}>
-                                              <div className={tableStyles.cell__content__wrapper}>
-                                                {curr_slot ? (
-                                                  <>
-                                                    <div>
-                                                      {curr_slot.time}
-                                                      <br />-<br />
-                                                      {curr_slot.timeEnd}
-                                                    </div>
-                                                  </>
-                                                ) : (
-                                                  format(currentTime, 'HH:mm')
-                                                )}
-                                              </div>
-                                            </button>
-                                          }
-                                        </td>
-                                      );
-                                    }
-                                  )}
-                                </tr>
-                              );
-                            return <></>;
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </>
-              )}
-            </>
-          )}
+                     >
+                      <div className={tableStyles.cell__content__wrapper}>
+                       {curr_slot ? (
+                        <>
+                         <div>
+                          {curr_slot.time}
+                          <br />-<br />
+                          {curr_slot.timeEnd}
+                         </div>
+                        </>
+                       ) : (
+                        format(currentTime, 'HH:mm')
+                       )}
+                      </div>
+                     </button>
+                    }
+                   </td>
+                  );
+                 })}
+                </tr>
+               );
+              return <></>;
+             })}
+            </tbody>
+           </table>
+          </div>
+         </div>
         </>
-      )}
+       )}
+      </>
+     )}
+    </>
+   )}
 
-      <NewMySubgroup
-        slots={slots}
-        isOpen={isOpen}
-        handleClose={handleClose}
-        info={{
-          selectedClassType,
-          selectedCourse,
-          subGroup,
-          startDate,
-          endDate,
-          userId
-        }}></NewMySubgroup>
-    </div>
-  );
+   <NewMySubgroup
+    slots={slots}
+    isOpen={isOpen}
+    handleClose={handleClose}
+    info={{
+     selectedClassType,
+     selectedCourse,
+     subGroup,
+     startDate,
+     endDate,
+     userId,
+     teacherType,
+    }}
+   ></NewMySubgroup>
+  </div>
+ );
 }

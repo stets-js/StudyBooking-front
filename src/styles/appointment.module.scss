@@ -1,90 +1,120 @@
 @import './App.scss';
 
 .buttons_header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  column-gap: 10px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ column-gap: 10px;
 }
 .type_selector {
-  height: 88px;
-  padding: 10px;
-  font-size: 24px;
-  font-family: $poppins;
-  width: 180px;
-  border-radius: 10px;
-  &__borders{
-    border-width: 1px;
-    border-style: solid;
+ height: 88px;
+ padding: 10px;
+ font-size: 24px;
+ font-family: $poppins;
+ width: 180px;
+ border-radius: 10px;
+ &__borders {
+  border-width: 1px;
+  border-style: solid;
+ }
+ &__group {
+  background-color: $group-color;
+  border-color: $group-color-border;
+  // opacity: 0.75;
+ }
+ &__replacement {
+  &_junior_group {
+   background-color: $replacement-junior-group;
+   border-color: $replacement-junior-group-border;
   }
-  &__group {
-    background-color: $group-color;
-    border-color: $group-color-border;
-    // opacity: 0.75;
+  &_group {
+   background-color: $zamina-color;
+   border-color: $zamina-color-border;
   }
-  &__replacement {
-    &_junior_group{
-      background-color: $replacement-junior-group;
-      border-color: $replacement-junior-group-border;
-    }
-    &_group {
-      background-color: $zamina-color;
-      border-color: $zamina-color-border;
-    }
-    &_private {
-      background-color: $indiv-color;
-      border-color: $indiv-color-border;
-    }
+  &_private {
+   background-color: $indiv-color;
+   border-color: $indiv-color-border;
   }
-  &__appointed {
-    &_junior_group{
-      background-color: $appointed_junior_group;
-      
-    }
-    &_group {
-      background-color: $appointed_group;
-    }
-    &_private {
-      background-color: $appointed_private;
-    }
+ }
+ &__appointed {
+  &_junior_group {
+   background-color: $appointed_junior_group;
   }
-  &__private {
-    background-color: $indiv-color;
-    border-color: $indiv-color-border;
-    // opacity: 0.75;
+  &_group {
+   background-color: $appointed_group;
   }
+  &_private {
+   background-color: $appointed_private;
+  }
+ }
+ &__private {
+  background-color: $indiv-color;
+  border-color: $indiv-color-border;
+  // opacity: 0.75;
+ }
 
-  &__replacement {
-    background-color: $zamina-color;
-    border-color: $zamina-color-border;
-    // opacity: 0.75;
-  }
-  &__free {
-    background-color: transparent;
-    border-color: black;
-    // opacity: 0.75;
-  }
-  &__universal {
-    background-color: $universal-color;
-    border-color: $universal-color-border;
-  }
+ &__replacement {
+  background-color: $zamina-color;
+  border-color: $zamina-color-border;
+  // opacity: 0.75;
+ }
+ &__free {
+  background-color: transparent;
+  border-color: black;
+  // opacity: 0.75;
+ }
+ &__universal {
+  background-color: $universal-color;
+  border-color: $universal-color-border;
+ }
 }
 .hover {
-  &__private:hover {
-    background-color: $indiv-color;
+ &__private:hover {
+  background-color: $indiv-color;
+ }
+ &__free:hover {
+  background-color: transparent;
+ }
+ &__group:hover {
+  background-color: $group-color;
+ }
+ &__replacement:hover {
+  background-color: $zamina-color;
+ }
+ &__universal:hover {
+  background-color: $universal-color;
+  // border: 1px solid $universal-color-border;
+ }
+}
+
+.tooltip {
+ z-index: 100;
+ opacity: 1 !important;
+ width: 330px !important;
+ border-radius: 25px;
+ &__container{
+  display: flex;
+  align-items:center;
+  column-gap: 20px;
+  row-gap: 20px;
+  font-size: 24px;
+  font-family: $poppins;
+  margin-bottom: 10px;
+  &:first-of-type{
+    
+    margin-top: 10px;
   }
-  &__free:hover {
-    background-color: transparent;
-  }
-  &__group:hover {
-    background-color: $group-color;
-  }
-  &__replacement:hover {
-    background-color: $zamina-color;
-  }
-  &__universal:hover {
-    background-color: $universal-color;
-    // border: 1px solid $universal-color-border;
-  }
+ }
+ &__icon{
+  font-size: 80px;
+  font-family: $poppins;
+  margin-right: 0;
+ }
+}
+.circle {
+ border-radius: 50%;
+ width: 50px;
+ opacity: 1 !important;
+ height: 50px;
 }
