@@ -420,15 +420,59 @@
 .radio{
   &__group{
     column-gap: 5px;
+    font-size: 24px;
     display:flex;
     text-align: center;
     align-items: center;
     
   }
   &__button{
+    padding: 10px !important;
     align-items: center;
     border:1px solid black;
     padding: 3px;
     border-radius: 2px;
+  }
+}
+
+.info{
+  &__wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    padding: 10px;
+    margin-left: calc(33% - 10px);
+    border:1px solid black;
+    border-radius: 25px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  &__item{
+    width:89% !important;
+    margin-left: 10px;
+  }
+}
+
+
+.phone{
+  align-items: end;
+  height: 100%;
+  margin-bottom: 10px;
+  margin-top:10px;
+  > input{
+    font-family: $poppins;
+    font-size: 20px !important;
+    width: 100% !important;
+
+  }
+  &__wrapper{
+  text-align: left;
+    justify-content: left;
+  }
+  &__label{
+    font-family: $poppins;
+    font-size: 20px;
+    text-align-last: left;
   }
 }
