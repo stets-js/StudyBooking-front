@@ -23,7 +23,8 @@ const TeacherWrapper = ({hideLogo = false, hideLogin = false, bottom_padding = f
           {
             text: 'Add my subgroup',
             path: id ? `${path.addMySubgroup}${id}` : path.addMySubgroup
-          }
+          },
+          {text: 'Info', path: id ? `${path.info}${id}` : path.info}
         ]}
         bottom_padding={bottom_padding}
       />

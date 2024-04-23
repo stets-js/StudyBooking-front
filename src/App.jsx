@@ -27,6 +27,7 @@ import TeacherWrapper from './pages/Teacher/TeacherWrapper';
 import TeacherSubgroupPage from './pages/Teacher/TeacherSubgroupsPage';
 import Spreadsheet from './pages/Admin/SpreadsheetPage';
 import AddMySubgroup from './pages/Teacher/AddMySubgroup';
+import Info from './pages/Teacher/Info';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -55,7 +56,6 @@ const App = () => {
     }
   );
   // }, [token]);
-  console.log(userRole);
   return (
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
@@ -96,6 +96,7 @@ const App = () => {
                 <Route path={path.teacher} element={<TeacherPage />}></Route>
                 <Route path={path.addMySubgroup} element={<AddMySubgroup />}></Route>
                 <Route path={path.mySubgroups} element={<TeacherSubgroupPage />}></Route>
+                <Route path={path.info} element={<Info />}></Route>
               </Route>
             </>
           ) : (

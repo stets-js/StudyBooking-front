@@ -273,6 +273,9 @@
   height: 48px;
   z-index: 2;
   text-align: center;
+  &__wrapper{
+    display: flex;
+  }
   &__add {
     color: #33a64c;
     border: 1px solid #33a64c;
