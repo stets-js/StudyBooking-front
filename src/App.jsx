@@ -82,8 +82,9 @@ const App = () => {
                     <TeacherWrapper hideLogo={true} hideLogin={true} bottom_padding={true} />
                   }>
                   <Route path={`calendar/:teacherId`} element={<TeacherPage />} />
-                  <Route path={`mySubGroups/:teacherId`} element={<TeacherSubgroupPage />} />
-                  <Route path={`addMySubgroup/:teacherId`} element={<AddMySubgroup />} />
+                  <Route path={`${path.mySubgroups}:teacherId`} element={<TeacherSubgroupPage />} />
+                  <Route path={`${path.addMySubgroup}:teacherId`} element={<AddMySubgroup />} />
+                  <Route path={`${path.info}:teacherId`} element={<Info></Info>}></Route>
                 </Route>
                 <Route path={path.subgroups} element={<SubGroupPage />} />
                 <Route path={path.replacements} element={<ReplacementsPage />} />
