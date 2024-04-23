@@ -1,23 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {useConfirm} from 'material-ui-confirm';
 import Select from 'react-select';
-import {success} from '@pnotify/core';
 import Switch from 'react-switch';
-import {addDays, addMinutes, format, getDay} from 'date-fns';
 
-import {deleteSubGroup, getSubGroups} from '../../helpers/subgroup/subgroup';
+import {getSubGroups} from '../../helpers/subgroup/subgroup';
 import styles from '../../styles/teacher.module.scss';
-import tableStyles from '../../styles/table.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
 import ChangeSubGroup from '../../components/modals/ChangeSubGroup/ChangeSubGroup';
-import {getSlots} from '../../helpers/teacher/slots';
 import NewSubgroup from '../../components/modals/NewSubgroup/NewSubgroup';
+import SubgroupTable from '../../components/SubgroupPage/SubgroupTable';
+import CalendarSubgroupTable from '../../components/SubgroupPage/CalendarSubroupTable';
 
 export default function SubGroupPage() {
   const [subGroups, setSubGroups] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const confirm = useConfirm();
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courses, setCourses] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -25,8 +22,6 @@ export default function SubGroupPage() {
   const [selectedId, setSelectedId] = useState(null);
   const [render, setRender] = useState(false);
   const [isOneDay, setIsOneDay] = useState(false);
-  const [selectedWeekDay, setSelectedWeekDay] = useState(0);
-  const [currentDate, setCurrentDate] = useState(new Date());
   const fetchData = async (query = '') => {
     try {
       const data = await getSubGroups(query);
@@ -54,48 +49,6 @@ export default function SubGroupPage() {
     fetchData('');
     fetchCourses();
   }, []);
-  const generateTimeSlots = () => {
-    const startTime = new Date().setHours(9, 0, 0, 0);
-    const endTime = new Date().setHours(20, 30, 0, 0);
-
-    const timeSlots = [];
-    let currentTime = startTime;
-
-    while (currentTime <= endTime) {
-      timeSlots.push({
-        time: format(currentTime, 'HH:mm'),
-        names: []
-      });
-      currentTime = addMinutes(currentTime, 30);
-    }
-
-    return timeSlots;
-  };
-  const [scheduleTable, setScheduleTable] = useState(generateTimeSlots());
-  const fetchSubGroupsByTime = async () => {
-    setScheduleTable(generateTimeSlots());
-    const data = await getSlots(
-      `type&weekDay=${selectedWeekDay}&startSubGroup=${format(
-        currentDate,
-        'yyyy-MM-dd'
-      )}&endSubGroup=${format(currentDate, 'yyyy-MM-dd')}`
-    );
-    setScheduleTable(prevSchedule => {
-      const newSchedule = [...prevSchedule];
-      data.data.forEach(el => {
-        const timeIndex = newSchedule.findIndex(slot => slot.time === el.time);
-        if (timeIndex !== -1) {
-          newSchedule[timeIndex].names.push(el.SubGroup.name);
-        }
-      });
-      return newSchedule;
-    });
-  };
-
-  useEffect(() => {
-    if (isOneDay) fetchSubGroupsByTime();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOneDay, selectedWeekDay]);
 
   useEffect(() => {
     if (render) {
@@ -107,33 +60,9 @@ export default function SubGroupPage() {
     fetchData(selectedCourse !== null ? `CourseId=${selectedCourse}` : '');
   }, [selectedCourse]);
 
-  const handleDelete = async (id, name) => {
-    confirm({
-      description: 'Are you sure you want to delete ' + name,
-      confirmationText: 'delete',
-      confirmationButtonProps: {autoFocus: true}
-    })
-      .then(async () => {
-        await deleteSubGroup(id);
-        setSubGroups(prevSubGroups => prevSubGroups.filter(subgroup => subgroup.id !== id));
-        success({delay: 1000, text: 'Deleted successfully!'});
-      })
-      .catch(e => console.log('no ' + e));
-  };
-
   const filteredSubGroups = subGroups.filter(element =>
     element.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  const handleDateChange = daysToAdd => {
-    const newDate = addDays(currentDate, daysToAdd);
-    setCurrentDate(newDate);
-    // Reset selectedWeekDay to null when changing the date
-    setSelectedWeekDay(getDay(newDate) - 1 < 0 ? 6 : getDay(newDate) - 1);
-  };
-  const formatDate = date => {
-    return format(date, 'iiii, dd.MM');
-  };
 
   return (
     <div>
@@ -179,88 +108,16 @@ export default function SubGroupPage() {
         </div>
 
         {!isOneDay ? (
-          <div
-            className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}>
-            <table className={tableStyles.tableBody}>
-              <tbody>
-                {filteredSubGroups.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={2}
-                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
-                      Ops, can't find this SubGroup...
-                    </td>
-                  </tr>
-                ) : (
-                  filteredSubGroups.map(element => {
-                    return (
-                      <tr key={element.id}>
-                        <td className={tableStyles.cell__big}>
-                          <div
-                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
-                            {element.name}
-                          </div>
-                        </td>
-                        <td>
-                          <div
-                            className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.action_wrapper}`}>
-                            <button
-                              className={`${styles.button} ${styles.button__edit} ${styles.button__edit__small}`}
-                              onClick={() => {
-                                setIsOpen(!isOpen);
-                                setSelectedId(element.id);
-                              }}>
-                              Edit
-                            </button>
-                            <button
-                              className={`${styles.button} ${styles.button__delete} ${styles.button__delete__small}`}
-                              onClick={() => handleDelete(element.id, element.name)}>
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+          <SubgroupTable
+            setSubGroups={setSubGroups}
+            setIsOpen={setIsOpen}
+            setSelectedId={setSelectedId}
+            filteredSubGroups={filteredSubGroups}></SubgroupTable>
         ) : (
-          <>
-            <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
-              <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
-                {'<'}
-              </button>
-              <span>{formatDate(currentDate)}</span>
-              <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
-                {'>'}
-              </button>
-            </div>
-            <div
-              className={`${tableStyles.calendar} ${tableStyles.calendar__small} ${tableStyles.scroller}`}>
-              <table className={tableStyles.tableBody}>
-                <tbody>
-                  {scheduleTable.map(({time, names}) => (
-                    <tr key={time}>
-                      <td className={tableStyles.cell__available}>
-                        <div
-                          className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer}`}>
-                          {time}
-                        </div>
-                      </td>
-                      <td className={tableStyles.cell__big}>
-                        <div
-                          className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
-                          {names.join(', ')}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+          <CalendarSubgroupTable
+            isOneDay={isOneDay}
+            selectedCourse={selectedCourse}
+            fetchData={fetchData}></CalendarSubgroupTable>
         )}
         <NewSubgroup
           isOpen={isOpenCreation}
