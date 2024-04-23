@@ -83,6 +83,7 @@ const App = () => {
                   }>
                   <Route path={`calendar/:teacherId`} element={<TeacherPage />} />
                   <Route path={`mySubGroups/:teacherId`} element={<TeacherSubgroupPage />} />
+                  <Route path={`addMySubgroup/:teacherId`} element={<AddMySubgroup />} />
                 </Route>
                 <Route path={path.subgroups} element={<SubGroupPage />} />
                 <Route path={path.replacements} element={<ReplacementsPage />} />

@@ -131,7 +131,6 @@ export default function UsersPage() {
             setTeachersIds={setTeachersIds}></AppointmentBodyTable>
         </div>
       </div>
-
       <SetAppointment
         setSelectedCourse={setSelectedCourse}
         startDate={startDate}
