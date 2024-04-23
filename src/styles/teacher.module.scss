@@ -420,6 +420,10 @@
 .radio{
   &__group{
     column-gap: 5px;
+    display:flex;
+    text-align: center;
+    align-items: center;
+    
   }
   &__button{
     align-items: center;

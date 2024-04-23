@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import {useSelector} from 'react-redux';
 // import {error} from '@pnotify/core';
-import Switch from 'react-switch';
-
+import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
 import {getCourses, getTeacherCourses} from '../../helpers/course/course';
 import styles from '../../styles/teacher.module.scss';
 import {getSubGroups} from '../../helpers/subgroup/subgroup';
@@ -177,17 +176,18 @@ export default function AddMySubgroup() {
                     setSlots([]);
                   }}
                 />
-                <div className={styles.switch_wrapper}>
-                  <Switch
-                    key={Math.random() * 1000 - 10}
-                    checked={teacherType === 2}
-                    // checked={flag}
-                    className={styles.remove_svg_switch}
-                    // onChange={()=>{setFlag(!flag)}}
-                    onChange={element => {
-                      setTeacherType(teacherType === 2 ? 1 : 2);
-                    }}></Switch>
-                  <span className={styles.switch_label}>tech</span>
+                <div className={styles.radio__group}>
+                  <RadioGroup
+                    name="teacherType"
+                    value={String(teacherType)}
+                    onChange={event => setTeacherType(+event.target.value)}>
+                    <RadioButton value="1" className={styles.radio__button}>
+                      soft
+                    </RadioButton>
+                    <RadioButton value="2" className={styles.radio__button}>
+                      tech
+                    </RadioButton>
+                  </RadioGroup>
                 </div>
               </div>
               <br />
