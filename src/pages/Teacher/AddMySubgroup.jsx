@@ -58,6 +58,7 @@ export default function AddMySubgroup() {
           ]);
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
   useEffect(() => {
     const fetchSubGroups = async () => {

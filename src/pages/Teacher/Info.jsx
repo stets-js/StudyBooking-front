@@ -26,6 +26,7 @@ export default function Info() {
   const updateUser = async () => {
     try {
       const res = await patchUser(user);
+      if (!res) setUser(backupUser);
     } catch (error) {
       setUser(backupUser);
     }

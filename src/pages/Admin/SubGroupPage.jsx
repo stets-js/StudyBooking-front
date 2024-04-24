@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useConfirm} from 'material-ui-confirm';
 import Select from 'react-select';
 import Switch from 'react-switch';
 
