@@ -6,12 +6,12 @@ import tableStyles from '../../styles/table.module.scss';
 import {getCourses} from '../../helpers/course/course';
 import {getFreeUsers} from '../../helpers/user/user';
 import {Link} from 'react-router-dom';
+import OneDaySelector from '../../components/DateSelector/OneDaySelector';
 
 export default function AvaliableTable() {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedWeekDay, setSelectedWeekDay] = useState(getDay(currentDate));
   // const [valueGenerated, setValueGenerated] = useState(false);
   const generateTimeSlots = () => {
     const startTime = new Date().setHours(9, 0, 0, 0);
@@ -48,7 +48,10 @@ export default function AvaliableTable() {
       setScheduleTable(generateTimeSlots());
 
       const freeUsers = (
-        await getFreeUsers(selectedCourse, selectedWeekDay - 1 < 0 ? 6 : selectedWeekDay - 1)
+        await getFreeUsers(
+          selectedCourse,
+          getDay(currentDate) - 1 < 0 ? 6 : getDay(currentDate) - 1
+        )
       ).availableSlots;
       setScheduleTable(prevSchedule => {
         const newSchedule = [...prevSchedule];
@@ -66,18 +69,7 @@ export default function AvaliableTable() {
       fetchUsers();
       // setValueGenerated(true);
     }
-  }, [selectedCourse, selectedWeekDay]);
-
-  const formatDate = date => {
-    return format(date, 'iiii, dd.MM');
-  };
-
-  const handleDateChange = daysToAdd => {
-    const newDate = addDays(currentDate, daysToAdd);
-    setCurrentDate(newDate);
-    // Reset selectedWeekDay to null when changing the date
-    setSelectedWeekDay(getDay(newDate));
-  };
+  }, [selectedCourse, currentDate]);
 
   return (
     <div>
@@ -90,8 +82,9 @@ export default function AvaliableTable() {
           onChange={choice => {
             setSelectedCourse(choice.value);
           }}
-        />{' '}
-        <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
+        />
+        <OneDaySelector currentDate={currentDate} setCurrentDate={setCurrentDate}></OneDaySelector>
+        {/* <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
           <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
             {'<'}
           </button>
@@ -99,7 +92,7 @@ export default function AvaliableTable() {
           <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
             {'>'}
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div

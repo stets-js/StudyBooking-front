@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {addDays, addMinutes, format, getDay} from 'date-fns';
+import {addMinutes, format, getDay} from 'date-fns';
 
-import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
 import {getSlots} from '../../helpers/teacher/slots';
+import OneDaySelector from '../DateSelector/OneDaySelector';
 
 export default function CalendarSubgroupTable({isOneDay, selectedCourse, fetchData}) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedWeekDay, setSelectedWeekDay] = useState(
-    getDay(currentDate) - 1 < 0 ? 6 : getDay(currentDate) - 1
-  );
 
   const generateTimeSlots = () => {
     const startTime = new Date().setHours(9, 0, 0, 0);
@@ -31,8 +28,9 @@ export default function CalendarSubgroupTable({isOneDay, selectedCourse, fetchDa
   const [scheduleTable, setScheduleTable] = useState(generateTimeSlots());
   const fetchSubGroupsByTime = async () => {
     setScheduleTable(generateTimeSlots());
+    const weekDay = getDay(currentDate) - 1 < 0 ? 6 : getDay(currentDate) - 1;
     const data = await getSlots(
-      `type&weekDay=${selectedWeekDay}&startSubGroup=${format(
+      `type&weekDay=${weekDay}&startSubGroup=${format(
         currentDate,
         'yyyy-MM-dd'
       )}&endSubGroup=${format(currentDate, 'yyyy-MM-dd')}`
@@ -52,29 +50,11 @@ export default function CalendarSubgroupTable({isOneDay, selectedCourse, fetchDa
   useEffect(() => {
     if (isOneDay) fetchSubGroupsByTime();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOneDay, selectedWeekDay]);
+  }, [isOneDay, currentDate]);
 
-  const handleDateChange = daysToAdd => {
-    const newDate = addDays(currentDate, daysToAdd);
-    setCurrentDate(newDate);
-    // Reset selectedWeekDay to null when changing the date
-    setSelectedWeekDay(getDay(newDate) - 1 < 0 ? 6 : getDay(newDate) - 1);
-  };
-  const formatDate = date => {
-    return format(date, 'iiii, dd.MM');
-  };
-  console.log(currentDate, selectedWeekDay);
   return (
     <>
-      <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
-        <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
-          {'<'}
-        </button>
-        <span>{formatDate(currentDate)}</span>
-        <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
-          {'>'}
-        </button>
-      </div>
+      <OneDaySelector currentDate={currentDate} setCurrentDate={setCurrentDate}></OneDaySelector>
       <div
         className={`${tableStyles.calendar} ${tableStyles.calendar__small} ${tableStyles.scroller}`}>
         <table className={tableStyles.tableBody}>
