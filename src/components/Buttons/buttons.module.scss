@@ -1,43 +1,43 @@
 @import '../../styles/App.scss';
 
 .button {
-    font-size: 20px;
-    font-family: $poppins;
-    border-radius: 25px;
-    padding: 10px;
-    margin: 2px;
-    width: 148px;
-    height: 48px;
-    z-index: 2;
-    text-align: center;
-    &__wrapper{
-      display: flex;
-    }
-    &__add {
-      color: #33a64c;
-      border: 1px solid #33a64c;
-    }
-    &__add:disabled {
-      color: #7c7c7c;
-      border: 1px solid #7c7c7c;
-      background-color: white;
-    }
-    &__edit {
-      color: green;
-      border: 1px solid green;
-      &__small {
-        width: 69px;
-        height: 39px;
-        font-size: 16px;
-      }
-    }
-    &__delete {
-      color: red;
-      border: 1px solid red;
-      &__small {
-        width: 91px;
-        height: 39px;
-        font-size: 16px;
-      }
+  font-size: 20px;
+  font-family: $poppins;
+  border-radius: 25px;
+  padding: 10px;
+  margin: 2px;
+  width: 148px;
+  height: 48px;
+  z-index: 2;
+  text-align: center;
+  &__wrapper {
+    display: flex;
+  }
+  &__add {
+    color: #33a64c;
+    border: 1px solid #33a64c;
+  }
+  &__add:disabled {
+    color: #7c7c7c;
+    border: 1px solid #7c7c7c;
+    background-color: white;
+  }
+  &__edit {
+    color: green;
+    border: 1px solid green;
+    &__small {
+      width: 69px;
+      height: 39px;
+      font-size: 16px;
     }
   }
+  &__delete {
+    color: red;
+    border: 1px solid red;
+    &__small {
+      width: 91px;
+      height: 39px;
+      font-size: 16px;
+    }
+  }
+}
