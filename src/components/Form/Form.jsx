@@ -183,17 +183,14 @@ const Form = ({
       }
 
       if (type.type === 'post') {
-        return await requests
-          .post({credentials: data, jsonData})
-          .catch(e => {
-            console.log(e);
-            return error(`${e.response.data.message ? e.response.data.message : e.message}`);
-          })
-          .then(() => {
-            success({text: status.successMessage, delay: 1000});
-            if (SetNeedToRender) SetNeedToRender(true);
-            return !errorsuccessMessage && onSubmit && onSubmit();
-          });
+        try {
+          const res = await requests.post({credentials: data, jsonData});
+          success({text: status.successMessage, delay: 1000});
+          if (SetNeedToRender) SetNeedToRender(true);
+          return !errorsuccessMessage && onSubmit && onSubmit();
+        } catch (error) {
+          return error('Something went wrong :(');
+        }
       }
 
       await requests[type.type](data, requests.additional)

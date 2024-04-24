@@ -310,20 +310,21 @@ export default function AddMySubgroup() {
           )}
         </>
       )}
-
-      <NewMySubgroup
-        slots={slots}
-        isOpen={isOpen}
-        handleClose={handleClose}
-        info={{
-          selectedClassType,
-          selectedCourse,
-          subGroup,
-          startDate,
-          endDate,
-          userId,
-          teacherType
-        }}></NewMySubgroup>
+      {isOpen && (
+        <NewMySubgroup
+          slots={slots}
+          isOpen={isOpen}
+          handleClose={handleClose}
+          info={{
+            selectedClassType,
+            selectedCourse,
+            subGroup,
+            startDate,
+            endDate,
+            userId,
+            teacherType
+          }}></NewMySubgroup>
+      )}
     </div>
   );
 }
