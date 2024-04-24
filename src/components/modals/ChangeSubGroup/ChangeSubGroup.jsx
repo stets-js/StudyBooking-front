@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 import Form from '../../Form/Form';
 import {getSlotDetails} from '../../../helpers/subgroup/subgroup';
 import FormInput from '../../FormInput/FormInput';
-
+import MentorTable from './mentorTable';
 const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
   const [element, setElement] = useState({});
 
@@ -73,6 +73,18 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
                 }))
               }></FormInput>
             <br />
+            {element.SubgroupMentors && (
+              <div>
+                <MentorTable subgroupMentors={element.SubgroupMentors}></MentorTable>
+                {/* {element.SubgroupMentors.map(mentor => {
+                  return (
+                    <div>
+                      {mentor.User.name} {mentor.TeacherType.type} {mentor.schedule}
+                    </div>
+                  );
+                })} */}
+              </div>
+            )}
           </Form>
         </Modal>
       )}

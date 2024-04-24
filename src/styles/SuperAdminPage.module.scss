@@ -94,11 +94,11 @@
   color: $font-black;
   border-collapse: collapse;
   transition: 200ms linear;
-  &:hover .ul_items_link {
-    color: $blue;
-  }
+ 
 }
-
+.ul_items_link:hover {
+  color: $blue;
+}
 .ul_items_text {
   font-family: "Poppins";
   font-weight: 400;
