@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
+import {useConfirm} from 'material-ui-confirm';
+import {success} from '@pnotify/core';
 
 import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
 import {deleteReplacement, getReplacements} from '../../helpers/replacement/replacement';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
-import {useConfirm} from 'material-ui-confirm';
-import {success} from '@pnotify/core';
 import ChangeReplacement from '../../components/modals/ChangeReplacement/ChangeReplacement';
+import EditButton from '../../components/Buttons/Edit';
+import DeleteButton from '../../components/Buttons/Delete';
 
 export default function ReplacementsPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -144,19 +146,13 @@ export default function ReplacementsPage() {
                     <td>
                       <div
                         className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big} ${styles.action_wrapper}`}>
-                        <button
-                          className={`${styles.button} ${styles.button__edit}`}
+                        <EditButton
                           onClick={() => {
                             setSelectedId(element.id);
                             setIsOpen(!isOpen);
-                          }}>
-                          Edit
-                        </button>
-                        <button
-                          className={`${styles.button} ${styles.button__delete}`}
-                          onClick={() => handleDelete(element.id)}>
-                          Delete
-                        </button>
+                          }}></EditButton>
+
+                        <DeleteButton onClick={() => handleDelete(element.id)}></DeleteButton>
                       </div>
                     </td>
                   </tr>

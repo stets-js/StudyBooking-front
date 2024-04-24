@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {format, addDays, getDay, addMinutes} from 'date-fns';
+import {format, getDay, addMinutes} from 'date-fns';
 import Select from 'react-select';
 import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
@@ -84,15 +84,6 @@ export default function AvaliableTable() {
           }}
         />
         <OneDaySelector currentDate={currentDate} setCurrentDate={setCurrentDate}></OneDaySelector>
-        {/* <div className={`${styles.date_selector} ${styles.available_nav__item}`}>
-          <button onClick={() => handleDateChange(-1)} className={styles.week_selector}>
-            {'<'}
-          </button>
-          <span>{formatDate(currentDate)}</span>
-          <button onClick={() => handleDateChange(1)} className={styles.week_selector}>
-            {'>'}
-          </button>
-        </div> */}
       </div>
 
       <div

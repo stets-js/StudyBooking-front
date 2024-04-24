@@ -5,6 +5,8 @@ import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
 import {useConfirm} from 'material-ui-confirm';
 import {deleteSubGroup} from '../../helpers/subgroup/subgroup';
+import EditButton from '../Buttons/Edit';
+import DeleteButton from '../Buttons/Delete';
 
 export default function SubgroupTable({filteredSubGroups, setIsOpen, setSelectedId, setSubGroups}) {
   const confirm = useConfirm();
@@ -47,19 +49,17 @@ export default function SubgroupTable({filteredSubGroups, setIsOpen, setSelected
                   <td>
                     <div
                       className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.action_wrapper}`}>
-                      <button
-                        className={`${styles.button} ${styles.button__edit} ${styles.button__edit__small}`}
+                      <EditButton
+                        classname={'button__edit__small'}
                         onClick={() => {
                           setIsOpen(true);
                           setSelectedId(element.id);
-                        }}>
-                        Edit
-                      </button>
-                      <button
-                        className={`${styles.button} ${styles.button__delete} ${styles.button__delete__small}`}
-                        onClick={() => handleDelete(element.id, element.name)}>
-                        Delete
-                      </button>
+                        }}></EditButton>
+                      <DeleteButton
+                        classname={'button__delete__small'}
+                        onClick={() => {
+                          handleDelete(element.id, element.name);
+                        }}></DeleteButton>
                     </div>
                   </td>
                 </tr>

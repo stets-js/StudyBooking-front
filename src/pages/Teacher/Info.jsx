@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {error, success} from '@pnotify/core';
 import {useParams} from 'react-router-dom';
+import {useSelector} from 'react-redux';
+
 import {getUserById, patchUser} from '../../helpers/user/user';
 import FormInput from '../../components/FormInput/FormInput';
 import styles from '../../styles/teacher.module.scss';
 import PhoneInput from 'react-phone-input-2';
+import EditButton from '../../components/Buttons/Edit';
+import DeleteButton from '../../components/Buttons/Delete';
 
 export default function Info() {
   const {teacherId} = useParams() || null;
@@ -27,7 +31,11 @@ export default function Info() {
     try {
       const res = await patchUser(user);
       if (!res) setUser(backupUser);
-    } catch (error) {
+      else {
+        success({text: 'Updated info :)', delay: 1000});
+      }
+    } catch (e) {
+      error({text: 'Sorry, something went wrong :(', delay: 1000});
       setUser(backupUser);
     }
   };
@@ -76,31 +84,24 @@ export default function Info() {
           />
         </div>
         {!editActive ? (
-          <button
-            className={`${styles.button} ${styles.button__edit}`}
+          <EditButton
             onClick={() => {
               setBackupUser(user);
               setEditActive(true);
-            }}>
-            Edit
-          </button>
+            }}></EditButton>
         ) : (
           <div className={styles.button__wrapper}>
-            <button
-              className={`${styles.button} ${styles.button__edit}`}
+            <EditButton
               onClick={() => {
                 setEditActive(false);
                 updateUser();
-              }}>
-              Confirm
-            </button>
-            <button
-              className={`${styles.button} ${styles.button__delete}`}
+              }}
+              text={'Confirm'}></EditButton>
+            <DeleteButton
               onClick={() => {
                 setEditActive(false);
-              }}>
-              Cancel
-            </button>
+              }}
+              text={'Cancel'}></DeleteButton>
           </div>
         )}
       </div>

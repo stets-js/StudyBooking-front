@@ -265,48 +265,6 @@
   width: 60%;
 }
 
-.button {
-  font-size: 20px;
-  font-family: $poppins;
-  border-radius: 25px;
-  padding: 10px;
-  margin: 2px;
-  width: 148px;
-  height: 48px;
-  z-index: 2;
-  text-align: center;
-  &__wrapper{
-    display: flex;
-  }
-  &__add {
-    color: #33a64c;
-    border: 1px solid #33a64c;
-  }
-  &__add:disabled {
-    color: #7c7c7c;
-    border: 1px solid #7c7c7c;
-    background-color: white;
-  }
-  &__edit {
-    color: green;
-    border: 1px solid green;
-    &__small {
-      width: 69px;
-      height: 39px;
-      font-size: 16px;
-    }
-  }
-  &__delete {
-    color: red;
-    border: 1px solid red;
-    &__small {
-      width: 91px;
-      height: 39px;
-      font-size: 16px;
-    }
-  }
-}
-
 .selector {
   width: 214px;
   margin-top: 10px;
@@ -405,77 +363,74 @@
     display: flex;
     flex-direction: column;
   }
-  &__date_wrapper{
+  &__date_wrapper {
     display: flex;
-  column-gap: 20px;
+    column-gap: 20px;
   }
 
-  &__intro{
+  &__intro {
     margin-bottom: 20px;
     font-size: 24px;
     font-family: $poppins;
   }
 }
-.switch_wrapper{
-  display:flex;
+.switch_wrapper {
+  display: flex;
   margin-left: auto;
   align-items: center;
 }
 
-.radio{
-  &__group{
+.radio {
+  &__group {
     column-gap: 5px;
     font-size: 24px;
-    display:flex;
+    display: flex;
     text-align: center;
     align-items: center;
-    
   }
-  &__button{
+  &__button {
     padding: 10px !important;
     align-items: center;
-    border:1px solid black;
+    border: 1px solid black;
     padding: 3px;
     border-radius: 2px;
   }
 }
 
-.info{
-  &__wrapper{
+.info {
+  &__wrapper {
     display: flex;
     flex-direction: column;
     width: 33%;
     padding: 10px;
     margin-left: calc(33% - 10px);
-    border:1px solid black;
+    border: 1px solid black;
     border-radius: 25px;
     justify-content: center;
     align-items: center;
     margin-bottom: 100px;
   }
-  &__item{
-    width:89% !important;
+  &__item {
+    width: 89% !important;
     margin-left: 10px;
   }
 }
 
-
-.phone{
+.phone {
   align-items: end;
   height: 100%;
   margin-bottom: 10px;
-  margin-top:10px;
-  > input{
+  margin-top: 10px;
+  > input {
     font-family: $poppins;
     font-size: 20px !important;
     width: 100% !important;
-
   }
-  &__wrapper{
-  text-align: left;
+  &__wrapper {
+    text-align: left;
     justify-content: left;
   }
-  &__label{
+  &__label {
     font-family: $poppins;
     font-size: 20px;
     text-align-last: left;
