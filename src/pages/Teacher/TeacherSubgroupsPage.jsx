@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
-import {getMentorSubgroups} from '../../helpers/subgroup/subgroup';
 import {useSelector} from 'react-redux';
-import {format} from 'date-fns';
+import {getMentorSubgroups} from '../../helpers/subgroup/subgroup';
+import {useParams} from 'react-router-dom';
+
 import styles from '../../styles/teacher.module.scss';
-import tableStyles from '../../styles/table.module.scss';
 import {getCourses} from '../../helpers/course/course';
 import FormInput from '../../components/FormInput/FormInput';
-import {useParams} from 'react-router-dom';
+import TableHeader from '../../components/TeacherSubgroup/TableHeader';
+import TableBody from '../../components/TeacherSubgroup/TableBody';
+
 export default function TeacherSubgroupPage() {
   const [subgroups, setSubgroups] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -73,89 +75,8 @@ export default function TeacherSubgroupPage() {
         </div>
       </div>
       <div>
-        <div className={`${tableStyles.header} ${tableStyles.header__mySubgroup}`}>
-          <div className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
-            Name
-          </div>
-          <div className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
-            Course
-          </div>
-          <div className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
-            Appointer
-          </div>
-          <div className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
-            Descripion
-          </div>
-          <div className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
-            Schedule
-          </div>
-        </div>
-        <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
-          <table className={tableStyles.tableBody}>
-            <tbody>
-              {filteredSubgroups.length > 0 &&
-                filteredSubgroups.map((group, index) => {
-                  return (
-                    <tr key={group.id}>
-                      <td className={tableStyles.cell__mySubgroup}>
-                        <div
-                          className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
-                          {group?.SubGroup.name}
-                        </div>
-                      </td>
-                      <td className={tableStyles.cell__mySubgroup}>
-                        <div
-                          className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup} ${
-                            index === 0 || index === filteredSubgroups.length - 1
-                              ? tableStyles.cell__outer
-                              : tableStyles.cell__inner
-                          }`}>
-                          {group?.SubGroup.Course.name}
-                        </div>
-                      </td>
-                      <td className={tableStyles.cell__mySubgroup}>
-                        <div
-                          className={`${tableStyles.cell} ${
-                            index === 0 || index === filteredSubgroups.length - 1
-                              ? tableStyles.cell__outer
-                              : tableStyles.cell__inner
-                          } ${tableStyles.cell__mySubgroup}`}>
-                          {group?.SubGroup?.Admin?.name}
-                        </div>
-                      </td>
-                      <td className={tableStyles.cell__mySubgroup__description}>
-                        <div
-                          className={`${tableStyles.cell} ${
-                            index === 0 || index === filteredSubgroups.length - 1
-                              ? tableStyles.cell__outer
-                              : tableStyles.cell__inner
-                          } ${tableStyles.cell__mySubgroup}`}>
-                          {group?.SubGroup.description}
-                        </div>
-                      </td>
-                      <td className={tableStyles.cell__mySubgroup}>
-                        <div
-                          className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
-                          {group?.SubGroup.startDate &&
-                            format(group?.SubGroup.startDate, 'dd.MM') +
-                              '-' +
-                              format(group?.SubGroup.endDate, 'dd.MM')}
-                          <br />
-                          {group.schedule.split(',').map(el => {
-                            return (
-                              <>
-                                {el} <br />
-                              </>
-                            );
-                          })}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
+        <TableHeader></TableHeader>
+        <TableBody filteredSubgroups={filteredSubgroups}></TableBody>
       </div>
     </>
   );
