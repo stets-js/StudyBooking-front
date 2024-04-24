@@ -12,6 +12,8 @@ import {addMinutes, format} from 'date-fns';
 import appointmentStyles from '../../styles/appointment.module.scss';
 import NewMySubgroup from '../../components/modals/NewMySubgroup/NewMySubgroup';
 import {useParams} from 'react-router-dom';
+import EditButton from '../../components/Buttons/Edit';
+import DeleteButton from '../../components/Buttons/Delete';
 
 export default function AddMySubgroup() {
   const {teacherId} = useParams() || null;
@@ -195,19 +197,16 @@ export default function AddMySubgroup() {
               {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
                 <>
                   <div className={tableStyles.button__wrapper}>
-                    <button
-                      onClick={() => setIsOpen(true)}
+                    <EditButton
+                      text="Create"
                       disabled={slots.length === 0}
-                      className={`${styles.button} ${styles.button__add}`}>
-                      Create
-                    </button>
-                    <button
+                      onClick={() => setIsOpen(true)}
+                      classname={'button__add'}></EditButton>
+                    <DeleteButton
+                      text="Clear"
                       onClick={() => {
                         setSlots([]);
-                      }}
-                      className={`${styles.button} ${styles.button__delete}`}>
-                      Clear
-                    </button>
+                      }}></DeleteButton>
                   </div>
                   <div>
                     <table className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}>

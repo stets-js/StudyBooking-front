@@ -9,6 +9,8 @@ import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
 
 // Be sure to include styles at some point, probably during your bootstraping
 import '@trendmicro/react-radio/dist/react-radio.css';
+import EditButton from '../Buttons/Edit';
+import DeleteButton from '../Buttons/Delete';
 export default function AppointmentButtons({
   startDate,
   isReplacement,
@@ -127,19 +129,16 @@ export default function AppointmentButtons({
         </div>
         <div
           className={`${styles.chooser_selector__item} ${styles.chooser_selector__item__buttons}`}>
-          <button
+          <EditButton
             onClick={handleClose}
-            className={`${styles.button} ${styles.button__add}`}
-            disabled={selectedSlotsAmount === 0}>
-            Create
-          </button>
-          <button
+            text="Create"
+            disabled={selectedSlotsAmount === 0}
+            classname={'button__add'}></EditButton>
+          <DeleteButton
             onClick={e => {
               clearTable();
             }}
-            className={`${styles.button} ${styles.button__delete}`}>
-            Clear
-          </button>
+            text="Clear"></DeleteButton>
         </div>
       </div>
     </>

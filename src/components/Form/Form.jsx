@@ -183,7 +183,6 @@ const Form = ({
       }
 
       if (type.type === 'post') {
-        console.log(jsonData.slots);
         return await requests
           .post({credentials: data, jsonData})
           .catch(e => {
@@ -194,8 +193,7 @@ const Form = ({
             success({text: status.successMessage, delay: 1000});
             if (SetNeedToRender) SetNeedToRender(true);
             return !errorsuccessMessage && onSubmit && onSubmit();
-          })
-          .catch(e => {});
+          });
       }
 
       await requests[type.type](data, requests.additional)
