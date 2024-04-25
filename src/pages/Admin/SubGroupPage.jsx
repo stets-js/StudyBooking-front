@@ -13,6 +13,7 @@ import CalendarSubgroupTable from '../../components/SubgroupPage/CalendarSubroup
 
 export default function SubGroupPage() {
   const [subGroups, setSubGroups] = useState([]);
+  const [offset, setOffset] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courses, setCourses] = useState([]);
@@ -21,15 +22,6 @@ export default function SubGroupPage() {
   const [selectedId, setSelectedId] = useState(null);
   const [render, setRender] = useState(false);
   const [isOneDay, setIsOneDay] = useState(false);
-  const fetchData = async (query = '') => {
-    try {
-      const data = await getSubGroups(query);
-      setSubGroups(data.data);
-    } catch (e) {
-      // error('Something went wrong');
-      console.log(e);
-    }
-  };
   const fetchCourses = async () => {
     try {
       const courses = await getCourses();
@@ -44,24 +36,11 @@ export default function SubGroupPage() {
     }
   };
   useEffect(() => {
-    //first time render
-    fetchData('');
     fetchCourses();
   }, []);
-
-  useEffect(() => {
-    if (render) {
-      fetchData('');
-      setRender(false);
-    }
-  }, [render, isOneDay]);
-  useEffect(() => {
-    fetchData(selectedCourse !== null ? `CourseId=${selectedCourse}` : '');
-  }, [selectedCourse]);
-
-  const filteredSubGroups = subGroups.filter(element =>
-    element.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredSubGroups = subGroups.filter(element =>
+  //   element.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   return (
     <div>
@@ -78,7 +57,10 @@ export default function SubGroupPage() {
             className={`${styles.selector} ${styles.selector__filtering} ${styles.filter_wrapper__available__item}`}
             options={courses}
             placeholder={'Course'}
-            onChange={el => setSelectedCourse(el?.value || null)}
+            onChange={el => {
+              setOffset(0);
+              setSelectedCourse(el?.value || null);
+            }}
             isDisabled={isOneDay}
             isClearable></Select>
           <div className={`${styles.filter_wrapper__available__item} ${styles.name_long}`}>
@@ -108,15 +90,20 @@ export default function SubGroupPage() {
 
         {!isOneDay ? (
           <SubgroupTable
+            offset={offset}
+            setOffset={setOffset}
             setSubGroups={setSubGroups}
             setIsOpen={setIsOpen}
             setSelectedId={setSelectedId}
-            filteredSubGroups={filteredSubGroups}></SubgroupTable>
+            selectedCourse={selectedCourse}
+            subGroups={subGroups}
+            searchQuery={searchQuery}
+            // filteredSubGroups={filteredSubGroups}
+          ></SubgroupTable>
         ) : (
           <CalendarSubgroupTable
             isOneDay={isOneDay}
-            selectedCourse={selectedCourse}
-            fetchData={fetchData}></CalendarSubgroupTable>
+            selectedCourse={selectedCourse}></CalendarSubgroupTable>
         )}
         <NewSubgroup
           isOpen={isOpenCreation}
