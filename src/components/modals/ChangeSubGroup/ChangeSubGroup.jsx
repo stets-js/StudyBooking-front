@@ -8,7 +8,7 @@ import MentorTable from './mentorTable';
 import EditButton from '../../Buttons/Edit';
 import DeleteButton from '../../Buttons/Delete';
 import buttonStyles from '../../Buttons/buttons.module.scss';
-const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
+const ChangeSubGroup = ({isOpen, handleClose, id}) => {
   const [element, setElement] = useState({});
   const [editActive, setEditActive] = useState(false);
   const fetchData = async () => {
@@ -82,7 +82,9 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
             <br />
             {element.SubgroupMentors && (
               <div>
-                <MentorTable subgroupMentors={element.SubgroupMentors}></MentorTable>
+                <MentorTable
+                  subgroupMentors={element.SubgroupMentors}
+                  isEdit={editActive}></MentorTable>
                 {/* {element.SubgroupMentors.map(mentor => {
                   return (
                     <div>
@@ -116,7 +118,6 @@ const ChangeSubGroup = ({isOpen, handleClose, id, setRender}) => {
                         });
                         if (res) {
                           handleClose();
-                          setRender(true);
                         }
                       }}
                       text={'Confirm'}></EditButton>

@@ -93,6 +93,7 @@ export default function SubgroupTable({
         hasMore={true}
         loader={<h4>Loading...</h4>}
         scrollableTarget="scroller"
+        className={tableStyles.no_scroll}
         endMessage={
           <p style={{textAlign: 'center'}}>
             <b>Yay! You have seen it all</b>

@@ -75,7 +75,9 @@ const updateSubGroupAndAddMentor = ({id, body}) => {
       throw error;
     });
 };
-
+const deleteMentorFromSubgroup = ({mentorId, subgroupId}) => {
+  return axios.delete(`/subgroup-mentor/${subgroupId}/${mentorId}`);
+};
 const createSubgroupMentor = ({subgroupId, mentorId, TeacherTypeId, schedule}) => {
   return axios.post(`/subgroup-mentor`, {subgroupId, mentorId, TeacherTypeId, schedule});
 };
@@ -87,5 +89,6 @@ export {
   deleteSubGroup,
   getMentorSubgroups,
   updateSubGroupAndAddMentor,
-  createSubgroupMentor
+  createSubgroupMentor,
+  deleteMentorFromSubgroup
 };

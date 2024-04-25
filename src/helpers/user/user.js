@@ -90,6 +90,10 @@ const getUsersForSubGroupReplacements = (subGroupId, courseId) => {
     });
 };
 
+const deleteUserSlots = ({id, subgroupId}) => {
+  return axios.delete(`/users/${id}/slots?subgroupId=${subgroupId}`);
+};
+
 export {
   getRoles,
   getUsersByRole,
@@ -100,5 +104,6 @@ export {
   getUserByName,
   getUsers,
   getUsersForSubGroupReplacements,
-  getFreeUsers
+  getFreeUsers,
+  deleteUserSlots
 };

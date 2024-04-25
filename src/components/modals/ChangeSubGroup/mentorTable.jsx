@@ -3,8 +3,11 @@ import {Link} from 'react-router-dom';
 
 import tableStyles from '../../../styles/table.module.scss';
 import styles from '../../../styles/SuperAdminPage.module.scss';
+import DeleteButton from '../../Buttons/Delete';
+import {deleteMentorFromSubgroup} from '../../../helpers/subgroup/subgroup';
+import {deleteUserSlots} from '../../../helpers/user/user';
 
-export default function MentorTable({subgroupMentors}) {
+export default function MentorTable({subgroupMentors, isEdit}) {
   const headers = ['Mentor', 'type', 'schedule'];
 
   return (
@@ -66,7 +69,11 @@ export default function MentorTable({subgroupMentors}) {
 
                     <td>
                       <div
-                        className={`${tableStyles.cell} ${tableStyles.cell__small} ${tableStyles.cell__outer}`}>
+                        className={`${tableStyles.cell} ${tableStyles.cell__small} ${
+                          index === 0 || index === subgroupMentors.length - 1
+                            ? tableStyles.cell__outer
+                            : tableStyles.cell__inner
+                        }`}>
                         {mentor.schedule.split(',').map(el => {
                           return (
                             <>
@@ -76,6 +83,25 @@ export default function MentorTable({subgroupMentors}) {
                         })}
                       </div>
                     </td>
+                    {isEdit && (
+                      <td className={`${tableStyles.cell} ${tableStyles.cell__small}`}>
+                        <DeleteButton
+                          onClick={async () => {
+                            if (mentor.mentorId && mentor.subgroupId) {
+                              await deleteUserSlots({
+                                id: mentor.mentorId,
+                                subgroupId: mentor.subgroupId
+                              });
+                              await deleteMentorFromSubgroup({
+                                subgroupId: mentor.subgroupId,
+                                mentorId: mentor.mentorId
+                              });
+                            }
+                          }}
+                          text={'Delete'}
+                          classname={'button__delete__small'}></DeleteButton>
+                      </td>
+                    )}
                   </tr>
                 );
               })

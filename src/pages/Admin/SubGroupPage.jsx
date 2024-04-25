@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import Switch from 'react-switch';
 
-import {getSubGroups} from '../../helpers/subgroup/subgroup';
 import styles from '../../styles/teacher.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
 import {getCourses} from '../../helpers/course/course';
@@ -20,10 +19,10 @@ export default function SubGroupPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenCreation, setIsOpenCreation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const [render, setRender] = useState(false);
   const [isOneDay, setIsOneDay] = useState(false);
   const fetchCourses = async () => {
     try {
+      console.log('hello');
       const courses = await getCourses();
       setCourses(
         courses.data.map(el => {
@@ -109,12 +108,10 @@ export default function SubGroupPage() {
           isOpen={isOpenCreation}
           handleClose={() => {
             setIsOpenCreation(false);
-            setRender(true);
           }}></NewSubgroup>
         <ChangeSubGroup
           isOpen={isOpen}
           handleClose={() => setIsOpen(!isOpen)}
-          setRender={setRender}
           id={selectedId}></ChangeSubGroup>
       </div>
     </div>
