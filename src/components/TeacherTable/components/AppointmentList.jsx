@@ -89,7 +89,6 @@ export default function AppointmentList({
       </a>
       <Tooltip id="my-tooltip" className={appointmentStyles.tooltip}>
         {appointmentTypes.map(appointmentType => {
-          console.log(appointmentType.name);
           if (
             ['free', 'universal', 'replacement_junior_group', 'appointed_junior_group'].includes(
               appointmentType.name

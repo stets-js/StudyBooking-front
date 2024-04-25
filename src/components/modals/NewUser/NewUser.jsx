@@ -65,6 +65,7 @@ const NewUser = ({
           <Form
             type={{type: 'user', additionalType: edit}} // additionalType - delete
             SetNeedToRender={SetNeedToRender}
+            changeCourses
             requests={{user: edit ? patchUser : postUser, delete: deleteUser, additional: item.id}}
             onSubmit={() => {
               SetNeedToRender(true); // for optimizating my be develop switch case of choosing exactly which one call fetchAdmin/fetchTeacher/fetchSuperAdmin

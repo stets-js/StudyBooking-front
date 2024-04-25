@@ -10,7 +10,6 @@ const getAuthLogs = () => {
 };
 
 const resetPassword = ({token, newPassword}) => {
-  console.log(newPassword);
   return axios
     .patch(`/auth/resetPassword/${token}`, {password: newPassword})
     .then(res => res.data)

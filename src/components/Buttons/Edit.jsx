@@ -7,7 +7,10 @@ export default function EditButton({onClick, classname, text = 'Edit', disabled 
     <button
       disabled={disabled}
       className={`${buttonStyles.button} ${buttonStyles[classname]} ${buttonStyles.button__edit} `}
-      onClick={() => onClick()}>
+      onClick={e => {
+        e.preventDefault();
+        onClick();
+      }}>
       {text}
     </button>
   );

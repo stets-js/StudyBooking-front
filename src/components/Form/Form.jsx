@@ -45,8 +45,9 @@ const Form = ({
   signUp,
   userId,
   removeMessage,
-  isSetAppointment = false,
-  edit,
+  edit, // flag for edit flow
+  editButton, // flag for button
+  changeCourses = false,
   ...formData
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -242,7 +243,9 @@ const Form = ({
             </button>
           )}
 
-          {!type.button && <InputSubmit buttonTitle={buttonTitle ? buttonTitle : 'Save'} />}
+          {!type.button && !editButton && (
+            <InputSubmit buttonTitle={buttonTitle ? buttonTitle : 'Save'} />
+          )}
           {isCancelConfConsult && <InputDelete handleDelete={cancelConfConsultOnClickFn} />}
           {postpone && (
             <button
@@ -256,7 +259,7 @@ const Form = ({
             </button>
           )}
           {isCancel ? <></> : ''}
-          {!isSetAppointment && edit ? (
+          {changeCourses && edit ? (
             <>
               <OpenChangeManagerCourses
                 OpenChangeManagerCoursesFunc={setIsChangeManagerCoursesOpen}

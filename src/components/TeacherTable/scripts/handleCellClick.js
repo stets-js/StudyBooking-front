@@ -19,7 +19,6 @@ export const HandleCellClick = async ({
   userId,
   dispatch
 }) => {
-  console.log(slot);
   // case for opening  the details of a occupied cell
   if (slot && (slot.subgroupId || slot.ReplacementId)) {
     setSelectedSlotDetails(slot);

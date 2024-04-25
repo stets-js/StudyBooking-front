@@ -12,6 +12,10 @@
   text-align: center;
   &__wrapper {
     display: flex;
+    justify-content: center;
+    &__subgroup{
+      margin-top: 10px;
+    }
   }
   &__add {
     color: #33a64c;
@@ -39,5 +43,9 @@
       height: 39px;
       font-size: 16px;
     }
+  }
+  &__info{
+    color: rgb(43, 153, 231);
+    border: 1px solid rgb(43, 153, 231);
   }
 }

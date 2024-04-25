@@ -137,7 +137,6 @@ const SetAppointment = ({
             slots={JSON.stringify(selectedSlots)}
             type={{type: 'appointment'}}
             appointmentType={appointmentType}
-            isSetAppointment={true}
             isReplacement={isReplacement}
             schedule={schedule}
             TeacherTypeId={teacherType}
