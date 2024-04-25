@@ -94,7 +94,7 @@ export default function AddMySubgroup() {
         rowSpan: i === 0 ? (selectedClassType.value === 7 ? 3 : 2) : 0
       });
     }
-    if (!isSelected) setSlots([...slots, ...selectedSlotsTMP]);
+    if (!isSelected) setSlots(prev => [...prev, ...selectedSlotsTMP]);
   };
   return (
     <div className={styles.add_my_subgroup__wrapper}>
