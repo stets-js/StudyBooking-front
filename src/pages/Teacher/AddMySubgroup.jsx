@@ -47,19 +47,19 @@ export default function AddMySubgroup() {
       );
     });
   }, []);
-
   useEffect(() => {
-    getTeacherCourses(userId).then(data => {
-      const newUserCourses = data.data;
-      newUserCourses.forEach(userCourse => {
-        const course = (courses || []).find(el => el.id === userCourse.courseId);
-        if (course)
-          setUserCourses([
-            ...userCourses,
-            {label: course.name, value: course.id, TeacherTypeId: userCourse.TeacherTypeId}
-          ]);
+    if (courses)
+      getTeacherCourses(userId).then(data => {
+        const newUserCourses = data.data;
+        newUserCourses.forEach(userCourse => {
+          const course = courses.find(el => el.id === userCourse.courseId);
+          if (course)
+            setUserCourses(prev => [
+              ...prev,
+              {label: course.name, value: course.id, TeacherTypeId: userCourse.TeacherTypeId}
+            ]);
+        });
       });
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
   useEffect(() => {
