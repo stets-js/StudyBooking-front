@@ -134,7 +134,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                     const url = window.URL.createObjectURL(new Blob([res.data]));
                     const link = document.createElement('a');
                     link.href = url;
-                    link.setAttribute('download', 'data.json');
+                    link.setAttribute('download', `${element.name}.json`);
                     document.body.appendChild(link);
                     link.click();
                     link.parentNode.removeChild(link);
