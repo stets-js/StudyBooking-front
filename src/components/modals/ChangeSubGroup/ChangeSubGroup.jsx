@@ -2,12 +2,13 @@ import Modal from '../../Modal/Modal';
 import React, {useState, useEffect} from 'react';
 
 import Form from '../../Form/Form';
-import {getSlotDetails, updateSubGroup} from '../../../helpers/subgroup/subgroup';
+import {getSlotDetails, getSubgroupJSON, updateSubGroup} from '../../../helpers/subgroup/subgroup';
 import FormInput from '../../FormInput/FormInput';
 import MentorTable from './mentorTable';
 import EditButton from '../../Buttons/Edit';
 import DeleteButton from '../../Buttons/Delete';
 import buttonStyles from '../../Buttons/buttons.module.scss';
+import InfoButton from '../../Buttons/Info';
 const ChangeSubGroup = ({isOpen, handleClose, id}) => {
   const [element, setElement] = useState({});
   const [editActive, setEditActive] = useState(false);
@@ -25,7 +26,6 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
       fetchData();
     }
   }, [id]);
-  console.log(element);
   return (
     <>
       {isOpen && (
@@ -128,6 +128,18 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                       text={'Cancel'}></DeleteButton>
                   </>
                 )}
+                <InfoButton
+                  onClick={async () => {
+                    const res = await getSubgroupJSON({id: element.id});
+                    const url = window.URL.createObjectURL(new Blob([res.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'data.json');
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+                  }}
+                  text={'Download'}></InfoButton>
               </div>
             </div>
           </Form>

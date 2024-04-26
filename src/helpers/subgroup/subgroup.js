@@ -81,6 +81,11 @@ const deleteMentorFromSubgroup = ({mentorId, subgroupId}) => {
 const createSubgroupMentor = ({subgroupId, mentorId, TeacherTypeId, schedule}) => {
   return axios.post(`/subgroup-mentor`, {subgroupId, mentorId, TeacherTypeId, schedule});
 };
+const getSubgroupJSON = ({id}) => {
+  return axios.get(`/subgroups/${id}/json`, {
+    responseType: 'blob' // Указываем тип ответа как Blob
+  });
+};
 export {
   updateSubGroup,
   postSubGroup,
@@ -90,5 +95,6 @@ export {
   getMentorSubgroups,
   updateSubGroupAndAddMentor,
   createSubgroupMentor,
-  deleteMentorFromSubgroup
+  deleteMentorFromSubgroup,
+  getSubgroupJSON
 };
