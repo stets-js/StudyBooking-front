@@ -24,6 +24,7 @@ const ChangeManagerCourses = ({
   teacherId,
   filteringCourses,
   setFilteringCourses,
+  setOffset,
   forFilters = false
 }) => {
   const dispatch = useDispatch();

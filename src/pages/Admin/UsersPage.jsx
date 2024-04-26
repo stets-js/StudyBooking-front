@@ -30,7 +30,11 @@ export default function UsersPage() {
   const [prevFilterCourses, setPrevFilterCourses] = useState(filterCourses);
   const [debounceTimer, setDebounceTimer] = useState();
   const [superAdmins, setSuperAdmins] = useState([]);
-
+  const [roles] = useState([
+    {label: 'teacher', value: 1},
+    {label: 'administrator', value: 2},
+    {label: 'superAdmin', value: 3}
+  ]);
   const dispatch = useDispatch();
 
   const updateAllCourses = async () => {
@@ -54,11 +58,18 @@ export default function UsersPage() {
       setSuperAdmins(res.data);
     } catch (error) {}
   };
+
   const fetchTeachers = async () => {
+    let tmpOffset = offset;
     try {
+      if (JSON.stringify(prevFilterCourses) !== JSON.stringify(filterCourses)) {
+        tmpOffset = 0;
+        setTeachers([]);
+        setPrevFilterCourses(filterCourses);
+      }
       const res = await getUsers(
         // teachersFilter - flag for corner case on backend
-        `offset=${offset}&limit=${limit}&role=teacher${
+        `offset=${tmpOffset}&limit=${limit}&role=teacher${
           filterName || filterCourses.length > 0 ? '&teachersFilter=true' : ''
         }${filterName ? '&name=' + filterName : ''}${
           filterCourses.length > 0 ? '&courses=' + JSON.stringify(filterCourses) : ''
@@ -74,17 +85,36 @@ export default function UsersPage() {
     setIsOpen(!isOpen);
   };
 
-  const [renderTeachers, setRenderTeachers] = useState(false);
-  const handleFilterNameChange = value => {
-    setFilterName(value);
-    clearTimeout(debounceTimer);
-    const newDebounceTimer = setTimeout(() => {
-      setOffset(0);
-      setTeachers([]);
-      setRenderTeachers(true);
-    }, 500);
-    setDebounceTimer(newDebounceTimer);
-  };
+  useEffect(() => {
+    let timeoutId;
+    const fetchDataWithDelay = async () => {
+      try {
+        setOffset(0);
+        setTeachers([]);
+        const res = await getUsers(
+          // teachersFilter - flag for corner case on backend
+          `offset=${offset}&limit=${limit}&role=teacher${
+            filterName || filterCourses.length > 0 ? '&teachersFilter=true' : ''
+          }${filterName ? '&name=' + filterName : ''}${
+            filterCourses.length > 0 ? '&courses=' + JSON.stringify(filterCourses) : ''
+          }`
+        );
+        setTeachers(prev => {
+          return [...prev, ...res.data];
+        });
+      } catch (error) {
+        console.error('Произошла ошибка:', error);
+      }
+    };
+
+    const delayedFetch = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(fetchDataWithDelay, 500); // Пауза в 200 мс
+    };
+    if (filterName !== null) delayedFetch();
+
+    return () => clearTimeout(timeoutId);
+  }, [filterName]);
 
   useEffect(() => {
     if (needToRender) {
@@ -97,50 +127,27 @@ export default function UsersPage() {
   }, [needToRender]);
 
   useEffect(() => {
-    if (renderTeachers) {
-      fetchTeachers();
-      setRenderTeachers(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [renderTeachers]);
-
-  useEffect(() => {
     if (coursesModal) {
       // before open modal window
       setPrevFilterCourses(filterCourses);
-    }
-    if (!coursesModal) {
-      // after closing modal window
+    } else {
       if (JSON.stringify(prevFilterCourses) !== JSON.stringify(filterCourses)) {
+        console.log('hdsss');
         setOffset(0);
         setTeachers([]);
-        setRenderTeachers(true);
+        console.log('changed course', offset);
+        fetchTeachers();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coursesModal]);
-  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     try {
-      const fetchRoles = async () => {
-        const res = await getRoles();
-
-        setRoles(
-          (res?.data || []).map(el => {
-            return {label: el.name, value: el.id};
-          })
-        );
-        if (userRole !== 'superAdmin') {
-          setRoles(prev => prev.filter(el => el.label !== 'superAdmin'));
-        }
-      };
-      fetchRoles();
       updateAllCourses();
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <>
       <div className={styles.main_wrapper}>
@@ -274,7 +281,7 @@ export default function UsersPage() {
                       placeholder={`Name`}
                       classname={'green'}
                       value={filterName}
-                      handler={handleFilterNameChange}></FormInput>
+                      handler={setFilterName}></FormInput>
                     <FormInput
                       value={'Courses'}
                       type={'button'}
@@ -291,12 +298,7 @@ export default function UsersPage() {
                   next={fetchTeachers}
                   hasMore={true}
                   loader={<h4>Loading...</h4>}
-                  scrollableTarget="scroller"
-                  endMessage={
-                    <p style={{textAlign: 'center'}}>
-                      <b>Yay! You have seen it all</b>
-                    </p>
-                  }>
+                  scrollableTarget="scroller">
                   {(teachers || []).map(item => {
                     return (
                       <Fade cascade triggerOnce duration={300} direction="up" key={item.id}>
