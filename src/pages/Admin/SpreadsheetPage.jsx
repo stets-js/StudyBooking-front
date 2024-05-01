@@ -3,6 +3,7 @@ import {addBorders, resizeTable, updateTable} from '../../helpers/spreadsheet/sp
 import {error, success} from '@pnotify/core';
 import styles from '../../styles/teacher.module.scss';
 import {Link} from 'react-router-dom';
+import EditButton from '../../components/Buttons/Edit';
 
 const Spreadsheet = () => {
   const handleClick = async action => {
@@ -27,21 +28,13 @@ const Spreadsheet = () => {
         </Link>
       </h2>
       <br />
-      <button
-        className={`${styles.button} ${styles.button__add}`}
-        onClick={() => handleClick(updateTable)}>
-        Update list
-      </button>
-      <button
-        className={`${styles.button} ${styles.button__add}`}
-        onClick={() => handleClick(resizeTable)}>
-        Resize list
-      </button>
-      <button
-        className={`${styles.button} ${styles.button__add}`}
-        onClick={() => handleClick(addBorders)}>
-        Add borders
-      </button>
+      {[
+        {title: 'Update list', func: updateTable},
+        {title: 'Resize list', func: resizeTable},
+        {title: 'Add borders', func: addBorders}
+      ].map(el => {
+        return <EditButton onClick={() => handleClick(el.func)} text={el.title}></EditButton>;
+      })}
     </div>
   );
 };
