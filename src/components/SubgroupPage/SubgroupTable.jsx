@@ -22,6 +22,7 @@ export default function SubgroupTable({
 }) {
   const confirm = useConfirm();
   const [limit] = useState(40);
+  const [total, setTotal] = useState(0);
   const fetchData = async (query = '') => {
     try {
       const data = await getSubGroups(
@@ -31,6 +32,7 @@ export default function SubgroupTable({
         return [...prev, ...data.data];
       });
       setOffset(data.newOffset);
+      setTotal(data.totalCount);
     } catch (e) {
       // error('Something went wrong');
       console.log(e);
@@ -41,7 +43,6 @@ export default function SubgroupTable({
     let timeoutId;
     const fetchDataWithDelay = async () => {
       try {
-        setOffset(0);
         setSubGroups([]);
         const data = await getSubGroups(
           `offset=${offset}&limit=${limit}&name=${searchQuery}&CourseId=${selectedCourse || ''}`
@@ -49,14 +50,17 @@ export default function SubgroupTable({
         setSubGroups(prev => {
           return [...prev, ...data.data];
         });
+        setTotal(data.totalCount);
       } catch (error) {
         console.error('Произошла ошибка:', error);
       }
     };
 
-    const delayedFetch = () => {
+    const delayedFetch = async () => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(fetchDataWithDelay, 200); // Пауза в 200 мс
+      await setOffset(0);
+      await setSubGroups([]);
+      timeoutId = setTimeout(fetchDataWithDelay, 200);
     };
     if (searchQuery !== null) delayedFetch();
 
@@ -90,15 +94,11 @@ export default function SubgroupTable({
       <InfiniteScroll
         dataLength={subGroups.length} //This is important field to render the next data
         next={fetchData}
-        hasMore={true}
+        hasMore={offset + limit <= total}
         loader={<h4>Loading...</h4>}
         scrollableTarget="scroller"
         className={tableStyles.no_scroll}
-        endMessage={
-          <p style={{textAlign: 'center'}}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }>
+        endMessage={<p style={{extAlign: 'center'}}>end</p>}>
         {subGroups.map(element => {
           return (
             <tr key={element.id}>

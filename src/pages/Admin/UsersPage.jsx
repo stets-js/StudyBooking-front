@@ -16,6 +16,8 @@ import {setCourses} from '../../redux/action/course.action';
 export default function UsersPage() {
   const [limit] = useState(40);
   const [offset, setOffset] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+
   const [isOpen, setIsOpen] = useState(false);
   const userRole = useSelector(state => state.auth.user.role);
   const [title, setTitle] = useState('New User');
@@ -76,6 +78,7 @@ export default function UsersPage() {
         }`
       );
       setOffset(res.newOffset);
+      setTotalAmount(res.totalCount);
       setTeachers(prev => [...prev, ...res.data]);
     } catch (error) {}
   };
@@ -107,9 +110,11 @@ export default function UsersPage() {
       }
     };
 
-    const delayedFetch = () => {
+    const delayedFetch = async () => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(fetchDataWithDelay, 500); // Пауза в 200 мс
+      timeoutId = setTimeout(fetchDataWithDelay, 500);
+      // setTeachers([]);
+      await setOffset(0);
     };
     if (filterName !== null) delayedFetch();
 
@@ -296,8 +301,9 @@ export default function UsersPage() {
                 <InfiniteScroll
                   dataLength={teachers.length} //This is important field to render the next data
                   next={fetchTeachers}
-                  hasMore={true}
+                  hasMore={offset + limit <= totalAmount}
                   loader={<h4>Loading...</h4>}
+                  endMessage={<p style={{textAlign: 'center'}}>end</p>}
                   scrollableTarget="scroller">
                   {(teachers || []).map(item => {
                     return (
