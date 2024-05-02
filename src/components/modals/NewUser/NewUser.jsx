@@ -9,17 +9,21 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import Form from '../../Form/Form';
 import {forgotPassword} from '../../../helpers/auth/auth';
+import {
+  addAdmin,
+  addMentor,
+  addSuperAdmin,
+  deleteAdmin,
+  deleteMentor,
+  deleteSuperAdmin,
+  updateAdmin,
+  updateMentors,
+  updateSuperAdmins
+} from '../../../redux/action/usersPage.action';
+import {useDispatch} from 'react-redux';
 
-const NewUser = ({
-  isOpen,
-  handleClose,
-  isAdmin,
-  title = 'New user: ',
-  edit,
-  SetNeedToRender,
-  roles,
-  item
-}) => {
+const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item}) => {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
   const [email, setEmail] = useState('');
@@ -64,11 +68,42 @@ const NewUser = ({
         <Modal open={isOpen} onClose={handleClose}>
           <Form
             type={{type: 'user', additionalType: edit}} // additionalType - delete
-            SetNeedToRender={SetNeedToRender}
             changeCourses
-            requests={{user: edit ? patchUser : postUser, delete: deleteUser, additional: item.id}}
+            requests={{
+              user: edit
+                ? data => {
+                    patchUser(data);
+                    dispatch(
+                      item.role === 3
+                        ? updateSuperAdmins(data)
+                        : item.role === 2
+                        ? updateAdmin(data)
+                        : updateMentors(data)
+                    );
+                  }
+                : async data => {
+                    const res = await postUser(data);
+                    dispatch(
+                      item.role === 3
+                        ? addSuperAdmin(res.data.data)
+                        : item.role === 2
+                        ? addAdmin(res.data.data)
+                        : addMentor(res.data.data)
+                    );
+                  },
+              delete: id => {
+                deleteUser(id);
+                dispatch(
+                  item.role === 3
+                    ? deleteSuperAdmin(id)
+                    : item.role === 2
+                    ? deleteAdmin(id)
+                    : deleteMentor(id)
+                );
+              },
+              additional: item.id
+            }}
             onSubmit={() => {
-              SetNeedToRender(true); // for optimizating my be develop switch case of choosing exactly which one call fetchAdmin/fetchTeacher/fetchSuperAdmin
               handleClose();
             }}
             edit={edit}

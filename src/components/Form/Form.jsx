@@ -22,7 +22,6 @@ const Form = ({
   postpone,
   postponeClick,
   onSubmit,
-  SetNeedToRender,
   title,
   id,
   requests,
@@ -178,7 +177,6 @@ const Form = ({
         };
         onSubmit();
         const newUser = await requests.user(user);
-        SetNeedToRender(true);
         success({text: 'Created/edited user', delay: 1000});
         return newUser;
       }
@@ -187,7 +185,6 @@ const Form = ({
         try {
           const res = await requests.post({credentials: data, jsonData});
           success({text: status.successMessage, delay: 1000});
-          if (SetNeedToRender) SetNeedToRender(true);
           return !errorsuccessMessage && onSubmit && onSubmit();
         } catch (error) {
           return error('Something went wrong :(');
@@ -210,14 +207,13 @@ const Form = ({
   };
 
   const handleDelete = async () => {
-    await requests
-      .delete(requests.additional)
-      .catch(e => {
-        return error(`${status.failMessageDelete}, ${e.message}`);
-      })
-      .then(() => {
-        return success({delay: 1000, text: status.successMessageDelete});
-      });
+    console.log(requests.delete);
+    try {
+      await requests.delete(requests.additional);
+      success({delay: 1000, text: status.successMessageDelete});
+    } catch (e) {
+      return error(`${status.failMessageDelete}, ${e.message}`);
+    }
 
     !errorsuccessMessage && onSubmit && onSubmit();
   };
