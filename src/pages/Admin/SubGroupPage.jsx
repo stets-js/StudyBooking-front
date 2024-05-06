@@ -22,7 +22,6 @@ export default function SubGroupPage() {
   const [isOneDay, setIsOneDay] = useState(false);
   const fetchCourses = async () => {
     try {
-      console.log('hello');
       const courses = await getCourses();
       setCourses(
         courses.data.map(el => {
@@ -37,9 +36,6 @@ export default function SubGroupPage() {
   useEffect(() => {
     fetchCourses();
   }, []);
-  // const filteredSubGroups = subGroups.filter(element =>
-  //   element.name.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
 
   return (
     <div>

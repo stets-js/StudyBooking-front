@@ -75,6 +75,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen}) {
     if (filterName !== null) delayedFetch();
 
     return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterName]);
 
   useEffect(() => {

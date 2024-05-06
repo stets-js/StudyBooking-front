@@ -8,7 +8,9 @@ export default function TableHeader() {
     <div className={`${tableStyles.header} ${tableStyles.header__mySubgroup}`}>
       {headers.map(header => {
         return (
-          <div className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
+          <div
+            key={header}
+            className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
             {header}
           </div>
         );

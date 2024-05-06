@@ -65,13 +65,17 @@ export default function AppointmentList({
   return (
     <div className={appointmentStyles.buttons_header}>
       {appointmentTypes.map(appointmentType => {
-        if (!['free', 'universal'].includes(appointmentType.name)) return <></>;
+        if (!['free', 'universal'].includes(appointmentType.name)) return null;
+
         return (
           <button
             key={appointmentType.id}
             onClick={() => {
               if (['free', 'universal'].includes(appointmentType.name))
-                setSelectedAppointment({name: appointmentType.name, id: appointmentType.id});
+                setSelectedAppointment({
+                  name: appointmentType.name,
+                  id: appointmentType.id
+                });
             }}
             className={`${appointmentStyles.type_selector} ${
               appointmentStyles.type_selector__borders
@@ -80,12 +84,14 @@ export default function AppointmentList({
           </button>
         );
       })}
-      {/* <div className={styles.teacherInfo}>Mentor: {user?.name}</div> */}
       <a
+        key="tooltip-link"
         data-tooltip-id="my-tooltip"
         data-tooltip-place="right"
         className={appointmentStyles.tooltip__icon}>
-        <span className={appointmentStyles.tooltip__icon}> ?</span>
+        <span key="tooltip-icon" className={appointmentStyles.tooltip__icon}>
+          ?
+        </span>
       </a>
       <Tooltip id="my-tooltip" className={appointmentStyles.tooltip}>
         {appointmentTypes.map(appointmentType => {
@@ -94,9 +100,10 @@ export default function AppointmentList({
               appointmentType.name
             )
           )
-            return <></>;
+            return null;
+
           return (
-            <div className={appointmentStyles.tooltip__container}>
+            <div key={appointmentType.id} className={appointmentStyles.tooltip__container}>
               <div
                 className={`${appointmentStyles.circle} ${
                   appointmentStyles[`type_selector__${appointmentType.name}`]

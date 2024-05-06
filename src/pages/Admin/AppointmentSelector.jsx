@@ -28,7 +28,7 @@ export default function UsersPage() {
   initialStartDate.setHours(startingHour, 0, 0, 0);
   const [startDates] = useState(Array.from({length: 7}, (_, i) => addDays(initialStartDate, i)));
   const [startDate, setStartDate] = useState(format(startDates[0], 'yyyy-MM-dd'));
-  const [endDate, setEndDate] = useState(null);
+  const [endDate, setEndDate] = useState(undefined);
 
   const [renderTeachers, setRenderTeachers] = useState(false);
   dispatch({type: 'SET_SELECTEDS_SLOTS'});

@@ -89,53 +89,53 @@ export default function SubgroupTable({
     <div
       className={`${tableStyles.calendar} ${tableStyles.scroller} ${tableStyles.calendar__small}`}
       id="scroller">
-      {/* <table className={tableStyles.tableBody}> */}
-      {/* <tbody id="scroller"> */}
-      <InfiniteScroll
-        dataLength={subGroups.length} //This is important field to render the next data
-        next={fetchData}
-        hasMore={offset + limit <= total}
-        loader={<h4>Loading...</h4>}
-        scrollableTarget="scroller"
-        className={tableStyles.no_scroll}
-        endMessage={<p style={{extAlign: 'center'}}>end</p>}>
-        {subGroups.map(element => {
-          return (
-            <tr key={element.id}>
-              <td className={tableStyles.cell__big}>
-                <div
-                  className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
-                  {element.name}
-                </div>
-              </td>
-              <td>
-                <div
-                  className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.action_wrapper}`}>
-                  {/* <EditButton
+      <table className={tableStyles.tableBody}>
+        <tbody id="scroller">
+          <InfiniteScroll
+            dataLength={subGroups.length} //This is important field to render the next data
+            next={fetchData}
+            hasMore={offset + limit <= total}
+            loader={<h4>Loading...</h4>}
+            scrollableTarget="scroller"
+            className={tableStyles.no_scroll}
+            endMessage={<p style={{extAlign: 'center'}}>end</p>}>
+            {subGroups.map(element => {
+              return (
+                <tr key={element.id}>
+                  <td className={tableStyles.cell__big}>
+                    <div
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big}`}>
+                      {element.name}
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${styles.action_wrapper}`}>
+                      {/* <EditButton
                         classname={'button__edit__small'}
                         onClick={() => {
                           setIsOpen(true);
                           setSelectedId(element.id);
                         }}></EditButton> */}
-                  <InfoButton
-                    classname={'button__edit__small'}
-                    onClick={() => {
-                      setIsOpen(true);
-                      setSelectedId(element.id);
-                    }}></InfoButton>
-                  <DeleteButton
-                    classname={'button__delete__small'}
-                    onClick={() => {
-                      handleDelete(element.id, element.name);
-                    }}></DeleteButton>
-                </div>
-              </td>
-            </tr>
-          );
-        })}
-      </InfiniteScroll>
-      {/* </tbody> */}
-      {/* </table> */}
+                      <InfoButton
+                        classname={'button__edit__small'}
+                        onClick={() => {
+                          setIsOpen(true);
+                          setSelectedId(element.id);
+                        }}></InfoButton>
+                      <DeleteButton
+                        classname={'button__delete__small'}
+                        onClick={() => {
+                          handleDelete(element.id, element.name);
+                        }}></DeleteButton>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </InfiniteScroll>
+        </tbody>
+      </table>
     </div>
   );
 }

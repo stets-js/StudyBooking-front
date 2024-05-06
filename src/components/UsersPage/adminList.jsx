@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 
 import styles from '../../styles/SuperAdminPage.module.scss';
 import {getUsers} from '../../helpers/user/user';
-// import { getManagers } from "../../helpers/manager/manager";
 import {useDispatch, useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
@@ -21,6 +20,7 @@ export default function AdminList({setTitle, setEdit, setIsOpen, setItem}) {
 
   useEffect(() => {
     fetchAdmins();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className={styles.wrapper} key={'index1'}>

@@ -19,6 +19,7 @@ const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
   };
   useEffect(() => {
     if (isOpen) calculateSchedule();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
   return (
     <>

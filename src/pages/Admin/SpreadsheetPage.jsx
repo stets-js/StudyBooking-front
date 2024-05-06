@@ -33,7 +33,12 @@ const Spreadsheet = () => {
         {title: 'Resize list', func: resizeTable},
         {title: 'Add borders', func: addBorders}
       ].map(el => {
-        return <EditButton onClick={() => handleClick(el.func)} text={el.title}></EditButton>;
+        return (
+          <EditButton
+            key={el.title}
+            onClick={() => handleClick(el.func)}
+            text={el.title}></EditButton>
+        );
       })}
     </div>
   );

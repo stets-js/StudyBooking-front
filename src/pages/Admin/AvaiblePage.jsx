@@ -89,40 +89,42 @@ export default function AvaliableTable() {
       <div
         className={`${tableStyles.calendar} ${tableStyles.calendar__small} ${tableStyles.scroller}`}>
         <table className={tableStyles.tableBody}>
-          {scheduleTable.map(({time, users}, index) => {
-            return (
-              <tr key={time}>
-                <td className={tableStyles.cell__available}>
-                  <div
-                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} `}>
-                    {time}
-                  </div>
-                </td>
-                <td>
-                  <div
-                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big} ${styles.ul_items}`}>
-                    {users.length > 0 ? (
-                      users.map((user, index) => (
-                        <React.Fragment key={user.id}>
-                          <Link
-                            className={`${styles.teacher_name} ${styles.ul_items} ${styles.ul_items_link} `}
-                            target="_self"
-                            to={`../teacher/${user.id}`}>
-                            <span className={styles.ul_items_text}>
-                              {user.name}
-                              {index !== users.length - 1 && ', '}{' '}
-                            </span>
-                          </Link>
-                        </React.Fragment>
-                      ))
-                    ) : (
-                      <span className={styles.ul_items_text}>...</span>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
+          <tbody>
+            {scheduleTable.map(({time, users}, index) => {
+              return (
+                <tr key={time}>
+                  <td className={tableStyles.cell__available}>
+                    <div
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} `}>
+                      {time}
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__outer__big} ${styles.ul_items}`}>
+                      {users.length > 0 ? (
+                        users.map((user, index) => (
+                          <React.Fragment key={user.id}>
+                            <Link
+                              className={`${styles.teacher_name} ${styles.ul_items} ${styles.ul_items_link} `}
+                              target="_self"
+                              to={`../teacher/${user.id}`}>
+                              <span className={styles.ul_items_text}>
+                                {user.name}
+                                {index !== users.length - 1 && ', '}
+                              </span>
+                            </Link>
+                          </React.Fragment>
+                        ))
+                      ) : (
+                        <span className={styles.ul_items_text}>...</span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
       </div>
     </div>

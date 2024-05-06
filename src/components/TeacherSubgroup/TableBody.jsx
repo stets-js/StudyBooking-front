@@ -1,6 +1,7 @@
 import React from 'react';
 import {format} from 'date-fns';
 import tableStyles from '../../styles/table.module.scss';
+
 export default function TableBody({filteredSubgroups}) {
   return (
     <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
@@ -9,7 +10,7 @@ export default function TableBody({filteredSubgroups}) {
           {filteredSubgroups.length > 0 &&
             filteredSubgroups.map((group, index) => {
               return (
-                <tr key={group.id}>
+                <tr key={'' + group.id}>
                   <td className={tableStyles.cell__mySubgroup}>
                     <div
                       className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
@@ -46,7 +47,7 @@ export default function TableBody({filteredSubgroups}) {
                       {group?.SubGroup.description}
                     </div>
                   </td>
-                  <td className={tableStyles.cell__mySubgroup}>
+                  <td className={tableStyles.cell__mySubgroup} key={'schedule' + group.id}>
                     <div
                       className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
                       {group?.SubGroup.startDate &&
@@ -54,11 +55,11 @@ export default function TableBody({filteredSubgroups}) {
                           '-' +
                           format(group?.SubGroup.endDate, 'dd.MM')}
                       <br />
-                      {group.schedule.split(',').map(el => {
+                      {(group.schedule || '').split(',').map(el => {
                         return (
-                          <>
+                          <React.Fragment key={el}>
                             {el} <br />
-                          </>
+                          </React.Fragment>
                         );
                       })}
                     </div>
