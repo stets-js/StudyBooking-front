@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {success} from '@pnotify/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
