@@ -39,9 +39,9 @@ export default function ScheduleCell({
               : tableStyles.cell__inner
           } ${
             // key can be generated only for appointed
-            !slot?.rowSpan ? appointmentStyles[`hover__${selectedAppointment.name}`] : ''
+            !slot?.rowSpan ? appointmentStyles[`hover__${selectedAppointment?.name}`] : ''
           }  ${
-            slot && slot.AppointmentType
+            slot && slot.appointmentTypeId
               ? appointmentStyles[`type_selector__${slot.AppointmentType.name}`]
               : ''
           } `}

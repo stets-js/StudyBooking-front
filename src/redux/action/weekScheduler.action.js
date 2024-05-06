@@ -16,3 +16,13 @@ export const updateSlotForWeek = updatedSlot => ({
   type: 'UPDATE_SLOT_FOR_WEEK',
   payload: updatedSlot
 });
+
+export const updateSlotForWeekByTime = updatedSlot => ({
+  type: 'UPDATE_SLOT_FOR_WEEK_BY_TIME',
+  payload: updatedSlot
+});
+
+export const removeSlotFromWeekByTime = data => ({
+  type: 'DELETE_SLOT_FROM_WEEK_BY_TIME',
+  payload: data
+});

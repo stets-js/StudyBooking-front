@@ -20,8 +20,21 @@ const weekScheduler = (state = initialState, action) => {
         })
       };
 
+    case 'UPDATE_SLOT_FOR_WEEK_BY_TIME':
+      return {
+        ...state,
+        weekScheduler: state.weekScheduler.map((daySlots, index) => {
+          if (index === action.payload.weekDay) {
+            return daySlots.map(slot => {
+              console.log(slot);
+
+              return slot.time === action.payload.time ? action.payload : slot;
+            });
+          }
+          return daySlots;
+        })
+      };
     case 'UPDATE_SLOT_FOR_WEEK':
-      console.log(action.payload);
       return {
         ...state,
         weekScheduler: state.weekScheduler.map((daySlots, index) => {
@@ -36,12 +49,17 @@ const weekScheduler = (state = initialState, action) => {
         })
       };
     case 'DELETE_SLOT_FROM_WEEK':
-      console.log('deleting');
-      console.log(action.payload);
       return {
         ...state,
         weekScheduler: state.weekScheduler.map((daySlots, index) => {
           return daySlots.filter(slot => slot.id !== action.payload);
+        })
+      };
+    case 'DELETE_SLOT_FROM_WEEK_BY_TIME':
+      return {
+        ...state,
+        weekScheduler: state.weekScheduler.map((daySlots, index) => {
+          return daySlots.filter(slot => slot.time !== action.time);
         })
       };
     default:

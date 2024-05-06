@@ -3,9 +3,10 @@ import {createSlotForUser, deleteSlotForUser, updateSlot} from '../../../helpers
 import {
   DeleteSlotFromWeek,
   addNewSlotToWeek,
-  updateSlotForWeek
+  removeSlotFromWeekByTime,
+  updateSlotForWeek,
+  updateSlotForWeekByTime
 } from '../../../redux/action/weekScheduler.action';
-import {addNewSlot} from '../../../redux/action/teacher.action';
 
 export const HandleCellClick = async ({
   slot,
@@ -54,6 +55,17 @@ export const HandleCellClick = async ({
     // Free slots cant be placed
     const prevWeekStart = format(addDays(date, -dateIndex - 7), 'yyyy-MM-dd');
     const prevWeekEnd = format(addDays(date, -dateIndex - 1), 'yyyy-MM-dd');
+    console.log(selectedAppointment);
+    await dispatch(
+      addNewSlotToWeek({
+        userId: +userId,
+        appointmentTypeId: selectedAppointment.id,
+        weekDay: dateIndex,
+        startDate: format(date, 'yyyy-MM-dd'),
+        time: format(currentTime, 'HH:mm'),
+        AppointmentType: selectedAppointment
+      })
+    );
     try {
       const res = await createSlotForUser({
         userId,
@@ -64,9 +76,10 @@ export const HandleCellClick = async ({
         prevWeekStart,
         prevWeekEnd
       });
-      dispatch(addNewSlotToWeek(res.data));
-      dispatch(addNewSlot(res.data));
+      if (res) dispatch(updateSlotForWeekByTime(res.data));
+      // dispatch(addNewSlot(res.data));
     } catch (error) {
+      dispatch(removeSlotFromWeekByTime({time: format(currentTime, 'HH:mm'), weekDay: dateIndex}));
       console.log(error);
     }
   }
