@@ -17,13 +17,13 @@ export default function WeekChanger({startDates, setStartDates, userName}) {
       <div className={`${styles.dates_wrapper} ${styles.date_selector}`}>
         <div className={styles.flex}>
           <button onClick={handlePrevWeek} className={styles.week_selector}>
-            {`<`}&nbsp;
+            {`<`}
           </button>
-          <div>
+          <div className={styles.week_selector__date}>
             {format(startDates[0], 'dd.MM')} - {format(startDates[6], 'dd.MM')}
           </div>
           <button onClick={handleNextWeek} className={styles.week_selector}>
-            &nbsp;{`>`}
+            {`>`}
           </button>
         </div>
         <div className={styles.mentor_name}>Mentor:{userName}</div>

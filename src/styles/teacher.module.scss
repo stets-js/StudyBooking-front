@@ -219,6 +219,11 @@
   // background-color: #6ca7df;
   font-size: 26px;
   background-color: transparent;
+  &__date{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
 }
 
 .chooser_selector {
@@ -467,4 +472,18 @@
     text-align-last: left;
   }
 
+}
+
+@media (max-width: 768px) {
+  .mentor_name{
+   margin-right: 0;
+    font-size: 14px;
+  }
+  .flex{
+    font-size: 14px;
+    margin-left: 0;
+  }
+  .dates_wrapper{
+    align-items: center;
+  }
 }
