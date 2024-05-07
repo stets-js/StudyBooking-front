@@ -21,3 +21,11 @@
   overflow-y: auto;
   max-height: 90vh;
 }
+
+@media (max-width: 768px) {
+  .login {
+    &__box {
+      min-width: 200px;
+    }
+  }
+}

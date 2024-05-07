@@ -34,45 +34,13 @@ const Login = ({isOpen, handleClose}) => {
   return (
     <>
       {isOpen && (
-        <Modal open={isOpen} onClose={handleClose}>
+        <Modal
+          open={isOpen}
+          onClose={handleClose}
+          classname_wrapper={'login__wrapper'}
+          classname_box={'login__box'}>
           <h3 className={styles.title}>Log In</h3>
-          <form
-          // onSubmit={() => {
-          //   handleClose();
-          //   // setRemember("");
-          //   setLogin("");
-          //   setPassword("");
-          // }}
-          // type={{ type: "login", button: "login" }}
-          // text={
-          //   <>
-          //     {/* <p className={styles.exit}>
-          //       Don’t have an account?{" "}
-          //       <span
-          //         onClick={() => {
-          //           handleClose();
-          //         }}
-          //       >
-          //         Sign Up
-          //       </span>
-          //     </p>
-          //     <p className={styles.exit}>
-          //       Forgot your password?{" "}
-          //       <span
-          //         onClick={() => {
-          //           handleClose();
-          //         }}
-          //       >
-          //         Click here
-          //       </span>
-          //     </p> */}
-          //   </>
-          // }
-          // requests={{ login: loginUser }}
-          // // remember={remember}
-          // login={login}
-          // password={password}
-          >
+          <form>
             <FormInput
               classname={styles.title}
               title="Email:"

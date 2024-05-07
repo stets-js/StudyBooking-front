@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {setSuperAdmins} from '../../redux/action/usersPage.action';
 
-export default function SuperAdminList({setIsOpen, setTitle, setItem, setEdit}) {
+export default function SuperAdminList({setIsOpen, setTitle, setItem, setEdit, title = 'true'}) {
   const superAdmins = useSelector(state => state.usersPage.superAdmins);
   const userRole = useSelector(state => state.auth.user.role);
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export default function SuperAdminList({setIsOpen, setTitle, setItem, setEdit}) 
     <div className={styles.wrapper} key={'index0'}>
       <React.Fragment key={1}>
         <div key={'index'}>
-          <p className={styles.mini_title}>Super admin </p>
+          {title && <p className={styles.mini_title}>Super admin </p>}
           <ul className={styles.main_wrapper}>
             {(superAdmins || []).map(item => {
               return (

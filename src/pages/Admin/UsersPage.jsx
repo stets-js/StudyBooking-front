@@ -8,6 +8,7 @@ import {setCourses} from '../../redux/action/course.action';
 import SuperAdminList from '../../components/UsersPage/superAdminList';
 import AdminList from '../../components/UsersPage/adminList';
 import MentorList from '../../components/UsersPage/mentorList';
+import InfoButton from '../../components/Buttons/Info';
 
 export default function UsersPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +42,26 @@ export default function UsersPage() {
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const [activeList, setActiveList] = useState('superAdmin');
+  const [isMobile, setIsMobile] = useState(false);
+  const handleListChange = list => {
+    setActiveList(list);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
       <div className={styles.main_wrapper}>
@@ -70,23 +91,72 @@ export default function UsersPage() {
             </div>
           </div>
         )}
-        <div className={styles.main_wrapper2}>
-          <SuperAdminList
-            setIsOpen={setIsOpen}
-            setTitle={setTitle}
-            setItem={setItem}
-            setEdit={setEdit}></SuperAdminList>
-          <AdminList
-            setIsOpen={setIsOpen}
-            setTitle={setTitle}
-            setItem={setItem}
-            setEdit={setEdit}></AdminList>
-          <MentorList
-            setIsOpen={setIsOpen}
-            setTitle={setTitle}
-            setItem={setItem}
-            setEdit={setEdit}></MentorList>
-        </div>
+        {isMobile ? (
+          <>
+            {' '}
+            <div className={styles.sliderButtons}>
+              <InfoButton
+                classname={'button__small'}
+                onClick={() => handleListChange('superAdmin')}
+                text={'Super'}></InfoButton>
+              <InfoButton
+                classname={'button__small'}
+                onClick={() => handleListChange('admin')}
+                text={'Appointers'}></InfoButton>
+              <InfoButton
+                classname={'button__small'}
+                onClick={() => handleListChange('mentor')}
+                text={'Mentors'}></InfoButton>
+            </div>
+            <div className={styles.main_wrapper2}>
+              {activeList === 'superAdmin' && (
+                <SuperAdminList
+                  title={false}
+                  setIsOpen={setIsOpen}
+                  setTitle={setTitle}
+                  setItem={setItem}
+                  setEdit={setEdit}
+                />
+              )}
+              {activeList === 'admin' && (
+                <AdminList
+                  title={false}
+                  setIsOpen={setIsOpen}
+                  setTitle={setTitle}
+                  setItem={setItem}
+                  setEdit={setEdit}
+                />
+              )}
+              {activeList === 'mentor' && (
+                <MentorList
+                  title={false}
+                  setIsOpen={setIsOpen}
+                  setTitle={setTitle}
+                  setItem={setItem}
+                  setEdit={setEdit}
+                />
+              )}
+            </div>
+          </>
+        ) : (
+          <div className={styles.main_wrapper2}>
+            <SuperAdminList
+              setIsOpen={setIsOpen}
+              setTitle={setTitle}
+              setItem={setItem}
+              setEdit={setEdit}></SuperAdminList>
+            <AdminList
+              setIsOpen={setIsOpen}
+              setTitle={setTitle}
+              setItem={setItem}
+              setEdit={setEdit}></AdminList>
+            <MentorList
+              setIsOpen={setIsOpen}
+              setTitle={setTitle}
+              setItem={setItem}
+              setEdit={setEdit}></MentorList>
+          </div>
+        )}
       </div>
     </>
   );

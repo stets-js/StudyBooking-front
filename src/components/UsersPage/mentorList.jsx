@@ -11,7 +11,7 @@ import FormInput from '../../components/FormInput/FormInput';
 import {cleanMentors, setMentors} from '../../redux/action/usersPage.action';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 
-export default function MentorList({setItem, setTitle, setEdit, setIsOpen}) {
+export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title = true}) {
   const [limit] = useState(40);
   const [offset, setOffset] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -95,7 +95,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen}) {
     <>
       <React.Fragment key={2}>
         <div className={styles.wrapper} key={'index1'}>
-          <p className={styles.mini_title}>Mentors</p>
+          {title && <p className={styles.mini_title}>Mentors</p>}
 
           <ul className={`${styles.main_wrapper} ${styles.filter_wrapper}`}>
             <li className={`${styles.ul_items} ${styles.filter_wrapper}`}>

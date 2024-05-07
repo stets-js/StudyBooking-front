@@ -7,7 +7,7 @@ import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
 import {setAdmins} from '../../redux/action/usersPage.action';
 
-export default function AdminList({setTitle, setEdit, setIsOpen, setItem}) {
+export default function AdminList({setTitle, setEdit, setIsOpen, setItem, title}) {
   const userRole = useSelector(state => state.auth.user.role);
   const admins = useSelector(state => state.usersPage.admins);
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export default function AdminList({setTitle, setEdit, setIsOpen, setItem}) {
     <div className={styles.wrapper} key={'index1'}>
       <React.Fragment key={1}>
         <div key={'index'}>
-          <p className={styles.mini_title}>Appointers</p>
+          {title && <p className={styles.mini_title}>Appointers</p>}
 
           <ul className={styles.main_wrapper}>
             {(admins || []).map(item => {
