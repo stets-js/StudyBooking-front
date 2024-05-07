@@ -54,7 +54,7 @@ export default function Info() {
           type={'text'}
           title={'Email:'}
           value={user?.email}
-          disabled={!editActive}
+          disabled={true}
           width={'90%'}
           handler={e => setUser({...user, email: e})}></FormInput>
 
@@ -100,6 +100,7 @@ export default function Info() {
             <DeleteButton
               onClick={() => {
                 setEditActive(false);
+                setUser(backupUser);
               }}
               text={'Cancel'}></DeleteButton>
           </div>
