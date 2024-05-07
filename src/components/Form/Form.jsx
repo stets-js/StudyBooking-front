@@ -301,7 +301,11 @@ const Form = ({
             </p>
           )}
       {text}
-      {type.type !== 'no-request-test' && <p className={styles.exit}>Click outside to exit</p>}
+      {type.type !== 'no-request-test' && (
+        <p className={styles.exit} onClick={() => onSubmit()}>
+          Click here or outside to exit
+        </p>
+      )}
     </div>
   );
 };

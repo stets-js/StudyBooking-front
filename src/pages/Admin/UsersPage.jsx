@@ -93,7 +93,6 @@ export default function UsersPage() {
         )}
         {isMobile ? (
           <>
-            {' '}
             <div className={styles.sliderButtons}>
               <InfoButton
                 classname={'button__small'}
