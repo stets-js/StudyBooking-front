@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.19.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/material": "^5.9.0",
@@ -14,6 +16,7 @@
     "axios": "^0.27.2",
     "axios-retry": "^4.0.0",
     "classnames": "^2.3.1",
+    "cloudinary": "^2.2.0",
     "date-fns": "^3.3.1",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",

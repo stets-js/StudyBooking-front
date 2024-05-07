@@ -3,6 +3,7 @@ import {error, success} from '@pnotify/core';
 import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
+import CloudinaryUploadWidget from '../../components/Cloudinary/UploadWidget';
 import {getUserById, patchUser} from '../../helpers/user/user';
 import FormInput from '../../components/FormInput/FormInput';
 import styles from '../../styles/teacher.module.scss';
@@ -39,49 +40,64 @@ export default function Info() {
       setUser(backupUser);
     }
   };
-
   return (
     <>
       <div className={styles.info__wrapper}>
-        <FormInput
-          type={'text'}
-          title={'Name:'}
-          value={user?.name}
-          disabled={!editActive}
-          width={'90%'}
-          handler={e => setUser({...user, name: e})}></FormInput>
-        <FormInput
-          type={'text'}
-          title={'Email:'}
-          value={user?.email}
-          disabled={true}
-          width={'90%'}
-          handler={e => setUser({...user, email: e})}></FormInput>
-
-        <FormInput
-          type={'text'}
-          title={'City:'}
-          value={user?.city}
-          disabled={!editActive}
-          width={'90%'}
-          handler={e => setUser({...user, city: e})}></FormInput>
-        <br />
-        <br />
-        <div className={`${styles.info__item} ${styles.phone__wrapper}`}>
-          <span className={styles.phone__label}>Phone:</span>
-          <PhoneInput
-            label="Phone"
-            name={'phone'}
-            preferredCountries={['ua']}
-            placeholder={'(096)-12-34567'}
-            required={true}
-            value={user?.phone}
-            className={styles.phone}
-            inputStyle={{height: '45px', borderRadius: '25px', backgroundColor: '#d9d9d9'}}
-            buttonStyle={{borderRadius: '25px', borderRight: '0', backgroundColor: '#bdbdbd'}}
-            onChange={phone => setUser({...user, phone})}
+        <div className={styles.info__name_block}>
+          <div className={styles.info__avatar__wrapper}>
+            <img src={user?.photoUrl} alt="avatar" className={styles.info__avatar__photo}></img>
+            <CloudinaryUploadWidget setUser={setUser} className={styles.info__avatar__button} />
+          </div>
+          <div>
+            <FormInput
+              type={'text'}
+              title={'Name:'}
+              value={user?.name}
+              disabled={!editActive}
+              width={'90%'}
+              handler={e => setUser({...user, name: e})}></FormInput>
+            <FormInput
+              type={'text'}
+              title={'Email:'}
+              value={user?.email}
+              disabled={true}
+              width={'90%'}
+              handler={e => setUser({...user, email: e})}></FormInput>
+          </div>
+        </div>
+        <div className={styles.info__inline}>
+          <FormInput
+            type={'text'}
+            title={'City:'}
+            value={user?.city}
             disabled={!editActive}
-          />
+            width={'90%'}
+            handler={e => setUser({...user, city: e})}></FormInput>
+          <div className={`${styles.info__item} ${styles.phone__wrapper}`}>
+            <span className={styles.phone__label}>Phone:</span>
+            <PhoneInput
+              label="Phone"
+              name={'phone'}
+              preferredCountries={['ua']}
+              placeholder={'(096)-12-34567'}
+              required={true}
+              value={user?.phone}
+              className={styles.phone}
+              inputStyle={{height: '45px', borderRadius: '25px', backgroundColor: '#d9d9d9'}}
+              buttonStyle={{borderRadius: '25px', borderRight: '0', backgroundColor: '#bdbdbd'}}
+              onChange={phone => setUser({...user, phone})}
+              disabled={!editActive}
+            />
+          </div>
+        </div>
+        <div className={styles.info__item}>
+          <FormInput
+            textArea
+            title={'Description:'}
+            value={user?.description}
+            disabled={!editActive}
+            width={'90%'}
+            handler={e => setUser({...user, description: e})}></FormInput>
         </div>
         {!editActive ? (
           <EditButton

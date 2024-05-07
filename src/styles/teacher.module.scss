@@ -402,9 +402,9 @@
   &__wrapper {
     display: flex;
     flex-direction: column;
-    width: 33%;
+    width: 50%;
     padding: 10px;
-    margin-left: calc(33% - 10px);
+    margin-left: calc(25% - 10px);
     border: 1px solid black;
     border-radius: 25px;
     justify-content: center;
@@ -412,8 +412,34 @@
     margin-bottom: 100px;
   }
   &__item {
-    width: 89% !important;
+    width: 83% !important;
     margin-left: 10px;
+  }
+  &__avatar{
+    &__wrapper{
+      display: flex;
+      flex-direction: column;
+      width: 200px;
+    }
+    &__photo{
+      height: 200px;
+      border-radius: 25px;
+      width: 200px;
+    }
+   &__button{
+    width: 100px;
+    align-self: center;
+    margin-top:5px;
+   } 
+  }
+  &__name_block{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  &__inline{
+    display: flex;
+    align-items: flex-end;
+    height: 110px;
   }
 }
 
@@ -436,4 +462,5 @@
     font-size: 20px;
     text-align-last: left;
   }
+
 }
