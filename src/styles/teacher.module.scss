@@ -414,6 +414,7 @@
   &__item {
     width: 83% !important;
     margin-left: 10px;
+    
   }
   &__avatar{
     &__wrapper{
@@ -440,6 +441,9 @@
     display: flex;
     align-items: flex-end;
     height: 110px;
+  }
+  &__button__wrapper{
+    margin-top: 10px;
   }
 }
 

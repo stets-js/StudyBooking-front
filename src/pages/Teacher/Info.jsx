@@ -100,13 +100,15 @@ export default function Info() {
             handler={e => setUser({...user, description: e})}></FormInput>
         </div>
         {!editActive ? (
-          <EditButton
-            onClick={() => {
-              setBackupUser(user);
-              setEditActive(true);
-            }}></EditButton>
+          <div className={styles.info__button__wrapper}>
+            <EditButton
+              onClick={() => {
+                setBackupUser(user);
+                setEditActive(true);
+              }}></EditButton>
+          </div>
         ) : (
-          <div className={styles.button__wrapper}>
+          <div className={styles.info__button__wrapper}>
             <EditButton
               onClick={() => {
                 setEditActive(false);
