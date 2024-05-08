@@ -103,8 +103,11 @@ const Form = ({
       }
       if (type.type.includes('appointment')) {
         if (type.type.includes('MIC')) {
-          // const answer = await axios.get('');
           console.log(jsonData.token);
+          const answer = await axios.get('');
+          if (answer.status === 'bad') {
+            return error({text: 'Something went wrong', delay: 1000});
+          }
           return console.log('MIT!!!!!!!!!');
         }
         jsonData.slots = JSON.parse(jsonData.slots);
