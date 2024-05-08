@@ -11,6 +11,7 @@ import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
 import '@trendmicro/react-radio/dist/react-radio.css';
 import EditButton from '../Buttons/Edit';
 import DeleteButton from '../Buttons/Delete';
+import {useParams} from 'react-router-dom';
 export default function AppointmentButtons({
   startDate,
   isReplacement,
@@ -30,11 +31,14 @@ export default function AppointmentButtons({
   teacherType
 }) {
   const dispatch = useDispatch();
-  const appointmentTypes = [
+  const {token} = useParams();
+
+  let appointmentTypes = [
     {label: 'Group', value: 0},
     {label: 'Individual', value: 1},
     {label: 'Junior group', value: 2}
   ];
+  if (token) appointmentTypes = [{label: 'Individual', value: 1}];
   return (
     <>
       <div className={styles.chooser_selector__date_wrapper}>

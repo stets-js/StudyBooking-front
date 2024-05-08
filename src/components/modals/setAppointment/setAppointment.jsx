@@ -8,7 +8,9 @@ import Form from '../../Form/Form';
 import {getUsers} from '../../../helpers/user/user';
 import {addMinutes, format} from 'date-fns';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
+import {useParams} from 'react-router-dom';
 const SetAppointment = ({
+  type,
   isOpen,
   handleClose,
   selectedSlots,
@@ -21,6 +23,7 @@ const SetAppointment = ({
   onSubmit,
   teacherType
 }) => {
+  const {token} = useParams();
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
   const [subGroup, setSubGroup] = useState(null);
@@ -126,6 +129,7 @@ const SetAppointment = ({
       {isOpen && (
         <Modal open={isOpen} onClose={close}>
           <Form
+            token={token}
             link={link}
             subgroupId={subGroup}
             description={description}
@@ -135,7 +139,7 @@ const SetAppointment = ({
             adminId={selectedAdmin}
             selectedCourse={course.value}
             slots={JSON.stringify(selectedSlots)}
-            type={{type: 'appointment'}}
+            type={{type}}
             appointmentType={appointmentType}
             isReplacement={isReplacement}
             schedule={schedule}

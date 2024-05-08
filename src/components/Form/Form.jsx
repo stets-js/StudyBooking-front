@@ -13,6 +13,7 @@ import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
 import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
+import axios from 'axios';
 
 defaults.delay = 1000;
 
@@ -100,7 +101,12 @@ const Form = ({
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
-      if (type.type === 'appointment') {
+      if (type.type.includes('appointment')) {
+        if (type.type.includes('MIC')) {
+          // const answer = await axios.get('');
+          console.log(jsonData.token);
+          return console.log('MIT!!!!!!!!!');
+        }
         jsonData.slots = JSON.parse(jsonData.slots);
         // 0 - group, 1 - private, 2 - junior_group
         const searchQuery = `name=${
@@ -138,7 +144,6 @@ const Form = ({
                 await bulkUpdate(body);
               }
             }
-
             return !errorsuccessMessage && onSubmit && onSubmit();
           })
           .catch(e => {
@@ -146,7 +151,6 @@ const Form = ({
             return error(`${status.failMessage}, ${e.message}`);
           });
       }
-
       if (type.type === 'put') {
         return await requests
           .put(jsonData, requests.additional)

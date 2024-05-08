@@ -110,7 +110,11 @@ const App = () => {
           <Route
             path={path.resetPassword}
             element={<ResetPasswordPage></ResetPasswordPage>}></Route>
+          <Route
+            path={path.appointmentsMIC}
+            element={<Appointment type={'appointment_MIC'}></Appointment>}></Route>
         </Routes>
+
         <Footer />
       </ConfirmProvider>
     </>
