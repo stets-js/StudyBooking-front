@@ -11,14 +11,13 @@
   justify-content: center;
 }
 .filters {
-  width: 80;
   margin-left: 5%;
   margin-right: 5%;
   display: flex;
   align-items: center;
   justify-content: center;
   &__item {
-    width: 25% !important;
+    width: 25% ;
   }
 }
 .filters__item:last-child {
@@ -534,4 +533,23 @@
     align-items: center;
     text-align: center;
   }
+  .filters{
+    column-gap: 30px;
+   &__item{
+    width: 60%;
+   }
+  }
+  .info{
+    &__wrapper{
+      width: 80%;
+      margin-left:10%;
+    }
+    &__avatar{
+      &__photo{
+        width:170px ;
+        height: auto;
+      }
+    }
+  }
+
 }

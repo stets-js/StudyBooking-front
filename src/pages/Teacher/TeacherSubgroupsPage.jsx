@@ -65,8 +65,6 @@ export default function TeacherSubgroupPage() {
         />
         <div className={`${styles.filters__item}`}>
           <FormInput
-            // width={'100%'}
-            // input_width={'100%'}
             type="text"
             placeholder="Filter by name"
             value={filterName}

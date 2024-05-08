@@ -46,7 +46,9 @@ export default function Info() {
         <div className={styles.info__name_block}>
           <div className={styles.info__avatar__wrapper}>
             <img src={user?.photoUrl} alt="avatar" className={styles.info__avatar__photo}></img>
-            <CloudinaryUploadWidget setUser={setUser} className={styles.info__avatar__button} />
+            {editActive && (
+              <CloudinaryUploadWidget setUser={setUser} className={styles.info__avatar__button} />
+            )}
           </div>
           <div>
             <FormInput
