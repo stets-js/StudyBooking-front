@@ -118,3 +118,17 @@
  opacity: 1 !important;
  height: 50px;
 }
+
+@media screen and (max-width: 768px) {
+  .buttons_header{
+  }
+  .type_selector{
+    width: 140px;
+    height: 70px;
+  }
+  .tooltip{
+    &__icon{
+      font-size:70px;
+    }
+  }
+}
