@@ -1,8 +1,8 @@
-@import "../../styles/variables.scss";
+@import '../../styles/variables.scss';
 .form {
   margin: 0 auto;
   @media screen and (max-width: 420px) {
-  width: 360px;
+    width: 360px;
   }
 }
 .exit {
@@ -101,5 +101,15 @@
   margin: 10px;
   &:hover {
     background-color: #575aaf;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .button__wrapper {
+    input,
+    button,div button {
+      width: calc(70vw / 3);
+      font-size: 16px;
+    }
   }
 }

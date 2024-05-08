@@ -1,5 +1,5 @@
-@import "../../../styles/variables.scss";
-@import "../../../styles/reset.scss";
+@import '../../../styles/variables.scss';
+@import '../../../styles/reset.scss';
 
 .input__block {
   display: flex;
@@ -12,62 +12,92 @@
   width: 47%;
 }
 
-.forgotPassword{
+.forgotPassword {
   font-size: 20px;
   font-family: $poppins;
-  align-items:center;
+  align-items: center;
   background-color: $grey;
-  margin-top:20px;
+  margin-top: 20px;
   height: 50px;
   padding: 20px;
   border-radius: 10px;
   background-color: $blue;
-  color:white;
+  color: white;
 }
-.forgotPassword:hover{
+.forgotPassword:hover {
   scale: 1.05;
 }
 
-.selector{
-  width:100%;
-  margin-top: 10px;    
+.selector {
+  width: 100%;
+  margin-top: 10px;
   font-family: $poppins;
-  :has(span){
-      height: 45px;
+  :has(span) {
+    height: 45px;
   }
-  :has(svg){
-      color:black
+  :has(svg) {
+    color: black;
   }
-  
-  :has(div){
- 
-      margin-left: 5px;
-      background-color: $grey;
-      font-size: 20px;
-      font-family: $poppins;
+
+  :has(div) {
+    margin-left: 5px;
+    background-color: $grey;
+    font-size: 20px;
+    font-family: $poppins;
   }
 }
 
-
-.phone{
+.phone {
   align-items: end;
   height: 100%;
   margin-bottom: 10px;
-  margin-top:10px;
-  > input{
+  margin-top: 10px;
+  > input {
     font-family: $poppins;
     font-size: 20px !important;
     width: 100% !important;
-
   }
-  &__wrapper{
+  &__wrapper {
     width: 50%;
-  text-align: left;
+    text-align: left;
     justify-content: left;
   }
-  &__label{
+  &__label {
     font-family: $poppins;
     font-size: 20px;
     text-align-last: left;
+  }
+}
+@media screen and (max-width: 768px) {
+  .input__block {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  .phone {
+    &__wrapper {
+      margin-top: 10px;
+      width: 100%;
+    }
+  }
+  .input__block > .input__label {
+    width: 100% !important;
+  }
+  .forgotPassword {
+    display: flex;
+    margin-left: 20%;
+    align-self: center;
+    font-size: 20px;
+    font-family: $poppins;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
+    height: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+  }
+  .forgotPassword:hover {
+    scale: 1.05;
   }
 }

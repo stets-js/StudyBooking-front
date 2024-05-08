@@ -49,8 +49,11 @@ input.green{
   width: 100%;
 }
 
-@media screen and (max-width: 420px) {
-  
+@media screen and (max-width: 768px) {
+  .input__label{
+    margin-top: 0;
+    width: 100% !important;
+  }
 
   
 }

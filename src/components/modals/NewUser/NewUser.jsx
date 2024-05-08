@@ -159,11 +159,9 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 />
               </div>
               <FormInput
-                classname="input__bottom"
                 title="City:"
                 type="text"
                 name="city"
-                max={50}
                 value={city}
                 placeholder="City"
                 isRequired={true}
@@ -207,7 +205,7 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
             )}
             {edit && (
               <button
-                className={`${styles.input__block} ${styles.forgotPassword}`}
+                className={styles.forgotPassword}
                 title="Password:"
                 type="button"
                 name="password"
@@ -216,7 +214,7 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 onClick={() => {
                   handlePasswordReset();
                 }}>
-                Forgot password
+                <span>Forgot password</span>
               </button>
             )}
           </Form>
