@@ -81,10 +81,15 @@ export default function AddMySubgroup() {
   const handleCellClick = ({time, weekDay, isSelected}) => {
     if (selectedClassType === null || !selectedCourse || !subGroup) return;
     const selectedSlotsTMP = [];
+
     for (let i = 0; i < (selectedClassType.value === 7 ? 3 : 2); i++) {
+      const slotTime = format(addMinutes(time, 30 * i), 'HH:mm');
+      if (slots.some(el => el.weekDay === weekDay && el.time === slotTime)) {
+        return;
+      }
       selectedSlotsTMP.push({
         weekDay,
-        time: format(addMinutes(time, 30 * i), 'HH:mm'),
+        time: slotTime,
         timeEnd: format(addMinutes(time, 30 * (selectedClassType.value === 7 ? 3 : 2)), 'HH:mm'),
         startDate,
         endDate,
