@@ -501,7 +501,8 @@
     &__item {
       width: 100px !important;
       &__date {
-        p, input{ 
+        p,
+        input {
           // for centering input on appointment Selector
           text-align-last: center !important;
         }
@@ -512,5 +513,24 @@
         margin-top: 10px;
       }
     }
+  }
+
+  .available_nav {
+    &_wrapper {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-left: 0;
+      width: 100%;
+      row-gap: 10px;
+    }
+    &__item {
+      margin-right: 0 !important;
+    }
+  }
+  .date_selector{
+    font-size: 20px;
+    align-items: center;
+    text-align: center;
   }
 }

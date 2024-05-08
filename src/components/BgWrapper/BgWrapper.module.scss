@@ -44,3 +44,12 @@
     margin-bottom: 55px;
   }
 }
+@media screen and (max-width: 768px) {
+  .title {
+    text-align: center;
+    font-family: $poppins;
+    font-size: 36px;
+    color: $font-black;
+    margin-bottom: 10px !important;
+  }
+}
