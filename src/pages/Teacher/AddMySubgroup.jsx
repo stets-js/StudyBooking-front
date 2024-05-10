@@ -89,11 +89,14 @@ export default function AddMySubgroup() {
       }
       selectedSlotsTMP.push({
         weekDay,
-        time: slotTime,
+        time: [
+          slotTime,
+          format(addMinutes(time, 30 * (selectedClassType.value === 7 ? 3 : 2)), 'HH:mm')
+        ],
         timeEnd: format(addMinutes(time, 30 * (selectedClassType.value === 7 ? 3 : 2)), 'HH:mm'),
         startDate,
         endDate,
-        userId,
+        mentorId: +userId,
         subgroupId: subGroup.value,
         appointmentTypeId: selectedClassType.value,
         rowSpan: i === 0 ? (selectedClassType.value === 7 ? 3 : 2) : 0
@@ -242,7 +245,7 @@ export default function AddMySubgroup() {
                                     (date, dateIndex) => {
                                       const curr_slot = slots.find(
                                         slot =>
-                                          slot.time === format(currentTime, 'HH:mm') &&
+                                          slot.time[0] === format(currentTime, 'HH:mm') &&
                                           slot.weekDay === dateIndex
                                       );
                                       if (curr_slot && curr_slot.rowSpan === 0) return <></>;
@@ -286,7 +289,7 @@ export default function AddMySubgroup() {
                                                 {curr_slot ? (
                                                   <>
                                                     <div>
-                                                      {curr_slot.time}
+                                                      {curr_slot.time[0]}
                                                       <br />-<br />
                                                       {curr_slot.timeEnd}
                                                     </div>
@@ -326,7 +329,7 @@ export default function AddMySubgroup() {
             subGroup,
             startDate,
             endDate,
-            userId,
+            mentorId: +userId,
             teacherType
           }}></NewMySubgroup>
       )}

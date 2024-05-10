@@ -11,5 +11,9 @@ const getLessonsForUser = ({mentorId, startDateLesson, endDateLesson}) => {
       throw error;
     });
 };
+const bulkLessonCreate = credentials => {
+  console.log(credentials);
+  return axios.post('/lessons/bulk', credentials);
+};
 
-export {getLessonsForUser};
+export {getLessonsForUser, bulkLessonCreate};

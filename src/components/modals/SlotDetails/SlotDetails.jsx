@@ -4,10 +4,8 @@ import React from 'react';
 import styles from './slotDetails.module.scss';
 import {format} from 'date-fns';
 const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
-  console.log(slot);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
-  console.log(subgroupMentors);
   return (
     <>
       {isOpen && slot && (

@@ -3,8 +3,8 @@ import React, {useEffect, useState} from 'react';
 import FormInput from '../../FormInput/FormInput';
 import Form from '../../Form/Form';
 import styles from './NewMySubgroup.module.scss';
-import {bulkSlotCreate} from '../../../helpers/slot/slot';
-import {createSubgroupMentor} from '../../../helpers/subgroup/subgroup';
+import {createSubgroupMentor, updateSubGroup} from '../../../helpers/subgroup/subgroup';
+import {bulkLessonCreate} from '../../../helpers/lessons/lesson';
 
 const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
   const [schedule, setSchedule] = useState('');
@@ -31,13 +31,20 @@ const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
             }}
             type={{type: 'post'}}
             requests={{
-              post: () => {
-                bulkSlotCreate(slots);
-                createSubgroupMentor({
+              post: async () => {
+                await slots
+                  .filter(slot => slot.rowSpan !== 0)
+                  .forEach(slot => bulkLessonCreate(slot));
+                // bulkSlotCreate(slots);
+                await createSubgroupMentor({
                   subgroupId: info.subGroup.value,
-                  mentorId: info.userId,
+                  mentorId: info.mentorId,
                   TeacherTypeId: info.teacherType,
                   schedule
+                });
+                await updateSubGroup({
+                  id: info.subGroup.value,
+                  body: {startDate: info.startDate, endDate: info.endDate}
                 });
               }
             }}
