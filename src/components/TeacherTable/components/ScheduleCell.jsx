@@ -22,6 +22,7 @@ export default function ScheduleCell({
   if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
   }
+  if (slot?.subgroupId) console.log(slot);
   return (
     <td key={slot?.weekDay} rowSpan={slot?.rowSpan || 1}>
       {
@@ -78,7 +79,9 @@ export default function ScheduleCell({
                   {!slot.Replacement && (
                     <span className={tableStyles.tags__item}>
                       {slot?.SubGroup?.SubgroupMentors &&
-                        (slot?.SubGroup?.SubgroupMentors || [])[0]?.TeacherType?.type}
+                      (slot?.SubGroup?.SubgroupMentors || [])[0]?.TeacherTypeId === 1
+                        ? 'soft'
+                        : 'tech'}
                     </span>
                   )}
                 </div>
