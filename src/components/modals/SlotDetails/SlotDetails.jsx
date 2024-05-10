@@ -4,8 +4,10 @@ import React from 'react';
 import styles from './slotDetails.module.scss';
 import {format} from 'date-fns';
 const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
+  console.log(slot);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
+  console.log(subgroupMentors);
   return (
     <>
       {isOpen && slot && (
@@ -16,9 +18,9 @@ const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
                 <a href={slot?.SubGroup.link}>{slot?.SubGroup?.name}</a>
                 {subgroupMentors?.TeacherType?.type}
                 <div className={styles.date_wrapper}>
-                  <span>Start: {format(slot.startDate, 'dd.MM.yyyy')}</span>
+                  <span>Start: {format(slot?.SubGroup.startDate, 'dd.MM.yyyy')}</span>
                   <br />
-                  <span>End: {format(slot.endDate, 'dd.MM.yyyy')}</span>
+                  <span>End: {format(slot?.SubGroup.endDate, 'dd.MM.yyyy')}</span>
                 </div>
               </div>
             )}
