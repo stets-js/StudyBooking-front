@@ -18,6 +18,7 @@ export default function ScheduleCell({
   setSelectedSlotDetails,
   dispatch
 }) {
+  if (slot?.rowSpan === 0) return <></>;
   if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
   }
@@ -38,11 +39,12 @@ export default function ScheduleCell({
               ? tableStyles.cell__outer
               : tableStyles.cell__inner
           } ${
-            // key can be generated only for appointed
-            !slot?.rowSpan ? appointmentStyles[`hover__${selectedAppointment?.name}`] : ''
+            !slot?.rowSpan
+              ? appointmentStyles[`hover__${selectedAppointment?.name || 'universal'}`]
+              : ''
           }  ${
             slot && slot.appointmentTypeId
-              ? appointmentStyles[`type_selector__${slot.AppointmentType.name}`]
+              ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`]
               : ''
           } `}
           onClick={() => {

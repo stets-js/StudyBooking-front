@@ -1,10 +1,32 @@
-export const filterAndUpdateSlots = slots => {
+import {addMinutes, format} from 'date-fns';
+
+export const filterAndUpdateSlots = (slots, lessons) => {
   // This function itterate through all slots and filter them to exact weekDay
   // + add rowSpan for first slot of Each 'slot group' so it can be rendered as one
   // big slot not three small slots
 
   const updatedWeekSchedule = Array.from({length: 7}, () => []);
 
+  lessons.forEach(lesson => {
+    const schedule = lesson.LessonSchedule;
+    const appointmentType = lesson.appointmentTypeId === 7 ? 3 : 2;
+    const slots = [
+      {
+        ...lesson,
+        rowSpan: appointmentType,
+        time: schedule.startTime
+      }
+    ];
+    for (let i = 1; i < appointmentType; i++) {
+      slots.push({
+        time: format(addMinutes(new Date(`1970 ${schedule.startTime}`), 30 * i), 'HH:mm'),
+        rowSpan: 0
+      });
+    }
+
+    updatedWeekSchedule[schedule.weekDay].push(...slots);
+  });
+  // console.log(updatedWeekSchedule);
   const appointedSubgroupsIds = [];
   const appointedReplacementsIds = [];
   //have to separete this lists cause ids can collapse

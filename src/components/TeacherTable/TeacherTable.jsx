@@ -13,6 +13,7 @@ import ScheduleCell from './components/ScheduleCell';
 import WeekChanger from './components/weekChanger';
 import {filterAndUpdateSlots} from './scripts/fillterAndUpdateSlots';
 import AppointmentList from './components/AppointmentList';
+import {getLessonsForUser} from '../../helpers/lessons/lesson';
 
 export default function TeacherTable({userId}) {
   const dispatch = useDispatch();
@@ -35,19 +36,26 @@ export default function TeacherTable({userId}) {
     Array.from({length: 7}, (_, i) => addDays(initialStartDate, i))
   );
   const [appointmentTypes, setAppointmentTypes] = useState([]);
-  const [selectedAppointment, setSelectedAppointment] = useState({name: '', id: null});
+  const [selectedAppointment, setSelectedAppointment] = useState({name: 'universal', id: 6});
   const [openSlotDetails, setOpenSlotDetails] = useState(false);
   const [selectedSlotDetails, setSelectedSlotDetails] = useState(null);
   useEffect(() => {
     const fetchSlots = async () => {
       dispatch(cleanOccupiedSlots());
+      const lessons = await getLessonsForUser({
+        mentorId: userId,
+        startDateLesson: format(startDates[0], 'yyyy-MM-dd'),
+        endDateLesson: format(startDates[6], 'yyyy-MM-dd')
+      });
+      console.log(lessons);
       const slots = await getSlotsForUser({
         userId,
         startDate: format(startDates[0], 'yyyy-MM-dd'),
         endDate: format(startDates[6], 'yyyy-MM-dd')
       });
 
-      dispatch(setWeekScheduler(filterAndUpdateSlots(slots)));
+      dispatch(setWeekScheduler(filterAndUpdateSlots(slots, lessons.data)));
+      console.log(weekSchedule);
     };
     try {
       fetchSlots();

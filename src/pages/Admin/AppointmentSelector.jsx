@@ -23,6 +23,8 @@ export default function UsersPage({type = 'appointment'}) {
   const startingHour = 9;
   const [selectedClassType, setSelectedClassType] = useState(null);
   const selectedSlots = useSelector(state => state.selectedSlots);
+  const [lessonAmount, setLessonAmount] = useState(0);
+
   const [selectedSlotsAmount, setSelectedSlotsAmount] = useState(0);
   const [teacherType, setTeacherType] = useState(1); // soft/tech
   initialStartDate.setHours(startingHour, 0, 0, 0);
@@ -98,10 +100,13 @@ export default function UsersPage({type = 'appointment'}) {
       dispatch({type: 'CLEAN_SELECTED_SLOTS'});
       setRenderTeachers(true);
       setSelectedSlotsAmount(0);
+      setLessonAmount(0);
     }
   };
+
   return (
     <div>
+      <h3>Lesson amount: {lessonAmount}</h3>
       <AppointmentButtons
         startDate={startDate}
         isReplacement={isReplacement}
@@ -124,11 +129,14 @@ export default function UsersPage({type = 'appointment'}) {
       <div className={styles.scroller}>
         <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
           <AppointmentBodyTable
+            setLessonAmount={setLessonAmount}
             selectedClassType={selectedClassType}
             selectedSlotsAmount={selectedSlotsAmount}
             slotsData={slotsData}
             setSelectedSlotsAmount={setSelectedSlotsAmount}
-            setTeachersIds={setTeachersIds}></AppointmentBodyTable>
+            setTeachersIds={setTeachersIds}
+            startDate={startDate}
+            endDate={endDate}></AppointmentBodyTable>
         </div>
       </div>
       <SetAppointment

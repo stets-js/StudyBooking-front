@@ -10,7 +10,10 @@ export const HandleCellClick = async ({
   selectedSlotsAmount,
   setTeachersIds,
   selectedSlots,
-  dispatch
+  dispatch,
+  setLessonAmount,
+  startDate,
+  endDate
 }) => {
   let teachersIdsNew = [];
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
@@ -52,8 +55,21 @@ export const HandleCellClick = async ({
         }
       }
     });
-    console.log(selectedSlots);
   }
+
   setSelectedSlotsAmount(selectedSlotsAmount + 1);
   setTeachersIds(teachersIdsNew);
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  // console.log(end, start);
+  let count = 0;
+  let currentDate = start;
+
+  while (currentDate <= end) {
+    if (currentDate.getDay() === weekDay) {
+      count++;
+      currentDate.setDate(currentDate.getDate() + 7);
+    } else currentDate.setDate(currentDate.getDate() + 1); // Переходим к следующей дате
+  }
+  setLessonAmount(prev => prev + count);
 };

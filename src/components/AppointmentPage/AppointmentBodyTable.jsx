@@ -9,9 +9,12 @@ import {HandleCellClick} from './HandleCellClick';
 export default function AppointmentBodyTable({
   selectedClassType,
   selectedSlotsAmount,
+  setLessonAmount,
   slotsData,
   setSelectedSlotsAmount,
-  setTeachersIds
+  setTeachersIds,
+  startDate,
+  endDate
 }) {
   const selectedSlots = useSelector(state => state.selectedSlots);
   const startingHour = 9;
@@ -80,8 +83,11 @@ export default function AppointmentBodyTable({
                             selectedSlotsAmount,
                             setTeachersIds,
                             selectedSlots,
+                            setLessonAmount,
                             dispatch,
-                            slotsData
+                            slotsData,
+                            startDate,
+                            endDate
                           })
                         }>
                         <span>
