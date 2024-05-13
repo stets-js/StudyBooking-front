@@ -9,6 +9,7 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.65);
   z-index: 999999999;
+  overflow: hidden;
 }
 
 .Modal {
@@ -24,6 +25,14 @@
 }
 
 @media (max-width: 768px) {
+  .Modal{
+    min-width: 70vw;    
+    padding:10px 16px 14px 16px;
+    overflow: hidden;
+  }
+  .Overlay{
+    min-height: 105vh;
+  }
   .login {
     &__box {
       min-width: 200px;
