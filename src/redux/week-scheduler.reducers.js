@@ -33,7 +33,6 @@ const weekScheduler = (state = initialState, action) => {
         })
       };
     case 'UPDATE_SLOT_FOR_WEEK':
-      console.log(action.payload);
       return {
         ...state,
         weekScheduler: state.weekScheduler.map((daySlots, index) => {

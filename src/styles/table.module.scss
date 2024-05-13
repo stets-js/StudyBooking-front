@@ -300,4 +300,21 @@ th:first-child .cell__header {
       width: auto !important;
     }
   }
+  .tags {
+    &__wrapper {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      row-gap: 10px;
+      margin-bottom: 0;
+      justify-content: center;
+    }
+    &__item {
+      min-width: 30px;
+      position: relative;
+      width: 30px;
+      font-size: 12px;
+      align-items: center;
+      margin-left: 0 !important;
+    }
+  }
 }
