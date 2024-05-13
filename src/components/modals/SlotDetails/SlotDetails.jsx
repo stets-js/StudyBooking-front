@@ -1,18 +1,36 @@
-import Modal from '../../Modal/Modal';
-import FormInput from '../../FormInput/FormInput';
-import React, {useState} from 'react';
-import styles from './slotDetails.module.scss';
+import React, {useEffect, useState} from 'react';
+import Select from 'react-select';
 import {format} from 'date-fns';
+import {useDispatch} from 'react-redux';
+
+import FormInput from '../../FormInput/FormInput';
+import selectorStyles from '../../../styles/selector.module.scss';
+import Modal from '../../Modal/Modal';
+import styles from './slotDetails.module.scss';
 import EditButton from '../../Buttons/Edit';
 import DeleteButton from '../../Buttons/Delete';
-import {patchLesson} from '../../../helpers/lessons/lesson';
-import {useDispatch} from 'react-redux';
+import {getTopics, patchLesson} from '../../../helpers/lessons/lesson';
 import {updateSlotForWeek} from '../../../redux/action/weekScheduler.action';
+import classNames from 'classnames';
 
 const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
+  const [topics, setTopics] = useState([]);
+
   const dispatch = useDispatch();
-  const [isFBEdit, setIsFBEdit] = useState(false); // feedbackEdit
+  const [isEdit, setIsEdit] = useState(false); // feedbackEdit
   const [prevFeedback, setPrevFeedback] = useState(slot?.feedback);
+  const fetchData = async () => {
+    const res = await getTopics();
+    if (res)
+      setTopics(
+        res.data.data.map(element => {
+          return {label: element.topic, value: element.id};
+        })
+      );
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
   return (
@@ -96,12 +114,27 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                 textArea={true}
               />
             )}
-
+            <p className={styles.topic__label}>Topic</p>
+            <Select
+              name="Topic"
+              isDisabled={!isEdit}
+              className={classNames(selectorStyles.selector, selectorStyles.selector__fullwidth)}
+              value={topics.filter(el => el.value === slot.LessonTopicId)}
+              options={topics}
+              required
+              key={Math.random() * 100 - 10}
+              placeholder="Select Topic"
+              onChange={el =>
+                setSlot(prev => {
+                  return {...prev, LessonTopicId: el.value};
+                })
+              }
+            />
             <FormInput
               classname="input__bottom"
               title="Feedback:"
               type="text"
-              disabled={!isFBEdit}
+              disabled={!isEdit}
               handler={e =>
                 setSlot(prev => {
                   return {...prev, feedback: e};
@@ -111,27 +144,30 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
               textArea={true}
             />
           </div>
-          {!isFBEdit ? (
+          {!isEdit ? (
             <EditButton
               onClick={() => {
-                setIsFBEdit(true);
+                setIsEdit(true);
                 setPrevFeedback(slot.feedback);
               }}></EditButton>
           ) : (
             <div>
               <EditButton
-                title={'Confirm'}
+                text={'Confirm'}
                 onClick={async () => {
-                  const res = await patchLesson(slot.id, {feedback: slot.feedback});
+                  const res = await patchLesson(slot.id, {
+                    feedback: slot.feedback,
+                    LessonTopicId: slot.LessonTopicId
+                  });
                   if (res) {
                     dispatch(updateSlotForWeek(slot));
-                    setIsFBEdit(false);
+                    setIsEdit(false);
                   }
                 }}></EditButton>
               <DeleteButton
-                title={'Cancel'}
+                text={'Cancel'}
                 onClick={() => {
-                  setIsFBEdit(false);
+                  setIsEdit(false);
                   setSlot(prev => {
                     return {...prev, feedback: prevFeedback};
                   });
