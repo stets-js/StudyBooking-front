@@ -16,4 +16,7 @@ const bulkLessonCreate = credentials => {
   return axios.post('/lessons/bulk', credentials);
 };
 
-export {getLessonsForUser, bulkLessonCreate};
+const patchLesson = (id, credentials) => {
+  return axios.patch(`/lessons/${id}`, credentials);
+};
+export {getLessonsForUser, bulkLessonCreate, patchLesson};

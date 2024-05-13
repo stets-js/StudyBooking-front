@@ -1,9 +1,18 @@
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './slotDetails.module.scss';
 import {format} from 'date-fns';
-const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
+import EditButton from '../../Buttons/Edit';
+import DeleteButton from '../../Buttons/Delete';
+import {patchLesson} from '../../../helpers/lessons/lesson';
+import {useDispatch} from 'react-redux';
+import {updateSlotForWeek} from '../../../redux/action/weekScheduler.action';
+
+const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
+  const dispatch = useDispatch();
+  const [isFBEdit, setIsFBEdit] = useState(false); // feedbackEdit
+  const [prevFeedback, setPrevFeedback] = useState(slot?.feedback);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
   return (
@@ -87,7 +96,48 @@ const SlotDetails = ({isOpen, handleClose, slot, userId}) => {
                 textArea={true}
               />
             )}
+
+            <FormInput
+              classname="input__bottom"
+              title="Feedback:"
+              type="text"
+              disabled={!isFBEdit}
+              handler={e =>
+                setSlot(prev => {
+                  return {...prev, feedback: e};
+                })
+              }
+              value={slot.feedback || ''}
+              textArea={true}
+            />
           </div>
+          {!isFBEdit ? (
+            <EditButton
+              onClick={() => {
+                setIsFBEdit(true);
+                setPrevFeedback(slot.feedback);
+              }}></EditButton>
+          ) : (
+            <div>
+              <EditButton
+                title={'Confirm'}
+                onClick={async () => {
+                  const res = await patchLesson(slot.id, {feedback: slot.feedback});
+                  if (res) {
+                    dispatch(updateSlotForWeek(slot));
+                    setIsFBEdit(false);
+                  }
+                }}></EditButton>
+              <DeleteButton
+                title={'Cancel'}
+                onClick={() => {
+                  setIsFBEdit(false);
+                  setSlot(prev => {
+                    return {...prev, feedback: prevFeedback};
+                  });
+                }}></DeleteButton>
+            </div>
+          )}
         </Modal>
       )}
     </>

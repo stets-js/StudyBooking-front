@@ -26,8 +26,6 @@ const weekScheduler = (state = initialState, action) => {
         weekScheduler: state.weekScheduler.map((daySlots, index) => {
           if (index === action.payload.weekDay) {
             return daySlots.map(slot => {
-              console.log(slot);
-
               return slot.time === action.payload.time ? action.payload : slot;
             });
           }
@@ -35,13 +33,12 @@ const weekScheduler = (state = initialState, action) => {
         })
       };
     case 'UPDATE_SLOT_FOR_WEEK':
+      console.log(action.payload);
       return {
         ...state,
         weekScheduler: state.weekScheduler.map((daySlots, index) => {
-          if (index === action.payload.weekDay) {
+          if (index === action.payload.weekDay || index === action.payload.LessonSchedule.weekDay) {
             return daySlots.map(slot => {
-              console.log(slot);
-
               return slot.id === action.payload.id ? action.payload : slot;
             });
           }
