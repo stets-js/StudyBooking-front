@@ -5,11 +5,11 @@ import tableStyles from '../../../styles/table.module.scss';
 import styles from '../../../styles/SuperAdminPage.module.scss';
 import DeleteButton from '../../Buttons/Delete';
 import {deleteMentorFromSubgroup} from '../../../helpers/subgroup/subgroup';
-import {deleteUserSlots} from '../../../helpers/user/user';
+import {deleteLessons} from '../../../helpers/lessons/lesson';
 
-export default function MentorTable({subgroupMentors, isEdit}) {
-  const headers = ['Mentor', 'type', 'schedule'];
-
+export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit, subgroupId}) {
+  const headers = ['Mentor', 'Type', 'Schedule', 'Action'];
+  console.log(subgroupMentors);
   return (
     <>
       <div className={`${tableStyles.header} ${tableStyles.header__mySubgroup}`}>
@@ -35,6 +35,7 @@ export default function MentorTable({subgroupMentors, isEdit}) {
               </tr>
             ) : (
               subgroupMentors.map((mentor, index) => {
+                console.log(mentor);
                 return (
                   <tr>
                     <td>
@@ -88,13 +89,21 @@ export default function MentorTable({subgroupMentors, isEdit}) {
                         <DeleteButton
                           onClick={async () => {
                             if (mentor.mentorId && mentor.subgroupId) {
-                              await deleteUserSlots({
-                                id: mentor.mentorId,
-                                subgroupId: mentor.subgroupId
+                              await deleteLessons({
+                                mentorId: mentor.mentorId,
+                                sddubgroupId: mentor.subgroupId
                               });
                               await deleteMentorFromSubgroup({
                                 subgroupId: mentor.subgroupId,
                                 mentorId: mentor.mentorId
+                              });
+                              setSubgroupMentors(prev => {
+                                return prev.map(el => {
+                                  if (el.id !== subgroupId) return el;
+                                  else {
+                                    return {...el};
+                                  }
+                                });
                               });
                             }
                           }}

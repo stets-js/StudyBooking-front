@@ -36,7 +36,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
             type={{type: 'subGroup'}}
             status={{
               successMessage: 'Edited subgroup!',
-              failMessage: 'Failed to edit  subgroup!'
+              failMessage: 'Failed to edit subgroup!'
             }}
             name={element.name}
             description={element.description}
@@ -84,6 +84,8 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
               <div>
                 <MentorTable
                   subgroupMentors={element.SubgroupMentors}
+                  setSubgroupMentors={setElement}
+                  subgroupId={element.id}
                   isEdit={editActive}></MentorTable>
                 {/* {element.SubgroupMentors.map(mentor => {
                   return (

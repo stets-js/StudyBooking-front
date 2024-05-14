@@ -22,4 +22,8 @@ const patchLesson = (id, credentials) => {
 const getTopics = () => {
   return axios.get('/lessons/topics');
 };
-export {getLessonsForUser, bulkLessonCreate, patchLesson, getTopics};
+
+const deleteLessons = credentials => {
+  return axios.delete(`/lessons`, credentials);
+};
+export {getLessonsForUser, bulkLessonCreate, patchLesson, getTopics, deleteLessons};

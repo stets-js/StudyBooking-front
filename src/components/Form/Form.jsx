@@ -57,6 +57,9 @@ const Form = ({
   const dispatch = useDispatch();
   const handleSubmit = async event => {
     event.preventDefault();
+    const root = document.querySelector('#root');
+    document.body.style.overflow = 'auto';
+    root.style.overflow = 'auto';
     if (type.type === 'no-request-test') {
       return onSubmit();
     }

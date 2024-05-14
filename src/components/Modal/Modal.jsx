@@ -7,7 +7,8 @@ import classNames from 'classnames';
 const modalRef = document.querySelector('#root-modal');
 const root = document.querySelector('#root');
 const Modal = props => {
-  if (props.open && props.classname_wrapper !== 'login__wrapper') {
+  if (props.open) {
+    console.log(); // dont remove!
     document.body.style.overflow = 'hidden';
     root.style.overflow = 'hidden';
   }
@@ -23,7 +24,9 @@ const Modal = props => {
       <Fade triggerOnce duration={250}>
         <div
           className={classNames(styles['Modal'], styles[props.classname_box])}
-          onClick={e => e.stopPropagation()}>
+          onClick={e => {
+            e.stopPropagation();
+          }}>
           {props.children}
         </div>
       </Fade>
