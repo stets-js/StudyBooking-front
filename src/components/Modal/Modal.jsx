@@ -7,7 +7,6 @@ import classNames from 'classnames';
 const modalRef = document.querySelector('#root-modal');
 const root = document.querySelector('#root');
 const Modal = props => {
-  console.log(props);
   if (props.open && props.classname_wrapper !== 'login__wrapper') {
     document.body.style.overflow = 'hidden';
     root.style.overflow = 'hidden';
