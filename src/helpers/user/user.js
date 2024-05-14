@@ -94,7 +94,12 @@ const deleteUserSlots = ({id, subgroupId}) => {
   return axios.delete(`/users/${id}/slots?subgroupId=${subgroupId}`);
 };
 
+const loginMIC = credentials => {
+  return axios.post(`https://king-prawn-app-hnaei.ondigitalocean.app/login`, credentials);
+};
+
 export {
+  loginMIC,
   getRoles,
   getUsersByRole,
   postUser,

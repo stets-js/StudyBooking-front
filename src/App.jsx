@@ -28,6 +28,7 @@ import TeacherSubgroupPage from './pages/Teacher/TeacherSubgroupsPage';
 import Spreadsheet from './pages/Admin/SpreadsheetPage';
 import AddMySubgroup from './pages/Teacher/AddMySubgroup';
 import Info from './pages/Teacher/Info';
+import MICWrapper from './pages/MIC/MICWrapper';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -110,9 +111,16 @@ const App = () => {
           <Route
             path={path.resetPassword}
             element={<ResetPasswordPage></ResetPasswordPage>}></Route>
+          {/* <Route path={path.Login}></Route>
           <Route
             path={path.appointmentsMIC}
-            element={<Appointment type={'appointment_MIC'}></Appointment>}></Route>
+            element={<Appointment type={'appointment_MIC'}></Appointment>}></Route> */}
+          <Route path={path.MIC} element={<MICWrapper />}>
+            {/* <Route path={path.teacher} element={<TeacherPage />}></Route>
+            <Route path={path.addMySubgroup} element={<AddMySubgroup />}></Route>
+            <Route path={path.mySubgroups} element={<TeacherSubgroupPage />}></Route>
+            <Route path={path.info} element={<Info />}></Route> */}
+          </Route>
         </Routes>
 
         <Footer />

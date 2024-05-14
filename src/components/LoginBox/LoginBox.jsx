@@ -5,7 +5,7 @@ import SignUp from '../modals/SignUp/SignUp';
 import {useDispatch, useSelector} from 'react-redux';
 import logout from '../../img/logout.svg';
 
-export default function LoginBox({loggedUser}) {
+export default function LoginBox({loggedUser, MIC}) {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
@@ -24,7 +24,9 @@ export default function LoginBox({loggedUser}) {
         onClick={e => {
           e.target.dataset.modal && setModal(e.target.dataset.modal);
         }}>
-        {modal === 'login' && <Login isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />}
+        {modal === 'login' && (
+          <Login MIC={MIC} isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />
+        )}
         {modal === 'signup' && <SignUp isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />}
         {auth ? (
           <>

@@ -7,7 +7,7 @@ import {useEffect} from 'react';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-
+  console.log('here');
   useEffect(() => {
     const tokenFromLocalStorage = localStorage.getItem('booking');
     if (tokenFromLocalStorage) {

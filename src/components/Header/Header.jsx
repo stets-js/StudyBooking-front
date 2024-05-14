@@ -5,7 +5,14 @@ import Navigation from '../Navigation/Navigation';
 import styles from './Header.module.scss';
 import {useSelector} from 'react-redux';
 
-export default function Header({endpoints = [], user, hideLogo, hideLogin, bottom_padding}) {
+export default function Header({
+  MIC = false,
+  endpoints = [],
+  user,
+  hideLogo,
+  hideLogin,
+  bottom_padding
+}) {
   const loggedUser = useSelector(state => state.auth);
   return (
     <header className={`${styles.header} ${bottom_padding ? styles.nav_header : ''}`}>
@@ -19,7 +26,7 @@ export default function Header({endpoints = [], user, hideLogo, hideLogin, botto
         </a>
       )}
       <Navigation user={user} links={endpoints} />
-      {!hideLogin && <LoginBox loggedUser={loggedUser} />}
+      {!hideLogin && <LoginBox loggedUser={loggedUser} MIC={MIC} />}
     </header>
   );
 }

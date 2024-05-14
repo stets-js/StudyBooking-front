@@ -7,6 +7,7 @@ const initialState = {
     role: 0,
     id: null
   },
+  MIC: {},
   token: null
 };
 
@@ -14,7 +15,25 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
       const decodedToken = jwtDecode(action.payload.token);
-      Cookies.set('token', action.payload.token, {expires: decodedToken.exp});
+      console.log(decodedToken);
+      Cookies.set(`token${action.payload?.MIC ? '__MIC' : ''}`, action.payload.token, {
+        expires: decodedToken.exp
+      });
+      if (action.payload.MIC) {
+        return {
+          ...state,
+          isAuthenticated: true,
+
+          MIC: {
+            name: decodedToken.user_name,
+            role: decodedToken.role,
+            roleId: decodedToken.roleId,
+            id: decodedToken.id,
+            exp: decodedToken.exp
+          },
+          token: action.payload.token
+        };
+      }
       return {
         ...state,
         isAuthenticated: true,

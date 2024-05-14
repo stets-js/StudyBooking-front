@@ -5,8 +5,9 @@ import React, {useState} from 'react';
 import {loginUser} from '../../../helpers/manager/manager';
 import {useDispatch} from 'react-redux';
 import {error} from '@pnotify/core';
+import {loginMIC} from '../../../helpers/user/user';
 
-const Login = ({isOpen, handleClose}) => {
+const Login = ({MIC, isOpen, handleClose}) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,22 +16,33 @@ const Login = ({isOpen, handleClose}) => {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      const res = await loginUser({email, password});
-      dispatch({
-        type: 'LOGIN_SUCCESS',
-        payload: {
-          token: res
-        }
-      });
-      handleClose();
-      setEmail('');
-      setPassword('');
+      if (MIC) {
+        const res = await loginMIC({login: email, password});
+        console.log(res);
+        dispatch({
+          type: 'LOGIN_SUCCESS',
+          payload: {
+            token: {...res, MIC: true}
+          }
+        });
+      } else {
+        const res = await loginUser({email, password});
+        dispatch({
+          type: 'LOGIN_SUCCESS',
+          payload: {
+            token: res
+          }
+        });
+        handleClose();
+        setEmail('');
+        setPassword('');
+      }
     } catch (err) {
       console.log(err);
-      error(err.message);
+      error(err);
     }
   };
-
+  console.log(MIC);
   return (
     <>
       {isOpen && (
@@ -43,11 +55,11 @@ const Login = ({isOpen, handleClose}) => {
           <form>
             <FormInput
               classname={styles.title}
-              title="Email:"
-              type="email"
-              name="email"
+              title={!MIC ? 'Email:' : 'Login:'}
+              type={!MIC ? 'email:' : 'login:'}
+              name={!MIC ? 'email:' : 'login:'}
               value={email}
-              placeholder="Login"
+              placeholder={!MIC ? 'Email:' : 'Login:'}
               isRequired={true}
               handler={setEmail}
             />
@@ -62,20 +74,7 @@ const Login = ({isOpen, handleClose}) => {
               isRequired={true}
               handler={setPassword}
             />
-            {/* <label className={styles.input__label}>
-              <div className={styles.checkbox__wrapper}>
-                <input
-                  className={styles.input}
-                  type="checkbox"
-                  name="remember"
-                  required
-                  value={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
-                />
 
-                <p className={styles.input__title}>Remember me</p>
-              </div>
-            </label> */}
             <button
               type="submit"
               onClick={e => {
