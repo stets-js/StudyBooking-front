@@ -95,7 +95,17 @@ const deleteUserSlots = ({id, subgroupId}) => {
 };
 
 const loginMIC = credentials => {
-  return axios.post(`https://king-prawn-app-hnaei.ondigitalocean.app/login`, credentials);
+  const formData = new FormData();
+
+  for (const key in credentials) {
+    formData.append(key, credentials[key]);
+  }
+
+  return axios.post('https://king-prawn-app-hnaei.ondigitalocean.app/login', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 };
 
 export {
