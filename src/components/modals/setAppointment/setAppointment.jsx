@@ -11,6 +11,7 @@ import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 import {useParams} from 'react-router-dom';
 const SetAppointment = ({
   type,
+  appointmentFlag,
   isOpen,
   handleClose,
   selectedSlots,
@@ -139,7 +140,7 @@ const SetAppointment = ({
             adminId={selectedAdmin}
             selectedCourse={course.value}
             slots={JSON.stringify(selectedSlots)}
-            type={{type}}
+            type={{type: appointmentFlag}}
             appointmentType={appointmentType}
             isReplacement={isReplacement}
             schedule={schedule}

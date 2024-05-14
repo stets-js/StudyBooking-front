@@ -37,8 +37,9 @@ const App = () => {
   const jwtExp = useSelector(state => state.auth.user.exp);
   const userRole = useSelector(state => state.auth.user.role);
   const token = useSelector(state => state.auth.token);
-  const auth = isAuthenticated && jwtExp * 1000 > Date.now() && token;
-  if (isAuthenticated && !auth) {
+  const MIC_user = useSelector(state => state.auth.MIC);
+  const auth = isAuthenticated && (jwtExp * 1000 > Date.now() || MIC_user) && token;
+  if (isAuthenticated && !auth && isAuthenticated && !MIC_user) {
     dispatch({
       type: 'LOGOUT'
     });
@@ -50,6 +51,9 @@ const App = () => {
   axios.interceptors.request.use(
     function (config) {
       config.headers.Authorization = 'Bearer ' + Cookies.get('token');
+      if (MIC_user?.name) {
+        config.headers = {...config.headers, mic: true};
+      }
       return config;
     },
     error => {
@@ -108,19 +112,17 @@ const App = () => {
               <Route path={path.home} element={<HomePage />} />
             </>
           )}
+
+          <Route path={path.MIC} element={<MICWrapper />}>
+            {auth && (
+              <Route
+                path={path.appointments}
+                element={<Appointment appointmentFlag={'appointment_MIC'}></Appointment>}></Route>
+            )}
+          </Route>
           <Route
             path={path.resetPassword}
             element={<ResetPasswordPage></ResetPasswordPage>}></Route>
-          {/* <Route path={path.Login}></Route>
-          <Route
-            path={path.appointmentsMIC}
-            element={<Appointment type={'appointment_MIC'}></Appointment>}></Route> */}
-          <Route path={path.MIC} element={<MICWrapper />}>
-            {/* <Route path={path.teacher} element={<TeacherPage />}></Route>
-            <Route path={path.addMySubgroup} element={<AddMySubgroup />}></Route>
-            <Route path={path.mySubgroups} element={<TeacherSubgroupPage />}></Route>
-            <Route path={path.info} element={<Info />}></Route> */}
-          </Route>
         </Routes>
 
         <Footer />

@@ -28,11 +28,11 @@ export default function AppointmentButtons({
   setSelectedClassType,
   clearTable,
   setTeacherType,
-  teacherType
+  teacherType,
+  appointmentFlag
 }) {
   const dispatch = useDispatch();
-  const {token} = useParams();
-
+  const token = appointmentFlag.includes('MIC');
   let appointmentTypes = [
     {label: 'Group', value: 0},
     {label: 'Individual', value: 1},

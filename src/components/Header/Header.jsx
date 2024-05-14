@@ -6,7 +6,7 @@ import styles from './Header.module.scss';
 import {useSelector} from 'react-redux';
 
 export default function Header({
-  MIC = false,
+  MIC_flag = false,
   endpoints = [],
   user,
   hideLogo,
@@ -26,7 +26,7 @@ export default function Header({
         </a>
       )}
       <Navigation user={user} links={endpoints} />
-      {!hideLogin && <LoginBox loggedUser={loggedUser} MIC={MIC} />}
+      {!hideLogin && <LoginBox loggedUser={loggedUser} MIC_flag={MIC_flag} />}
     </header>
   );
 }

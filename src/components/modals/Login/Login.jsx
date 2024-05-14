@@ -7,8 +7,9 @@ import {useDispatch} from 'react-redux';
 import {error} from '@pnotify/core';
 import {loginMIC} from '../../../helpers/user/user';
 
-const Login = ({MIC, isOpen, handleClose}) => {
+const Login = ({MIC_flag, isOpen, handleClose}) => {
   const dispatch = useDispatch();
+  console.log(MIC_flag);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [remember, setRemember] = useState("");
@@ -16,33 +17,35 @@ const Login = ({MIC, isOpen, handleClose}) => {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      if (MIC) {
+      if (MIC_flag) {
         const res = await loginMIC({login: email, password});
         console.log(res);
         dispatch({
           type: 'LOGIN_SUCCESS',
           payload: {
-            token: {...res, MIC: true}
+            token: res.data,
+            MIC: true
           }
         });
       } else {
+        console.log('hello');
         const res = await loginUser({email, password});
+        console.log(res);
         dispatch({
           type: 'LOGIN_SUCCESS',
           payload: {
             token: res
           }
         });
-        handleClose();
-        setEmail('');
-        setPassword('');
       }
+      handleClose();
+      setEmail('');
+      setPassword('');
     } catch (err) {
       console.log(err);
-      error(err);
+      error(err.message);
     }
   };
-  console.log(MIC);
   return (
     <>
       {isOpen && (
@@ -55,11 +58,11 @@ const Login = ({MIC, isOpen, handleClose}) => {
           <form>
             <FormInput
               classname={styles.title}
-              title={!MIC ? 'Email:' : 'Login:'}
-              type={!MIC ? 'email:' : 'login:'}
-              name={!MIC ? 'email:' : 'login:'}
+              title={!MIC_flag ? 'Email:' : 'Login:'}
+              type={!MIC_flag ? 'email' : 'login'}
+              name={!MIC_flag ? 'email' : 'login'}
               value={email}
-              placeholder={!MIC ? 'Email:' : 'Login:'}
+              placeholder={!MIC_flag ? 'Email:' : 'Login:'}
               isRequired={true}
               handler={setEmail}
             />

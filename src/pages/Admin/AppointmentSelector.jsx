@@ -12,7 +12,7 @@ import AppointmentButtons from '../../components/AppointmentPage/AppointmentButt
 import AppointmentHeaderTable from '../../components/AppointmentPage/AppointmentHeaderTable';
 import AppointmentBodyTable from '../../components/AppointmentPage/AppointmentBodyTable';
 
-export default function UsersPage({type = 'appointment'}) {
+export default function UsersPage({appointmentFlag = 'appointment'}) {
   const dispatch = useDispatch();
   const [slotsData, setSlotsData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -108,6 +108,7 @@ export default function UsersPage({type = 'appointment'}) {
     <div>
       <h3>Lesson amount: {lessonAmount}</h3>
       <AppointmentButtons
+        appointmentFlag={appointmentFlag}
         startDate={startDate}
         isReplacement={isReplacement}
         setStartDate={setStartDate}
@@ -140,7 +141,7 @@ export default function UsersPage({type = 'appointment'}) {
         </div>
       </div>
       <SetAppointment
-        type={type}
+        appointmentFlag={appointmentFlag}
         setSelectedCourse={setSelectedCourse}
         startDate={startDate}
         endDate={endDate}

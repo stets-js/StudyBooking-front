@@ -5,18 +5,18 @@ import SignUp from '../modals/SignUp/SignUp';
 import {useDispatch, useSelector} from 'react-redux';
 import logout from '../../img/logout.svg';
 
-export default function LoginBox({loggedUser, MIC}) {
+export default function LoginBox({loggedUser, MIC_flag = false}) {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
-    user: {name}
+    user: {name},
+    MIC
   } = loggedUser;
   const jwtExp = useSelector(state => state.auth.user.exp);
-  const auth = isAuthenticated && jwtExp * 1000 > Date.now();
-
+  const jwtExpMIC = useSelector(state => state.auth.MIC.exp);
+  const auth = isAuthenticated && (jwtExp * 1000 > Date.now() || jwtExpMIC);
   const [isOpen, setIsOpen] = useState(false);
   const [modal, setModal] = useState('');
-
   return (
     <div className={styles.loginBox}>
       <div
@@ -25,12 +25,12 @@ export default function LoginBox({loggedUser, MIC}) {
           e.target.dataset.modal && setModal(e.target.dataset.modal);
         }}>
         {modal === 'login' && (
-          <Login MIC={MIC} isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />
+          <Login MIC_flag={MIC_flag} isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />
         )}
         {modal === 'signup' && <SignUp isOpen={isOpen} handleClose={() => setIsOpen(!isOpen)} />}
         {auth ? (
           <>
-            <span className={styles.role}>Logged: {name}</span>
+            <span className={styles.role}>Logged: {name || MIC?.name}</span>
             {auth && (
               <button
                 type="button"

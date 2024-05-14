@@ -3,7 +3,7 @@ import axiosRetry from 'axios-retry';
 
 axios.defaults.headers.common['Accept'] = 'application/json';
 if (process.env.REACT_APP_ENV === 'local') {
-  axios.defaults.baseURL = 'http://127.0.0.1:3000/api';
+  axios.defaults.baseURL = 'http://127.0.0.1:8080/api';
 } else {
   axios.defaults.baseURL = 'https://dolphin-app-b3fkw.ondigitalocean.app/api';
 }

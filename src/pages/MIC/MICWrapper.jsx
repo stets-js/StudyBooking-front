@@ -2,19 +2,18 @@ import React from 'react';
 import Header from '../../components/Header/Header';
 import path from '../../helpers/routerPath';
 import {Outlet} from 'react-router-dom';
-import {useSelector} from 'react-redux';
 
 const MICWrapper = ({hideLogo = false, hideLogin = false, bottom_padding = false}) => {
   return (
     <>
       <Header
-        MIC
+        MIC_flag
         hideLogo={hideLogo}
         hideLogin={hideLogin}
         endpoints={[
           {
-            text: '',
-            path: path.teacher
+            text: 'Appointment',
+            path: path.appointments
           }
         ]}
         bottom_padding={bottom_padding}

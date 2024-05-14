@@ -105,14 +105,6 @@ const Form = ({
           });
       }
       if (type.type.includes('appointment')) {
-        if (type.type.includes('MIC')) {
-          console.log(jsonData.token);
-          const answer = await axios.get('');
-          if (answer.status === 'bad') {
-            return error({text: 'Something went wrong', delay: 1000});
-          }
-          return console.log('MIT!!!!!!!!!');
-        }
         jsonData.slots = JSON.parse(jsonData.slots);
         // 0 - group, 1 - private, 2 - junior_group
         const searchQuery = `name=${

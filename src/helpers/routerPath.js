@@ -17,7 +17,6 @@ const path = {
   groups: 'groups/',
   appointments: 'appointments/',
   MIC: 'MIC/',
-  appointmentsMIC: 'appointmentsMIC/:token',
   courses: 'courses/',
   addMySubgroup: 'addMySubgroup/',
   actions: 'actions/',
