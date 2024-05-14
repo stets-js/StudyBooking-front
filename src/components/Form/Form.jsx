@@ -14,6 +14,7 @@ import {createReplacement, updateReplacement} from '../../helpers/replacement/re
 import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
 import axios from 'axios';
+const root = document.querySelector('#root');
 
 defaults.delay = 1000;
 
@@ -57,7 +58,6 @@ const Form = ({
   const dispatch = useDispatch();
   const handleSubmit = async event => {
     event.preventDefault();
-    const root = document.querySelector('#root');
     document.body.style.overflow = 'auto';
     root.style.overflow = 'auto';
     if (type.type === 'no-request-test') {
@@ -312,7 +312,13 @@ const Form = ({
           )}
       {text}
       {type.type !== 'no-request-test' && (
-        <p className={styles.exit} onClick={() => onSubmit()}>
+        <p
+          className={styles.exit}
+          onClick={() => {
+            document.body.style.overflow = 'auto';
+            root.style.overflow = 'auto';
+            onSubmit();
+          }}>
           Click here or outside to exit
         </p>
       )}
