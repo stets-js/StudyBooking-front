@@ -7,6 +7,9 @@
   &__fullwidth{
     width: auto;
   }
+  &__no_margin{
+    margin:0;
+  }
     :has(span) {
       height: auto;
     }

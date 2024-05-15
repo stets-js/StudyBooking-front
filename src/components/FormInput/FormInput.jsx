@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 const FormInput = ({
   classname,
+  label_classname,
   title,
   type,
   name,
@@ -22,7 +23,9 @@ const FormInput = ({
   appointmentLength = 3
 }) => {
   return (
-    <label className={styles.input__label} style={{width: width}}>
+    <label
+      className={classnames(styles.input__label, styles[label_classname])}
+      style={{width, height}}>
       {title && <p className={classnames(styles.input__title, styles[`${classname}`])}>{title}</p>}
       {textArea ? (
         <textarea
