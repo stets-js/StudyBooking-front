@@ -4,6 +4,7 @@ import 'react-tooltip/dist/react-tooltip.css';
 import {Tooltip} from 'react-tooltip';
 
 import styles from './mentorChooser.module.scss';
+import {Link} from 'react-router-dom';
 
 export default function MentorCard({mentor}) {
   const teacherCourses = mentor?.teachingCourses;
@@ -13,12 +14,20 @@ export default function MentorCard({mentor}) {
         <img src={mentor.photoUrl} alt="avatar" className={styles.card__avatar} />
         <div className={styles.card__container__name}>
           <span>{mentor.rating}</span>
-          <span>{mentor.name}</span>
+          <Link
+            target="_blank"
+            to={`../../admin/teacher/calendar/${mentor.id}`}
+            className={styles.card__name__link}>
+            <span>{mentor.name}</span>
+          </Link>
         </div>
       </div>
       <div className={styles.card__container__description}>
         <span>
           <b>Локація:</b> {mentor.city}
+        </span>
+        <span>
+          <b>Стаж (років):</b> {mentor?.expirience}
         </span>
         <div>
           <span>

@@ -41,6 +41,11 @@
   &__description{
     margin-bottom: 5%;
   }
+  &__name{
+    &__link{
+      color:$blue;
+    }
+  }
 }
 
 
