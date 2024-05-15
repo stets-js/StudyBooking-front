@@ -16,7 +16,7 @@ export default function MentorCard({mentor}) {
           <span>{mentor.rating}</span>
           <Link
             target="_blank"
-            to={`/teacher/calendar/${mentor.id}`}
+            to={`../teacher/calendar/${mentor.id}`}
             className={styles.card__name__link}>
             <span>{mentor.name}</span>
           </Link>
