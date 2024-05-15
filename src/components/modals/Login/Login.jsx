@@ -1,15 +1,17 @@
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {error} from '@pnotify/core';
+
 import styles from './Login.module.scss';
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
-import React, {useState} from 'react';
 import {loginUser} from '../../../helpers/manager/manager';
-import {useDispatch} from 'react-redux';
-import {error} from '@pnotify/core';
 import {loginMIC} from '../../../helpers/user/user';
+
+const root = document.querySelector('#root');
 
 const Login = ({MIC_flag, isOpen, handleClose}) => {
   const dispatch = useDispatch();
-  console.log(MIC_flag);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [remember, setRemember] = useState("");
@@ -82,6 +84,8 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
               type="submit"
               onClick={e => {
                 handleSubmit(e);
+                document.body.style.overflow = 'auto';
+                root.style.overflow = 'auto';
               }}
               className={styles.login}>
               Log in

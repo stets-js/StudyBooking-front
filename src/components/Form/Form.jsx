@@ -13,7 +13,6 @@ import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
 import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
-import axios from 'axios';
 const root = document.querySelector('#root');
 
 defaults.delay = 1000;
