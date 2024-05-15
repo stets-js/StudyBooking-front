@@ -40,7 +40,8 @@ const App = () => {
   const token = useSelector(state => state.auth.token);
   const MIC_user = useSelector(state => state.auth.MIC);
   const auth = isAuthenticated && (jwtExp * 1000 > Date.now() || MIC_user?.name) && token;
-  if (isAuthenticated && !auth && isAuthenticated && !MIC_user?.name) {
+  console.log(auth);
+  if (isAuthenticated && !auth) {
     dispatch({
       type: 'LOGOUT'
     });
