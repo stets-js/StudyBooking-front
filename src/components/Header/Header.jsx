@@ -25,7 +25,7 @@ export default function Header({
           <img src={logo} alt="logo" className={styles['logoImg']} />
         </a>
       )}
-      <Navigation user={user} links={endpoints} />
+      {loggedUser.isAuthenticated && <Navigation user={user} links={endpoints} />}
       {!hideLogin && <LoginBox loggedUser={loggedUser} MIC_flag={MIC_flag} />}
     </header>
   );

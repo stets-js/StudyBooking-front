@@ -62,7 +62,7 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
               type={!MIC_flag ? 'email' : 'login'}
               name={!MIC_flag ? 'email' : 'login'}
               value={email}
-              placeholder={!MIC_flag ? 'Email:' : 'Login:'}
+              placeholder={!MIC_flag ? 'Email' : 'Login'}
               isRequired={true}
               handler={setEmail}
             />
