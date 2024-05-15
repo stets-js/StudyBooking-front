@@ -14,26 +14,21 @@ import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCo
 export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title = true}) {
   const [limit] = useState(40);
   const [offset, setOffset] = useState(0);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(limit);
+  const [reset, setReset] = useState(false);
 
   const teachers = useSelector(state => state.usersPage.mentors);
-  const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState(null);
   const [coursesModal, setCoursesModal] = useState(false);
   const [filterCourses, setFilterCourses] = useState([]);
   const [prevFilterCourses, setPrevFilterCourses] = useState(filterCourses);
   const dispatch = useDispatch();
 
   const fetchTeachers = async () => {
-    let tmpOffset = offset;
     try {
-      if (JSON.stringify(prevFilterCourses) !== JSON.stringify(filterCourses)) {
-        tmpOffset = 0;
-        dispatch(cleanMentors());
-        setPrevFilterCourses(filterCourses);
-      }
       const res = await getUsers(
         // teachersFilter - flag for corner case on backend
-        `offset=${tmpOffset}&limit=${limit}&role=teacher${
+        `offset=${reset ? 0 : offset}&limit=${limit}&role=teacher${
           filterName || filterCourses.length > 0 ? '&teachersFilter=true' : ''
         }${filterName ? '&name=' + filterName : ''}${
           filterCourses.length > 0 ? '&courses=' + JSON.stringify(filterCourses) : ''
@@ -44,23 +39,11 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
       dispatch(setMentors(res.data));
     } catch (error) {}
   };
-
   useEffect(() => {
     let timeoutId;
     const fetchDataWithDelay = async () => {
       try {
-        setOffset(0);
-        dispatch(cleanMentors());
-        const res = await getUsers(
-          // teachersFilter - flag for corner case on backend
-          `offset=${offset}&limit=${limit}&role=teacher${
-            filterName || filterCourses.length > 0 ? '&teachersFilter=true' : ''
-          }${filterName ? '&name=' + filterName : ''}${
-            filterCourses.length > 0 ? '&courses=' + JSON.stringify(filterCourses) : ''
-          }`
-        );
-        setTotalAmount(res.totalCount);
-        dispatch(setMentors(res.data));
+        setReset(true);
       } catch (error) {
         console.error('Произошла ошибка:', error);
       }
@@ -70,10 +53,8 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
       clearTimeout(timeoutId);
       timeoutId = setTimeout(fetchDataWithDelay, 500);
       // setTeachers([]);
-      await setOffset(0);
     };
     if (filterName !== null) delayedFetch();
-
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterName]);
@@ -84,13 +65,21 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
       setPrevFilterCourses(filterCourses);
     } else {
       if (JSON.stringify(prevFilterCourses) !== JSON.stringify(filterCourses)) {
-        setOffset(0);
         dispatch(cleanMentors());
-        fetchTeachers();
+        setReset(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coursesModal]);
+
+  useEffect(() => {
+    if (reset) {
+      dispatch(cleanMentors());
+      setTotalAmount(0);
+      fetchTeachers();
+      setReset(false);
+    }
+  }, [reset]);
   return (
     <>
       <React.Fragment key={2}>
@@ -126,7 +115,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
             <InfiniteScroll
               dataLength={teachers.length} //This is important field to render the next data
               next={fetchTeachers}
-              hasMore={offset + limit <= totalAmount}
+              hasMore={reset ? true : offset + limit <= totalAmount}
               loader={<h4>Loading...</h4>}
               endMessage={<p style={{textAlign: 'center'}}>end</p>}
               scrollableTarget="scroller">
