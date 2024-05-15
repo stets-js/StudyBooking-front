@@ -29,6 +29,7 @@ import Spreadsheet from './pages/Admin/SpreadsheetPage';
 import AddMySubgroup from './pages/Teacher/AddMySubgroup';
 import Info from './pages/Teacher/Info';
 import MICWrapper from './pages/MIC/MICWrapper';
+import MentorsPage from './pages/MIC/MentorsChooser';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -115,9 +116,12 @@ const App = () => {
 
           <Route path={path.MIC} element={<MICWrapper />}>
             {auth && (
-              <Route
-                path={path.appointments}
-                element={<Appointment appointmentFlag={'appointment_MIC'}></Appointment>}></Route>
+              <>
+                <Route
+                  path={path.appointments}
+                  element={<Appointment appointmentFlag={'appointment_MIC'}></Appointment>}></Route>
+                <Route path={path.mentors} element={<MentorsPage></MentorsPage>}></Route>
+              </>
             )}
           </Route>
           <Route

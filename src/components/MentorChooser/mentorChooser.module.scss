@@ -1,0 +1,44 @@
+@import '/src/styles/variables.scss';
+
+.card {
+  &__container {
+    width: 90%;
+    display: flex;
+    font-family: $poppins;
+    font-size: 16px;
+    column-gap: 10px;
+    border-radius: 25px;
+    padding: 2%;
+    margin-bottom: 20px;
+    margin-left: 3%;
+    border: 1px solid black;
+    &__name {
+      display: flex;
+      font-size: 22px;
+      column-gap: 5px;
+      height: auto;
+      justify-content: center;
+    }
+    &__avatar {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      font-weight: bold;
+    }
+    &__description{
+      flex:1;
+      text-align: left;
+      font-size: 22px;
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+    }
+  }
+  &__avatar {
+    border-radius: 50px;
+    width: 300px;
+  }
+  &__description{
+    margin-bottom: 5%;
+  }
+}

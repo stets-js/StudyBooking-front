@@ -14,6 +14,10 @@ const MICWrapper = ({hideLogo = false, hideLogin = false, bottom_padding = false
           {
             text: 'Appointment',
             path: path.appointments
+          },
+          {
+            text: 'Mentors',
+            path: path.mentors
           }
         ]}
         bottom_padding={bottom_padding}
