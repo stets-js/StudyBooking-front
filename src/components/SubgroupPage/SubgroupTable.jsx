@@ -24,10 +24,13 @@ export default function SubgroupTable({
   const confirm = useConfirm();
   const [limit] = useState(40);
   const [total, setTotal] = useState(0);
+  const [reset, setReset] = useState(false);
   const fetchData = async (query = '') => {
     try {
       const data = await getSubGroups(
-        `offset=${offset}&limit=${limit}&name=${searchQuery}` + query
+        `offset=${reset ? 0 : offset}&limit=${limit}&name=${searchQuery}${
+          selectedCourse !== null ? '&CourseId=' + selectedCourse : ''
+        }` + query
       );
       setSubGroups(prev => {
         return [...prev, ...data.data];
@@ -44,14 +47,7 @@ export default function SubgroupTable({
     let timeoutId;
     const fetchDataWithDelay = async () => {
       try {
-        setSubGroups([]);
-        const data = await getSubGroups(
-          `offset=${offset}&limit=${limit}&name=${searchQuery}&CourseId=${selectedCourse || ''}`
-        );
-        setSubGroups(prev => {
-          return [...prev, ...data.data];
-        });
-        setTotal(data.totalCount);
+        setReset(true);
       } catch (error) {
         console.error('Произошла ошибка:', error);
       }
@@ -61,7 +57,7 @@ export default function SubgroupTable({
       clearTimeout(timeoutId);
       await setOffset(0);
       await setSubGroups([]);
-      timeoutId = setTimeout(fetchDataWithDelay, 200);
+      timeoutId = setTimeout(fetchDataWithDelay, 500);
     };
     if (searchQuery !== null) delayedFetch();
 
@@ -69,10 +65,18 @@ export default function SubgroupTable({
   }, [searchQuery]);
 
   useEffect(() => {
-    setSubGroups([]);
-    fetchData(selectedCourse !== null ? `&CourseId=${selectedCourse}` : '');
+    setReset(true);
   }, [selectedCourse]);
 
+  useEffect(() => {
+    if (reset) {
+      setSubGroups([]);
+      setOffset(0);
+      setTotal(0);
+      fetchData();
+      setReset(false);
+    }
+  }, [reset]);
   const handleDelete = async (id, name) => {
     confirm({
       description: 'Are you sure you want to delete ' + name,
