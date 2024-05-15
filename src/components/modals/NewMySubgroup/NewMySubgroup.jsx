@@ -13,7 +13,6 @@ const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
     let tmpSchedule = '';
     slots.forEach(slot => {
       if (slot.rowSpan) {
-        console.log(slot);
         tmpSchedule += `${weekDays[slot.weekDay]}: ${slot.time[0]} - ${slot.timeEnd}\n`;
       }
     });

@@ -66,7 +66,7 @@ export const HandleCellClick = async ({
   let currentDate = start;
 
   while (currentDate <= end) {
-    if (currentDate.getDay() === weekDay) {
+    if ((currentDate.getDay() === 0 ? 6 : currentDate.getDay() - 1) === weekDay) {
       count++;
       currentDate.setDate(currentDate.getDate() + 7);
     } else currentDate.setDate(currentDate.getDate() + 1); // Переходим к следующей дате
