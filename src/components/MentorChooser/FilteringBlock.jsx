@@ -32,7 +32,6 @@ export default function FilteringBlock({setFilterName, filterName, setFilterCour
     const resetWithDelay = async () => {
       try {
         setReset(true);
-        console.log('hello');
       } catch (error) {
         console.error('Произошла ошибка:', error);
       }

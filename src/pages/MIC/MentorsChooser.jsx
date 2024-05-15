@@ -56,8 +56,7 @@ export default function MentorsPage() {
         hasMore={offset + limit <= totalAmount}
         loader={<h4>Loading...</h4>}
         endMessage={<p style={{textAlign: 'center'}}>end</p>}>
-        {' '}
-        {mentors.map((mentor, index) => {
+        {mentors.map(mentor => {
           return <MentorCard mentor={mentor}></MentorCard>;
         })}
       </InfiniteScroll>
