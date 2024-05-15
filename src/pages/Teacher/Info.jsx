@@ -65,6 +65,14 @@ export default function Info() {
               disabled={true}
               width={'90%'}
               handler={e => setUser({...user, email: e})}></FormInput>
+            <FormInput
+              type={'number'}
+              title={'Expirience (years):'}
+              value={user?.expirience}
+              disabled={!editActive}
+              width={'10%'}
+              placeholder={0}
+              handler={e => setUser({...user, expirience: e})}></FormInput>
           </div>
         </div>
         <div className={styles.info__inline}>
