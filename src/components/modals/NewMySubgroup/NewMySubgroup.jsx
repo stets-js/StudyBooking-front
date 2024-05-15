@@ -12,8 +12,10 @@ const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
   const calculateSchedule = () => {
     let tmpSchedule = '';
     slots.forEach(slot => {
-      if (slot.rowSpan)
-        tmpSchedule += `${weekDays[slot.weekDay]}: ${slot.time} - ${slot.timeEnd}\n`;
+      if (slot.rowSpan) {
+        console.log(slot);
+        tmpSchedule += `${weekDays[slot.weekDay]}: ${slot.time[0]} - ${slot.timeEnd}\n`;
+      }
     });
     setSchedule(tmpSchedule);
   };
