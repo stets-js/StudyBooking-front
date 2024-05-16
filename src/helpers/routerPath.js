@@ -16,7 +16,7 @@ const path = {
   users: 'users/',
   groups: 'groups/',
   appointments: 'appointments/',
-  MIC: 'MIC/',
+  MIC: '/mic/',
   mentors: 'mentors', // for mentors list for MICs
   courses: 'courses/',
   addMySubgroup: 'addMySubgroup/',

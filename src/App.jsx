@@ -41,7 +41,6 @@ const App = () => {
   const auth =
     isAuthenticated &&
     (jwtExp * 1000 > Date.now() || MIC_user?.name !== '' || MIC_user?.name !== undefined);
-  console.log(auth);
   if (isAuthenticated && !auth) {
     console.log('logout :(');
     dispatch({
@@ -65,7 +64,6 @@ const App = () => {
     }
   );
   // }, [token]);
-
   return (
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
@@ -110,6 +108,33 @@ const App = () => {
                 <Route path={path.info} element={<Info />}></Route>
               </Route>
             </>
+          ) : auth && MIC_user?.name ? (
+            <>
+              <Route
+                path={path.home}
+                element={<Navigate to={`${path.MIC + path.appointments}`} />}></Route>
+              <Route path={path.MIC} element={<MICWrapper />}>
+                <>
+                  <Route
+                    path={path.appointments}
+                    element={
+                      <Appointment appointmentFlag={'appointment_MIC'}></Appointment>
+                    }></Route>
+                  <Route path={path.mentors} element={<MentorsPage></MentorsPage>}></Route>
+                  <Route
+                    path={path.MIC + path.teacher}
+                    element={
+                      <TeacherWrapper mic hideLogo={true} hideLogin={true} bottom_padding={true} />
+                    }>
+                    <Route path={`calendar/:teacherId`} element={<TeacherPage />} />
+                    <Route
+                      path={`${path.mySubgroups}:teacherId`}
+                      element={<TeacherSubgroupPage />}
+                    />
+                  </Route>
+                </>
+              </Route>
+            </>
           ) : (
             <>
               <Route path={path.all} element={<Navigate to={path.home} />} />
@@ -127,7 +152,7 @@ const App = () => {
                 <Route
                   path={path.MIC + path.teacher}
                   element={
-                    <TeacherWrapper hideLogo={true} hideLogin={true} bottom_padding={true} />
+                    <TeacherWrapper mic hideLogo={true} hideLogin={true} bottom_padding={true} />
                   }>
                   <Route path={`calendar/:teacherId`} element={<TeacherPage />} />
                   <Route path={`${path.mySubgroups}:teacherId`} element={<TeacherSubgroupPage />} />

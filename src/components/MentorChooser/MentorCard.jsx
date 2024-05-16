@@ -5,8 +5,10 @@ import {Tooltip} from 'react-tooltip';
 
 import styles from './mentorChooser.module.scss';
 import {Link} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 
 export default function MentorCard({mentor}) {
+  const dispatch = useDispatch();
   const teacherCourses = mentor?.teachingCourses;
   return (
     <div className={styles.card__container}>
@@ -24,7 +26,16 @@ export default function MentorCard({mentor}) {
           <Link
             target="_blank"
             to={`../teacher/calendar/${mentor.id}`}
-            className={styles.card__name__link}>
+            // to={'../appointments'}
+            className={styles.card__name__link}
+            onClick={() => {
+              dispatch({
+                type: 'ADD_SELECTED_USER',
+                payload: {
+                  id: mentor.id
+                }
+              });
+            }}>
             <span>{mentor.name}</span>
           </Link>
         </div>
@@ -45,7 +56,7 @@ export default function MentorCard({mentor}) {
               <span>
                 <a
                   key="tooltip-link"
-                  data-tooltip-id={course.shortening}
+                  data-tooltip-id={mentor.id + course.shortening}
                   data-tooltip-place="bottom">
                   <span key="tooltip-icon"> {course.shortening}</span>
                 </a>

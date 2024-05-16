@@ -4,28 +4,38 @@ import path from '../../helpers/routerPath';
 import {Outlet} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
-const TeacherWrapper = ({hideLogo = false, hideLogin = false, bottom_padding = false}) => {
+const TeacherWrapper = ({
+  hideLogo = false,
+  hideLogin = false,
+  bottom_padding = false,
+  mic = false
+}) => {
   const id = useSelector(state => state.selectedUser.id);
+  let endpoints = [
+    {
+      text: 'Timetable',
+      path: id || mic ? `/${mic ? 'mic' : 'admin'}/teacher/calendar/${id}` : path.teacher
+    },
+    {
+      text: 'My subgroups',
+      path: id ? `${path.mySubgroups}${id}` : path.mySubgroups
+    }
+  ];
+  if (!mic) {
+    endpoints.push(
+      {
+        text: 'Add my subgroup',
+        path: id ? `${path.addMySubgroup}${id}` : path.addMySubgroup
+      },
+      {text: 'Information', path: id ? `${path.info}${id}` : path.info}
+    );
+  }
   return (
     <>
       <Header
         hideLogo={hideLogo}
         hideLogin={hideLogin}
-        endpoints={[
-          {
-            text: 'Timetable',
-            path: id ? `/admin/teacher/calendar/${id}` : path.teacher
-          },
-          {
-            text: 'My subgroups',
-            path: id ? `${path.mySubgroups}${id}` : path.mySubgroups
-          },
-          {
-            text: 'Add my subgroup',
-            path: id ? `${path.addMySubgroup}${id}` : path.addMySubgroup
-          },
-          {text: 'Information', path: id ? `${path.info}${id}` : path.info}
-        ]}
+        endpoints={endpoints}
         bottom_padding={bottom_padding}
       />
       <section>
