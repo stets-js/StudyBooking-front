@@ -214,7 +214,7 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 onClick={() => {
                   handlePasswordReset();
                 }}>
-                <span>Forgot password</span>
+                Forgot password
               </button>
             )}
           </Form>

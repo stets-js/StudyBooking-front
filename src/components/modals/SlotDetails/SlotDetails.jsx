@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import {format} from 'date-fns';
 import {useDispatch} from 'react-redux';
+import {success} from '@pnotify/core';
 
 import FormInput from '../../FormInput/FormInput';
 import selectorStyles from '../../../styles/selector.module.scss';
@@ -162,6 +163,7 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                   if (res) {
                     dispatch(updateSlotForWeek(slot));
                     setIsEdit(false);
+                    success({text: 'Updated lesson!', delay: 1000});
                   }
                 }}></EditButton>
               <DeleteButton
