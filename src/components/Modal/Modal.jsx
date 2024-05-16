@@ -9,17 +9,19 @@ const root = document.querySelector('#root');
 const Modal = props => {
   if (props.open && !props?.classname_wrapper?.includes('login')) {
     console.log(); // dont remove!
-    document.body.style.overflow = 'hidden';
-    root.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
+    // root.style.overflow = 'hidden';
   }
   return createPortal(
     <div
       className={classNames(styles['Overlay'], styles[props.classname_wrapper])}
       style={{zIndex: props.index}}
       onClick={() => {
+        console.log('closing');
         props.onClose();
         document.body.style.overflow = 'auto';
         root.style.overflow = 'auto';
+        console.log('closed');
       }}>
       <Fade triggerOnce duration={250}>
         <div

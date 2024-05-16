@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {format, getDay, addMinutes} from 'date-fns';
 import Select from 'react-select';
+import {Link} from 'react-router-dom';
+
+import selectorStyles from '../../styles/selector.module.scss';
 import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
 import {getCourses} from '../../helpers/course/course';
 import {getFreeUsers} from '../../helpers/user/user';
-import {Link} from 'react-router-dom';
 import OneDaySelector from '../../components/DateSelector/OneDaySelector';
 
 export default function AvaliableTable() {
@@ -78,7 +80,7 @@ export default function AvaliableTable() {
           options={courses}
           placeholder="Select course"
           required
-          className={`${styles.selector} ${styles.selector__filtering} ${styles.available_nav__item}`}
+          className={`${selectorStyles.selector} ${selectorStyles.selector__fullwidth} ${selectorStyles.selector__filtering} ${styles.available_nav__item}`}
           onChange={choice => {
             setSelectedCourse(choice.value);
           }}

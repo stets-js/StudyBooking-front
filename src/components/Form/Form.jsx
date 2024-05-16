@@ -55,6 +55,13 @@ const Form = ({
   const [errorsuccessMessage, setError] = useState(false);
   const [inputCancelClicked, setInputCancelClicked] = useState(false);
   const dispatch = useDispatch();
+  const onSubmitModified = () => {
+    console.log('submiting');
+    onSubmit();
+    document.body.style.overflow = 'auto';
+    root.style.overflow = 'auto';
+    console.log('submited');
+  };
   const handleSubmit = async event => {
     event.preventDefault();
     document.body.style.overflow = 'auto';
@@ -87,7 +94,7 @@ const Form = ({
         return await updateSubGroup({id, body: jsonData})
           .then(() => {
             success({text: status.successMessage || 'Success', delay: 1000});
-            return !errorsuccessMessage && onSubmit && onSubmit();
+            return !errorsuccessMessage && onSubmit && onSubmitModified();
           })
           .catch(e => {
             return error(`${status.failMessage}, ${e.message}`);
@@ -97,7 +104,7 @@ const Form = ({
         return await updateReplacement(jsonData, id)
           .then(() => {
             success({text: status.successMessage || 'Success', delay: 1000});
-            return !errorsuccessMessage && onSubmit && onSubmit();
+            return !errorsuccessMessage && onSubmit && onSubmitModified();
           })
           .catch(e => {
             return error(`${status.failMessage}, ${e.message}`);
@@ -141,7 +148,7 @@ const Form = ({
                 await bulkUpdate(body);
               }
             }
-            return !errorsuccessMessage && onSubmit && onSubmit();
+            return !errorsuccessMessage && onSubmit && onSubmitModified();
           })
           .catch(e => {
             console.log(e);
@@ -154,7 +161,7 @@ const Form = ({
           .then(() => {
             success({text: status.successMessage, delay: 1000});
             // SetNeedToRender(true);
-            return !errorsuccessMessage && onSubmit && onSubmit();
+            return !errorsuccessMessage && onSubmit && onSubmitModified();
           })
           .catch(e => {
             return error(`${status.failMessage}, ${e.message}`);
@@ -162,7 +169,7 @@ const Form = ({
       }
 
       if (type.type === 'login') {
-        onSubmit();
+        onSubmitModified();
         return await requests.login(data);
       }
       if (type.type === 'user') {
@@ -176,7 +183,7 @@ const Form = ({
           city: jsonData.city,
           phone: jsonData.phone
         };
-        onSubmit();
+        onSubmitModified();
         const newUser = await requests.user(user);
         success({text: 'Created/edited user', delay: 1000});
         return newUser;
@@ -186,7 +193,7 @@ const Form = ({
         try {
           const res = await requests.post({credentials: data, jsonData});
           success({text: status.successMessage, delay: 1000});
-          return !errorsuccessMessage && onSubmit && onSubmit();
+          return !errorsuccessMessage && onSubmit && onSubmitModified();
         } catch (error) {
           return error('Something went wrong :(');
         }
@@ -198,7 +205,7 @@ const Form = ({
         })
         .then(() => {
           success(status.successMessage);
-          return !errorsuccessMessage && onSubmit && onSubmit();
+          return !errorsuccessMessage && onSubmit && onSubmitModified();
         });
     } catch (e) {
       setError(!errorsuccessMessage);
@@ -216,7 +223,7 @@ const Form = ({
       return error(`${status.failMessageDelete}, ${e.message}`);
     }
 
-    !errorsuccessMessage && onSubmit && onSubmit();
+    !errorsuccessMessage && onSubmit && onSubmitModified();
   };
 
   return (
@@ -306,9 +313,7 @@ const Form = ({
         <p
           className={styles.exit}
           onClick={() => {
-            document.body.style.overflow = 'auto';
-            root.style.overflow = 'auto';
-            onSubmit();
+            onSubmitModified();
           }}>
           Click here or outside to exit
         </p>
