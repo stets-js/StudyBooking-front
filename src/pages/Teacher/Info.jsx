@@ -40,12 +40,19 @@ export default function Info() {
       setUser(backupUser);
     }
   };
+  console.log(user);
   return (
     <>
       <div className={styles.info__wrapper}>
         <div className={styles.info__name_block}>
           <div className={styles.info__avatar__wrapper}>
-            <img src={user?.photoUrl} alt="avatar" className={styles.info__avatar__photo}></img>
+            <img
+              src={
+                user?.photoUrl ||
+                'https://res.cloudinary.com/hzxyensd5/image/upload/v1715070791/jgxfj4poa4f8goi2toaq.jpg'
+              }
+              alt="avatar"
+              className={styles.info__avatar__photo}></img>
             {editActive && (
               <CloudinaryUploadWidget setUser={setUser} className={styles.info__avatar__button} />
             )}
