@@ -36,13 +36,12 @@ export default function TeacherSubgroupPage() {
     } catch (error) {}
   };
   useEffect(() => {
-    if (userId) {
+    if (userId || teacherId) {
       fetchSubgroups();
       fetchCourses();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
-
+  }, [userId, teacherId]);
   const filteredSubgroups = subgroups.filter(group => {
     return (
       group?.SubGroup.name.toLowerCase().includes(filterName.toLowerCase()) &&
