@@ -11,7 +11,14 @@ export default function MentorCard({mentor}) {
   return (
     <div className={styles.card__container}>
       <div className={styles.card__container__avatar}>
-        <img src={mentor.photoUrl} alt="avatar" className={styles.card__avatar} />
+        <img
+          src={
+            mentor.photoUrl ||
+            'https://res.cloudinary.com/hzxyensd5/image/upload/v1715070791/jgxfj4poa4f8goi2toaq.jpg'
+          }
+          alt="avatar"
+          className={styles.card__avatar}
+        />
         <div className={styles.card__container__name}>
           <span>{mentor.rating}</span>
           <Link
