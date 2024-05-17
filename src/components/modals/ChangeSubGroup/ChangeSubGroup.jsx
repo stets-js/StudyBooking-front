@@ -1,5 +1,6 @@
 import Modal from '../../Modal/Modal';
 import React, {useState, useEffect} from 'react';
+import {success, error} from '@pnotify/core';
 
 import Form from '../../Form/Form';
 import {getSlotDetails, getSubgroupJSON, updateSubGroup} from '../../../helpers/subgroup/subgroup';
@@ -119,8 +120,11 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                           }
                         });
                         if (res) {
-                          handleClose();
+                          success({text: 'Updated subgroup!', delay: 1000});
                         }
+                        // if (res) {
+                        //   handleClose();
+                        // }
                       }}
                       text={'Confirm'}></EditButton>
                     <DeleteButton
