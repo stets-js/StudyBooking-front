@@ -6,7 +6,7 @@ import appointmentStyles from '../../../styles/appointment.module.scss';
 import {HandleCellClick} from '../scripts/handleCellClick';
 
 export default function ScheduleCell({
-  userId,
+  user,
   slot,
   currentTime,
   date,
@@ -48,6 +48,7 @@ export default function ScheduleCell({
               : ''
           } `}
           onClick={() => {
+            console.log('hello?');
             HandleCellClick({
               slot,
               selectedAppointment,
@@ -57,7 +58,7 @@ export default function ScheduleCell({
               setOpenSlotDetails,
               setSelectedSlotDetails,
               startDates,
-              userId,
+              user,
               dispatch
             });
           }}>

@@ -14,19 +14,20 @@ import WeekChanger from './components/weekChanger';
 import {filterAndUpdateSlots} from './scripts/fillterAndUpdateSlots';
 import AppointmentList from './components/AppointmentList';
 import {getLessonsForUser} from '../../helpers/lessons/lesson';
+import Banner from './components/Banner';
 
-export default function TeacherTable({userId}) {
+export default function TeacherTable({userId, isAdmin}) {
   const dispatch = useDispatch();
   const [user, setUser] = useState('');
-
+  console.log(userId);
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getUserById(userId);
       setUser(user.data);
     };
-    if (userId) fetchUser();
+    if (userId !== null) fetchUser();
   }, [userId]);
-
+  console.log(user);
   const initialStartDate = startOfWeek(new Date(), {weekStartsOn: 1});
   const weekSchedule = useSelector(state => state.weekScheduler.weekScheduler);
   const startingHour = 9;
@@ -47,7 +48,6 @@ export default function TeacherTable({userId}) {
         startDateLesson: format(startDates[0], 'yyyy-MM-dd'),
         endDateLesson: format(startDates[6], 'yyyy-MM-dd')
       });
-      console.log(lessons);
       const slots = await getSlotsForUser({
         userId,
         startDate: format(startDates[0], 'yyyy-MM-dd'),
@@ -55,7 +55,6 @@ export default function TeacherTable({userId}) {
       });
 
       dispatch(setWeekScheduler(filterAndUpdateSlots(slots, lessons.data)));
-      console.log(weekSchedule);
     };
     try {
       fetchSlots();
@@ -66,6 +65,7 @@ export default function TeacherTable({userId}) {
 
   return (
     <div>
+      {!isAdmin && <Banner setUser={setUser} user={user}></Banner>}
       <AppointmentList
         setAppointmentTypes={setAppointmentTypes}
         appointmentTypes={appointmentTypes}
@@ -110,7 +110,7 @@ export default function TeacherTable({userId}) {
                           <ScheduleCell
                             timeIndex={timeIndex}
                             key={`${dateIndex}_${currentTime}`}
-                            userId={userId}
+                            user={user}
                             slot={slot}
                             currentTime={currentTime}
                             date={date}
@@ -132,7 +132,7 @@ export default function TeacherTable({userId}) {
         </div>
       </div>
       <SlotDetails
-      setSlot={setSelectedSlotDetails}
+        setSlot={setSelectedSlotDetails}
         userId={userId}
         isOpen={openSlotDetails}
         handleClose={() => {

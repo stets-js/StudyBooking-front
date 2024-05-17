@@ -1,4 +1,6 @@
 import {addDays, format} from 'date-fns';
+import {error} from '@pnotify/core';
+
 import {createSlotForUser, deleteSlotForUser, updateSlot} from '../../../helpers/teacher/slots';
 import {
   DeleteSlotFromWeek,
@@ -17,9 +19,14 @@ export const HandleCellClick = async ({
   setOpenSlotDetails,
   setSelectedSlotDetails,
   startDates,
-  userId,
+  user,
   dispatch
 }) => {
+  const userId = user.id;
+  if (!user.isPrevSubgroupPlaced) {
+    error({text: 'First set up all your subgoups', delay: 1000});
+    return <></>;
+  }
   // case for opening  the details of a occupied cell
   if (slot && (slot.subgroupId || slot.ReplacementId)) {
     setSelectedSlotDetails(slot);

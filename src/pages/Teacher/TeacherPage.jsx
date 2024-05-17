@@ -5,10 +5,12 @@ import {useParams} from 'react-router-dom';
 import TeacherTable from '../../components/TeacherTable/TeacherTable';
 
 export default function TeacherPage() {
-  console.log('teacher page');
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
-  if (teacherId) userId = teacherId; //case when admin is logged in and wants to see another teachers schedule
-
-  return <TeacherTable userId={userId}></TeacherTable>;
+  let isAdmin = false;
+  if (teacherId) {
+    userId = teacherId;
+    isAdmin = true;
+  } //case when admin is logged in and wants to see another teachers schedule
+  return <TeacherTable isAdmin={isAdmin} userId={userId}></TeacherTable>;
 }
