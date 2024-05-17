@@ -80,6 +80,10 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
       setReset(false);
     }
   }, [reset]);
+
+  useEffect(() => {
+    fetchTeachers();
+  }, []); // initial fetch
   return (
     <>
       <React.Fragment key={2}>
