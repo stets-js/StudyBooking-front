@@ -131,6 +131,7 @@ const Form = ({
             const newDocId = data?.subgroupMentor?.subgroupId || data?.data?.id;
             // console.log(data, newDocId);
             success({text: status.successMessage || 'Success', delay: 1000});
+            console.log(jsonData);
             for (let i = 0; i <= 6; i++) {
               // week itterating
               if (jsonData.slots[i].length > 0) {

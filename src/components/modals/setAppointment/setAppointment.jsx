@@ -10,7 +10,6 @@ import {addMinutes, format} from 'date-fns';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 import {useParams} from 'react-router-dom';
 const SetAppointment = ({
-  type,
   appointmentFlag,
   isOpen,
   handleClose,

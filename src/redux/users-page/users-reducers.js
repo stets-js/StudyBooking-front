@@ -47,6 +47,7 @@ const courseReducer = (state = initialState, action) => {
         mentors: []
       };
     case 'DELETE_MENTORS':
+      console.log(action.payload);
       return {
         ...state,
         mentors: [...state.mentors.filter(el => el.id !== action.payload)]

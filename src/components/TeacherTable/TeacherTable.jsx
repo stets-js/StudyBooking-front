@@ -19,7 +19,6 @@ import Banner from './components/Banner';
 export default function TeacherTable({userId, isAdmin}) {
   const dispatch = useDispatch();
   const [user, setUser] = useState('');
-  console.log(userId);
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getUserById(userId);
@@ -27,7 +26,6 @@ export default function TeacherTable({userId, isAdmin}) {
     };
     if (userId !== null) fetchUser();
   }, [userId]);
-  console.log(user);
   const initialStartDate = startOfWeek(new Date(), {weekStartsOn: 1});
   const weekSchedule = useSelector(state => state.weekScheduler.weekScheduler);
   const startingHour = 9;
