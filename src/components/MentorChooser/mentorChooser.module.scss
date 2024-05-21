@@ -23,6 +23,7 @@
       display: flex;
       flex-direction: column;
       row-gap: 10px;
+      width: 200px;
       font-weight: bold;
     }
     &__description{
@@ -35,8 +36,8 @@
     }
   }
   &__avatar {
-    border-radius: 50px;
-    width: 300px;
+    border-radius: 50%;
+    width: 200px;
   }
   &__description{
     margin-bottom: 5%;

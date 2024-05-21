@@ -30,6 +30,7 @@ import AddMySubgroup from './pages/Teacher/AddMySubgroup';
 import Info from './pages/Teacher/Info';
 import MICWrapper from './pages/MIC/MICWrapper';
 import MentorsPage from './pages/MIC/MentorsChooser';
+import StatisticPage from './pages/Admin/Statistic';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const App = () => {
                 {userRole === 'superAdmin' && (
                   <Route path={path.spreadsheet} element={<Spreadsheet></Spreadsheet>} />
                 )}
+                <Route path={path.statistic} element={<StatisticPage />} />
                 <Route path={path.users} element={<UsersPage />} />
                 <Route path={path.courses} element={<CoursesPage />} />
                 <Route path={path.appointments} element={<Appointment />} />

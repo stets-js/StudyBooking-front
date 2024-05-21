@@ -1,5 +1,7 @@
 import axios from '../axios-config';
-
+const getLessons = options => {
+  return axios.get(`/lessons?` + options);
+};
 const getLessonsForUser = ({mentorId, startDateLesson, endDateLesson}) => {
   //   start, end - start and end of the week
   return axios
@@ -26,4 +28,4 @@ const getTopics = () => {
 const deleteLessons = credentials => {
   return axios.delete(`/lessons`, credentials);
 };
-export {getLessonsForUser, bulkLessonCreate, patchLesson, getTopics, deleteLessons};
+export {getLessons, getLessonsForUser, bulkLessonCreate, patchLesson, getTopics, deleteLessons};
