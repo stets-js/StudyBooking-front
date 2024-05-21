@@ -30,6 +30,13 @@
         display: flex;
         justify-content: start;
     }
+    &__course{
+        &__container{
+            display: flex;
+            column-gap: 5px;
+            justify-content: start;
+        }
+    }
     &__text{
         &__container{
             width: calc(100% - 200px);
@@ -38,5 +45,18 @@
             flex-direction: column;
             justify-content: center;
         }
+    }
+}
+
+.filtering{
+    &__container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 20px;
+    }
+    &__date{
+        margin-top: 10px;
+        width: 220px;
     }
 }

@@ -7,15 +7,20 @@ export default function LessonCard({lesson}) {
     <div className={style.card__wrapper}>
       <UserAvatar mentor={lesson.User}></UserAvatar>
       <div className={style.card__text__container}>
+        <div className={style.card__course__container}>
+          <span>Course: </span> <span> {lesson.SubGroup.Course.name}</span>
+        </div>
         <div className={style.card__topic__container}>
-          <span>Topic:</span> <span>{lesson.LessonTopic.topic}</span>
+          <span>Topic:</span> <span>{lesson.LessonTopic?.topic || 'No topic yet'}</span>
         </div>
         <div className={style.card__schedule}>
           {weekDays[lesson.LessonSchedule.weekDay]}: {lesson.LessonSchedule.startTime} -{' '}
           {lesson.LessonSchedule.endTime}
         </div>
 
-        <div className={style.card__feedback}>Feedback: {lesson.feedback}</div>
+        <div className={style.card__feedback}>
+          Feedback: {lesson?.feedback || 'No feedback yet :('}
+        </div>
       </div>
     </div>
   );
