@@ -7,7 +7,7 @@ import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
 import {setAdmins} from '../../redux/action/usersPage.action';
 
-export default function AdminList({setTitle, setEdit, setIsOpen, setItem, title}) {
+export default function AdminList({setTitle, setEdit, setIsOpen, setItem, title = true}) {
   const userRole = useSelector(state => state.auth.user.role);
   const admins = useSelector(state => state.usersPage.admins);
   const dispatch = useDispatch();

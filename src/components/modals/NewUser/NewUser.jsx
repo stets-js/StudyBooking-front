@@ -74,9 +74,9 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 ? data => {
                     patchUser(data);
                     dispatch(
-                      item.role === 3
+                      role === 3
                         ? updateSuperAdmins(data)
-                        : item.role === 2
+                        : role === 2
                         ? updateAdmin(data)
                         : updateMentors(data)
                     );
@@ -84,9 +84,9 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 : async data => {
                     const res = await postUser(data);
                     dispatch(
-                      item.role === 3
+                      role === 3
                         ? addSuperAdmin(res.data.data)
-                        : item.role === 2
+                        : role === 2
                         ? addAdmin(res.data.data)
                         : addMentor(res.data.data)
                     );
@@ -94,9 +94,9 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
               delete: id => {
                 deleteUser(id);
                 dispatch(
-                  item.role === 3
+                  role === 3
                     ? deleteSuperAdmin(id)
-                    : item.role === 2
+                    : role === 2
                     ? deleteAdmin(id)
                     : deleteMentor(id)
                 );

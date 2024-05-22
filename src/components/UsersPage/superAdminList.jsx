@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {setSuperAdmins} from '../../redux/action/usersPage.action';
 
-export default function SuperAdminList({setIsOpen, setTitle, setItem, setEdit, title = 'true'}) {
+export default function SuperAdminList({setIsOpen, setTitle, setItem, setEdit, title = true}) {
   const superAdmins = useSelector(state => state.usersPage.superAdmins);
   const userRole = useSelector(state => state.auth.user.role);
   const dispatch = useDispatch();
