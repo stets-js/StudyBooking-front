@@ -12,17 +12,17 @@ export default function UserAvatar({mentor}) {
     <div className={styles.card__container__avatar}>
       <img
         src={
-          mentor.photoUrl ||
+          mentor?.photoUrl ||
           'https://res.cloudinary.com/hzxyensd5/image/upload/v1715070791/jgxfj4poa4f8goi2toaq.jpg'
         }
         alt="avatar"
         className={styles.card__avatar}
       />
       <div className={styles.card__container__name}>
-        <span>{mentor.rating}</span>
+        <span>{mentor?.rating}</span>
         <Link
           target="_blank"
-          to={`../teacher/calendar/${mentor.id}`}
+          to={`../teacher/calendar/${mentor?.id}`}
           // to={'../appointments'}
           className={styles.card__name__link}
           onClick={() => {
@@ -33,7 +33,7 @@ export default function UserAvatar({mentor}) {
               }
             });
           }}>
-          <span>{mentor.name}</span>
+          <span>{mentor?.name}</span>
         </Link>
       </div>
     </div>
