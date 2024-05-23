@@ -11,7 +11,6 @@ import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
 import '@trendmicro/react-radio/dist/react-radio.css';
 import EditButton from '../Buttons/Edit';
 import DeleteButton from '../Buttons/Delete';
-import {useParams} from 'react-router-dom';
 export default function AppointmentButtons({
   startDate,
   isReplacement,
@@ -26,6 +25,7 @@ export default function AppointmentButtons({
   handleClose,
   selectedSlotsAmount,
   setSelectedClassType,
+  selectedCourse,
   clearTable,
   setTeacherType,
   teacherType,
@@ -34,9 +34,9 @@ export default function AppointmentButtons({
   const dispatch = useDispatch();
   const token = appointmentFlag.includes('MIC');
   let appointmentTypes = [
-    {label: 'Group', value: 0},
-    {label: 'Individual', value: 1},
-    {label: 'Junior group', value: 2}
+    {label: 'Group', value: 7},
+    {label: 'Individual', value: 8},
+    {label: 'Junior group', value: 11}
   ];
   if (token) appointmentTypes = [{label: 'Individual', value: 1}];
   return (
@@ -66,6 +66,7 @@ export default function AppointmentButtons({
           <div className={styles.chooser_selector__item}>
             <Select
               options={courses}
+              value={courses.filter(course => course.value === selectedCourse)}
               placeholder="Select course"
               required
               className={`${styles.selector} ${styles.selector__filtering}`}
@@ -78,7 +79,7 @@ export default function AppointmentButtons({
           </div>
           <div className={styles.chooser_selector__item}>
             <Select
-              key={Math.random() * 1000 - 10}
+              key={Math.random() * 100 - 10}
               className={`${styles.selector} ${styles.selector__filtering}`}
               placeholder="Lesson Type"
               value={

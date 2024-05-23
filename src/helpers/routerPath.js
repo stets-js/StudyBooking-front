@@ -1,6 +1,6 @@
 const path = {
   all: '*',
-  statistic: 'statistic',
+  lessons: 'lessons',
   home: '/',
   info: 'info/',
   spreadsheet: 'spreadsheet',

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {format, addDays, startOfWeek} from 'date-fns';
 import {error} from '@pnotify/core';
 import {useDispatch, useSelector} from 'react-redux';
+import {useLocation} from 'react-router-dom';
 
 import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
@@ -11,8 +12,11 @@ import SetAppointment from '../../components/modals/setAppointment/setAppointmen
 import AppointmentButtons from '../../components/AppointmentPage/AppointmentButtons';
 import AppointmentHeaderTable from '../../components/AppointmentPage/AppointmentHeaderTable';
 import AppointmentBodyTable from '../../components/AppointmentPage/AppointmentBodyTable';
+import {HandleCellClick} from '../../components/AppointmentPage/HandleCellClick';
 
 export default function UsersPage({appointmentFlag = 'appointment'}) {
+  const location = useLocation();
+
   const dispatch = useDispatch();
   const [slotsData, setSlotsData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -35,13 +39,15 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
   const [renderTeachers, setRenderTeachers] = useState(false);
   dispatch({type: 'SET_SELECTEDS_SLOTS'});
   useEffect(() => {
-    getCourses().then(data => {
+    const fetchCourses = async () => {
+      const data = await getCourses();
       setCourses(
         data.data.map(el => {
           return {label: el.name, value: el.id};
         })
       );
-    });
+    };
+    fetchCourses();
   }, []);
   const [isReplacement, setIsReplacement] = useState(false);
   useEffect(() => {
@@ -58,6 +64,9 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
     }
     if (renderTeachers) setRenderTeachers(false);
   }, [selectedCourse, renderTeachers, teacherType]);
+
+  const {lesson} = location.state || {};
+
   useEffect(() => {
     const fetchData = async () => {
       const slotsResponse = await getSlotsForUsers({userIds: teachersIds, startDate, endDate});
@@ -96,7 +105,7 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
   };
 
   const clearTable = () => {
-    if (selectedSlotsAmount !== 0) {
+    if (selectedSlotsAmount !== 0 || lesson) {
       dispatch({type: 'CLEAN_SELECTED_SLOTS'});
       setRenderTeachers(true);
       setSelectedSlotsAmount(0);
@@ -104,10 +113,91 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
     }
   };
 
+  const [tmpFlag, setTmpFlag] = useState(false);
+
+  useEffect(() => {
+    const setAllData = async () => {
+      if (lesson) {
+        setStartDate(lesson.date);
+        setEndDate(lesson.date);
+        setSelectedCourse(lesson.courseId);
+        setSelectedClassType(lesson.appointmentId);
+        setSelectedSlotsAmount(1);
+        setTmpFlag(true);
+      }
+    };
+    setAllData();
+  }, [lesson, courses, teachersIds, slotsData]);
+  console.log(teachersIds);
+
+  useEffect(() => {
+    const setAllData = async () => {
+      if (lesson) {
+        try {
+          console.log('clicking211');
+          if (startDate && endDate) {
+            console.log('clicking1???');
+            await HandleCellClick({
+              weekDay: lesson.weekDay,
+              timeStr: lesson.startTime,
+              numSlotsToCheck: selectedClassType === 7 ? 3 : 2, // 0 - group, 1 and 2 is indiv + jun_group that is altho 2 slots
+              setSelectedSlotsAmount,
+              selectedSlotsAmount,
+              setTeachersIds,
+              selectedSlots,
+              setLessonAmount,
+              dispatch,
+              slotsData,
+              startDate,
+              endDate,
+              lesson
+            });
+          }
+        } catch (err) {
+          console.log('Sorry, can`t find slots!');
+        }
+      }
+    };
+    console.log(
+      tmpFlag,
+      teachersIds.length > 0,
+      startDate,
+      endDate,
+      selectedCourse,
+      selectedClassType
+    );
+    if (
+      tmpFlag &&
+      teachersIds.length > 0 &&
+      startDate &&
+      endDate &&
+      selectedCourse &&
+      selectedClassType
+    ) {
+      setAllData();
+      console.log(4444);
+      setTmpFlag(false);
+    }
+    console.log(333335);
+  }, [
+    tmpFlag,
+    teachersIds,
+    startDate,
+    endDate,
+    selectedCourse,
+    selectedClassType,
+    lesson,
+    selectedSlotsAmount,
+    selectedSlots,
+    dispatch,
+    slotsData
+  ]);
+
   return (
     <div>
       <h3>Lesson amount: {lessonAmount}</h3>
       <AppointmentButtons
+        selectedCourse={selectedCourse}
         appointmentFlag={appointmentFlag}
         startDate={startDate}
         isReplacement={isReplacement}
@@ -151,7 +241,8 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
         teachersIds={JSON.stringify(teachersIds)}
         appointmentType={selectedClassType}
         isReplacement={isReplacement}
-        course={courses.filter(el => el.value === selectedCourse)[0]}
+        // course={courses.filter(el => el.value === selectedCourse)[0]}
+        course={(courses || []).filter(el => el?.value === selectedCourse)[0]}
         onSubmit={() => {
           clearTable();
         }}

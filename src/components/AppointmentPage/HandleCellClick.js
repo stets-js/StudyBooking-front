@@ -13,9 +13,12 @@ export const HandleCellClick = async ({
   dispatch,
   setLessonAmount,
   startDate,
-  endDate
+  endDate,
+  lesson = false
 }) => {
+  console.log('hello?');
   let teachersIdsNew = [];
+  console.log('hello1');
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
     // validating slots
     const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
@@ -23,13 +26,13 @@ export const HandleCellClick = async ({
       el => el?.time === format(currentTime, 'HH:mm')
     );
     if (isAlreadySelected) {
-      return error({delay: 1000, text: 'Slot already selected'});
+      return lesson ? 1 : error({delay: 1000, text: 'Slot already selected'});
     }
     const slots = slotsData[weekDay]?.[format(currentTime, 'HH:mm')];
     if (!slots || !slots.length) return error({delay: 1000, text: 'Not enough slots'});
     teachersIdsNew.push(slots.map(el => el.userId));
   }
-
+  console.log(teachersIdsNew);
   teachersIdsNew = teachersIdsNew[0].filter(id => {
     return teachersIdsNew.every(currentArray => currentArray.includes(id));
   }); // filtering for teachers that matches all slots
@@ -72,4 +75,5 @@ export const HandleCellClick = async ({
     } else currentDate.setDate(currentDate.getDate() + 1); // Переходим к следующей дате
   }
   setLessonAmount(prev => prev + count);
+  return <></>;
 };

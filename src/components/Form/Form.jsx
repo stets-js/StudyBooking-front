@@ -116,9 +116,9 @@ const Form = ({
         const searchQuery = `name=${
           JSON.parse(jsonData.isReplacement) ? 'replacement' : 'appointed'
         }_${
-          Number(jsonData.appointmentType) === 0
+          Number(jsonData.appointmentType) === 7
             ? 'group'
-            : Number(jsonData.appointmentType) === 1
+            : Number(jsonData.appointmentType) === 8
             ? 'private'
             : 'junior_group'
         }`;

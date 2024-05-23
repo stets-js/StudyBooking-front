@@ -18,24 +18,24 @@
     &__topic{
         &__container{
             display: flex;
-            justify-content:start;
+            justify-content:flex-start;
             column-gap: 5px;
         }
     }
     &__schedule{
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
     }
     &__feedback{
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
     }
     &__course{
         &__container{
             display: flex;
             flex-direction: column;
-            align-items: start;
-            justify-content: start;
+            align-items: flex-start;
+            justify-content: flex-start;
         }
     }
     &__text{
@@ -50,8 +50,8 @@
     }
     &__leftAlign{
         display:flex;
-        align-items: start;
-        justify-content: start;
+        align-items: flex-start;
+        justify-content: flex-start;
     }
 }
 

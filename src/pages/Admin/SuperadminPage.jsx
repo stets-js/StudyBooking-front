@@ -15,7 +15,7 @@ const SuperAdministrator = () => {
         endpoints={[
           {text: 'Users', path: path.users},
           {text: 'Courses', path: path.courses},
-          {text: 'Statistic', path: path.statistic},
+          {text: 'Lessons', path: path.lessons},
           {text: 'Appointment', path: path.appointments},
           {text: 'Available mentors', path: path.avaliableTable},
           {text: 'Subgroups', path: path.subgroups},

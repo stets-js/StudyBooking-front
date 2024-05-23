@@ -78,7 +78,7 @@ export default function AppointmentBodyTable({
                           HandleCellClick({
                             weekDay,
                             timeStr,
-                            numSlotsToCheck: selectedClassType === 0 ? 3 : 2, // 0 - group, 1 and 2 is indiv + jun_group that is altho 2 slots
+                            numSlotsToCheck: selectedClassType === 7 ? 3 : 2, // 0 - group, 1 and 2 is indiv + jun_group that is altho 2 slots
                             setSelectedSlotsAmount,
                             selectedSlotsAmount,
                             setTeachersIds,

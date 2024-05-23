@@ -6,7 +6,7 @@ import {getLessons} from '../../helpers/lessons/lesson';
 import LessonCard from '../../components/Statistic/LessonCard';
 import FilteringBlock from '../../components/Statistic/FilteringBlock';
 
-export default function StatisticPage() {
+export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currDate, setCurrDate] = useState(new Date());
@@ -43,6 +43,7 @@ export default function StatisticPage() {
         {(lessons || []).map(lesson => {
           return <LessonCard lesson={lesson}></LessonCard>;
         })}
+        {lessons.length === 0 ? <>Ops, no lessons today :(</> : <></>}
       </div>
     </>
   );

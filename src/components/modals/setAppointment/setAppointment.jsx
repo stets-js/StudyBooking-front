@@ -35,7 +35,7 @@ const SetAppointment = ({
   const weekNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const [schedule, setSchedule] = useState([]);
   const [subGroups, setSubGroups] = useState([]);
-  const appointmentLength = appointmentType === 0 ? 3 : 2; // 0 - is group (3 slots), 1 and 2 is indiv/jun_group (2 slots)
+  const appointmentLength = appointmentType === 7 ? 3 : 2; // 0 - is group (3 slots), 1 and 2 is indiv/jun_group (2 slots)
   const freeVariables = () => {
     setTeachers([]);
     setDescription('');
@@ -79,7 +79,6 @@ const SetAppointment = ({
         if (teachersIds.length > 0) {
           fetchTeachers();
         }
-
         for (let i = 0; i <= 6; i++) {
           let day = '';
           if (selectedSlots[i].length > 0) {
@@ -137,7 +136,7 @@ const SetAppointment = ({
             endDate={endDate}
             mentorId={selectedTeacher}
             adminId={selectedAdmin}
-            selectedCourse={course.value}
+            selectedCourse={course?.value}
             slots={JSON.stringify(selectedSlots)}
             type={{type: appointmentFlag}}
             appointmentType={appointmentType}
@@ -155,14 +154,14 @@ const SetAppointment = ({
               successMessage: `Successfully created ${
                 isReplacement
                   ? 'replacement'
-                  : appointmentType === 0
+                  : appointmentType === 7
                   ? 'group'
-                  : appointmentType === 1
+                  : appointmentType === 8
                   ? 'private'
                   : 'junior group'
               }`,
               failMessage: `Failed to create ${
-                appointmentType === 0 ? 'group' : appointmentType === 1 ? 'private' : 'junior group'
+                appointmentType === 7 ? 'group' : appointmentType === 8 ? 'private' : 'junior group'
               }`
             }}>
             <label htmlFor="teacher" className={styles.input__label}>
@@ -195,7 +194,7 @@ const SetAppointment = ({
               title="Course:"
               type="text"
               name="course"
-              value={course.label}
+              value={course?.label}
               placeholder="Course"
               disabled={true}
             />
@@ -284,7 +283,7 @@ const SetAppointment = ({
                     classname="input__bottom"
                     title="Start:"
                     type="date"
-                    name="schedule"
+                    name="startDate"
                     value={startDate}
                     isRequired={true}
                     disabled={true}
@@ -293,7 +292,7 @@ const SetAppointment = ({
                     classname="input__bottom"
                     title="End:"
                     type="date"
-                    name="schedule"
+                    name="endDate"
                     disabled={true}
                     value={endDate}
                     isRequired={true}
