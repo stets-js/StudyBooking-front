@@ -44,6 +44,7 @@
   }
   &__name{
     &__link{
+      word-break: break-all;
       color:$blue;
     }
   }
