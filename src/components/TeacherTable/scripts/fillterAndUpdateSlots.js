@@ -9,7 +9,8 @@ export const filterAndUpdateSlots = (slots, lessons) => {
 
   lessons.forEach(lesson => {
     const schedule = lesson.LessonSchedule;
-    const appointmentType = lesson.appointmentTypeId === 7 ? 3 : 2;
+    const appointmentType =
+      lesson.appointmentTypeId === 7 || lesson.appointmentTypeId === 9 ? 3 : 2;
     const slots = [
       {
         ...lesson,

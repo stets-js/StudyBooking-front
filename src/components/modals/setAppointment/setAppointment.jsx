@@ -10,6 +10,9 @@ import {addMinutes, format} from 'date-fns';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 import {useParams} from 'react-router-dom';
 const SetAppointment = ({
+  lessonId,
+  setSubGroup,
+  subGroup,
   appointmentFlag,
   isOpen,
   handleClose,
@@ -26,7 +29,7 @@ const SetAppointment = ({
   const {token} = useParams();
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
-  const [subGroup, setSubGroup] = useState(null);
+
   const [description, setDescription] = useState('');
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(teachersIds[0]);
@@ -128,6 +131,7 @@ const SetAppointment = ({
       {isOpen && (
         <Modal open={isOpen} onClose={close}>
           <Form
+            lessonId={lessonId}
             token={token}
             link={link}
             subgroupId={subGroup}
@@ -300,7 +304,7 @@ const SetAppointment = ({
                 </div>
                 <FormInput
                   classname="input__bottom"
-                  title="Decription:"
+                  title={`${isReplacement ? 'Replacement description:' : 'Description:'}`}
                   type="text"
                   name="description"
                   textArea={true}

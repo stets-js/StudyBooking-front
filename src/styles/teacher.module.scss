@@ -76,10 +76,10 @@
 .replacement_wrapper {
   font-size: 20px;
   font-family: $poppins;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   column-gap: 10px;
-  margin-left: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   &__switch__teacher_type {
     display: flex;
     align-items: flex-end;
@@ -228,13 +228,12 @@
 .chooser_selector {
   display: flex;
   // margin-left: 2%;
-  width: 90%;
   margin-left: 5%;
+  width: 90%;
   column-gap: 10px;
-  margin-right: 10%;
   margin-bottom: 40px;
   justify-content: center;
-  align-items: center;
+  align-items: center;  
   &__container {
     display: grid;
     grid-template-columns: 1fr 1fr;

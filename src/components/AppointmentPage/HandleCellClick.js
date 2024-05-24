@@ -10,15 +10,14 @@ export const HandleCellClick = async ({
   selectedSlotsAmount,
   setTeachersIds,
   selectedSlots,
+  excludeId,
   dispatch,
   setLessonAmount,
   startDate,
   endDate,
   lesson = false
 }) => {
-  console.log('hello?');
   let teachersIdsNew = [];
-  console.log('hello1');
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
     // validating slots
     const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
@@ -32,7 +31,6 @@ export const HandleCellClick = async ({
     if (!slots || !slots.length) return error({delay: 1000, text: 'Not enough slots'});
     teachersIdsNew.push(slots.map(el => el.userId));
   }
-  console.log(teachersIdsNew);
   teachersIdsNew = teachersIdsNew[0].filter(id => {
     return teachersIdsNew.every(currentArray => currentArray.includes(id));
   }); // filtering for teachers that matches all slots
@@ -61,7 +59,7 @@ export const HandleCellClick = async ({
   }
 
   setSelectedSlotsAmount(selectedSlotsAmount + 1);
-  setTeachersIds(teachersIdsNew);
+  setTeachersIds(excludeId(teachersIdsNew));
   const start = new Date(startDate);
   const end = new Date(endDate);
   // console.log(end, start);

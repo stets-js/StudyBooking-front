@@ -10,9 +10,14 @@ import styles from './Form.module.scss';
 import {updateSubGroup, updateSubGroupAndAddMentor} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
-import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
+import {
+  createReplacement,
+  deleteReplacement,
+  updateReplacement
+} from '../../helpers/replacement/replacement';
 import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
+import {deleteOneLesson} from '../../helpers/lessons/lesson';
 const root = document.querySelector('#root');
 
 defaults.delay = 1000;
@@ -123,11 +128,15 @@ const Form = ({
             : 'junior_group'
         }`;
         const appointmentType = await getAppointmentTypes(searchQuery);
+        if (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)) {
+          await deleteOneLesson(jsonData.lessonId); //delete lesson that is replaced
+        }
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData, userId)
           : updateSubGroupAndAddMentor({id: jsonData.subgroupId, body: jsonData, userId})
         )
           .then(async data => {
+            console.log(data);
             const newDocId = data?.subgroupMentor?.subgroupId || data?.data?.id;
             // console.log(data, newDocId);
             success({text: status.successMessage || 'Success', delay: 1000});

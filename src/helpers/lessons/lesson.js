@@ -28,4 +28,15 @@ const getTopics = () => {
 const deleteLessons = credentials => {
   return axios.delete(`/lessons`, credentials);
 };
-export {getLessons, getLessonsForUser, bulkLessonCreate, patchLesson, getTopics, deleteLessons};
+const deleteOneLesson = id => {
+  return axios.delete(`/lessons/${id}`);
+};
+export {
+  getLessons,
+  getLessonsForUser,
+  bulkLessonCreate,
+  patchLesson,
+  getTopics,
+  deleteLessons,
+  deleteOneLesson
+};

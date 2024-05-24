@@ -41,7 +41,7 @@ export default function LessonsPage() {
         setCurrDate={setCurrDate}></FilteringBlock>
       <div>
         {(lessons || []).map(lesson => {
-          return <LessonCard lesson={lesson}></LessonCard>;
+          return <LessonCard lesson={lesson} setLessons={setLessons}></LessonCard>;
         })}
         {lessons.length === 0 ? <>Ops, no lessons today :(</> : <></>}
       </div>

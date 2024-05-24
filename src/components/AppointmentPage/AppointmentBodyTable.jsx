@@ -13,6 +13,7 @@ export default function AppointmentBodyTable({
   slotsData,
   setSelectedSlotsAmount,
   setTeachersIds,
+  excludeId,
   startDate,
   endDate
 }) {
@@ -82,6 +83,7 @@ export default function AppointmentBodyTable({
                             setSelectedSlotsAmount,
                             selectedSlotsAmount,
                             setTeachersIds,
+                            excludeId,
                             selectedSlots,
                             setLessonAmount,
                             dispatch,

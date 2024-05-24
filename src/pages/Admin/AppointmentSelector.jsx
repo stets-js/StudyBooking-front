@@ -12,7 +12,6 @@ import SetAppointment from '../../components/modals/setAppointment/setAppointmen
 import AppointmentButtons from '../../components/AppointmentPage/AppointmentButtons';
 import AppointmentHeaderTable from '../../components/AppointmentPage/AppointmentHeaderTable';
 import AppointmentBodyTable from '../../components/AppointmentPage/AppointmentBodyTable';
-import {HandleCellClick} from '../../components/AppointmentPage/HandleCellClick';
 
 export default function UsersPage({appointmentFlag = 'appointment'}) {
   const location = useLocation();
@@ -36,6 +35,14 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
   const [startDate, setStartDate] = useState(format(startDates[0], 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState(undefined);
 
+  const [excludeTeacherId, setExcludeTeacherId] = useState(null); // for case of replacing through lesson page
+  const [subGroup, setSubGroup] = useState(null);
+  const excludeId = arr => {
+    if (excludeTeacherId)
+      return arr.filter(el => {
+        return el !== excludeTeacherId;
+      });
+  };
   const [renderTeachers, setRenderTeachers] = useState(false);
   dispatch({type: 'SET_SELECTEDS_SLOTS'});
   useEffect(() => {
@@ -50,11 +57,12 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
     fetchCourses();
   }, []);
   const [isReplacement, setIsReplacement] = useState(false);
+
   useEffect(() => {
     const fetchUsersIds = async () => {
       try {
         const usersIds = await getTeachersByCourse(selectedCourse, teacherType);
-        setTeachersIds(usersIds);
+        setTeachersIds(excludeId(usersIds));
       } catch (error) {
         console.log(error);
       }
@@ -103,7 +111,7 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
-
+  const [lessonId, setLessonId] = useState(null);
   const clearTable = () => {
     if (selectedSlotsAmount !== 0 || lesson) {
       dispatch({type: 'CLEAN_SELECTED_SLOTS'});
@@ -113,85 +121,21 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
     }
   };
 
-  const [tmpFlag, setTmpFlag] = useState(false);
-
   useEffect(() => {
     const setAllData = async () => {
       if (lesson) {
+        setLessonId(lesson.id);
         setStartDate(lesson.date);
         setEndDate(lesson.date);
         setSelectedCourse(lesson.courseId);
         setSelectedClassType(lesson.appointmentId);
-        setSelectedSlotsAmount(1);
-        setTmpFlag(true);
+        setSubGroup(lesson.subgroupId);
+        setExcludeTeacherId(lesson.userId);
+        setIsReplacement(true);
       }
     };
     setAllData();
   }, [lesson, courses, teachersIds, slotsData]);
-  console.log(teachersIds);
-
-  useEffect(() => {
-    const setAllData = async () => {
-      if (lesson) {
-        try {
-          console.log('clicking211');
-          if (startDate && endDate) {
-            console.log('clicking1???');
-            await HandleCellClick({
-              weekDay: lesson.weekDay,
-              timeStr: lesson.startTime,
-              numSlotsToCheck: selectedClassType === 7 ? 3 : 2, // 0 - group, 1 and 2 is indiv + jun_group that is altho 2 slots
-              setSelectedSlotsAmount,
-              selectedSlotsAmount,
-              setTeachersIds,
-              selectedSlots,
-              setLessonAmount,
-              dispatch,
-              slotsData,
-              startDate,
-              endDate,
-              lesson
-            });
-          }
-        } catch (err) {
-          console.log('Sorry, can`t find slots!');
-        }
-      }
-    };
-    console.log(
-      tmpFlag,
-      teachersIds.length > 0,
-      startDate,
-      endDate,
-      selectedCourse,
-      selectedClassType
-    );
-    if (
-      tmpFlag &&
-      teachersIds.length > 0 &&
-      startDate &&
-      endDate &&
-      selectedCourse &&
-      selectedClassType
-    ) {
-      setAllData();
-      console.log(4444);
-      setTmpFlag(false);
-    }
-    console.log(333335);
-  }, [
-    tmpFlag,
-    teachersIds,
-    startDate,
-    endDate,
-    selectedCourse,
-    selectedClassType,
-    lesson,
-    selectedSlotsAmount,
-    selectedSlots,
-    dispatch,
-    slotsData
-  ]);
 
   return (
     <div>
@@ -208,7 +152,6 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
         setTeachersIds={setTeachersIds}
         setSelectedCourse={setSelectedCourse}
         selectedClassType={selectedClassType}
-        setIsReplacement={setIsReplacement}
         handleClose={handleClose}
         selectedSlotsAmount={selectedSlotsAmount}
         setSelectedClassType={setSelectedClassType}
@@ -226,11 +169,15 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
             slotsData={slotsData}
             setSelectedSlotsAmount={setSelectedSlotsAmount}
             setTeachersIds={setTeachersIds}
+            excludeId={excludeId}
             startDate={startDate}
             endDate={endDate}></AppointmentBodyTable>
         </div>
       </div>
       <SetAppointment
+        lessonId={lessonId}
+        setSubGroup={setSubGroup}
+        subGroup={subGroup}
         appointmentFlag={appointmentFlag}
         setSelectedCourse={setSelectedCourse}
         startDate={startDate}

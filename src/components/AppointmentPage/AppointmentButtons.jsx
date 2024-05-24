@@ -1,6 +1,5 @@
 import React from 'react';
 import Select from 'react-select';
-import Switch from 'react-switch';
 import {useDispatch} from 'react-redux';
 import styles from '../../styles/teacher.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
@@ -21,7 +20,6 @@ export default function AppointmentButtons({
   setTeachersIds,
   setSelectedCourse,
   selectedClassType,
-  setIsReplacement,
   handleClose,
   selectedSlotsAmount,
   setSelectedClassType,
@@ -38,7 +36,7 @@ export default function AppointmentButtons({
     {label: 'Individual', value: 8},
     {label: 'Junior group', value: 11}
   ];
-  if (token) appointmentTypes = [{label: 'Individual', value: 1}];
+  if (token) appointmentTypes = [{label: 'Individual', value: 8}];
   return (
     <>
       <div className={styles.chooser_selector__date_wrapper}>
@@ -47,7 +45,7 @@ export default function AppointmentButtons({
             type={'date'}
             title={'Start'}
             value={startDate}
-            defaultValue={isReplacement ? startDate : null}
+            // defaultValue={isReplacement ? startDate : null}
             // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
             handler={setStartDate}></FormInput>
         </div>
@@ -96,41 +94,29 @@ export default function AppointmentButtons({
           </div>
         </div>
         <div className={`${styles.replacement_wrapper}`}>
-          <div>
-            <label>
-              <span className={styles.date_selector}>Replacement</span>
-            </label>
-            <div className={styles.replacement_wrapper__switch}>
-              <Switch
-                className={styles.remove_svg_switch}
-                onChange={() => {
-                  setIsReplacement(!isReplacement);
-                }}
-                checked={isReplacement}
-              />
-            </div>
-          </div>
-          <div>
-            <div className={styles.replacement_wrapper__switch__teacher_type}>
-              <RadioGroup
-                name="teacherType"
-                value={String(teacherType)}
-                onChange={event => {
-                  setTeacherType(+event.target.value);
-                }}
-                className={styles.radio__group}>
-                <RadioButton value="1" className={styles.radio__button}>
-                  soft
-                </RadioButton>
-                <RadioButton value="2" className={styles.radio__button}>
-                  tech
-                </RadioButton>
-                {/* <RadioButton value="3" className={styles.radio__button}>
+          {!isReplacement && (
+            <div>
+              <div className={styles.replacement_wrapper__switch__teacher_type}>
+                <RadioGroup
+                  name="teacherType"
+                  value={String(teacherType)}
+                  onChange={event => {
+                    setTeacherType(+event.target.value);
+                  }}
+                  className={styles.radio__group}>
+                  <RadioButton value="1" className={styles.radio__button}>
+                    soft
+                  </RadioButton>
+                  <RadioButton value="2" className={styles.radio__button}>
+                    tech
+                  </RadioButton>
+                  {/* <RadioButton value="3" className={styles.radio__button}>
                   ulti
                 </RadioButton> */}
-              </RadioGroup>
+                </RadioGroup>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div
           className={`${styles.chooser_selector__item} ${styles.chooser_selector__item__buttons}`}>

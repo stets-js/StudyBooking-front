@@ -1,13 +1,11 @@
 import React from 'react';
 import EditButton from '../../Buttons/Edit';
 import {useConfirm} from 'material-ui-confirm';
-import {useDispatch} from 'react-redux';
 
 import {patchUser} from '../../../helpers/user/user';
 import styles from './banner.module.scss';
 export default function Banner({user, setUser}) {
   const confirm = useConfirm();
-  const dispatch = useDispatch();
   if (user.isPrevSubgroupPlaced) return <></>;
   return (
     <div className={styles.banner__wrapper}>
