@@ -42,6 +42,7 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
       return arr.filter(el => {
         return el !== excludeTeacherId;
       });
+    else return arr;
   };
   const [renderTeachers, setRenderTeachers] = useState(false);
   dispatch({type: 'SET_SELECTEDS_SLOTS'});
