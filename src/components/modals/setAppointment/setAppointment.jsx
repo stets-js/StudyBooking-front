@@ -205,7 +205,7 @@ const SetAppointment = ({
             {!isReplacement && isOpen ? (
               <>
                 <FormInput
-                  title="Link to CRM/LMS:"
+                  title="Link to group chat:"
                   type="text"
                   name="link"
                   placeholder="link"

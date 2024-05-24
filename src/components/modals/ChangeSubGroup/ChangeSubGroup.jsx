@@ -70,7 +70,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                 }))
               }></FormInput>
             <FormInput
-              title="Link to CRM/LMS"
+              title="Link to group chat"
               value={element.link}
               placeholder={'Wait..'}
               disabled={!editActive}
