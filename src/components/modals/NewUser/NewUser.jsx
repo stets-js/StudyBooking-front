@@ -164,7 +164,6 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 name="city"
                 value={city}
                 placeholder="City"
-                isRequired={true}
                 handler={setCity}
               />
             </div>
