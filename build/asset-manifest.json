@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.2b8a82a5.css",
+    "main.js": "/static/js/main.0550e464.js",
+    "static/media/Bg.png": "/static/media/Bg.a6fb46df93063105ee61.png",
+    "static/media/goiteensLOGO.png": "/static/media/goiteensLOGO.c36cc2200b171b80feb8.png",
+    "static/media/logout.svg": "/static/media/logout.794197c50e72a743eb21aba485820a11.svg",
+    "index.html": "/index.html",
+    "main.2b8a82a5.css.map": "/static/css/main.2b8a82a5.css.map",
+    "main.0550e464.js.map": "/static/js/main.0550e464.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2b8a82a5.css",
+    "static/js/main.0550e464.js"
+  ]
+}
