@@ -17,7 +17,7 @@ const getSlots = (options = '') => {
       throw error(e.response.data.message);
     });
 };
-const getSlotsForUsers = ({userIds, startDate, endDate}) => {
+const getSlotsForUsers = ({userIds, startDate, endDate, appointmentTypeId}) => {
   return axios
     .post(`/slots${startDate ? `?startDate=${startDate}&endDate=${endDate}` : ''}`, {userIds})
     .then(res => res.data)

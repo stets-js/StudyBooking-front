@@ -51,6 +51,10 @@ export default function AppointmentList({
         return 'Appointed jun group';
       case 'free':
         return 'Remove';
+      case 'group':
+        return 'Group';
+      case 'private':
+        return 'Private';
       case 'replacement_group':
         return 'Group replacement';
       case 'replacement_private':
@@ -65,13 +69,13 @@ export default function AppointmentList({
   return (
     <div className={appointmentStyles.buttons_header}>
       {appointmentTypes.map(appointmentType => {
-        if (!['free', 'universal'].includes(appointmentType.name)) return null;
+        if (!['free', 'universal', 'group', 'private'].includes(appointmentType.name)) return null;
 
         return (
           <button
             key={appointmentType.id}
             onClick={() => {
-              if (['free', 'universal'].includes(appointmentType.name))
+              if (['free', 'universal', 'group', 'private'].includes(appointmentType.name))
                 setSelectedAppointment({
                   name: appointmentType.name,
                   id: appointmentType.id
@@ -96,9 +100,14 @@ export default function AppointmentList({
       <Tooltip id="my-tooltip" className={appointmentStyles.tooltip}>
         {appointmentTypes.map(appointmentType => {
           if (
-            ['free', 'universal', 'replacement_junior_group', 'appointed_junior_group'].includes(
-              appointmentType.name
-            )
+            [
+              'free',
+              'universal',
+              'group',
+              'private',
+              'replacement_junior_group',
+              'appointed_junior_group'
+            ].includes(appointmentType.name)
           )
             return null;
 

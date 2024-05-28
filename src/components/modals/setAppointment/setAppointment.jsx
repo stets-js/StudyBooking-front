@@ -38,7 +38,7 @@ const SetAppointment = ({
   const weekNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const [schedule, setSchedule] = useState([]);
   const [subGroups, setSubGroups] = useState([]);
-  const appointmentLength = appointmentType === 7 ? 3 : 2; // 0 - is group (3 slots), 1 and 2 is indiv/jun_group (2 slots)
+  const appointmentLength = appointmentType === 1 ? 3 : 2; // 0 - is group (3 slots), 1 and 2 is indiv/jun_group (2 slots)
   const freeVariables = () => {
     setTeachers([]);
     setDescription('');
@@ -158,14 +158,14 @@ const SetAppointment = ({
               successMessage: `Successfully created ${
                 isReplacement
                   ? 'replacement'
-                  : appointmentType === 7
+                  : appointmentType === 1
                   ? 'group'
-                  : appointmentType === 8
+                  : appointmentType === 2
                   ? 'private'
                   : 'junior group'
               }`,
               failMessage: `Failed to create ${
-                appointmentType === 7 ? 'group' : appointmentType === 8 ? 'private' : 'junior group'
+                appointmentType === 1 ? 'group' : appointmentType === 8 ? 'private' : 'junior group'
               }`
             }}>
             <label htmlFor="teacher" className={styles.input__label}>

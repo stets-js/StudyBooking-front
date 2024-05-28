@@ -75,10 +75,14 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
   }, [selectedCourse, renderTeachers, teacherType]);
 
   const {lesson} = location.state || {};
-
   useEffect(() => {
     const fetchData = async () => {
-      const slotsResponse = await getSlotsForUsers({userIds: teachersIds, startDate, endDate});
+      const slotsResponse = await getSlotsForUsers({
+        userIds: teachersIds,
+        startDate,
+        endDate,
+        appointmentTypeId: selectedClassType
+      });
       const slots = slotsResponse.data;
       const organizedSlots = {};
       slots.forEach(slot => {
@@ -108,7 +112,7 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
     if (selectedCourse && teachersIds && startDate && endDate) {
       fetchData();
     }
-  }, [selectedCourse, teachersIds, startDate, endDate]);
+  }, [selectedCourse, teachersIds, startDate, endDate, selectedClassType]);
   const handleClose = () => {
     setIsOpen(!isOpen);
   };

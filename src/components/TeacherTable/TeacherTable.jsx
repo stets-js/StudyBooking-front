@@ -60,7 +60,6 @@ export default function TeacherTable({userId, isAdmin}) {
       console.log(error);
     }
   }, [userId, dispatch, startDates]);
-
   return (
     <div>
       {!isAdmin && <Banner setUser={setUser} user={user}></Banner>}
