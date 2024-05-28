@@ -31,6 +31,7 @@ import Info from './pages/Teacher/Info';
 import MICWrapper from './pages/MIC/MICWrapper';
 import MentorsPage from './pages/MIC/MentorsChooser';
 import LessonsPage from './pages/Admin/LessonsPage';
+import StatisticPage from './pages/Teacher/StatisticPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -93,6 +94,9 @@ const App = () => {
                   <Route path={`${path.mySubgroups}:teacherId`} element={<TeacherSubgroupPage />} />
                   <Route path={`${path.addMySubgroup}:teacherId`} element={<AddMySubgroup />} />
                   <Route path={`${path.info}:teacherId`} element={<Info></Info>}></Route>
+                  <Route
+                    path={`${path.statistics}:teacherId`}
+                    element={<StatisticPage></StatisticPage>}></Route>
                 </Route>
                 <Route path={path.subgroups} element={<SubGroupPage />} />
                 <Route path={path.replacements} element={<ReplacementsPage />} />
@@ -106,6 +110,7 @@ const App = () => {
                 <Route path={path.addMySubgroup} element={<AddMySubgroup />}></Route>
                 <Route path={path.mySubgroups} element={<TeacherSubgroupPage />}></Route>
                 <Route path={path.info} element={<Info />}></Route>
+                <Route path={path.statistics} element={<StatisticPage></StatisticPage>}></Route>
               </Route>
             </>
           ) : auth && MIC_user?.name ? (

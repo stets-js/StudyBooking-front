@@ -27,7 +27,8 @@ const TeacherWrapper = ({
         text: 'Add my subgroup',
         path: id ? `${path.addMySubgroup}${id}` : path.addMySubgroup
       },
-      {text: 'Information', path: id ? `${path.info}${id}` : path.info}
+      {text: 'Information', path: id ? `${path.info}${id}` : path.info},
+      {text: 'Statistics', path: id ? `${path.statistics}${id}` : path.statistics}
     );
   }
   return (

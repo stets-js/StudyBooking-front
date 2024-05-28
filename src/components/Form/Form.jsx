@@ -10,11 +10,7 @@ import styles from './Form.module.scss';
 import {updateSubGroup, updateSubGroupAndAddMentor} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
-import {
-  createReplacement,
-  deleteReplacement,
-  updateReplacement
-} from '../../helpers/replacement/replacement';
+import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
 import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
 import {deleteOneLesson} from '../../helpers/lessons/lesson';
