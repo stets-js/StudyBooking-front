@@ -69,13 +69,13 @@ export default function AppointmentList({
   return (
     <div className={appointmentStyles.buttons_header}>
       {appointmentTypes.map(appointmentType => {
-        if (!['free', 'universal', 'group', 'private'].includes(appointmentType.name)) return null;
+        if (!['free', 'group', 'private'].includes(appointmentType.name)) return null;
 
         return (
           <button
             key={appointmentType.id}
             onClick={() => {
-              if (['free', 'universal', 'group', 'private'].includes(appointmentType.name))
+              if (['free', 'group', 'private'].includes(appointmentType.name))
                 setSelectedAppointment({
                   name: appointmentType.name,
                   id: appointmentType.id
