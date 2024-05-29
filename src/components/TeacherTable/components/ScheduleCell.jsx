@@ -39,8 +39,8 @@ export default function ScheduleCell({
               ? tableStyles.cell__outer
               : tableStyles.cell__inner
           } ${
-            !slot?.rowSpan
-              ? appointmentStyles[`hover__${selectedAppointment?.name || 'universal'}`]
+            !slot?.rowSpan && ![1, 2].includes(slot?.appointmentTypeId)
+              ? appointmentStyles[`hover__${selectedAppointment?.name}`]
               : ''
           }  ${
             slot && slot.appointmentTypeId
