@@ -35,7 +35,7 @@ export default function TeacherTable({userId, isAdmin}) {
     Array.from({length: 7}, (_, i) => addDays(initialStartDate, i))
   );
   const [appointmentTypes, setAppointmentTypes] = useState([]);
-  const [selectedAppointment, setSelectedAppointment] = useState({name: 'universal', id: 6});
+  const [selectedAppointment, setSelectedAppointment] = useState({name: 'group', id: 1});
   const [openSlotDetails, setOpenSlotDetails] = useState(false);
   const [selectedSlotDetails, setSelectedSlotDetails] = useState(null);
   useEffect(() => {

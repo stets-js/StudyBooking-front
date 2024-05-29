@@ -81,7 +81,8 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
         userIds: teachersIds,
         startDate,
         endDate,
-        appointmentTypeId: selectedClassType
+        appointmentTypeId: selectedClassType === 11 ? 1 : selectedClassType
+        // 11 is junior group, basicly it need same slots as group(id 1)
       });
       const slots = slotsResponse.data;
       const organizedSlots = {};
@@ -109,7 +110,7 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
         error({text: 'End date can`t be less than start', delay: 1000});
       return;
     }
-    if (selectedCourse && teachersIds && startDate && endDate) {
+    if (selectedCourse && teachersIds && startDate && endDate && selectedClassType) {
       fetchData();
     }
   }, [selectedCourse, teachersIds, startDate, endDate, selectedClassType]);
