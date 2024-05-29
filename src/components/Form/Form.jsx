@@ -7,7 +7,11 @@ import InputSubmit from '../InputSubmit/InputSubmit';
 import OpenChangeManagerCourses from '../OpenChangeManagerCourses/OpenChangeManagerCourses';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
 import styles from './Form.module.scss';
-import {updateSubGroup, updateSubGroupAndAddMentor} from '../../helpers/subgroup/subgroup';
+import {
+  postSubGroup,
+  updateSubGroup,
+  updateSubGroupAndAddMentor
+} from '../../helpers/subgroup/subgroup';
 import {bulkUpdate} from '../../helpers/slot/slot';
 import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
@@ -127,16 +131,19 @@ const Form = ({
         if (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)) {
           await deleteOneLesson(jsonData.lessonId); //delete lesson that is replaced
         }
+
+        if (jsonData.MIC_flag) {
+          const subgroup = await postSubGroup({name: jsonData.subgroupId}); // in this case inside subgroupId is string with name
+          jsonData = {...jsonData, subgroupId: +subgroup.data.id};
+        }
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData, userId)
           : updateSubGroupAndAddMentor({id: jsonData.subgroupId, body: jsonData, userId})
         )
           .then(async data => {
-            console.log(data);
             const newDocId = data?.subgroupMentor?.subgroupId || data?.data?.id;
             // console.log(data, newDocId);
             success({text: status.successMessage || 'Success', delay: 1000});
-            console.log(jsonData);
             for (let i = 0; i <= 6; i++) {
               // week itterating
               if (jsonData.slots[i].length > 0) {

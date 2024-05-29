@@ -13,7 +13,7 @@ const SetAppointment = ({
   lessonId,
   setSubGroup,
   subGroup,
-  appointmentFlag,
+  MIC_flag,
   isOpen,
   handleClose,
   selectedSlots,
@@ -142,8 +142,9 @@ const SetAppointment = ({
             adminId={selectedAdmin}
             selectedCourse={course?.value}
             slots={JSON.stringify(selectedSlots)}
-            type={{type: appointmentFlag}}
+            type={{type: 'appointment'}}
             appointmentType={appointmentType}
+            MIC_flag={MIC_flag}
             isReplacement={isReplacement}
             schedule={schedule}
             TeacherTypeId={teacherType}
@@ -244,27 +245,34 @@ const SetAppointment = ({
                   textArea={true}
                   appointmentLength={schedule.length}
                 />
-                <label htmlFor="subGroupSelector" className={styles.input__label}>
-                  Subgroup:
-                </label>
-                <Select
-                  name="subGroupSelector"
-                  className={styles.selector}
-                  value={subGroups.filter(el => el.value === subGroup)}
-                  options={subGroups}
-                  key={Math.random() * 100 - 10}
-                  required
-                  placeholder="Select subgroup"
-                  onChange={el => setSubGroup(el.value)}
-                />
-                {/* <FormInput
-                  classname="input__bottom"
-                  title="Description:"
-                  type="text"
-                  name="description"
-                  textArea={true}
-                  handler={setDescription}
-                /> */}
+                {!MIC_flag ? (
+                  <>
+                    <label htmlFor="subGroupSelector" className={styles.input__label}>
+                      Subgroup:
+                    </label>
+                    <Select
+                      name="subGroupSelector"
+                      className={styles.selector}
+                      value={subGroups.filter(el => el.value === subGroup)}
+                      options={subGroups}
+                      key={Math.random() * 100 - 10}
+                      required
+                      placeholder="Select subgroup"
+                      onChange={el => setSubGroup(el.value)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <FormInput
+                      classname="input__bottom"
+                      title="New subgroup:"
+                      type="text"
+                      name="subgroup"
+                      placeholder="Name - GoIteens_UA_Individual_Training_Course"
+                      handler={setSubGroup}
+                    />
+                  </>
+                )}
               </>
             ) : (
               <>

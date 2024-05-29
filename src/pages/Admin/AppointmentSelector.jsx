@@ -13,7 +13,7 @@ import AppointmentButtons from '../../components/AppointmentPage/AppointmentButt
 import AppointmentHeaderTable from '../../components/AppointmentPage/AppointmentHeaderTable';
 import AppointmentBodyTable from '../../components/AppointmentPage/AppointmentBodyTable';
 
-export default function UsersPage({appointmentFlag = 'appointment'}) {
+export default function UsersPage({MIC_flag = false}) {
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -58,7 +58,6 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
     fetchCourses();
   }, []);
   const [isReplacement, setIsReplacement] = useState(false);
-
   useEffect(() => {
     const fetchUsersIds = async () => {
       try {
@@ -148,7 +147,7 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
       <h3>Lesson amount: {lessonAmount}</h3>
       <AppointmentButtons
         selectedCourse={selectedCourse}
-        appointmentFlag={appointmentFlag}
+        MIC_flag={MIC_flag}
         startDate={startDate}
         isReplacement={isReplacement}
         setStartDate={setStartDate}
@@ -184,7 +183,7 @@ export default function UsersPage({appointmentFlag = 'appointment'}) {
         lessonId={lessonId}
         setSubGroup={setSubGroup}
         subGroup={subGroup}
-        appointmentFlag={appointmentFlag}
+        MIC_flag={MIC_flag}
         setSelectedCourse={setSelectedCourse}
         startDate={startDate}
         endDate={endDate}

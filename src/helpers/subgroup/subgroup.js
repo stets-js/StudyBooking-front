@@ -18,12 +18,12 @@ const generateDataForReq = (credentials, userId) => {
   } catch (error) {}
   return data;
 };
-const postSubGroup = ({credentials, userId}) => {
+const postSubGroup = ({name, userId}) => {
   let data = {};
   // first case creating subgroup from button on subgroup page, second case of creating it from appointment selector
-  data = JSON.parse(credentials.get('subgroup')) || generateDataForReq(credentials, userId);
+  // data = JSON.parse(credentials.get('subgroup')) || generateDataForReq(credentials, userId);
   return axios
-    .post('/subgroups', data)
+    .post('/subgroups', {name})
     .then(res => res.data)
     .catch(error => {
       throw error;
