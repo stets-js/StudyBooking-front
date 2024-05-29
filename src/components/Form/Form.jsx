@@ -133,7 +133,10 @@ const Form = ({
         }
 
         if (jsonData.MIC_flag) {
-          const subgroup = await postSubGroup({name: jsonData.subgroupId}); // in this case inside subgroupId is string with name
+          const subgroup = await postSubGroup({
+            name: jsonData.subgroupId,
+            CourseId: jsonData.selectedCourse
+          }); // in this case inside subgroupId is string with name
           jsonData = {...jsonData, subgroupId: +subgroup.data.id};
         }
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
