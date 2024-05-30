@@ -42,13 +42,8 @@ export default function ScheduleCell({
             !slot?.rowSpan && ![1, 2].includes(slot?.appointmentTypeId)
               ? appointmentStyles[`hover__${selectedAppointment?.name}`]
               : ''
-          }  ${
-            slot && slot.appointmentTypeId
-              ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`]
-              : ''
-          } `}
+          }  ${slot ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`] : ''} `}
           onClick={() => {
-            console.log('hello?');
             HandleCellClick({
               slot,
               selectedAppointment,
