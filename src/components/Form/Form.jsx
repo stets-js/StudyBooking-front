@@ -131,8 +131,7 @@ const Form = ({
         if (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)) {
           await deleteOneLesson(jsonData.lessonId); //delete lesson that is replaced
         }
-
-        if (jsonData.MIC_flag) {
+        if (JSON.parse(jsonData.MIC_flag)) {
           const subgroup = await postSubGroup({
             name: jsonData.subgroupId,
             CourseId: jsonData.selectedCourse
