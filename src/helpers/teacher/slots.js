@@ -18,11 +18,13 @@ const getSlots = (options = '') => {
     });
 };
 const getSlotsForUsers = ({userIds, startDate, endDate, appointmentTypeId}) => {
+  // appointmentTypeId will be used as intended + as optional flag to divide slot query params
   return axios
     .post(
       `/slots?appointmentTypeId=${appointmentTypeId}${
         startDate
-          ? (appointmentTypeId ? '&startDate' : 'startDate') + `=${startDate}&endDate=${endDate}`
+          ? (appointmentTypeId ? '&startDateAppointment' : 'startDate') +
+            `=${startDate}&endDate=${endDate}`
           : ''
       }`,
       {userIds}
