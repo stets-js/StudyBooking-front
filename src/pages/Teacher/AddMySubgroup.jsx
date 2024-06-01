@@ -235,7 +235,7 @@ export default function AddMySubgroup() {
                     <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
                       <table className={tableStyles.tableBody} key="calendar">
                         <tbody>
-                          {Array.from({length: 24}, (_, timeIndex) => {
+                          {Array.from({length: 26}, (_, timeIndex) => {
                             // 24 - for making 20:30 last cell
                             const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
                             if (currentTime.getHours() >= 9)
@@ -267,7 +267,7 @@ export default function AddMySubgroup() {
                                                 tableStyles.black_borders
                                               } ${
                                                 timeIndex === 0 ||
-                                                timeIndex === 23 ||
+                                                timeIndex === 25 ||
                                                 dateIndex === 0 ||
                                                 dateIndex === 6
                                                   ? tableStyles.cell__outer

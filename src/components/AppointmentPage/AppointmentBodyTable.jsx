@@ -23,7 +23,7 @@ export default function AppointmentBodyTable({
   return (
     <table className={tableStyles.tableBody}>
       <tbody>
-        {Array.from({length: 24}, (_, timeIndex) => {
+        {Array.from({length: 26}, (_, timeIndex) => {
           const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
           if (currentTime.getHours() >= startingHour)
             return (
@@ -37,7 +37,7 @@ export default function AppointmentBodyTable({
                         <button
                           className={`${tableStyles.cell} ${tableStyles.black_borders} ${
                             timeIndex === 0 ||
-                            timeIndex === 23 ||
+                            timeIndex === 25 ||
                             dateIndex === 0 ||
                             dateIndex === 6
                               ? tableStyles.cell__outer

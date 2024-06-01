@@ -93,8 +93,9 @@ export default function TeacherTable({userId, isAdmin}) {
         <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
           <table className={tableStyles.tableBody}>
             <tbody>
-              {Array.from({length: 24}, (_, timeIndex) => {
+              {Array.from({length: 26}, (_, timeIndex) => {
                 // 24 - for making 20:30 last cell
+                // 26 - for making 21:30
                 const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
                 if (currentTime.getHours() >= startingHour)
                   return (

@@ -35,7 +35,7 @@ export default function ScheduleCell({
               : {}
           }
           className={`${tableStyles.cell} ${tableStyles.black_borders} ${
-            timeIndex === 0 || timeIndex === 23 || dateIndex === 0 || dateIndex === 6
+            timeIndex === 0 || timeIndex === 25 || dateIndex === 0 || dateIndex === 6
               ? tableStyles.cell__outer
               : tableStyles.cell__inner
           } ${
