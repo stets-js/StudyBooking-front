@@ -34,6 +34,7 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
   }, []);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
+  console.log(slot);
   return (
     <>
       {isOpen && slot && (
