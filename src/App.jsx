@@ -122,9 +122,7 @@ const App = () => {
                 <>
                   <Route
                     path={path.appointments}
-                    element={
-                      <Appointment appointmentFlag={'appointment_MIC'}></Appointment>
-                    }></Route>
+                    element={<Appointment MIC_flag></Appointment>}></Route>
                   <Route path={path.mentors} element={<MentorsPage></MentorsPage>}></Route>
                   <Route
                     path={path.MIC + path.teacher}

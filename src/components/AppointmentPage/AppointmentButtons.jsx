@@ -27,16 +27,16 @@ export default function AppointmentButtons({
   clearTable,
   setTeacherType,
   teacherType,
-  appointmentFlag
+  MIC_flag
 }) {
   const dispatch = useDispatch();
-  const token = appointmentFlag.includes('MIC');
+  const token = MIC_flag;
   let appointmentTypes = [
     {label: 'Group', value: 1},
     {label: 'Individual', value: 2},
     {label: 'Junior group', value: 11}
   ];
-  if (token) appointmentTypes = [{label: 'Individual', value: 8}];
+  if (token) appointmentTypes = [{label: 'Individual', value: 2}];
   return (
     <>
       <div className={styles.chooser_selector__date_wrapper}>

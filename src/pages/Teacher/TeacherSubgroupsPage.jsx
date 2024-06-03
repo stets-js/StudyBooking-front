@@ -7,8 +7,8 @@ import {useParams} from 'react-router-dom';
 import styles from '../../styles/teacher.module.scss';
 import {getCourses} from '../../helpers/course/course';
 import FormInput from '../../components/FormInput/FormInput';
-import TableHeader from '../../components/TeacherSubgroup/TableHeader';
 import TableBody from '../../components/TeacherSubgroup/TableBody';
+import TableHeader from '../../components/TableComponent/TableHeader';
 
 export default function TeacherSubgroupPage() {
   const [subgroups, setSubgroups] = useState([]);
@@ -72,7 +72,8 @@ export default function TeacherSubgroupPage() {
         </div>
       </div>
       <div>
-        <TableHeader></TableHeader>
+        <TableHeader
+          headers={['Name', 'Course', 'Appointer', 'Description', 'Schedule']}></TableHeader>
         <TableBody filteredSubgroups={filteredSubgroups}></TableBody>
       </div>
     </>

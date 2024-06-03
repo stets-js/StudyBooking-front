@@ -3,6 +3,10 @@
 // #d5e8d4 / #d5e8d4 - group collor
 // #d5e8d4 / #d5e8d4- indiv
 // #d5e8d4 / #d5e8d4 -zamina
+
+body{
+  font-family: $poppins;
+}
 .action_wrapper {
   display: flex;
   column-gap: 4px;
@@ -555,4 +559,10 @@
     }
   }
 
+}
+
+.overall{
+  &__container{
+    font-size: 20px;
+  }
 }
