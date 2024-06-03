@@ -41,7 +41,7 @@ const NewSubgroup = ({isOpen, handleClose}) => {
               successMessage: 'Successfully created subgroup',
               failMessage: 'Failed to create subgroup'
             }}
-            subgroup={JSON.stringify(subgroup)}
+            subgroup={subgroup}
             title="New subgroup">
             <FormInput
               title="Name:"
