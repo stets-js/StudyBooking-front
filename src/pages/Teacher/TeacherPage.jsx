@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom';
 
 import TeacherTable from '../../components/TeacherTable/TeacherTable';
 
-export default function TeacherPage() {
+export default function TeacherPage({MIC_flag = false}) {
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
   let isAdmin = false;
@@ -12,5 +12,5 @@ export default function TeacherPage() {
     userId = teacherId;
     isAdmin = true;
   } //case when admin is logged in and wants to see another teachers schedule
-  return <TeacherTable isAdmin={isAdmin} userId={userId}></TeacherTable>;
+  return <TeacherTable isAdmin={isAdmin} userId={userId} MIC_flag={MIC_flag}></TeacherTable>;
 }

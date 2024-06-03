@@ -7,6 +7,7 @@ import {HandleCellClick} from '../scripts/handleCellClick';
 
 export default function ScheduleCell({
   user,
+  MIC_flag,
   slot,
   currentTime,
   date,
@@ -39,13 +40,14 @@ export default function ScheduleCell({
               ? tableStyles.cell__outer
               : tableStyles.cell__inner
           } ${
-            !slot?.rowSpan && ![1, 2].includes(slot?.appointmentTypeId)
+            !slot?.rowSpan && ![1, 2].includes(slot?.appointmentTypeId) && !MIC_flag
               ? appointmentStyles[`hover__${selectedAppointment?.name}`]
               : ''
           }  ${slot ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`] : ''} `}
           onClick={() => {
             HandleCellClick({
               slot,
+              MIC_flag,
               selectedAppointment,
               date,
               currentTime,

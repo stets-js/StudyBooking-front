@@ -131,7 +131,7 @@ const App = () => {
                     element={
                       <TeacherWrapper mic hideLogo={true} hideLogin={true} bottom_padding={true} />
                     }>
-                    <Route path={`calendar/:teacherId`} element={<TeacherPage />} />
+                    <Route path={`calendar/:teacherId`} element={<TeacherPage MIC_flag />} />
                     <Route
                       path={`${path.mySubgroups}:teacherId`}
                       element={<TeacherSubgroupPage />}

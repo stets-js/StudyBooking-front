@@ -20,8 +20,10 @@ export const HandleCellClick = async ({
   setSelectedSlotDetails,
   startDates,
   user,
-  dispatch
+  dispatch,
+  MIC_flag
 }) => {
+  console.log(MIC_flag);
   const userId = user.id;
   if (!user.isPrevSubgroupPlaced) {
     error({text: 'First set up all your subgoups', delay: 1000});
@@ -32,11 +34,7 @@ export const HandleCellClick = async ({
     setSelectedSlotDetails(slot);
     setOpenSlotDetails(true);
     return;
-  } else if (
-    selectedAppointment.name.startsWith('appointed') ||
-    selectedAppointment.name.startsWith('replacement')
-  )
-    return;
+  } else if (MIC_flag) return; // MIC only can look details but not interact with slots
   else if (slot && selectedAppointment.name === 'free') {
     // type free - delete slot
     const weekStart = format(startDates[0], 'yyyy-MM-dd');

@@ -16,7 +16,7 @@ import AppointmentList from './components/AppointmentList';
 import {getLessonsForUser} from '../../helpers/lessons/lesson';
 import Banner from './components/Banner';
 
-export default function TeacherTable({userId, isAdmin}) {
+export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   const dispatch = useDispatch();
   const [user, setUser] = useState('');
   useEffect(() => {
@@ -106,6 +106,7 @@ export default function TeacherTable({userId, isAdmin}) {
                         );
                         return (
                           <ScheduleCell
+                            MIC_flag={MIC_flag}
                             timeIndex={timeIndex}
                             key={`${dateIndex}_${currentTime}`}
                             user={user}
