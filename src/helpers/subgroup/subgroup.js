@@ -23,7 +23,7 @@ const postSubGroup = credentials => {
   // data = JSON.parse(credentials.get('subgroup')) || generateDataForReq(credentials, userId);
   let data = credentials;
   if (credentials.jsonData.subgroup) {
-    data = {...credentials.subgroup};
+    data = JSON.parse(credentials.jsonData.subgroup);
   }
   return axios
     .post('/subgroups', data)
