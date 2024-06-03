@@ -74,7 +74,6 @@ const NewSubgroup = ({isOpen, handleClose}) => {
               value={subgroup.description}
               textArea={true}
               placeholder="Description"
-              isRequired={true}
               handler={e => {
                 setSubgroup({...subgroup, description: e});
               }}
