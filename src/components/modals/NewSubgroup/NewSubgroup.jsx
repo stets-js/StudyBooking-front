@@ -28,9 +28,16 @@ const NewSubgroup = ({isOpen, handleClose}) => {
   return (
     <>
       {isOpen && (
-        <Modal open={isOpen} onClose={handleClose}>
+        <Modal
+          open={isOpen}
+          onClose={() => {
+            setSubgroup({name: '', description: '', CourseId: null});
+
+            handleClose();
+          }}>
           <Form
             onSubmit={() => {
+              setSubgroup({name: '', description: '', CourseId: null});
               handleClose();
             }}
             type={{type: 'post'}}
