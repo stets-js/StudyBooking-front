@@ -36,7 +36,7 @@ export default function UsersPage({MIC_flag = false}) {
   const [endDate, setEndDate] = useState(undefined);
 
   const [excludeTeacherId, setExcludeTeacherId] = useState(null); // for case of replacing through lesson page
-  const [subGroup, setSubGroup] = useState(null);
+  const [subGroup, setSubGroup] = useState({label: null, value: null});
   const excludeId = arr => {
     if (excludeTeacherId)
       return arr.filter(el => {
@@ -134,7 +134,7 @@ export default function UsersPage({MIC_flag = false}) {
         setEndDate(lesson.date);
         setSelectedCourse(lesson.courseId);
         setSelectedClassType(lesson.appointmentId);
-        setSubGroup(lesson.subgroupId);
+        setSubGroup({value: lesson.subgroupId});
         setExcludeTeacherId(lesson.userId);
         setIsReplacement(true);
       }

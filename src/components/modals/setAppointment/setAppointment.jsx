@@ -43,7 +43,7 @@ const SetAppointment = ({
     setTeachers([]);
     setDescription('');
     setSchedule([]);
-    setSubGroup(null);
+    setSubGroup({value: null, label: null});
   };
   const fetchAdmins = async () => {
     try {
@@ -134,13 +134,16 @@ const SetAppointment = ({
             lessonId={lessonId}
             token={token}
             link={link}
-            subgroupId={subGroup}
+            // case when MIC creating subgroup, in subGroup stores STRING, not object
+            subgroupId={typeof subGroup === 'object' ? subGroup.value : subGroup}
+            subgroupName={typeof subGroup === 'object' ? subGroup.label : subGroup}
             description={description}
             startDate={startDate}
             endDate={endDate}
             mentorId={selectedTeacher}
             adminId={selectedAdmin}
-            selectedCourse={course?.value}
+            selectedCourse={course.value}
+            selectedCourseName={course.label}
             slots={JSON.stringify(selectedSlots)}
             type={{type: 'appointment'}}
             appointmentType={appointmentType}
@@ -253,12 +256,12 @@ const SetAppointment = ({
                     <Select
                       name="subGroupSelector"
                       className={styles.selector}
-                      value={subGroups.filter(el => el.value === subGroup)}
+                      value={subGroup}
                       options={subGroups}
                       key={Math.random() * 100 - 10}
                       required
                       placeholder="Select subgroup"
-                      onChange={el => setSubGroup(el.value)}
+                      onChange={el => setSubGroup(el)}
                     />
                   </>
                 ) : (
@@ -283,12 +286,12 @@ const SetAppointment = ({
                 <Select
                   name="subGroupSelector"
                   className={styles.selector}
-                  value={subGroups.filter(el => el.value === subGroup)}
+                  value={subGroup}
                   options={subGroups}
                   key={Math.random() * 100 - 10}
                   required
                   placeholder="Select subgroup"
-                  onChange={el => setSubGroup(el.value)}
+                  onChange={el => setSubGroup(el)}
                 />
                 <div className={styles.input__block}>
                   <FormInput
