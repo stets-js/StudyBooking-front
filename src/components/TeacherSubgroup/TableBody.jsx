@@ -51,9 +51,9 @@ export default function TableBody({filteredSubgroups}) {
                     <div
                       className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
                       {group?.SubGroup.startDate &&
-                        format(group?.SubGroup.startDate, 'dd.MM') +
+                        format(group?.SubGroup.startDate, 'dd.MM.yyyy') +
                           '-' +
-                          format(group?.SubGroup.endDate, 'dd.MM')}
+                          format(group?.SubGroup.endDate, 'dd.MM.yyyy')}
                       <br />
                       {(group.schedule || '').split(',').map(el => {
                         return (
