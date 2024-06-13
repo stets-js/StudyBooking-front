@@ -7,6 +7,7 @@ import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import LessonCard from '../../components/MyLessonPage/LessonCard';
 import FilteringBlock from '../../components/Statistic/FilteringBlock';
+import WriteFeedback from '../../components/modals/Feedback/WriteFeedback';
 
 export default function MyLessonPage() {
   const {teacherId} = useParams() || null;
@@ -15,6 +16,8 @@ export default function MyLessonPage() {
   const [lessons, setLessons] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currDate, setCurrDate] = useState(new Date());
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLesson, setSelectedLesson] = useState(null);
 
   const fetchLessons = async () => {
     try {
@@ -38,6 +41,7 @@ export default function MyLessonPage() {
   useEffect(() => {
     fetchLessons();
   }, [selectedCourse, currDate]);
+
   return (
     <>
       <FilteringBlock
@@ -46,10 +50,23 @@ export default function MyLessonPage() {
         setCurrDate={setCurrDate}></FilteringBlock>
       <div>
         {(lessons || []).map(lesson => {
-          return <LessonCard lesson={lesson} setLessons={setLessons}></LessonCard>;
+          return (
+            <LessonCard
+              lesson={lesson}
+              setLessons={setLessons}
+              onClick={lesson => {
+                setIsOpen(true);
+                setSelectedLesson(lesson);
+              }}></LessonCard>
+          );
         })}
         {lessons.length === 0 ? <>Ops, no lessons today :(</> : <></>}
       </div>
+
+      <WriteFeedback
+        isOpen={isOpen}
+        handleClose={() => setIsOpen(false)}
+        id={selectedLesson?.id}></WriteFeedback>
     </>
   );
 }

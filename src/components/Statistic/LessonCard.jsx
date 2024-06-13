@@ -68,7 +68,7 @@ export default function LessonCard({lesson, setLessons}) {
           {lesson.LessonSchedule.endTime}
         </div>
         <div className={style.card__leftAlign}>
-          Feedback: {lesson?.feedback || 'No feedback yet :('}
+          Feedback: {lesson?.Feedback?.report || 'No feedback yet :('}
         </div>
       </div>
       <div>

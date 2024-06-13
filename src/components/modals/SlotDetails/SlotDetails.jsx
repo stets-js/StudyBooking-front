@@ -19,7 +19,6 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
 
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false); // feedbackEdit
-  const [prevFeedback, setPrevFeedback] = useState(slot?.feedback);
   const fetchData = async () => {
     const res = await getTopics();
     if (res)
@@ -136,13 +135,8 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
               classname="input__bottom"
               title="Feedback:"
               type="text"
-              disabled={!isEdit}
-              handler={e =>
-                setSlot(prev => {
-                  return {...prev, feedback: e};
-                })
-              }
-              value={slot.feedback || ''}
+              disabled={1}
+              value={slot?.Feedback?.report || ''}
               textArea={true}
             />
           </div>
@@ -150,7 +144,6 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
             <EditButton
               onClick={() => {
                 setIsEdit(true);
-                setPrevFeedback(slot.feedback);
               }}></EditButton>
           ) : (
             <div>
@@ -158,7 +151,6 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                 text={'Confirm'}
                 onClick={async () => {
                   const res = await patchLesson(slot.id, {
-                    feedback: slot.feedback,
                     LessonTopicId: slot.LessonTopicId
                   });
                   if (res) {
@@ -171,9 +163,6 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                 text={'Cancel'}
                 onClick={() => {
                   setIsEdit(false);
-                  setSlot(prev => {
-                    return {...prev, feedback: prevFeedback};
-                  });
                 }}></DeleteButton>
             </div>
           )}

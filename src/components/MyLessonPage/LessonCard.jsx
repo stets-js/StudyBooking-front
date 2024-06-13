@@ -4,9 +4,8 @@ import style from '../Statistic/statistic.module.scss';
 import UserAvatar from '../MentorChooser/UserAvatar';
 import InfoButton from '../Buttons/Info';
 
-export default function LessonCard({lesson, setLessons}) {
+export default function LessonCard({lesson, onClick}) {
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
   //
   return (
     <div className={style.card__wrapper}>
@@ -31,11 +30,16 @@ export default function LessonCard({lesson, setLessons}) {
           {lesson.LessonSchedule.endTime}
         </div>
         <div className={style.card__leftAlign}>
-          Feedback: {lesson?.feedback || 'No feedback yet :('}
+          Feedback: {lesson?.Feedback?.report || 'No feedback yet :('}
         </div>
       </div>
       <div>
-        <InfoButton classname={'fullHeight'} text="Write feedback" onClick={() => {}}></InfoButton>
+        <InfoButton
+          classname={'fullHeight'}
+          text="Write feedback"
+          onClick={() => {
+            onClick(lesson);
+          }}></InfoButton>
       </div>
     </div>
   );
