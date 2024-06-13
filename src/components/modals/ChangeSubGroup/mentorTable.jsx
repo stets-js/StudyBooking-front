@@ -91,7 +91,7 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
                             if (mentor.mentorId && mentor.subgroupId) {
                               await deleteLessons({
                                 mentorId: mentor.mentorId,
-                                sddubgroupId: mentor.subgroupId
+                                subgroupId: mentor.subgroupId
                               });
                               await deleteMentorFromSubgroup({
                                 subgroupId: mentor.subgroupId,
