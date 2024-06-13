@@ -6,7 +6,7 @@ export default function InfoButton({onClick, classname, text = 'Info', disabled 
   return (
     <button
       disabled={disabled}
-      className={`${buttonStyles.button} ${buttonStyles[classname]} ${buttonStyles.button__info} `}
+      className={`${buttonStyles.button} ${buttonStyles[classname]} ${buttonStyles.button__info}`}
       onClick={() => onClick()}>
       {text}
     </button>

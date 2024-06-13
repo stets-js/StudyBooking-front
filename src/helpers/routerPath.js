@@ -1,6 +1,7 @@
 const path = {
   all: '*',
   lessons: 'lessons',
+  MyLesson: 'myLesson/',
   home: '/',
   info: 'info/',
   spreadsheet: 'spreadsheet',
