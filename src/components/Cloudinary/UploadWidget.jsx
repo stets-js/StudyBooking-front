@@ -9,9 +9,9 @@ function CloudinaryUploadWidget({setUser}) {
   const [loaded, setLoaded] = useState(false);
   const [publicId, setPublicId] = useState('');
   // Replace with your own cloud name
-  const [cloudName] = useState('hzxyensd5');
+  const [cloudName] = useState('dn4cdsmqr');
   // Replace with your own upload preset
-  const [uploadPreset] = useState('aoh4fpwm');
+  const [uploadPreset] = useState('rvd6oknp');
   const [uwConfig] = useState({
     cloudName,
     uploadPreset,
@@ -25,8 +25,9 @@ function CloudinaryUploadWidget({setUser}) {
     // tags: ["users", "profile"], //add the given tags to the uploaded files
     // context: {alt: "user_uploaded"}, //add the given context data to the uploaded files
     clientAllowedFormats: ['images', 'jpg', 'jpeg', 'png', 'bmp', 'webp'], //restrict uploading to image files only
-    maxImageFileSize: 2000000, //restrict file size to less than 1MB
+    maxImageFileSize: 200000, //restrict file size to less than 1MB
     maxImageWidth: 2000, //Scales the image down to a width of 2000 pixels before uploading
+    maxImageHeight: 2000,
     theme: 'white' //change to a purple theme
     // showPoweredBy: false,
     // showCompletedButton: true,
