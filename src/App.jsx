@@ -113,7 +113,7 @@ const App = () => {
                 <Route path={path.mySubgroups} element={<TeacherSubgroupPage />} />
                 <Route path={path.info} element={<Info />} />
                 <Route path={path.statistics} element={<StatisticPage></StatisticPage>} />
-                <Route path={path.editMySubgroup} element={<EditMySubgroup />} />
+                {/* <Route path={path.editMySubgroup} element={<EditMySubgroup />} /> */}
                 {/* <Route path={path.MyLesson} element={<MyLessonPage></MyLessonPage>}></Route> */}
               </Route>
             </>
