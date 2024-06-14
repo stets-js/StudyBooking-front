@@ -81,7 +81,7 @@ export default function TeacherSubgroupPage() {
             'Schedule',
             'Action'
           ]}></TableHeader>
-        <TableBody filteredSubgroups={filteredSubgroups} userId={userId}></TableBody>
+        <TableBody filteredSubgroups={filteredSubgroups}></TableBody>
       </div>
     </>
   );

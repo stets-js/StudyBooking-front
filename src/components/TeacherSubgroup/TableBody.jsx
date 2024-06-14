@@ -1,14 +1,17 @@
 import React from 'react';
 import {format} from 'date-fns';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import tableStyles from '../../styles/table.module.scss';
 import EditButton from '../Buttons/Edit';
 import path from '../../helpers/routerPath';
+import {useSelector} from 'react-redux';
 
-export default function TableBody({filteredSubgroups, userId}) {
+export default function TableBody({filteredSubgroups}) {
   const navigate = useNavigate();
-
+  const {teacherId} = useParams() || null;
+  let userId = useSelector(state => state.auth.user.id);
+  if (teacherId) userId = teacherId;
   return (
     <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
       <table className={tableStyles.tableBody}>
@@ -83,7 +86,7 @@ export default function TableBody({filteredSubgroups, userId}) {
                       <EditButton
                         text="Edit"
                         onClick={() => {
-                          navigate(`../${path.editMySubgroup}${userId}`, {
+                          navigate(`../${path.editMySubgroup}${teacherId ? teacherId : ''}`, {
                             state: {
                               group
                             }

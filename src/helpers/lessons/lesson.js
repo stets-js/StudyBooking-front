@@ -26,7 +26,7 @@ const getTopics = () => {
 };
 
 const deleteLessons = credentials => {
-  return axios.delete(`/lessons`, credentials);
+  return axios.delete(`/lessons`, {data: credentials});
 };
 const deleteOneLesson = id => {
   return axios.delete(`/lessons/${id}`);

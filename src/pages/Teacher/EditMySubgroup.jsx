@@ -5,7 +5,7 @@ import {success, error} from '@pnotify/core';
 import {useConfirm} from 'material-ui-confirm';
 
 import {addMinutes, format} from 'date-fns';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 
 import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
@@ -15,10 +15,15 @@ import EditButton from '../../components/Buttons/Edit';
 import DeleteButton from '../../components/Buttons/Delete';
 import {bulkLessonCreate, deleteLessons} from '../../helpers/lessons/lesson';
 import {updateSubgroupMentor} from '../../helpers/subgroup/subgroup';
+import {useSelector} from 'react-redux';
 
 export default function EditMySubgroup() {
   const location = useLocation();
   const confirm = useConfirm();
+
+  const {teacherId} = useParams() || null;
+  let userId = useSelector(state => state.auth.user.id);
+  if (teacherId) userId = teacherId;
 
   const {group} = location.state;
   const [selectedClassType, setSelectedClassType] = useState(null);
@@ -54,7 +59,7 @@ export default function EditMySubgroup() {
         timeEnd: format(addMinutes(time, 30 * (selectedClassType.value === 7 ? 3 : 2)), 'HH:mm'),
         startDate: group.SubGroup.startDate,
         endDate: group.SubGroup.endDate,
-        mentorId: +group.mentorId,
+        mentorId: group.mentorId,
         subgroupId: group.subgroupId,
         appointmentTypeId: selectedClassType.value,
         rowSpan: i === 0 ? (selectedClassType.value === 7 ? 3 : 2) : 0
