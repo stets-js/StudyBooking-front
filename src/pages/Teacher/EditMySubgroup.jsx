@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 // import {error} from '@pnotify/core';
 import Select from 'react-select';
 import {success, error} from '@pnotify/core';
+import {useConfirm} from 'material-ui-confirm';
 
 import {addMinutes, format} from 'date-fns';
 import {useLocation} from 'react-router-dom';
@@ -12,17 +13,18 @@ import teacherStyles from '../../styles/teacher.module.scss';
 import appointmentStyles from '../../styles/appointment.module.scss';
 import EditButton from '../../components/Buttons/Edit';
 import DeleteButton from '../../components/Buttons/Delete';
+import {bulkLessonCreate, deleteLessons} from '../../helpers/lessons/lesson';
+import {updateSubgroupMentor} from '../../helpers/subgroup/subgroup';
 
-export default function EditMySubgroup({}) {
+export default function EditMySubgroup() {
   const location = useLocation();
+  const confirm = useConfirm();
+
   const {group} = location.state;
   const [selectedClassType, setSelectedClassType] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleClose = () => {
-    setIsOpen(!isOpen);
-  };
-  const [oldSchedule] = useState(group.schedule);
-  const [newSchedule, setNewSchedule] = useState(null);
+
+  const [oldSchedule, setOldSchedule] = useState(group.schedule);
+  const [newSchedule, setNewSchedule] = useState('');
   const [slots, setSlots] = useState([]);
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const calculateSchedule = () => {
@@ -115,7 +117,39 @@ export default function EditMySubgroup({}) {
           <EditButton
             text="Confirm"
             disabled={slots.length === 0}
-            onClick={() => setIsOpen(true)}
+            onClick={() => {
+              confirm({
+                description: 'All correct?',
+                confirmationText: 'Yes',
+                cancelText: 'No',
+                confirmationButtonProps: {autoFocus: true}
+              })
+                .then(async () => {
+                  // delete prev lessons
+                  console.log({subgroupId: group.subgroupId, mentorId: group.mentorId});
+                  const deletedLess = await deleteLessons({
+                    subgroupId: group.subgroupId,
+                    mentorId: group.mentorId
+                  });
+                  // create new
+                  if (deletedLess) {
+                    await slots
+                      .filter(slot => slot.rowSpan !== 0)
+                      .forEach(slot => bulkLessonCreate(slot));
+
+                    await updateSubgroupMentor(
+                      {
+                        subgroupId: group.subgroupId,
+                        mentorId: group.mentorId
+                      },
+                      {schedule: newSchedule}
+                    );
+                  }
+                  setOldSchedule(newSchedule);
+                  success({delay: 1000, text: 'Deleted successfully!'});
+                })
+                .catch(e => console.log('no ' + e));
+            }}
             classname={'button__add'}></EditButton>
           <DeleteButton
             text="Clear"
