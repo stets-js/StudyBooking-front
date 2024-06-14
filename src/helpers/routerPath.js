@@ -22,6 +22,7 @@ const path = {
   mentors: 'mentors', // for mentors list for MICs
   courses: 'courses/',
   addMySubgroup: 'addMySubgroup/',
+  editMySubgroup: 'editMySubgrop/',
   actions: 'actions/',
   manager: '/manager/:managerId/',
   consultations: 'consultations/',

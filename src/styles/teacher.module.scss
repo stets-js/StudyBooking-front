@@ -4,7 +4,7 @@
 // #d5e8d4 / #d5e8d4- indiv
 // #d5e8d4 / #d5e8d4 -zamina
 
-body{
+body {
   font-family: $poppins;
 }
 .action_wrapper {
@@ -21,7 +21,7 @@ body{
   align-items: center;
   justify-content: center;
   &__item {
-    width: 25% ;
+    width: 25%;
   }
 }
 .filters__item:last-child {
@@ -237,7 +237,7 @@ body{
   column-gap: 10px;
   margin-bottom: 40px;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   &__container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -411,12 +411,12 @@ body{
     flex-direction: column;
     width: 100%;
     padding: 10px;
-    justify-content:center ;
+    justify-content: center;
     border-radius: 25px;
     justify-content: center;
     align-items: center;
   }
-  &__container{
+  &__container {
     width: 50%;
     border: 1px solid black;
     border-radius: 25px;
@@ -439,7 +439,7 @@ body{
       font-family: $poppins;
       align-self: center;
       height: 4em;
-      }
+    }
   }
   &__name_block {
     display: grid;
@@ -535,34 +535,56 @@ body{
       margin-right: 0 !important;
     }
   }
-  .date_selector{
+  .date_selector {
     font-size: 20px;
     align-items: center;
     text-align: center;
   }
-  .filters{
+  .filters {
     column-gap: 30px;
-   &__item{
-    width: 60%;
-   }
-  }
-  .info{
-    &__wrapper{
-      width: 80%;
-      margin-left:10%;
+    &__item {
+      width: 60%;
     }
-    &__avatar{
-      &__photo{
-        width:170px ;
+  }
+  .info {
+    &__wrapper {
+      width: 80%;
+      margin-left: 10%;
+    }
+    &__avatar {
+      &__photo {
+        width: 170px;
         height: auto;
       }
     }
   }
-
 }
 
-.overall{
-  &__container{
+.overall {
+  &__container {
     font-size: 20px;
+  }
+}
+.editMySubgroup {
+  &__info {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 20px;
+      align-items: center;
+    }
+    &__title{
+      font-size: 30px;
+    }
+    &__schedule {
+      &__item{
+        min-width: 200px;
+      }
+      &__container {
+        column-gap: 40px;
+        display: flex;
+      }
+    }
   }
 }

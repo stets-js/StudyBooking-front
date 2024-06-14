@@ -73,8 +73,15 @@ export default function TeacherSubgroupPage() {
       </div>
       <div>
         <TableHeader
-          headers={['Name', 'Course', 'Appointer', 'Description', 'Schedule']}></TableHeader>
-        <TableBody filteredSubgroups={filteredSubgroups}></TableBody>
+          headers={[
+            'Name',
+            'Course',
+            'Appointer',
+            'Description',
+            'Schedule',
+            'Action'
+          ]}></TableHeader>
+        <TableBody filteredSubgroups={filteredSubgroups} userId={userId}></TableBody>
       </div>
     </>
   );

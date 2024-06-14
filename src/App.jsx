@@ -33,6 +33,7 @@ import MentorsPage from './pages/MIC/MentorsChooser';
 import LessonsPage from './pages/Admin/LessonsPage';
 import StatisticPage from './pages/Teacher/StatisticPage';
 import MyLessonPage from './pages/Teacher/MyLessonPage';
+import EditMySubgroup from './pages/Teacher/EditMySubgroup';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -94,13 +95,10 @@ const App = () => {
                   <Route path={`calendar/:teacherId`} element={<TeacherPage />} />
                   <Route path={`${path.mySubgroups}:teacherId`} element={<TeacherSubgroupPage />} />
                   <Route path={`${path.addMySubgroup}:teacherId`} element={<AddMySubgroup />} />
-                  <Route path={`${path.info}:teacherId`} element={<Info></Info>}></Route>
-                  <Route
-                    path={`${path.MyLesson}:teacherId`}
-                    element={<MyLessonPage></MyLessonPage>}></Route>
-                  <Route
-                    path={`${path.statistics}:teacherId`}
-                    element={<StatisticPage></StatisticPage>}></Route>
+                  <Route path={`${path.editMySubgroup}:teacherId`} element={<EditMySubgroup />} />
+                  <Route path={`${path.info}:teacherId`} element={<Info />} />
+                  <Route path={`${path.MyLesson}:teacherId`} element={<MyLessonPage />} />
+                  <Route path={`${path.statistics}:teacherId`} element={<StatisticPage />} />
                 </Route>
                 <Route path={path.subgroups} element={<SubGroupPage />} />
                 <Route path={path.replacements} element={<ReplacementsPage />} />
@@ -110,11 +108,12 @@ const App = () => {
             <>
               <Route path={path.home} element={<Navigate to={`${path.teacher}`} />}></Route>
               <Route path={path.home} element={<TeacherWrapper />}>
-                <Route path={path.teacher} element={<TeacherPage />}></Route>
-                <Route path={path.addMySubgroup} element={<AddMySubgroup />}></Route>
-                <Route path={path.mySubgroups} element={<TeacherSubgroupPage />}></Route>
-                <Route path={path.info} element={<Info />}></Route>
-                <Route path={path.statistics} element={<StatisticPage></StatisticPage>}></Route>
+                <Route path={path.teacher} element={<TeacherPage />} />
+                <Route path={path.addMySubgroup} element={<AddMySubgroup />} />
+                <Route path={path.mySubgroups} element={<TeacherSubgroupPage />} />
+                <Route path={path.info} element={<Info />} />
+                <Route path={path.statistics} element={<StatisticPage></StatisticPage>} />
+                <Route path={path.editMySubgroup} element={<EditMySubgroup />} />
                 {/* <Route path={path.MyLesson} element={<MyLessonPage></MyLessonPage>}></Route> */}
               </Route>
             </>
@@ -122,13 +121,12 @@ const App = () => {
             <>
               <Route
                 path={path.MIC}
-                element={<Navigate to={`${path.MIC + path.appointments}`} />}></Route>
+                element={<Navigate to={`${path.MIC + path.appointments}`} />}
+              />
               <Route path={path.MIC} element={<MICWrapper />}>
                 <>
-                  <Route
-                    path={path.appointments}
-                    element={<Appointment MIC_flag></Appointment>}></Route>
-                  <Route path={path.mentors} element={<MentorsPage></MentorsPage>}></Route>
+                  <Route path={path.appointments} element={<Appointment MIC_flag />} />
+                  <Route path={path.mentors} element={<MentorsPage />} />
                   <Route
                     path={path.MIC + path.teacher}
                     element={

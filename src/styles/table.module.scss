@@ -123,6 +123,11 @@ td {
     min-width: 200px;
     align-content: center;
     height: 120px;
+    &__years {
+      margin-bottom: 10px;
+      margin-top: 10%;
+      width: 100%;
+    }
     &__description {
       width: 50% !important;
     }
