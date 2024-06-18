@@ -8,7 +8,7 @@ import {HandleCellClick} from '../scripts/handleCellClick';
 export default function ScheduleCell({
   user,
   MIC_flag,
-  slot,
+  slots,
   currentTime,
   date,
   dateIndex,
@@ -19,6 +19,7 @@ export default function ScheduleCell({
   setSelectedSlotDetails,
   dispatch
 }) {
+  const slot = slots[0];
   if (slot?.rowSpan === 0) return <></>;
   if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
@@ -47,6 +48,7 @@ export default function ScheduleCell({
           onClick={() => {
             HandleCellClick({
               slot,
+              slots,
               MIC_flag,
               selectedAppointment,
               date,
@@ -80,6 +82,9 @@ export default function ScheduleCell({
                         ? 'soft'
                         : 'tech'}
                     </span>
+                  )}
+                  {slots.length > 1 && (
+                    <span className={tableStyles.tags__item}>x{slots.length}</span>
                   )}
                 </div>
               </>

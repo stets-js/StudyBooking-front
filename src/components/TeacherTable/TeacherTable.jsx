@@ -60,6 +60,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
       console.log(error);
     }
   }, [userId, dispatch, startDates]);
+
   return (
     <div>
       {!isAdmin && <Banner setUser={setUser} user={user}></Banner>}
@@ -101,7 +102,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
                   return (
                     <tr key={Math.random() * 100 - 1}>
                       {startDates.map((date, dateIndex) => {
-                        const slot = (weekSchedule[dateIndex] || []).find(
+                        const slot = (weekSchedule[dateIndex] || []).filter(
                           el => el.time === format(currentTime, 'HH:mm')
                         );
                         return (
@@ -110,7 +111,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
                             timeIndex={timeIndex}
                             key={`${dateIndex}_${currentTime}`}
                             user={user}
-                            slot={slot}
+                            slots={slot}
                             currentTime={currentTime}
                             date={date}
                             dateIndex={dateIndex}
@@ -138,7 +139,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
           setSelectedSlotDetails(null);
           setOpenSlotDetails(false);
         }}
-        slot={selectedSlotDetails}
+        slots={selectedSlotDetails}
       />
     </div>
   );

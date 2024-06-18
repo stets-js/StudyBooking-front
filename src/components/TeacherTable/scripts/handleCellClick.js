@@ -12,6 +12,7 @@ import {
 
 export const HandleCellClick = async ({
   slot,
+  slots,
   selectedAppointment,
   date,
   currentTime,
@@ -23,15 +24,15 @@ export const HandleCellClick = async ({
   dispatch,
   MIC_flag
 }) => {
-  console.log(MIC_flag);
   const userId = user.id;
   if (!user.isPrevSubgroupPlaced) {
     error({text: 'First set up all your subgoups', delay: 1000});
     return <></>;
   }
   // case for opening  the details of a occupied cell
+  console.log(slot);
   if (slot && (slot.subgroupId || slot.ReplacementId)) {
-    setSelectedSlotDetails(slot);
+    setSelectedSlotDetails(slots.length > 1 ? slots : slot);
     setOpenSlotDetails(true);
     return;
   } else if (MIC_flag) return; // MIC only can look details but not interact with slots

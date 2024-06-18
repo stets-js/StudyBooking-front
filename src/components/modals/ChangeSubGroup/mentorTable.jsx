@@ -98,7 +98,8 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
                                 mentorId: mentor.mentorId
                               });
                               setSubgroupMentors(prev => {
-                                return prev.map(el => {
+                                console.log(prev);
+                                return (prev || []).map(el => {
                                   if (el.id !== subgroupId) return el;
                                   else {
                                     return {...el};

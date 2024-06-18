@@ -19,3 +19,14 @@
   text-align: left;
   width: 100%;
 }
+
+.links{
+  font-size: 16px;
+  &__wrapper{
+    display:flex;
+    width: 100%;
+  }
+  &__end{
+    margin-left:auto;
+  }
+}

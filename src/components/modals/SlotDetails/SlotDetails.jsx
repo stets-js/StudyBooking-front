@@ -12,11 +12,10 @@ import EditButton from '../../Buttons/Edit';
 import DeleteButton from '../../Buttons/Delete';
 import {getTopics, patchLesson} from '../../../helpers/lessons/lesson';
 import {updateSlotForWeek} from '../../../redux/action/weekScheduler.action';
-import classNames from 'classnames';
+import HeaderLinks from './HeaderLinks';
 
-const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
+const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
   const [topics, setTopics] = useState([]);
-
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false); // feedbackEdit
   const fetchData = async () => {
@@ -31,23 +30,27 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
   useEffect(() => {
     fetchData();
   }, []);
+  const [slot, setSlot] = useState(Array.isArray(slots) ? slots[0] : slots);
+  useEffect(() => {
+    setSlot(Array.isArray(slots) ? slots[0] : slots);
+  }, [slots]);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
-  console.log(slot);
+  console.log(slot?.SubGroup);
   return (
     <>
       {isOpen && slot && (
         <Modal open={isOpen} onClose={handleClose} className={styles.modal_wrapper}>
           <div>
             {!slot.ReplacementId && (
-              <div className={styles.input__block}>
-                <a href={slot?.SubGroup.link}>{slot?.SubGroup?.name}</a>
-                {subgroupMentors?.TeacherType?.type}
-                <div className={styles.date_wrapper}>
-                  <span>Start: {format(slot?.SubGroup.startDate, 'dd.MM.yyyy')}</span>
-                  <br />
-                  <span>End: {format(slot?.SubGroup.endDate, 'dd.MM.yyyy')}</span>
-                </div>
+              <div>
+                {(Array.isArray(slots) ? slots : [slots]).map(slot => (
+                  <HeaderLinks
+                    link={slot?.SubGroup.link}
+                    name={slot?.SubGroup?.name}
+                    start={slot?.SubGroup.startDate}
+                    end={slot?.SubGroup.endDate}></HeaderLinks>
+                ))}
               </div>
             )}
 
@@ -68,7 +71,13 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
               title="Name:"
               type="text"
               name="subgroupName"
-              value={slot.ReplacementId ? slot.Replacement.SubGroup.name : slot?.SubGroup.name}
+              value={
+                slot.ReplacementId
+                  ? slot.Replacement.SubGroup.name
+                  : (Array.isArray(slots) ? slots : [slots])
+                      .map(slot => slot?.SubGroup.name)
+                      .join(', ')
+              }
               placeholder="Course"
               disabled={true}
             />
@@ -90,7 +99,31 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                 title="Schedule:"
                 type="text"
                 name="schedule"
-                value={subgroupMentors.schedule.split(',').join('\n')}
+                appointmentLength={(() => {
+                  let count = 0;
+                  (Array.isArray(slots) ? slots : [slots]).map(
+                    slot => (count += slot.SubGroup.SubgroupMentors[0].schedule.split('\n').length)
+                  );
+                  return count + (Array.isArray(slots) ? slots : [slots]).length / 2;
+                })()}
+                value={
+                  Array.isArray(slots)
+                    ? slots
+                        .map(slot => {
+                          return (
+                            `${slot.SubGroup.name}: \n` +
+                            slot?.SubGroup?.SubgroupMentors[0].schedule
+                              .split('\n')
+                              .map(sc => {
+                                return sc ? `\t${sc}\n` : '';
+                              })
+                              .join('')
+                          );
+                        })
+                        .join('')
+                    : slot?.SubGroup?.SubgroupMentors[0].schedule
+                  // subgroupMentors.schedule.split(',').join('\n')
+                }
                 disabled={true}
                 textArea={true}
               />
@@ -115,8 +148,8 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                 textArea={true}
               />
             )}
-            <p className={styles.topic__label}>Topic</p>
-            <Select
+            {/* <p className={styles.topic__label}>Topic</p> */}
+            {/* <Select
               name="Topic"
               isDisabled={!isEdit}
               className={classNames(selectorStyles.selector, selectorStyles.selector__fullwidth)}
@@ -130,7 +163,7 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                   return {...prev, LessonTopicId: el.value};
                 })
               }
-            />
+            /> */}
             <FormInput
               classname="input__bottom"
               title="Feedback:"
@@ -140,7 +173,7 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
               textArea={true}
             />
           </div>
-          {!isEdit ? (
+          {/* {!isEdit ? (
             <EditButton
               onClick={() => {
                 setIsEdit(true);
@@ -165,7 +198,7 @@ const SlotDetails = ({isOpen, handleClose, setSlot, slot, userId}) => {
                   setIsEdit(false);
                 }}></DeleteButton>
             </div>
-          )}
+          )} */}
         </Modal>
       )}
     </>
