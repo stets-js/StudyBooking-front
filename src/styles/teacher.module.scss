@@ -588,3 +588,42 @@ body {
     }
   }
 }
+
+.bot{
+  &__wrapper{
+    height: 94px;
+  }
+  &__label{
+    font-family: $poppins;
+    font-size:20px ;
+    margin-top: 16px;
+  }
+  &__pictures{
+    width: 100%;
+    display: flex;
+    column-gap: 20px;
+  }
+  &__telegram:hover{
+    color:$blue;
+  }
+
+  &__focus_slack {
+    animation: blink-border 1s ease-in-out 3; /* Анимация будет проигрываться 3 раза в течение 2 секунд */
+  }
+  
+}
+
+@keyframes blink-border {
+  0% {
+    border:1px solid transparent;
+    border-radius: 25px;
+  }
+  50% {
+    border:2px solid red;
+    border-radius: 25px;
+  }
+  100% {
+    border:1px solid transparent;
+    border-radius: 25px;
+  }
+}

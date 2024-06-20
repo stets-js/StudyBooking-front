@@ -26,7 +26,8 @@ export default function WeekChanger({startDates, setStartDates, userName}) {
             {`>`}
           </button>
         </div>
-        <div className={styles.mentor_name}>Mentor:{userName}</div>
+
+        <div className={styles.mentor_name}>Mentor: {userName}</div>
       </div>
     </div>
   );
