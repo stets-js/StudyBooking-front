@@ -11,6 +11,8 @@ import PhoneInput from 'react-phone-input-2';
 import EditButton from '../../components/Buttons/Edit';
 import DeleteButton from '../../components/Buttons/Delete';
 import classNames from 'classnames';
+import {getDocumentType} from '../../helpers/document/document-type';
+import {addUserDocument, getUserDocuments} from '../../helpers/document/user-document';
 
 export default function Info() {
   const {teacherId} = useParams() || null;
@@ -42,6 +44,25 @@ export default function Info() {
       setUser(backupUser);
     }
   };
+  const [documentType, setDocumentType] = useState([]);
+  const [userDocuments, setUserDocuments] = useState([]);
+  const getDocTypes = async () => {
+    const {data} = await getDocumentType();
+    console.log(data);
+    setDocumentType(data);
+  };
+
+  const getUserDocs = async () => {
+    try {
+      const {data} = await getUserDocuments(userId);
+      console.log(data);
+      setUserDocuments(data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getDocTypes();
+    getUserDocs();
+  }, []);
   return (
     <>
       <div className={styles.info__wrapper}>
@@ -56,7 +77,15 @@ export default function Info() {
                 alt="avatar"
                 className={styles.info__avatar__photo}></img>
               {editActive && (
-                <CloudinaryUploadWidget setUser={setUser} className={styles.info__avatar__button} />
+                <CloudinaryUploadWidget
+                  className={styles.info__avatar__button}
+                  onSuccess={result => {
+                    setUser(prev => {
+                      patchUser({id: prev.id, photoUrl: result.info.secure_url});
+                      return {...prev, photoUrl: result.info.secure_url};
+                    });
+                  }}
+                />
               )}
             </div>
             <div>
@@ -208,6 +237,25 @@ export default function Info() {
                 text={'Cancel'}></DeleteButton>
             </div>
           )}
+        </div>
+      </div>
+      <div className={styles.info__wrapper}>
+        <div className={styles.info__container}>
+          {documentType.map(type => (
+            <div key={type.id}>
+              {type.name}
+              <CloudinaryUploadWidget
+                setUser={setUser}
+                extentions={['pdf']}
+                onSuccess={result => {
+                  console.log(result);
+                  addUserDocument({userId, documentId: type.id, document: result.info.secure_url});
+                }}
+                folder="documents"
+                className={styles.info__avatar__button}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </>

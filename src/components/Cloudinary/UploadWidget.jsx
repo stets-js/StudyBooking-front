@@ -5,7 +5,7 @@ import classNames from 'classnames';
 // Create a context to manage the script loading state
 const CloudinaryScriptContext = createContext();
 
-function CloudinaryUploadWidget({setUser}) {
+function CloudinaryUploadWidget({folder = 'avatars', extentions = [], onSuccess}) {
   const [loaded, setLoaded] = useState(false);
   const [publicId, setPublicId] = useState('');
   // Replace with your own cloud name
@@ -24,11 +24,12 @@ function CloudinaryUploadWidget({setUser}) {
     // folder: "user_images", //upload files to the specified folder
     // tags: ["users", "profile"], //add the given tags to the uploaded files
     // context: {alt: "user_uploaded"}, //add the given context data to the uploaded files
-    clientAllowedFormats: ['images', 'jpg', 'jpeg', 'png', 'bmp', 'webp'], //restrict uploading to image files only
+    clientAllowedFormats: ['images', 'jpg', 'jpeg', 'png', 'bmp', 'webp', ...extentions], //restrict uploading to image files only
     maxImageFileSize: 200000, //restrict file size to less than 1MB
     maxImageWidth: 2000, //Scales the image down to a width of 2000 pixels before uploading
     maxImageHeight: 2000,
-    theme: 'white' //change to a purple theme
+    theme: 'white', //change to a purple theme,
+    folder
     // showPoweredBy: false,
     // showCompletedButton: true,
     // singleUploadAutoClose: false
@@ -54,26 +55,23 @@ function CloudinaryUploadWidget({setUser}) {
   }, [loaded]);
 
   const initializeCloudinaryWidget = async () => {
-    if (loaded) {
-      var myWidget = window.cloudinary.createUploadWidget(uwConfig, (error, result) => {
-        if (!error && result && result.event === 'success') {
-          console.log(result.info.secure_url);
-          setUser(prev => {
-            patchUser({id: prev.id, photoUrl: result.info.secure_url});
-            return {...prev, photoUrl: result.info.secure_url};
-          });
-          setPublicId(result.info.public_id);
-        }
-      });
+    // if (loaded)
+    var myWidget = window.cloudinary.createUploadWidget(uwConfig, (error, result) => {
+      if (!error && result && result.event === 'success') {
+        console.log(result.info.secure_url);
+        onSuccess(result);
+        setPublicId(result.info.public_id);
+      }
+    });
 
-      document.getElementById('upload_widget').addEventListener(
-        'click',
-        function () {
-          myWidget.open();
-        },
-        false
-      );
-    }
+    document.getElementById('upload_widget').addEventListener(
+      'click',
+      function () {
+        myWidget.open();
+      },
+      false
+    );
+    // }
   };
 
   return (
