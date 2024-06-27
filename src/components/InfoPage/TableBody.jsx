@@ -2,6 +2,8 @@ import React from 'react';
 import {useParams} from 'react-router-dom';
 
 import tableStyles from '../../styles/table.module.scss';
+import formInput from '../../styles/FormInput.module.scss';
+
 import EditButton from '../Buttons/Edit';
 import InfoButton from '../Buttons/Info';
 import DeleteButton from '../Buttons/Delete';
@@ -14,15 +16,15 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
   let userId = useSelector(state => state.auth.user.id);
   if (teacherId) userId = teacherId;
   const [edit, setEdit] = useState(false);
+  const [addFlag, setAddFlag] = useState(-1); // -1 for inactive add functional, and numbers for indexing rows
   const [duplicatedDocs, setDuplicatedDocs] = useState(userDocuments);
-
-  const addClick = async documentId => {
-    const url = prompt('New url');
-
+  const [inputUrl, setInputUrl] = useState('');
+  const submitDocument = async documentId => {
+    console.log(inputUrl);
     const res = await addUserDocument({
       userId,
       documentId,
-      document: url
+      document: inputUrl
     });
     console.log(res);
     if (res && !res.message.includes('added'))
@@ -49,55 +51,89 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                     </div>
                   </td>
                   <td>
-                    <div
-                      className={`${tableStyles.cell} ${tableStyles.cell__break} ${
-                        edit
-                          ? tableStyles.cell__outer
-                          : index === 0 || index === documents.length - 1
-                          ? tableStyles.cell__outer
-                          : tableStyles.cell__inner
-                      }`}>
-                      {(() => {
-                        const doc = (edit ? duplicatedDocs : userDocuments || []).find(
-                          userDocument => userDocument.DocumentTypeId === document.id
-                        );
-                        if (!doc || doc.documents.length === 0) return 'No documents found';
-                        const docList = doc.documents;
-                        return docList.map((eachUrl, index) => {
-                          return (
-                            <>
-                              <span> {eachUrl}</span>
-                              {edit && (
-                                <button
-                                  className={tableStyles.delete_icon}
-                                  onClick={() => {
-                                    console.log(index);
-                                    setDuplicatedDocs(prev => {
-                                      return prev.map(element => {
-                                        if (element.DocumentTypeId === doc.DocumentTypeId) {
-                                          return {
-                                            ...element,
-                                            documents: element.documents.filter(
-                                              (url, i) => i !== index
-                                            )
-                                          };
-                                        }
-                                        return element;
-                                      });
-                                    });
-                                  }}></button>
-                              )}
-                              {index !== docList.length - 1 && <span>{', '}</span>}
-                            </>
+                    {addFlag !== index ? (
+                      <div
+                        className={`${tableStyles.cell} ${tableStyles.cell__break} ${
+                          edit
+                            ? tableStyles.cell__outer
+                            : index === 0 || index === documents.length - 1
+                            ? tableStyles.cell__outer
+                            : tableStyles.cell__inner
+                        }`}>
+                        {(() => {
+                          const doc = (edit ? duplicatedDocs : userDocuments || []).find(
+                            userDocument => userDocument.DocumentTypeId === document.id
                           );
-                        });
-                      })()}
-                    </div>
+                          if (!doc || doc.documents.length === 0) return 'No documents found';
+                          const docList = doc.documents;
+                          return docList.map((eachUrl, index) => {
+                            return (
+                              <>
+                                <span> {eachUrl}</span>
+                                {edit && (
+                                  <button
+                                    className={tableStyles.delete_icon}
+                                    onClick={() => {
+                                      setDuplicatedDocs(prev => {
+                                        return prev.map(element => {
+                                          if (element.DocumentTypeId === doc.DocumentTypeId) {
+                                            return {
+                                              ...element,
+                                              documents: element.documents.filter(
+                                                (url, i) => i !== index
+                                              )
+                                            };
+                                          }
+                                          return element;
+                                        });
+                                      });
+                                    }}></button>
+                                )}
+                                {index !== docList.length - 1 && <span>{', '}</span>}
+                              </>
+                            );
+                          });
+                        })()}
+                      </div>
+                    ) : (
+                      <div
+                        className={`${tableStyles.cell} ${tableStyles.cell__break} ${
+                          edit
+                            ? tableStyles.cell__outer
+                            : index === 0 || index === documents.length - 1
+                            ? tableStyles.cell__outer
+                            : tableStyles.cell__inner
+                        }`}>
+                        <input
+                          className={formInput.input}
+                          placeholder="Place url here"
+                          value={inputUrl}
+                          onChange={e => {
+                            setInputUrl(e.currentTarget.value);
+                          }}
+                          type="text"></input>
+                      </div>
+                    )}
                   </td>
                   {!edit && (
                     <td>
                       <div className={`${tableStyles.cell} ${tableStyles.cell__outer}`}>
-                        <InfoButton text="Add" onClick={() => addClick(document.id)}></InfoButton>
+                        {addFlag !== index ? (
+                          <InfoButton
+                            text={'Add'}
+                            onClick={() => {
+                              setAddFlag(index);
+                            }}></InfoButton>
+                        ) : (
+                          <EditButton
+                            text="Save"
+                            onClick={async () => {
+                              const res = await submitDocument(document.id);
+                              console.log(123);
+                              setAddFlag(-1);
+                              setInputUrl('');
+                            }}></EditButton>
+                        )}
                       </div>
                     </td>
                   )}
@@ -117,10 +153,8 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                   JSON.stringify(duplicatedDoc.documents) !==
                   JSON.stringify(userDocuments[index].documents)
                 ) {
-                  console.log(duplicatedDoc);
                   try {
                     const {data} = await updateUserDocument(duplicatedDoc);
-                    console.log(data);
                     if (data?.documents) {
                       console.log('here?');
                       setUserDocuments(prev => {
@@ -146,9 +180,11 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
             }}></EditButton>
         </>
       )}
-      {!edit && (
+      {addFlag !== -1 && <DeleteButton text="Cancel" onClick={() => setAddFlag(-1)}></DeleteButton>}{' '}
+      {!edit && addFlag === -1 && (
         <EditButton
           onClick={() => {
+            setAddFlag(-1);
             setDuplicatedDocs(userDocuments);
             setEdit(true);
           }}></EditButton>
