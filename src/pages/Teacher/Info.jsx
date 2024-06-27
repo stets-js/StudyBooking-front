@@ -13,6 +13,8 @@ import DeleteButton from '../../components/Buttons/Delete';
 import classNames from 'classnames';
 import {getDocumentType} from '../../helpers/document/document-type';
 import {addUserDocument, getUserDocuments} from '../../helpers/document/user-document';
+import TableHeader from '../../components/TableComponent/TableHeader';
+import InfoTableBody from '../../components/InfoPage/TableBody';
 
 export default function Info() {
   const {teacherId} = useParams() || null;
@@ -48,14 +50,12 @@ export default function Info() {
   const [userDocuments, setUserDocuments] = useState([]);
   const getDocTypes = async () => {
     const {data} = await getDocumentType();
-    console.log(data);
     setDocumentType(data);
   };
 
   const getUserDocs = async () => {
     try {
       const {data} = await getUserDocuments(userId);
-      console.log(data);
       setUserDocuments(data);
     } catch (error) {}
   };
@@ -239,23 +239,14 @@ export default function Info() {
           )}
         </div>
       </div>
+
       <div className={styles.info__wrapper}>
         <div className={styles.info__container}>
-          {documentType.map(type => (
-            <div key={type.id}>
-              {type.name}
-              <CloudinaryUploadWidget
-                setUser={setUser}
-                extentions={['pdf']}
-                onSuccess={result => {
-                  console.log(result);
-                  addUserDocument({userId, documentId: type.id, document: result.info.secure_url});
-                }}
-                folder="documents"
-                className={styles.info__avatar__button}
-              />
-            </div>
-          ))}
+          <TableHeader headers={['Name', 'Array', 'Action']}></TableHeader>
+          <InfoTableBody
+            documents={documentType}
+            userDocuments={userDocuments}
+            setUserDocuments={setUserDocuments}></InfoTableBody>
         </div>
       </div>
     </>
