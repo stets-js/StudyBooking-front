@@ -5,7 +5,7 @@ import tableStyles from '../../styles/table.module.scss';
 import EditButton from '../Buttons/Edit';
 import InfoButton from '../Buttons/Info';
 import DeleteButton from '../Buttons/Delete';
-import {addUserDocument} from '../../helpers/document/user-document';
+import {addUserDocument, updateUserDocument} from '../../helpers/document/user-document';
 import {useSelector} from 'react-redux';
 import {useState} from 'react';
 
@@ -61,7 +61,7 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                         const doc = (edit ? duplicatedDocs : userDocuments || []).find(
                           userDocument => userDocument.DocumentTypeId === document.id
                         );
-                        if (!doc) return 'No documents found';
+                        if (!doc || doc.documents.length === 0) return 'No documents found';
                         const docList = doc.documents;
                         return docList.map((eachUrl, index) => {
                           return (
@@ -109,7 +109,41 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
       {edit && (
         <>
           <DeleteButton text={'Cancel'} onClick={() => setEdit(!edit)}></DeleteButton>
-          <EditButton text={'Update'} onClick={() => setEdit(!edit)}></EditButton>
+          <EditButton
+            text={'Update'}
+            onClick={async () => {
+              duplicatedDocs.forEach(async (duplicatedDoc, index) => {
+                if (
+                  JSON.stringify(duplicatedDoc.documents) !==
+                  JSON.stringify(userDocuments[index].documents)
+                ) {
+                  console.log(duplicatedDoc);
+                  try {
+                    const {data} = await updateUserDocument(duplicatedDoc);
+                    console.log(data);
+                    if (data?.documents) {
+                      console.log('here?');
+                      setUserDocuments(prev => {
+                        return prev.map(oneDoc => {
+                          if (oneDoc.DocumentTypeId === data.DocumentTypeId) return data;
+                          return oneDoc;
+                        });
+                      });
+                    } else {
+                      console.log('here');
+                      setUserDocuments(prev => {
+                        return prev.filter(
+                          item => item.DocumentTypeId !== duplicatedDoc.DocumentTypeId
+                        );
+                      });
+                    }
+                  } catch (e) {
+                    console.log(e);
+                  }
+                }
+              });
+              setEdit(!edit);
+            }}></EditButton>
         </>
       )}
       {!edit && (

@@ -17,4 +17,13 @@ const addUserDocument = body => {
       throw error;
     });
 };
-export {getUserDocuments, addUserDocument};
+
+const updateUserDocument = body => {
+  return axios
+    .patch(`/user-document/${body.UserId}`, body)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+export {updateUserDocument, getUserDocuments, addUserDocument};
