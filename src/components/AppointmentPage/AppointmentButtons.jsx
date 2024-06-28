@@ -34,7 +34,7 @@ export default function AppointmentButtons({
   let appointmentTypes = [
     {label: 'Group', value: 1},
     {label: 'Individual', value: 2},
-    {label: 'Junior group', value: 11}
+    {label: 'Kids group', value: 11}
   ];
   if (token) appointmentTypes = [{label: 'Individual', value: 2}];
   return (

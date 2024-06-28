@@ -73,7 +73,7 @@ export default function EditMySubgroup() {
   const appointmentTypes = [
     {label: 'Group', value: 7},
     {label: 'Individual', value: 8},
-    {label: 'Junior group', value: 11}
+    {label: 'Kids group', value: 11}
   ];
   return (
     <div>
