@@ -54,7 +54,6 @@ const NewSubgroup = ({isOpen, handleClose}) => {
               title="Name:"
               type="text"
               name="name"
-              max={50}
               value={subgroup.name}
               placeholder="Name"
               isRequired={true}
