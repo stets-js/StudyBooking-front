@@ -406,6 +406,12 @@ body {
 }
 
 .info {
+  &__label {
+    font-size: 20px;
+    font-family: $poppins;
+    text-align: left;
+    margin-top: 20px;
+  }
   &__wrapper {
     display: flex;
     flex-direction: column;
@@ -574,11 +580,11 @@ body {
       row-gap: 20px;
       align-items: center;
     }
-    &__title{
+    &__title {
       font-size: 30px;
     }
     &__schedule {
-      &__item{
+      &__item {
         min-width: 200px;
       }
       &__container {
@@ -589,41 +595,40 @@ body {
   }
 }
 
-.bot{
-  &__wrapper{
+.bot {
+  &__wrapper {
     height: 94px;
   }
-  &__label{
+  &__label {
     font-family: $poppins;
-    font-size:20px ;
+    font-size: 20px;
     margin-top: 16px;
   }
-  &__pictures{
+  &__pictures {
     width: 100%;
     display: flex;
     column-gap: 20px;
   }
-  &__telegram:hover{
-    color:$blue;
+  &__telegram:hover {
+    color: $blue;
   }
 
   &__focus_slack {
     animation: blink-border 1s ease-in-out 3; /* Анимация будет проигрываться 3 раза в течение 2 секунд */
   }
-  
 }
 
 @keyframes blink-border {
   0% {
-    border:1px solid transparent;
+    border: 1px solid transparent;
     border-radius: 25px;
   }
   50% {
-    border:2px solid red;
+    border: 2px solid red;
     border-radius: 25px;
   }
   100% {
-    border:1px solid transparent;
+    border: 1px solid transparent;
     border-radius: 25px;
   }
 }

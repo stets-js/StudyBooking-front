@@ -12,7 +12,7 @@ import EditButton from '../../components/Buttons/Edit';
 import DeleteButton from '../../components/Buttons/Delete';
 import classNames from 'classnames';
 import {getDocumentType} from '../../helpers/document/document-type';
-import {addUserDocument, getUserDocuments} from '../../helpers/document/user-document';
+import {getUserDocuments} from '../../helpers/document/user-document';
 import TableHeader from '../../components/TableComponent/TableHeader';
 import InfoTableBody from '../../components/InfoPage/TableBody';
 
@@ -202,6 +202,9 @@ export default function Info() {
                 </div>
               </div>
             )}
+          </div>
+          <div className={classNames(styles.info__item, styles.info__label)}>
+            Courses: <span>{user?.teachingCourses.map(el => el.name).join(', ')}</span>
           </div>
           <div className={styles.info__item}>
             <FormInput
