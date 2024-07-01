@@ -84,7 +84,7 @@ export default function AddMySubgroup() {
 
     for (let i = 0; i < (selectedClassType.value === 7 ? 3 : 2); i++) {
       const slotTime = format(addMinutes(time, 30 * i), 'HH:mm');
-      if (slots.some(el => el.weekDay === weekDay && el.time === slotTime)) {
+      if (slots.some(el => el.weekDay === weekDay && el.time[0] === slotTime)) {
         return;
       }
       selectedSlotsTMP.push({
