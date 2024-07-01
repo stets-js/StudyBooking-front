@@ -6,16 +6,19 @@ import styles from '../../../styles/SuperAdminPage.module.scss';
 import DeleteButton from '../../Buttons/Delete';
 import {deleteMentorFromSubgroup} from '../../../helpers/subgroup/subgroup';
 import {deleteLessons} from '../../../helpers/lessons/lesson';
+import {useDispatch} from 'react-redux';
 
 export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit, subgroupId}) {
   const headers = ['Mentor', 'Type', 'Schedule', 'Action'];
-  console.log(subgroupMentors);
+  const dispatch = useDispatch();
   return (
     <>
       <div className={`${tableStyles.header} ${tableStyles.header__mySubgroup}`}>
         {headers.map(header => {
           return (
-            <div className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
+            <div
+              key={header}
+              className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
               {header}
             </div>
           );
@@ -35,7 +38,6 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
               </tr>
             ) : (
               subgroupMentors.map((mentor, index) => {
-                console.log(mentor);
                 return (
                   <tr>
                     <td>
@@ -52,6 +54,12 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
                           //   //     }
                           //   //   });
                           // }}
+                          onClick={dispatch({
+                            type: 'ADD_SELECTED_USER',
+                            payload: {
+                              id: mentor.mentorId
+                            }
+                          })}
                           to={`../teacher/calendar/${mentor.mentorId}`}>
                           <p className={styles.ul_items_text}>{mentor?.User.name}</p>
                         </Link>
