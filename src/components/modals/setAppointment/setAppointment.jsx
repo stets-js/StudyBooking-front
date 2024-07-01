@@ -89,10 +89,8 @@ const SetAppointment = ({
               // loop for case of several appointments on one day
               day += `${weekNames[i]}: `;
               const startTime = selectedSlots[i][j].time;
-              const endTime = addMinutes(
-                new Date(`1970 ${selectedSlots[i][j + appointmentLength - 1].time}`),
-                30
-              );
+              const [hours, minutes] = selectedSlots[i][j + appointmentLength - 1].time.split(':');
+              const endTime = addMinutes(new Date(1970, 0, 1, hours, minutes), 30);
               day += startTime + ' - ' + format(endTime, 'HH:mm');
               if (selectedSlots[i].length > j + appointmentLength + 1) day += '\n'; // addes new lines except last time range of the day
             }

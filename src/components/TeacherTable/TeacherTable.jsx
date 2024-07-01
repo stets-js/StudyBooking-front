@@ -51,7 +51,6 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
         startDate: format(startDates[0], 'yyyy-MM-dd'),
         endDate: format(startDates[6], 'yyyy-MM-dd')
       });
-
       dispatch(setWeekScheduler(filterAndUpdateSlots(slots, lessons.data)));
     };
     try {
@@ -97,7 +96,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
               {Array.from({length: 26}, (_, timeIndex) => {
                 // 24 - for making 20:30 last cell
                 // 26 - for making 21:30
-                const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+                const currentTime = addMinutes(new Date(1970, 0, 1, 9, 0), timeIndex * 30);
                 if (currentTime.getHours() >= startingHour)
                   return (
                     <tr key={Math.random() * 100 - 1}>

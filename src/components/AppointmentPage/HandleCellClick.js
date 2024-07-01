@@ -20,7 +20,8 @@ export const HandleCellClick = async ({
   let teachersIdsNew = [];
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
     // validating slots
-    const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
+    const [hours, minutes] = timeStr.split(':');
+    const currentTime = addMinutes(new Date(1970, 0, 1, hours, minutes), slotIndex * 30);
     const isAlreadySelected = selectedSlots.selectedSlots[weekDay]?.find(
       el => el?.time === format(currentTime, 'HH:mm')
     );
@@ -45,7 +46,8 @@ export const HandleCellClick = async ({
   }
 
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
-    const currentTime = addMinutes(new Date(`1970 ${timeStr}`), slotIndex * 30);
+    const [hours, minutes] = timeStr.split(':');
+    const currentTime = addMinutes(new Date(1970, 0, 1, hours, minutes), slotIndex * 30);
     dispatch({
       type: 'ADD_SELECTED_SLOTS',
       payload: {

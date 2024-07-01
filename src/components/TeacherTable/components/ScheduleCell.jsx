@@ -91,6 +91,7 @@ export default function ScheduleCell({
             ) : (
               format(currentTime, 'HH:mm')
             )}
+            ({dateIndex})
           </div>
         </button>
       }

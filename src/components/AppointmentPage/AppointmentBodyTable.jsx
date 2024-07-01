@@ -24,7 +24,7 @@ export default function AppointmentBodyTable({
     <table className={tableStyles.tableBody}>
       <tbody>
         {Array.from({length: 26}, (_, timeIndex) => {
-          const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+          const currentTime = addMinutes(new Date(1970, 0, 1, 9, 0), timeIndex * 30);
           if (currentTime.getHours() >= startingHour)
             return (
               <tr key={timeIndex}>

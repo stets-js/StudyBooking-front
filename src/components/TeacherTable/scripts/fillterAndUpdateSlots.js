@@ -9,6 +9,7 @@ export const filterAndUpdateSlots = (slots, lessons) => {
 
   lessons.forEach(lesson => {
     const schedule = lesson.LessonSchedule;
+    const [hours, minutes] = schedule.startTime.split(':');
     const appointmentType =
       lesson.appointmentTypeId === 7 || lesson.appointmentTypeId === 9 ? 3 : 2;
     const slots = [
@@ -20,7 +21,7 @@ export const filterAndUpdateSlots = (slots, lessons) => {
     ];
     for (let i = 1; i < appointmentType; i++) {
       slots.push({
-        time: format(addMinutes(new Date(`1970 ${schedule.startTime}`), 30 * i), 'HH:mm'),
+        time: format(addMinutes(new Date(1970, 0, 1, hours, minutes), 30 * i), 'HH:mm'),
         rowSpan: 0
       });
     }

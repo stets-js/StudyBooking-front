@@ -237,7 +237,10 @@ export default function AddMySubgroup() {
                         <tbody>
                           {Array.from({length: 26}, (_, timeIndex) => {
                             // 24 - for making 20:30 last cell
-                            const currentTime = addMinutes(new Date(`1970 9:00`), timeIndex * 30);
+                            const currentTime = addMinutes(
+                              new Date(1970, 0, 1, 9, 0),
+                              timeIndex * 30
+                            );
                             if (currentTime.getHours() >= 9)
                               return (
                                 <tr key={Math.random() * 1000 - 1}>
