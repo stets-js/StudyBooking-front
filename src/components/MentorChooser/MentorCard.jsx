@@ -21,21 +21,23 @@ export default function MentorCard({mentor}) {
           <span>
             <b>Викладає курси: </b>
           </span>
-          {teacherCourses.map((course, index) => {
-            return (
-              <span>
-                <a
-                  key="tooltip-link"
-                  data-tooltip-id={mentor.id + course.shortening}
-                  data-tooltip-place="bottom">
-                  <span key="tooltip-icon"> {course.shortening}</span>
-                </a>
-                <Tooltip id={course.shortening}>{course.name}</Tooltip>
+          {teacherCourses &&
+            teacherCourses.length > 0 &&
+            teacherCourses.map((course, index) => {
+              return (
+                <span>
+                  <a
+                    key="tooltip-link"
+                    data-tooltip-id={mentor.id + course.shortening}
+                    data-tooltip-place="bottom">
+                    <span key="tooltip-icon"> {course.shortening}</span>
+                  </a>
+                  <Tooltip id={course.shortening}>{course.name}</Tooltip>
 
-                {index !== teacherCourses.length - 1 ? ', ' : ''}
-              </span>
-            );
-          })}
+                  {index !== teacherCourses.length - 1 ? ', ' : ''}
+                </span>
+              );
+            })}
         </div>
         <p className={styles.card__description}>
           <b>Опис: </b>

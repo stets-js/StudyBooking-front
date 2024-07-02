@@ -22,7 +22,7 @@ export default function MentorsPage() {
       }
       const res = await getUsers(
         // teachersFilter - flag for corner case on backend
-        `onlyIndiv=true&limit=${limit}&offset=${reset ? 0 : offset}&role=teacher${
+        `onlyIndiv=true&limit=${limit}&offset=${reset ? 0 : offset}${
           filterName || filterCourse.value ? '&teachersFilter=true' : ''
         }${filterName ? '&name=' + filterName : ''}${
           filterCourse?.value ? '&courses=' + JSON.stringify([filterCourse.value]) : '&courses=[]'
@@ -50,16 +50,18 @@ export default function MentorsPage() {
         setFilterName={setFilterName}
         setFilterCourse={setFilterCourse}
         setReset={setReset}></FilteringBlock>
-      <InfiniteScroll
-        dataLength={mentors.length} //This is important field to render the next data
-        next={fetchTeachers}
-        hasMore={offset + limit <= totalAmount}
-        loader={<h4>Loading...</h4>}
-        endMessage={<p style={{textAlign: 'center'}}>end</p>}>
-        {mentors.map(mentor => {
-          return <MentorCard mentor={mentor}></MentorCard>;
-        })}
-      </InfiniteScroll>
+      {mentors.length > 0 && (
+        <InfiniteScroll
+          dataLength={mentors.length} //This is important field to render the next data
+          next={fetchTeachers}
+          hasMore={offset % limit === 0}
+          loader={<h4>Loading...</h4>}
+          endMessage={<p style={{textAlign: 'center'}}>end</p>}>
+          {mentors.map(mentor => {
+            return <MentorCard mentor={mentor}></MentorCard>;
+          })}
+        </InfiniteScroll>
+      )}
     </>
   );
 }
