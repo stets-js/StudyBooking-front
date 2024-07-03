@@ -117,9 +117,9 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
             </li>
 
             <InfiniteScroll
-              dataLength={teachers.length} //This is important field to render the next data
+              dataLength={10} //This is important field to render the next data
               next={fetchTeachers}
-              hasMore={reset ? true : offset + limit <= totalAmount}
+              hasMore={reset || offset + limit <= totalAmount}
               loader={<h4>Loading...</h4>}
               endMessage={<p style={{textAlign: 'center'}}>end</p>}
               scrollableTarget="scroller">
