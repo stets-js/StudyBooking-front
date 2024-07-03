@@ -117,6 +117,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
             </li>
 
             <InfiniteScroll
+              height={'600px'}
               dataLength={10} //This is important field to render the next data
               next={fetchTeachers}
               hasMore={reset || offset + limit <= totalAmount}
