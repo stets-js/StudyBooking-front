@@ -63,6 +63,8 @@ export default function Info() {
     getDocTypes();
     getUserDocs();
   }, []);
+
+  console.log(user);
   return (
     <>
       <div className={styles.info__wrapper}>
@@ -204,7 +206,7 @@ export default function Info() {
             )}
           </div>
           <div className={classNames(styles.info__item, styles.info__label)}>
-            Courses: <span>{user?.teachingCourses.map(el => el.name).join(', ')}</span>
+            Courses: <span>{(user?.teachingCourses || []).map(el => el.name).join(', ')}</span>
           </div>
           <div className={styles.info__item}>
             <FormInput
