@@ -81,9 +81,12 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
     }
   }, [reset]);
 
-  // useEffect(() => {
-  //   fetchTeachers();
-  // }, []); // initial fetch
+  useEffect(() => {
+    console.log('really???');
+    dispatch(cleanMentors());
+    fetchTeachers();
+  }, []); // initial fetch
+
   return (
     <>
       <React.Fragment key={2}>
