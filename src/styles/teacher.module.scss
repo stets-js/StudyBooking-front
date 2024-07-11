@@ -334,15 +334,30 @@ body {
   // width: 200px;
   margin-right: 70px;
 }
-.available_nav_wrapper {
-  display: flex;
-  width: 70%;
-  margin-left: 15%;
-  align-items: center;
-  justify-content: flex-start;
+.available_nav {
+  &_wrapper{
+    display: flex;
+    width:100%;
+    row-gap: 40px;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+  }
+  &__selectors{
+    display:flex;
+    width:auto;
+    column-gap: 20px;
+    align-items: center;
+    justify-content: center;
+  }
 }
-.available_nav__item:first-of-type {
-  margin-right: 20%;
+.available_nav__item {
+  // margin-right: 20%;
+  min-width: 250px;
+  align-items: center;
+  
+
 }
 
 .add_btn {

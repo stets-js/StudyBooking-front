@@ -14,7 +14,14 @@ export default function AvaliableTable() {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState();
   const [currentDate, setCurrentDate] = useState(new Date());
-  // const [valueGenerated, setValueGenerated] = useState(false);
+  const [appointmentTypes] = useState([
+    {label: 'Group', value: 'group'},
+    {label: 'Individual', value: 'private'}
+  ]);
+  const [selectedAppointment, SetSelectedAppointment] = useState({
+    label: 'Group',
+    value: 'group'
+  });
   const generateTimeSlots = () => {
     const startTime = new Date().setHours(9, 0, 0, 0);
     const endTime = new Date().setHours(20, 30, 0, 0);
@@ -45,46 +52,58 @@ export default function AvaliableTable() {
     });
   }, []);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setScheduleTable(generateTimeSlots());
+  const fetchUsers = async () => {
+    setScheduleTable(generateTimeSlots());
 
-      const freeUsers = (
-        await getFreeUsers(
-          selectedCourse,
-          getDay(currentDate) - 1 < 0 ? 6 : getDay(currentDate) - 1
-        )
-      ).availableSlots;
-      setScheduleTable(prevSchedule => {
-        const newSchedule = [...prevSchedule];
-        freeUsers.forEach(el => {
-          const timeIndex = newSchedule.findIndex(slot => slot.time === el.time);
-          if (timeIndex !== -1) {
-            newSchedule[timeIndex].users.push(el.User);
-          }
-        });
-        return newSchedule;
+    const freeUsers = (
+      await getFreeUsers(
+        selectedCourse,
+        getDay(currentDate) - 1 < 0 ? 6 : getDay(currentDate) - 1,
+        `appointmentType=${selectedAppointment.value}`
+      )
+    ).availableSlots;
+    setScheduleTable(prevSchedule => {
+      const newSchedule = [...prevSchedule];
+      freeUsers.forEach(el => {
+        const timeIndex = newSchedule.findIndex(slot => slot.time === el.time);
+        if (timeIndex !== -1) {
+          newSchedule[timeIndex].users.push(el.User);
+        }
       });
-    };
-
+      return newSchedule;
+    });
+  };
+  useEffect(() => {
     if (selectedCourse) {
       fetchUsers();
       // setValueGenerated(true);
     }
-  }, [selectedCourse, currentDate]);
+  }, [selectedCourse, selectedAppointment, currentDate]);
 
   return (
     <div>
       <div className={styles.available_nav_wrapper}>
-        <Select
-          options={courses}
-          placeholder="Select course"
-          required
-          className={`${selectorStyles.selector} ${selectorStyles.selector__fullwidth} ${selectorStyles.selector__filtering} ${styles.available_nav__item}`}
-          onChange={choice => {
-            setSelectedCourse(choice.value);
-          }}
-        />
+        <div className={styles.available_nav__selectors}>
+          <Select
+            options={courses}
+            placeholder="Select course"
+            required
+            className={`${selectorStyles.selector} ${selectorStyles.selector__fullwidth} ${selectorStyles.selector__filtering} ${styles.available_nav__item}`}
+            onChange={choice => {
+              setSelectedCourse(choice.value);
+            }}
+          />
+          <Select
+            options={appointmentTypes}
+            placeholder="Appointment type"
+            required
+            defaultValue={selectedAppointment}
+            className={`${selectorStyles.selector} ${selectorStyles.selector__fullwidth} ${selectorStyles.selector__filtering} ${styles.available_nav__item}`}
+            onChange={choice => {
+              SetSelectedAppointment(choice);
+            }}
+          />
+        </div>
         <OneDaySelector currentDate={currentDate} setCurrentDate={setCurrentDate}></OneDaySelector>
       </div>
 

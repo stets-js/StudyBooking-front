@@ -11,9 +11,13 @@ const getRoles = () => {
     });
 };
 
-const getFreeUsers = (selectedCourse, selectedWeekDay) => {
+const getFreeUsers = (selectedCourse, selectedWeekDay, options) => {
   return axios
-    .get(`/users/available-teachers/${selectedWeekDay}/${selectedCourse}`)
+    .get(
+      `/users/available-teachers/${selectedWeekDay}/${selectedCourse}${
+        options ? `?${options}` : ''
+      }`
+    )
     .then(res => res.data)
     .catch(error => {
       throw error;
