@@ -8,7 +8,7 @@ const HeaderLinks = ({link, name, start, end}) => {
     <div className={styles.links__wrapper}>
       <a href={link || '#'}>{name}</a>
       <div className={styles.links__end}>
-        {format(start, 'dd.MM.yyyy')} - {format(end, 'dd.MM.yyyy')}
+        {start && format(start, 'dd.MM.yyyy')} - {end && format(end, 'dd.MM.yyyy')}
       </div>
     </div>
   );
