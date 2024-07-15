@@ -6,6 +6,27 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+.refferal{
+  display:flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__img{
+    width: 99%;
+  }
+  &__button{
+    position: absolute;
+    top: calc(25% - 20px);
+    font-size: 42px;
+    display:flex;
+    align-items: center;
+    row-gap: 20px;
+    flex-direction: column;
+    color:white;
+    font-weight: bold;
+  }
+}
 .scroller {
   margin-top: 40px;
   overflow-y: auto;

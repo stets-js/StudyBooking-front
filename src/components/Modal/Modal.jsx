@@ -17,11 +17,9 @@ const Modal = props => {
       className={classNames(styles['Overlay'], styles[props.classname_wrapper])}
       style={{zIndex: props.index}}
       onClick={() => {
-        console.log('closing');
         props.onClose();
         document.body.style.overflow = 'auto';
         root.style.overflow = 'auto';
-        console.log('closed');
       }}>
       <Fade triggerOnce duration={250}>
         <div

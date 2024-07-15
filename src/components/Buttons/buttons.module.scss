@@ -55,6 +55,21 @@
     color: rgb(43, 153, 231);
     border: 1px solid rgb(43, 153, 231);
   }
+  &__referal{
+    width: 300px;
+    font-weight: bold;
+    border: 5px solid white;
+    border-radius: 35px;
+    font-size: 40px;
+    background-color: transparent;
+    color:white;
+    transition: 0.3s;
+    height: auto;
+    &:hover{
+      background-color: white;
+      color: #4427b3
+    }
+  }
 }
 
 .fullHeight{

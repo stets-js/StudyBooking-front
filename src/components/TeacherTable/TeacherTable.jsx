@@ -3,6 +3,7 @@ import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 
 import tableStyles from '../../styles/table.module.scss';
+import styles from '../../styles/table.module.scss';
 
 import {getSlotsForUser} from '../../helpers/teacher/slots';
 import {cleanOccupiedSlots} from '../../redux/action/teacher.action';
@@ -15,6 +16,9 @@ import {filterAndUpdateSlots} from './scripts/fillterAndUpdateSlots';
 import AppointmentList from './components/AppointmentList';
 import {getLessonsForUser} from '../../helpers/lessons/lesson';
 import Banner from './components/Banner';
+import InfoButton from '../Buttons/Info';
+import ReferalButton from '../Buttons/Referal';
+import ReferalModalWindow from '../modals/ReferalModal/ReferalModalWindow';
 
 export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   const dispatch = useDispatch();
@@ -60,9 +64,29 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
     }
   }, [userId, dispatch, startDates]);
 
+  const [referalDetails, setReferalDetails] = useState(false);
   return (
     <div>
       {!isAdmin && <Banner setUser={setUser} user={user}></Banner>}
+      <div className={styles.refferal}>
+        <div className={styles.refferal__button}>
+          <span>Хочеш дізнатися більше?</span>
+          <ReferalButton
+            text="Натискай"
+            onClick={() => {
+              setReferalDetails(true);
+            }}></ReferalButton>
+        </div>
+        <img
+          className={styles.refferal__img}
+          src="https://res.cloudinary.com/dn4cdsmqr/image/upload/v1721037700/Referral_etkc0a.png"
+          alt="alt"></img>
+      </div>
+      {referalDetails && (
+        <ReferalModalWindow
+          isOpen={referalDetails}
+          handleClose={() => setReferalDetails(false)}></ReferalModalWindow>
+      )}
       <AppointmentList
         setAppointmentTypes={setAppointmentTypes}
         appointmentTypes={appointmentTypes}
