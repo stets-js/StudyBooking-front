@@ -6,7 +6,7 @@ import styles from './NewMySubgroup.module.scss';
 import {createSubgroupMentor, updateSubGroup} from '../../../helpers/subgroup/subgroup';
 import {bulkLessonCreate} from '../../../helpers/lessons/lesson';
 
-const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
+const NewMySubgroup = ({isOpen, handleClose, slots, setSlots, info}) => {
   const [schedule, setSchedule] = useState('');
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const calculateSchedule = () => {
@@ -33,20 +33,23 @@ const NewMySubgroup = ({isOpen, handleClose, slots, info}) => {
             type={{type: 'post'}}
             requests={{
               post: async () => {
-                await slots
-                  .filter(slot => slot.rowSpan !== 0)
-                  .forEach(slot => bulkLessonCreate(slot));
                 // bulkSlotCreate(slots);
-                await createSubgroupMentor({
+                const res = await createSubgroupMentor({
                   subgroupId: info.subGroup.value,
                   mentorId: info.mentorId,
                   TeacherTypeId: info.teacherType,
                   schedule
                 });
-                await updateSubGroup({
-                  id: info.subGroup.value,
-                  body: {startDate: info.startDate, endDate: info.endDate}
-                });
+                if (res) {
+                  await slots
+                    .filter(slot => slot.rowSpan !== 0)
+                    .forEach(slot => bulkLessonCreate(slot));
+                  await updateSubGroup({
+                    id: info.subGroup.value,
+                    body: {startDate: info.startDate, endDate: info.endDate}
+                  });
+                  setSlots([]);
+                }
               }
             }}
             slots={JSON.stringify(slots)}

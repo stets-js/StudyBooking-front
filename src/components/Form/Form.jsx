@@ -209,7 +209,8 @@ const Form = ({
           const res = await requests.post({credentials: data, jsonData});
           success({text: status.successMessage, delay: 1000});
           return !errorsuccessMessage && onSubmit && onSubmitModified();
-        } catch (error) {
+        } catch (e) {
+          console.log(e);
           return error('Something went wrong :(');
         }
       }

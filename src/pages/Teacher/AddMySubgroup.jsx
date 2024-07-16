@@ -324,6 +324,7 @@ export default function AddMySubgroup() {
       {isOpen && (
         <NewMySubgroup
           slots={slots}
+          setSlots={setSlots}
           isOpen={isOpen}
           handleClose={handleClose}
           info={{
