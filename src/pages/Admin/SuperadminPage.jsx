@@ -8,7 +8,6 @@ import {useSelector} from 'react-redux';
 
 const SuperAdministrator = () => {
   const userRole = useSelector(state => state.auth.user.role);
-
   return (
     <>
       <Header

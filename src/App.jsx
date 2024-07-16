@@ -34,6 +34,8 @@ import LessonsPage from './pages/Admin/LessonsPage';
 import StatisticPage from './pages/Teacher/StatisticPage';
 import MyLessonPage from './pages/Teacher/MyLessonPage';
 import EditMySubgroup from './pages/Teacher/EditMySubgroup';
+import ManagerWrapper from './pages/QCManager/ManagerWrapper';
+import ManagerHome from './pages/QCManager/ManagerHome';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -115,6 +117,13 @@ const App = () => {
                 <Route path={path.statistics} element={<StatisticPage></StatisticPage>} />
                 <Route path={path.editMySubgroup} element={<EditMySubgroup />} />
                 {/* <Route path={path.MyLesson} element={<MyLessonPage></MyLessonPage>}></Route> */}
+              </Route>
+            </>
+          ) : auth && userRole === 'QC manager' ? (
+            <>
+              <Route path={path.home} element={<Navigate to={`${path.QCManager}`} />}></Route>
+              <Route path={path.home} element={<ManagerWrapper />}>
+                <Route path={path.QCManager} element={<ManagerHome />} />
               </Route>
             </>
           ) : auth && MIC_user?.name ? (

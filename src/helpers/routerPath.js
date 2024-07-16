@@ -39,6 +39,8 @@ const path = {
   ik: 'ik/',
   teacher: '/teacher/',
   subgroups: 'subgroups/',
-  replacements: 'replacements/'
+  replacements: 'replacements/',
+  //QC manager
+  QCManager: '/qc-manager/'
 };
 export default path;
