@@ -18,7 +18,7 @@ export default function ManagerHome() {
   return (
     <div>
       <NewReport fetchAllReports={fetchAllReports} />
-      <ReportsTable reports={reports}></ReportsTable>
+      <ReportsTable reports={reports} updateData={fetchAllReports}></ReportsTable>
     </div>
   );
 }

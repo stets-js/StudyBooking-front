@@ -32,6 +32,10 @@ const TeacherWrapper = ({
       {text: 'Lessons', path: id ? `${path.MyLesson}${id}` : path.MyLesson}
     );
   }
+
+  if (id) {
+    endpoints.push({text: 'Reports', path: id ? `${path.report}${id}` : path.report});
+  }
   return (
     <>
       <Header

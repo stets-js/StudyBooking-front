@@ -9,13 +9,21 @@ const createReport = credentials => {
     });
 };
 
-const getReports = () => {
+const getReports = options => {
   return axios
-    .get('reports/')
+    .get(`reports${options ? options : ''}`)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
+const updateReport = (id, data) => {
+  return axios
+    .patch(`reports/${id}`, {...data, status: data?.status ? data.status : 'Погодження'})
     .then(res => res.data)
     .catch(error => {
       throw error;
     });
 };
 
-export {createReport, getReports};
+export {createReport, updateReport, getReports};

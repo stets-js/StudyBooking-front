@@ -41,6 +41,7 @@ const path = {
   subgroups: 'subgroups/',
   replacements: 'replacements/',
   //QC manager
-  QCManager: '/qc-manager/'
+  QCManager: '/qc-manager/',
+  report: 'report/'
 };
 export default path;

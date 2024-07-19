@@ -36,6 +36,7 @@ import MyLessonPage from './pages/Teacher/MyLessonPage';
 import EditMySubgroup from './pages/Teacher/EditMySubgroup';
 import ManagerWrapper from './pages/QCManager/ManagerWrapper';
 import ManagerHome from './pages/QCManager/ManagerHome';
+import ReportPage from './pages/Teacher/ReportPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -101,6 +102,7 @@ const App = () => {
                   <Route path={`${path.info}:teacherId`} element={<Info />} />
                   <Route path={`${path.MyLesson}:teacherId`} element={<MyLessonPage />} />
                   <Route path={`${path.statistics}:teacherId`} element={<StatisticPage />} />
+                  <Route path={`${path.report}:teacherId`} element={<ReportPage />} />
                 </Route>
                 <Route path={path.subgroups} element={<SubGroupPage />} />
                 <Route path={path.replacements} element={<ReplacementsPage />} />
@@ -116,6 +118,7 @@ const App = () => {
                 <Route path={path.info} element={<Info />} />
                 <Route path={path.statistics} element={<StatisticPage></StatisticPage>} />
                 <Route path={path.editMySubgroup} element={<EditMySubgroup />} />
+                <Route path={path.report} element={<ReportPage />} />
                 {/* <Route path={path.MyLesson} element={<MyLessonPage></MyLessonPage>}></Route> */}
               </Route>
             </>

@@ -60,7 +60,6 @@ export default function NewReport({fetchAllReports}) {
     if (selectedSubgroup) fetchMentorsForSubgroup();
   }, [selectedSubgroup]);
   const saveNewReport = async () => {
-    console.log(reportData);
     if (selectedMentor && reportData.date && reportData.link && reportData.mark) {
       const data = await createReport({
         mentorId: selectedMentor,
@@ -87,9 +86,19 @@ export default function NewReport({fetchAllReports}) {
       <Select
         className={classNames(styles.report__item, selectorStyles.selector)}
         options={subgrops}
+        isDisabled={!selectedCourse}
         value={subgrops.filter(subgrops => subgrops.value === selectedSubgroup)}
         placeholder="Select subgroups"
         required
+        theme={theme => ({
+          ...theme,
+          borderRadius: 0,
+          colors: {
+            ...theme.colors,
+            primary25: 'orange',
+            primary: 'black'
+          }
+        })}
         // className={}
         onChange={choice => {
           setSelectedSubgroup(choice.value);
@@ -98,6 +107,7 @@ export default function NewReport({fetchAllReports}) {
       <Select
         className={classNames(styles.report__item, selectorStyles.selector)}
         options={mentors}
+        isDisabled={!selectedSubgroup}
         value={mentors.filter(mentor => mentor.value === selectedMentor)}
         placeholder="Select Mentor"
         required
