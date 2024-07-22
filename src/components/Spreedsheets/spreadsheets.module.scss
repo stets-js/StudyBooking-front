@@ -1,0 +1,11 @@
+@import '../../styles/variables.scss';
+
+.dates{
+    &__wrapper{
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+}
+.link{z-index: 11;}
