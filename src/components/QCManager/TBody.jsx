@@ -212,10 +212,10 @@ export default function Tbody({reports, updateData, teacherPage}) {
                         ) : (
                           <div className={styles.buttons}>
                             <EditButton
-                              text="Зберігти"
+                              text="Зберегти"
                               onClick={() => onSave(report.id)}></EditButton>
                             <DeleteButton
-                              text="Cancel"
+                              text="Відміна"
                               onClick={() => setIsEdit(-1)}></DeleteButton>
                           </div>
                         )}
