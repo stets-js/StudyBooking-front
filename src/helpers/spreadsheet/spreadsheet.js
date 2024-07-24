@@ -15,8 +15,9 @@ const addBorders = () => {
   return axios.get('/spreadsheet/borders');
 };
 
-const allUsersStatsByCourse = () => {
-  return axios.get('/users/allUsersByCourse');
+const allUsersStatsByCourse = (data, selectedCourse) => {
+  console.log(selectedCourse);
+  return axios.get(`/users/allUsersByCourse?${selectedCourse ? `courseId=${selectedCourse}` : ''}`);
 };
 
 const allUsersStats = () => {
@@ -36,14 +37,13 @@ const usersActivity = dates => {
   );
 };
 
-const usersActivityByCourse = dates => {
+const usersActivityByCourse = (dates, selectedCourse) => {
   const {start, end} = dates;
 
   return axios.get(
-    `/spreadsheet/activityByCourse?start=${format(start, 'yyyy-MM-dd')}&end=${format(
-      end,
-      'yyyy-MM-dd'
-    )}`
+    `/spreadsheet/activityByCourse?${
+      selectedCourse ? `courseId=${selectedCourse}` : ''
+    }&start=${format(start, 'yyyy-MM-dd')}&end=${format(end, 'yyyy-MM-dd')}`
   );
 };
 export {
