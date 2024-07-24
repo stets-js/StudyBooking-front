@@ -21,6 +21,11 @@
   font-weight: 600;
   padding: 10px;
   border: 2px solid $helper-blue;
+  transition: 0.4s;
+  &:hover{
+    background-color: $helper-blue;
+    color:white;
+  }
 }
 
 .helper:hover .tooltip {
