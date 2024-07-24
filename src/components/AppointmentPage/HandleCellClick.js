@@ -26,7 +26,7 @@ export const HandleCellClick = async ({
       el => el?.time === format(currentTime, 'HH:mm')
     );
     if (isAlreadySelected) {
-      return lesson ? 1 : error({delay: 1000, text: 'Slot already selected'});
+      return lesson ? 1 : null;
     }
     const slots = slotsData[weekDay]?.[format(currentTime, 'HH:mm')];
     if (!slots || !slots.length) return error({delay: 1000, text: 'Not enough slots'});

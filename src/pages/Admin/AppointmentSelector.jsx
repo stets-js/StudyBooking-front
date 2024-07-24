@@ -141,7 +141,6 @@ export default function UsersPage({MIC_flag = false}) {
     };
     setAllData();
   }, [lesson, courses, teachersIds, slotsData]);
-
   return (
     <div>
       <h3>Lesson amount: {lessonAmount}</h3>
