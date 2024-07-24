@@ -16,7 +16,8 @@ export default function SelectPath({selectedPath, setSelectedPath}) {
   useEffect(() => {
     setSelectedPath(getPathDescription(location.pathname, userRole));
   }, [location]);
-  console.log(selectedPath);
+  console.log(options);
+  console.log(options.filter(el => el.label === selectedPath)[0]);
   return (
     <Select
       className={styles.form__select}

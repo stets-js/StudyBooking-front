@@ -8,16 +8,17 @@ export const getOptions = role => {
     : role === 'QC manager'
     ? qcManagerPaths
     : micUserPaths;
-
   return [
-    ...Object.values(neededPaths).map(el => {
+    ...Object.entries(neededPaths).map(([key, value]) => {
       return {
-        label: el
+        label: value,
+        value: key
       };
     }),
-    ...Object.values(commonPaths).map(el => {
+    ...Object.entries(commonPaths).map(([key, value]) => {
       return {
-        label: el
+        label: value,
+        value: key
       };
     })
   ];
