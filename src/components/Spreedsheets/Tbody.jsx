@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import Select from 'react-select';
 import {format} from 'date-fns';
 import tableStyles from '../../styles/table.module.scss';
 import classNames from 'classnames';
@@ -14,14 +15,31 @@ import {
 } from '../../helpers/spreadsheet/spreadsheet';
 import EditButton from '../Buttons/Edit';
 import FormInput from '../FormInput/FormInput';
+import {getCourses} from '../../helpers/course/course';
 
-export default function TableBody({headers}) {
+import selectorStyle from '../../styles/selector.module.scss';
+
+export default function TableBody() {
   const [rows] = useState([
     {
       title: 'Реферальна система',
       link: 'https://docs.google.com/spreadsheets/d/1oWDWLZo0IuOR4UvmcjGzxk-2HWubNI2qaXTWDhyfhYY/edit?usp=sharing',
       onClick: referalSheet,
       dates: false
+    },
+    {
+      title: 'Залученість (По напрямах)',
+      link: 'https://docs.google.com/spreadsheets/d/1R23wuCk86AKCP4KJOyEQTjcZd7e9DKRCyyS2El9MWsA/edit?usp=sharing',
+      onClick: allUsersStatsByCourse,
+      dates: false,
+      selectByCourse: true
+    },
+    {
+      title: 'Активність (По напрямах)',
+      link: 'https://docs.google.com/spreadsheets/d/1oLtCH6ZTyg6Q0ZNQaukxHciJRHRh-wjINAf7R6ctTAk/edit?usp=sharing',
+      onClick: usersActivityByCourse,
+      dates: true,
+      selectByCourse: true
     },
     {
       title: 'Залученість (загальна)',
@@ -31,22 +49,9 @@ export default function TableBody({headers}) {
     },
 
     {
-      title: 'Залученість (По напрямах)',
-      link: 'https://docs.google.com/spreadsheets/d/1R23wuCk86AKCP4KJOyEQTjcZd7e9DKRCyyS2El9MWsA/edit?usp=sharing',
-      onClick: allUsersStatsByCourse,
-      dates: false
-    },
-
-    {
       title: 'Активність (загальна)',
       link: 'https://docs.google.com/spreadsheets/d/1oLtCH6ZTyg6Q0ZNQaukxHciJRHRh-wjINAf7R6ctTAk/edit?usp=sharing',
       onClick: usersActivity,
-      dates: true
-    },
-    {
-      title: 'Активність (По напрямах)',
-      link: 'https://docs.google.com/spreadsheets/d/1oLtCH6ZTyg6Q0ZNQaukxHciJRHRh-wjINAf7R6ctTAk/edit?usp=sharing',
-      onClick: usersActivityByCourse,
       dates: true
     }
   ]);
@@ -66,6 +71,27 @@ export default function TableBody({headers}) {
   const [dates, setDates] = useState({start: getStartOfMonth(), end: getEndOfMonth()});
 
   const [dateInputIndex, setDateInputIndex] = useState(-1);
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [courseSelectorIndex, setCourseSelectorIndex] = useState(-1);
+  const fetchCourses = async () => {
+    try {
+      const courses = await getCourses();
+      setCourses(
+        courses.data.map(el => {
+          return {label: el.name, value: el.id};
+        })
+      );
+    } catch (e) {
+      // error('Something went wrong');
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
   return (
     <>
       <div className={classNames(tableStyles.calendar, tableStyles.scroller)}>
@@ -105,11 +131,24 @@ export default function TableBody({headers}) {
                         outerOrInnerCell(index),
                         styles.date__wrapper
                       )}>
+                      {row.selectByCourse && index !== courseSelectorIndex && (
+                        <EditButton
+                          classname={'fullHeight'}
+                          onClick={() => setCourseSelectorIndex(index)}
+                          text="Ввести Курс"></EditButton>
+                      )}{' '}
                       {row.dates && index !== dateInputIndex && (
                         <EditButton
                           classname={'fullHeight'}
                           onClick={() => setDateInputIndex(index)}
                           text="Ввести діапазон"></EditButton>
+                      )}
+                      {row?.selectByCourse && index === courseSelectorIndex && (
+                        <Select
+                          className={selectorStyle.selector}
+                          options={courses}
+                          value={courses.filter(course => course.value === selectedCourse)}
+                          onChange={e => setSelectedCourse(e.value)}></Select>
                       )}
                       {row.dates && index === dateInputIndex && (
                         <div className={styles.dates__wrapper}>
@@ -145,9 +184,11 @@ export default function TableBody({headers}) {
                         onClick={async () => {
                           if (row.dates && dateInputIndex !== index)
                             return error('Спочатку введіть діапазон');
+                          else if (row?.selectByCourse && !selectedCourse)
+                            error('Увага, без вибраного курса не всі данні будуть завантажені');
                           try {
                             success('Запит відправився, очікуйте :)');
-                            const res = await row.onClick(dates);
+                            const res = await row.onClick(dates, selectedCourse);
                             if (res) success({text: 'success', delay: 800});
                           } catch (e) {
                             error({
