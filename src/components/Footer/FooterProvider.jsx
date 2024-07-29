@@ -3,7 +3,7 @@ import React, {createContext, useRef, useContext, useEffect, useState} from 'rea
 const FooterContext = createContext();
 
 export function FooterProvider({children}) {
-  const footerRef = useRef(null);
+  const footerRef = React.createRef(); // Change to createRef
   const [isFooterReady, setIsFooterReady] = useState(false);
 
   useEffect(() => {
@@ -15,9 +15,7 @@ export function FooterProvider({children}) {
   return (
     <FooterContext.Provider value={{footerRef, isFooterReady}}>
       {children}
-      <footer ref={footerRef} className="footer">
-        {/* Содержимое футера */}
-      </footer>
+      <footer ref={footerRef} className="footer"></footer>
     </FooterContext.Provider>
   );
 }

@@ -14,18 +14,22 @@ export default function Helper() {
   const location = useLocation();
   const [bugOrIdea, setBugOrIdea] = useState(null); // 1 is bug, 2 is idea, null is empty
   const updateButtonPosition = () => {
-    const button = buttonRef.current;
-    const footer = footerRef.current;
-    if (button && footer) {
-      const footerRect = footer.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
+    try {
+      const button = buttonRef.current;
+      const footer = footerRef.current;
+      if (button && footer) {
+        const footerRect = footer.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
 
-      if (footerRect.top - 190 - viewportHeight < 1) {
-        // Футер виден на экране
-        button.style.bottom = `${Math.abs(footerRect.top - 190 - viewportHeight) + 20}px`;
-      } else {
-        button.style.bottom = '20px';
+        if (footerRect.top - 190 - viewportHeight < 1) {
+          // Футер виден на экране
+          button.style.bottom = `${Math.abs(footerRect.top - 190 - viewportHeight) + 20}px`;
+        } else {
+          button.style.bottom = '20px';
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 

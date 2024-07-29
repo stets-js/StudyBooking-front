@@ -4,7 +4,7 @@ import styles from './Footer.module.scss';
 import {useFooterRef} from './FooterProvider';
 
 export default function Footer() {
-  const footerRef = useFooterRef();
+  const {footerRef} = useFooterRef();
   return (
     <footer ref={footerRef} className={styles['footer']}>
       <div className={styles['footerContentWrapper']}>
