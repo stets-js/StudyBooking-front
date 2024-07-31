@@ -129,6 +129,8 @@ export default function UsersPage({MIC_flag = false}) {
   useEffect(() => {
     const setAllData = async () => {
       if (lesson) {
+        console.log(lesson);
+        console.log('123');
         setLessonId(lesson.id);
         setStartDate(lesson.date);
         setEndDate(lesson.date);
@@ -140,7 +142,7 @@ export default function UsersPage({MIC_flag = false}) {
       }
     };
     setAllData();
-  }, [lesson, courses, teachersIds, slotsData]);
+  }, []);
   return (
     <div>
       <h3>Lesson amount: {lessonAmount}</h3>

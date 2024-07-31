@@ -124,6 +124,12 @@ const SetAppointment = ({
     setSchedule([]);
     handleClose();
   };
+
+  useEffect(() => {
+    if (!subGroup?.label && subGroups.length > 0) {
+      setSubGroup(subGroups.find(sub => sub.value === subGroup.value));
+    }
+  }, [subGroup, subGroups]);
   return (
     <>
       {isOpen && (
@@ -254,7 +260,7 @@ const SetAppointment = ({
                     <Select
                       name="subGroupSelector"
                       className={styles.selector}
-                      value={subGroup}
+                      value={subGroups.find(sub => sub.value === subGroup.value)[0]}
                       options={subGroups}
                       key={Math.random() * 100 - 10}
                       required
