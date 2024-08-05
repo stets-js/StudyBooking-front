@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {success} from '@pnotify/core';
+import {success, error} from '@pnotify/core';
 import styles from './Helper.module.scss';
 import leftArrow from '../../img/left-arrow.svg';
 import UploadLink from './UploadLink';
@@ -29,78 +29,88 @@ export default function Form({bugOrIdea = 1, title, describeIt, description, pre
   });
 
   const submit = async () => {
-    try {
-      const res = await createBugOrIdea(data);
-      success('success');
-    } catch (error) {}
-
-    prevStep();
+    if (
+      (data.type === 'bug' && data.title) ||
+      (bugOrIdea === 'idea' && data.title && data.description)
+    ) {
+      try {
+        const res = await createBugOrIdea(data);
+        success('success');
+      } catch (error) {}
+      prevStep();
+    } else {
+      // error('Заповніть короткий опис');
+    }
   };
   return (
-    <div className={styles.form}>
-      <div className={styles.form__title__wrapper}>
-        <button
-          className={styles.form__back}
-          onClick={() => {
-            prevStep();
-          }}>
-          <img src={leftArrow} alt={'<-'} width={32} height={32}></img>
-        </button>
-        <span className={styles.form__title}> {title}</span>
-      </div>
+    <form>
+      <div className={styles.form}>
+        <div className={styles.form__title__wrapper}>
+          <button
+            className={styles.form__back}
+            onClick={() => {
+              prevStep();
+            }}>
+            <img src={leftArrow} alt={'<-'} width={32} height={32}></img>
+          </button>
+          <span className={styles.form__title}> {title}</span>
+        </div>
 
-      <div className={styles.form__input__wrapper}>
-        <label for="Name" className={styles.form__label}>
-          Ваше Ім'я
-        </label>
-        <input
-          id="Name"
-          value={data.userName}
-          onChange={e =>
-            setData(prev => {
-              return {...prev, userName: e.target.value};
-            })
-          }
-          className={styles.form__textarea}
-        />
-      </div>
-      <div className={styles.form__input__wrapper}>
-        <label for="describeIT" className={styles.form__label}>
-          {describeIt}
-        </label>
-        <textarea
-          id="describeIT"
-          onChange={e =>
-            setData(prev => {
-              return {...prev, title: e.target.value};
-            })
-          }
-          className={styles.form__textarea}
-        />
-      </div>
-      {bugOrIdea !== 1 ? (
         <div className={styles.form__input__wrapper}>
-          <label for="description" className={styles.form__label}>
-            {description}
+          <label for="Name" className={styles.form__label}>
+            Ваше Ім'я
           </label>
-          <textarea
-            id="description"
-            className={styles.form__textarea}
+          <input
+            id="Name"
+            value={data.userName}
             onChange={e =>
               setData(prev => {
-                return {...prev, description: e.target.value};
+                return {...prev, userName: e.target.value};
               })
             }
+            className={styles.form__textarea}
           />
         </div>
-      ) : (
-        <SelectPath selectedPath={selectedPath} setSelectedPath={setSelectedPath}></SelectPath>
-      )}
+        <div className={styles.form__input__wrapper}>
+          <label for="describeIT" className={styles.form__label}>
+            {describeIt}
+          </label>
+          <textarea
+            id="describeIT"
+            onChange={e =>
+              setData(prev => {
+                return {...prev, title: e.target.value};
+              })
+            }
+            required
+            className={styles.form__textarea}
+          />
+        </div>
+        {bugOrIdea !== 1 ? (
+          <div className={styles.form__input__wrapper}>
+            <label for="description" className={styles.form__label}>
+              {description}
+            </label>
+            <textarea
+              id="description"
+              className={styles.form__textarea}
+              required
+              onChange={e =>
+                setData(prev => {
+                  return {...prev, description: e.target.value};
+                })
+              }
+            />
+          </div>
+        ) : (
+          <SelectPath selectedPath={selectedPath} setSelectedPath={setSelectedPath}></SelectPath>
+        )}
 
-      <UploadLink data={data} setData={setData}></UploadLink>
-      <button className={styles.button} onClick={() => submit()}>
-        Відправити
-      </button>
-    </div>
+        <UploadLink data={data} setData={setData}></UploadLink>
+        <button className={styles.button} onClick={() => submit()}>
+          Відправити
+        </button>
+      </div>
+    </form>
   );
 }
