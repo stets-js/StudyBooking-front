@@ -11,6 +11,7 @@ export default function UserAvatar({mentor}) {
   return (
     <div className={styles.card__container__avatar}>
       <img
+        loading="lazy"
         src={
           mentor?.photoUrl ||
           'https://res.cloudinary.com/dn4cdsmqr/image/upload/v1721042678/avatars/egknva7gyyvqf2qlkbaj.jpg'
