@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
-import Switch from 'react-switch';
+// import Switch from 'react-switch';
 
 import styles from '../../styles/teacher.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
@@ -19,7 +19,7 @@ export default function SubGroupPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenCreation, setIsOpenCreation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const [isOneDay, setIsOneDay] = useState(false);
+  // const [isOneDay, setIsOneDay] = useState(false);
   const fetchCourses = async () => {
     try {
       const courses = await getCourses();
@@ -56,19 +56,19 @@ export default function SubGroupPage() {
               setOffset(0);
               setSelectedCourse(el?.value || null);
             }}
-            isDisabled={isOneDay}
+            // isDisabled={isOneDay}
             isClearable></Select>
           <div className={`${styles.filter_wrapper__available__item} ${styles.name_long}`}>
             <FormInput
               type="text"
               placeholder="Name..."
               height={'52px'}
-              disabled={isOneDay}
+              // disabled={isOneDay}
               value={searchQuery}
               handler={setSearchQuery}
             />
           </div>
-          <div className={`${styles.one_day_wrapper} ${styles.filter_wrapper__available__item}`}>
+          {/* <div className={`${styles.one_day_wrapper} ${styles.filter_wrapper__available__item}`}>
             <label>
               <span className={styles.date_selector}>One day</span>
             </label>
@@ -80,26 +80,26 @@ export default function SubGroupPage() {
               }}
               checked={isOneDay}
             />
-          </div>
+          </div> */}
         </div>
 
-        {!isOneDay ? (
-          <SubgroupTable
-            offset={offset}
-            setOffset={setOffset}
-            setSubGroups={setSubGroups}
-            setIsOpen={setIsOpen}
-            setSelectedId={setSelectedId}
-            selectedCourse={selectedCourse}
-            subGroups={subGroups}
-            searchQuery={searchQuery}
-            // filteredSubGroups={filteredSubGroups}
-          ></SubgroupTable>
-        ) : (
+        {/* {!isOneDay ? ( */}
+        <SubgroupTable
+          offset={offset}
+          setOffset={setOffset}
+          setSubGroups={setSubGroups}
+          setIsOpen={setIsOpen}
+          setSelectedId={setSelectedId}
+          selectedCourse={selectedCourse}
+          subGroups={subGroups}
+          searchQuery={searchQuery}
+          // filteredSubGroups={filteredSubGroups}
+        ></SubgroupTable>
+        {/* ) : (
           <CalendarSubgroupTable
             isOneDay={isOneDay}
             selectedCourse={selectedCourse}></CalendarSubgroupTable>
-        )}
+        )} */}
         <NewSubgroup
           isOpen={isOpenCreation}
           handleClose={() => {
