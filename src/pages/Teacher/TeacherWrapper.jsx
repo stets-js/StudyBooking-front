@@ -28,13 +28,16 @@ const TeacherWrapper = ({
         path: id ? `${path.addMySubgroup}${id}` : path.addMySubgroup
       },
       {text: 'Information', path: id ? `${path.info}${id}` : path.info},
-      {text: 'Statistics', path: id ? `${path.statistics}${id}` : path.statistics},
-      {text: 'Lessons', path: id ? `${path.MyLesson}${id}` : path.MyLesson}
+      {text: 'Statistics', path: id ? `${path.statistics}${id}` : path.statistics}
     );
   }
 
   if (id) {
-    endpoints.push({text: 'Reports', path: id ? `${path.report}${id}` : path.report});
+    //admins only
+    endpoints.push(
+      {text: 'Reports', path: id ? `${path.report}${id}` : path.report},
+      {text: 'Lessons', path: id ? `${path.MyLesson}${id}` : path.MyLesson}
+    );
   }
   return (
     <>
