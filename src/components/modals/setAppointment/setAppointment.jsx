@@ -2,6 +2,7 @@ import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import React, {useEffect, useState} from 'react';
 import styles from './setAppointment.module.scss';
+import selectorStyles from '../../../styles/selector.module.scss';
 import Select from 'react-select';
 
 import Form from '../../Form/Form';
@@ -9,6 +10,7 @@ import {getUsers} from '../../../helpers/user/user';
 import {addMinutes, format} from 'date-fns';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 import {useParams} from 'react-router-dom';
+import classNames from 'classnames';
 const SetAppointment = ({
   lessonId,
   setSubGroup,
@@ -126,7 +128,8 @@ const SetAppointment = ({
   };
 
   useEffect(() => {
-    if (!subGroup?.label && subGroups.length > 0) {
+    if (subGroups.length > 0 && !subGroup?.label && subGroup?.value) {
+      // case when replacing (there is info about group id only, so need to set label)
       setSubGroup(subGroups.find(sub => sub.value === subGroup.value));
     }
   }, [subGroup, subGroups]);
@@ -181,7 +184,7 @@ const SetAppointment = ({
             </label>
             <Select
               name="teacher"
-              className={styles.selector}
+              className={classNames(selectorStyles.selector, selectorStyles.selector__fullwidth)}
               value={teachers.filter(el => el.value === selectedTeacher)}
               options={teachers}
               required
@@ -194,7 +197,7 @@ const SetAppointment = ({
             </label>
             <Select
               name="appointer"
-              className={styles.selector}
+              className={classNames(selectorStyles.selector, selectorStyles.selector__fullwidth)}
               value={admins.filter(el => el.value === selectedAdmin)}
               options={admins}
               required
@@ -260,7 +263,9 @@ const SetAppointment = ({
                     <Select
                       name="subGroupSelector"
                       className={styles.selector}
-                      value={subGroups.find(sub => sub.value === subGroup.value)[0]}
+                      value={
+                        subGroup?.value && subGroups.find(sub => sub.value === subGroup.value)[0]
+                      }
                       options={subGroups}
                       key={Math.random() * 100 - 10}
                       required
