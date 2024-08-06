@@ -4,7 +4,7 @@
     margin-top: 10px;
     font-family: $poppins;
     word-wrap: break-word;
-    z-index: 9;
+    z-index: 12;
   &__fullwidth{
     width: 100%;
   }
@@ -33,9 +33,9 @@
   .selector [class*='menu'] {
     /* Your styles for the specific div with a class containing 'menu' */
   
-    z-index: 10 !important;
+    z-index: 20 !important;
     :has(div) {
-      z-index: 12 !important;
+      z-index: 1 !important;
       background-color: white;
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */
