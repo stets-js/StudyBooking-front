@@ -18,7 +18,8 @@
   &__wrapper {
     display: flex;
     justify-content: space-around;
-    align-items: end;
+    align-items: bottom;
+    text-align: center;
     column-gap: 40px;
     margin-bottom: 40px;
     width: 90%;
@@ -69,5 +70,21 @@
     &:hover {
       scale: (1.1);
     }
+  }
+}
+
+.notFound{
+  background-color: rgb(238, 136, 136);
+  padding: 10px;
+  width: 80%;
+  border-radius: 25px;
+  font-size: 24px;
+  &__wrapper{
+    row-gap: 20px;
+    font-family: $poppins;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
   }
 }

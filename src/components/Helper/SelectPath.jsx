@@ -8,8 +8,6 @@ import getPathDescription from '../../helpers/paths/getPathDescription';
 import {getOptions} from '../../helpers/paths/getOptions';
 
 export default function SelectPath({selectedPath, setSelectedPath}) {
-  //bug is 1 idea is 2
-
   const location = useLocation();
   const userRole = useSelector(state => state.auth.user.role);
   const options = getOptions(userRole);

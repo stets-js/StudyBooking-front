@@ -46,8 +46,22 @@ const usersActivityByCourse = (dates, selectedCourse) => {
     }&start=${format(start, 'yyyy-MM-dd')}&end=${format(end, 'yyyy-MM-dd')}`
   );
 };
+
+const getSheets = spreadsheetId => {
+  return axios.get(`/spreadsheet/${spreadsheetId}`);
+};
+
+const fetchReports = (spreadsheetId, sheet) => {
+  return axios.get(`/spreadsheet/${spreadsheetId}/reports/${sheet}`);
+};
+const addReports = (spreadsheetId, sheet, data) => {
+  return axios.post(`/spreadsheet/${spreadsheetId}/reports/${sheet}`, data);
+};
 export {
   updateTable,
+  fetchReports,
+  addReports,
+  getSheets,
   resizeTable,
   addBorders,
   referalSheet,

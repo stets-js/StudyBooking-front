@@ -1,6 +1,7 @@
 import React from 'react';
 
 import tableStyles from '../../styles/table.module.scss';
+import classNames from 'classnames';
 
 export default function TableHeader({headers}) {
   return (
@@ -9,7 +10,7 @@ export default function TableHeader({headers}) {
         return (
           <div
             key={header}
-            className={`${tableStyles.cell__header} ${tableStyles.cell__header__mySubgroup}`}>
+            className={classNames(tableStyles.cell__header, tableStyles.cell__header__mySubgroup)}>
             {header}
           </div>
         );

@@ -9,6 +9,7 @@ import tableStyles from '../../styles/table.module.scss';
 import selectorStyles from '../../styles/selector.module.scss';
 import styles from './Manager.module.scss';
 import FormInput from '../FormInput/FormInput';
+import {getSheets} from '../../helpers/spreadsheet/spreadsheet';
 
 export default function FitlerRow({reports, filterData, setFilterData, teacherPage = false}) {
   const [status] = useState([
@@ -22,7 +23,8 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
     const userIds = new Set();
 
     reports.forEach(el => {
-      if (!userIds.has(el.User.id)) {
+      if (!el) return;
+      if (el?.User?.id && !userIds.has(el?.User?.id)) {
         userIds.add(el.User.id);
         uniqueUsers.push({label: el.User.name, value: el.User.id});
       }
@@ -44,8 +46,8 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
       const filteredReports = reports.filter(report => {
         const matchMentorId = !filterData.mentorId || report.mentorId === filterData.mentorId;
         const matchStatus = !filterData.status || report.status === filterData.status;
-        const matchDate = !filterData.date || report.date === filterData.date;
-        return matchMentorId && matchStatus && matchDate;
+        const matchSheet = !filterData.sheet || report.sheet === filterData.sheet;
+        return matchMentorId && matchStatus && matchSheet;
       });
 
       return {
@@ -53,19 +55,33 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
         reports: filteredReports
       };
     });
-  }, [filterData.mentorId, filterData.status, filterData.date, reports]);
+  }, [filterData.mentorId, filterData.status, filterData.sheet, reports]);
 
   useEffect(() => {
     setFilterData(prev => {
       return {...prev, reports: reports};
     });
   }, [reports]);
-  console.log(filterData);
   const classes = () => {
     return filterData.reports.length > 0
       ? [tableStyles.cell, tableStyles.cell__outer, tableStyles.cell__mySubgroup]
       : [tableStyles.cell, tableStyles.cell__outer, tableStyles.cell__mySubgroup];
   };
+
+  const spreadsheetId = '1gbBpJfNZzkURPnOIghqPWDxkDovdRKVK_YxlotmkcIY';
+  const [sheets, setSheets] = useState([]);
+  const fetchSheets = async () => {
+    const {data} = await getSheets(spreadsheetId);
+    setSheets(
+      data.data.sheets.map((el, index) => {
+        return {label: el, value: index};
+      })
+    );
+  };
+
+  useEffect(() => {
+    fetchSheets();
+  }, []);
   return (
     <tr key={'filter_row'}>
       <td className={tableStyles.cell__mySubgroup}>
@@ -93,29 +109,18 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
         </td>
       )}
       <td className={tableStyles.cell__mySubgroup}>
-        <div className={classNames(classes())}>
-          <div className={styles.filter__date__wrapper}>
-            <div className={styles.filter__date}>
-              <FormInput
-                key={Math.random() * 100 - 1}
-                value={filterData.date ? format(filterData.date, 'yyyy-MM-dd') : 0}
-                type={'date'}
-                handler={e =>
-                  setFilterData(prev => {
-                    return {...prev, date: e};
-                  })
-                }
-              />
-            </div>
-            <button
-              className={styles.filter__date__remove}
-              onClick={() =>
+        <div className={styles.filter__date__wrapper}>
+          <div className={classNames(classes(), styles.filter__date)}>
+            <Select
+              className={selectorStyles.selector}
+              isClearable
+              options={sheets}
+              value={sheets.find(sheet => sheet.label === filterData.sheet)}
+              onChange={e => {
                 setFilterData(prev => {
-                  return {...prev, date: null};
-                })
-              }>
-              <img height="32" width="32" src={Clear} alt="X"></img>
-            </button>
+                  return {...prev, sheet: e?.label || null};
+                });
+              }}></Select>
           </div>
         </div>
       </td>
