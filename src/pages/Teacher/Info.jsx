@@ -74,7 +74,7 @@ export default function Info() {
               <img
                 src={
                   user?.photoUrl ||
-                  'https://res.cloudinary.com/hzxyensd5/image/upload/v1715070791/jgxfj4poa4f8goi2toaq.jpg'
+                  'https://res.cloudinary.com/dn4cdsmqr/image/upload/v1721042678/avatars/egknva7gyyvqf2qlkbaj.jpg'
                 }
                 alt="avatar"
                 className={styles.info__avatar__photo}></img>
