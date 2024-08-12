@@ -204,13 +204,17 @@ body {
   align-self: center;
   flex: 1;
   justify-content: center;
-  margin-left: 290px;
+  // margin-left:/ 290px;
 }
 .dates_wrapper {
   margin-top: 30px;
   margin-bottom: 30px;
-  height: 40px;
+  // height: 40px;
   display: flex;
+  margin-left: 6%;
+  width: 90%;
+  justify-content: space-between;
+  
 }
 
 .teacherInfo {

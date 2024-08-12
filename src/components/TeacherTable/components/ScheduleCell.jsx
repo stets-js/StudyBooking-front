@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {format, addMinutes} from 'date-fns';
 
 import tableStyles from '../../../styles/table.module.scss';
 import appointmentStyles from '../../../styles/appointment.module.scss';
 import {HandleCellClick} from '../scripts/handleCellClick';
+import classNames from 'classnames';
 
 export default function ScheduleCell({
   user,
+  slotsAmount,
+  slotHeight,
   MIC_flag,
   slots,
   currentTime,
@@ -32,19 +35,22 @@ export default function ScheduleCell({
           style={
             slot?.rowSpan
               ? {
-                  height: `${58 * slot?.rowSpan}px`
+                  height: `${slotHeight * slot?.rowSpan}px`
                 }
               : {}
           }
-          className={`${tableStyles.cell} ${tableStyles.black_borders} ${
-            timeIndex === 0 || timeIndex === 25 || dateIndex === 0 || dateIndex === 6
+          className={classNames(
+            tableStyles.cell,
+            slotsAmount === 48 ? tableStyles.cell__small : '',
+            tableStyles.black_borders,
+            timeIndex === 0 || timeIndex === slotsAmount - 1 || dateIndex === 0 || dateIndex === 6
               ? tableStyles.cell__outer
-              : tableStyles.cell__inner
-          } ${
+              : tableStyles.cell__inner,
             !slot?.rowSpan && ![1, 2].includes(slot?.appointmentTypeId) && !MIC_flag
               ? appointmentStyles[`hover__${selectedAppointment?.name}`]
-              : ''
-          }  ${slot ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`] : ''} `}
+              : '',
+            slot ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`] : ''
+          )}
           onClick={() => {
             HandleCellClick({
               slot,

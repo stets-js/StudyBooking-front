@@ -32,7 +32,10 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   }, [userId]);
   const initialStartDate = startOfWeek(new Date(), {weekStartsOn: 1});
   const weekSchedule = useSelector(state => state.weekScheduler.weekScheduler);
-  const startingHour = 9;
+  const [startingHour, setStartingHour] = useState(9);
+  // 26 stays for 13 hours
+  const [slotsAmount, setSlotsAmount] = useState(26);
+  const [slotHeight, setSlotHeight] = useState(58);
   initialStartDate.setHours(startingHour, 0, 0, 0);
 
   const [startDates, setStartDates] = useState(
@@ -42,6 +45,13 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   const [selectedAppointment, setSelectedAppointment] = useState({name: 'group', id: 1});
   const [openSlotDetails, setOpenSlotDetails] = useState(false);
   const [selectedSlotDetails, setSelectedSlotDetails] = useState(null);
+
+  useEffect(() => {
+    initialStartDate.setHours(startingHour, 0, 0, 0);
+    setStartDates(Array.from({length: 7}, (_, i) => addDays(initialStartDate, i)));
+    console.log('changing');
+  }, [startingHour]);
+
   useEffect(() => {
     const fetchSlots = async () => {
       dispatch(cleanOccupiedSlots());
@@ -94,11 +104,15 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
         setSelectedAppointment={setSelectedAppointment}></AppointmentList>
 
       <WeekChanger
+        handleCalendarChange={fullDay => {
+          setStartingHour(fullDay ? 0 : 9);
+          setSlotsAmount(fullDay ? 48 : 26);
+          setSlotHeight(fullDay ? 40 : 58);
+        }}
         startDates={startDates}
         setStartDates={setStartDates}
-        userName={user.name}></WeekChanger>
-      {/* <div className={tableStyles.scroller}> */}
-      {/* <div className={tableStyles.calendar}> */}
+        userName={user.name}
+      />
       <div>
         <table className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}>
           <thead>
@@ -117,10 +131,13 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
         <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
           <table className={tableStyles.tableBody}>
             <tbody>
-              {Array.from({length: 26}, (_, timeIndex) => {
+              {Array.from({length: slotsAmount}, (_, timeIndex) => {
                 // 24 - for making 20:30 last cell
                 // 26 - for making 21:30
-                const currentTime = addMinutes(new Date(1970, 0, 1, 9, 0), timeIndex * 30);
+                const currentTime = addMinutes(
+                  new Date(1970, 0, 1, startingHour, 0),
+                  timeIndex * 30
+                );
                 if (currentTime.getHours() >= startingHour)
                   return (
                     <tr key={Math.random() * 100 - 1}>
@@ -130,6 +147,8 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
                         );
                         return (
                           <ScheduleCell
+                            slotsAmount={slotsAmount}
+                            slotHeight={slotHeight}
                             MIC_flag={MIC_flag}
                             timeIndex={timeIndex}
                             key={`${dateIndex}_${currentTime}`}
