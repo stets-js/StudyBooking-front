@@ -38,7 +38,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
   const onSave = async id => {
     await updateReport(id, editData);
     setIsEdit(-1);
-    updateData();
+    updateData(offsetData);
   };
 
   useEffect(() => {
@@ -46,22 +46,19 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
       return {...prev, reports: reports};
     });
   }, [reports]);
-
-  console.log(reports, typeof reports);
-  console.log(filterData);
+  console.log(offsetData, offsetData.offset + offsetData.limit <= offsetData.total);
   return (
     <>
       <div className={styles.filter__wrapper}></div>
-      <div className={classNames(tableStyles.calendar, tableStyles.scroller)}>
+      <div className={classNames(tableStyles.calendar, tableStyles.scroller)} id="scroller">
         <table className={tableStyles.tableBody}>
           <tbody>
             <InfiniteScroll
-              height={'600px'}
+              // height={'600px'}
               width={'100%'}
-              dataLength={10} //This is important field to render the next data
+              dataLength={reports.length} //This is important field to render the next data
               next={updateData}
-              hasMore={offsetData.offset + offsetData.limit <= offsetData.total}
-              loader={<h4>Loading...</h4>}
+              hasMore={1}
               scrollableTarget="scroller">
               {reports.length > 0 && (
                 <FitlerRow

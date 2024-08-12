@@ -14,12 +14,16 @@ export default function ManagerHome() {
     offset: 0
   });
   const fetchAllReports = async () => {
-    const data = await getReports();
-    setReports(data.data);
+    const data = await getReports(`?limit=${offsetData.limit}&offset=${offsetData.offset}`);
+    setReports(prev => [...prev, ...data.data]);
+    setOffsetData(prevOffsetData => {
+      return {...prevOffsetData, total: data.totalCount, offset: data.newOffset};
+    });
   };
   useEffect(() => {
     fetchAllReports();
   }, []);
+  console.log(reports);
   return (
     <div>
       <ImportReports setReports={setReports}></ImportReports>

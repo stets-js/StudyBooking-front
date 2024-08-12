@@ -10,6 +10,7 @@ import selectorStyles from '../../styles/selector.module.scss';
 import styles from './Manager.module.scss';
 import FormInput from '../FormInput/FormInput';
 import {getSheets} from '../../helpers/spreadsheet/spreadsheet';
+import {getUsers} from '../../helpers/user/user';
 
 export default function FitlerRow({reports, filterData, setFilterData, teacherPage = false}) {
   const [status] = useState([
@@ -17,29 +18,21 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
     {label: 'Погоджено', value: 'Approved'},
     {label: 'Апеляція', value: 'Declined'}
   ]);
-
-  const getUniqueUsers = reports => {
-    const uniqueUsers = [];
-    const userIds = new Set();
-
-    reports.forEach(el => {
-      if (!el) return;
-      if (el?.User?.id && !userIds.has(el?.User?.id)) {
-        userIds.add(el.User.id);
-        uniqueUsers.push({label: el.User.name, value: el.User.id});
-      }
-    });
-
-    return uniqueUsers;
-  };
   const [mentors, setMentors] = useState([]);
+  const fetchUsers = async () => {
+    const users = await getUsers(`role=teacher`);
+    setMentors(
+      users.data.map(el => {
+        return {label: el.name, value: el.id};
+      })
+    );
+  };
 
   useEffect(() => {
     if (!filterData.mentorId) {
-      const uniqueMentors = getUniqueUsers(reports);
-      setMentors(uniqueMentors);
+      fetchUsers();
     }
-  }, [reports, filterData]);
+  }, []);
 
   useEffect(() => {
     setFilterData(prev => {
