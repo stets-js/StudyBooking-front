@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {error} from '@pnotify/core';
+import {error, success} from '@pnotify/core';
 
 import styles from './Login.module.scss';
 import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import {loginUser} from '../../../helpers/manager/manager';
 import {loginMIC} from '../../../helpers/user/user';
+import {forgotPassword} from '../../../helpers/auth/auth';
 
 const root = document.querySelector('#root');
 
@@ -14,6 +15,7 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [forgotPasswordFlag, setForgotPasswordFlag] = useState(false);
   // const [remember, setRemember] = useState("");
 
   const handleSubmit = async event => {
@@ -69,27 +71,51 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
               handler={setEmail}
             />
 
-            <FormInput
-              title="Password:"
-              type="password"
-              name="password"
-              value={password}
-              min={5}
-              placeholder="Password"
-              isRequired={true}
-              handler={setPassword}
-            />
-
-            <button
-              type="submit"
-              onClick={e => {
-                handleSubmit(e);
-                document.body.style.overflow = 'auto';
-                root.style.overflow = 'auto';
-              }}
-              className={styles.login}>
-              Log in
-            </button>
+            {!forgotPasswordFlag && (
+              <FormInput
+                title="Password:"
+                type="password"
+                name="password"
+                value={password}
+                min={5}
+                placeholder="Password"
+                isRequired={true}
+                handler={setPassword}
+              />
+            )}
+            <p>
+              <button
+                className={styles.forgot}
+                onClick={e => {
+                  e.preventDefault();
+                  setForgotPasswordFlag(!forgotPasswordFlag);
+                }}>
+                {!forgotPasswordFlag ? 'Забули пароль?' : 'Повернутися'}
+              </button>
+            </p>
+            {!forgotPasswordFlag ? (
+              <button
+                type="submit"
+                onClick={e => {
+                  handleSubmit(e);
+                  document.body.style.overflow = 'auto';
+                  root.style.overflow = 'auto';
+                }}
+                className={styles.login}>
+                Log in
+              </button>
+            ) : (
+              <button
+                onClick={e => {
+                  e.preventDefault();
+                  forgotPassword(email);
+                  success({text: 'Лист був відправлений на пошту!'});
+                  setForgotPasswordFlag(!forgotPasswordFlag);
+                }}
+                className={styles.login}>
+                Reset password
+              </button>
+            )}
           </form>
         </Modal>
       )}

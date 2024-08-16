@@ -85,3 +85,13 @@
   width: 100%;
 }
 
+.forgot{
+  background-color: transparent;
+  font-family: $poppins;
+  font-size: 16px;
+  text-decoration: underline;
+  transition: 0.3s;
+  &:hover{
+    font-size: 18px;
+  }
+}
