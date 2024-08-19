@@ -86,16 +86,30 @@ const SetAppointment = ({
         }
         for (let i = 0; i <= 6; i++) {
           let day = '';
+          console.log(selectedSlots);
           if (selectedSlots[i].length > 0) {
-            for (let j = 0; j < selectedSlots[i].length; j += appointmentLength) {
-              // loop for case of several appointments on one day
-              day += `${weekNames[i]}: `;
-              const startTime = selectedSlots[i][j].time;
-              const [hours, minutes] = selectedSlots[i][j + appointmentLength - 1].time.split(':');
-              const endTime = addMinutes(new Date(1970, 0, 1, hours, minutes), 30);
-              day += startTime + ' - ' + format(endTime, 'HH:mm');
-              if (selectedSlots[i].length > j + appointmentLength + 1) day += '\n'; // addes new lines except last time range of the day
-            }
+            selectedSlots[i].forEach(slot => {
+              if (slot.schedule) {
+                const slotSchedule = slot.schedule;
+                console.log(slotSchedule);
+                day += `${
+                  slotSchedule.weekDayOrigin === slotSchedule.weekDayEnd
+                    ? weekNames[slotSchedule.weekDayOrigin]
+                    : `${weekNames[slotSchedule.weekDayOrigin]}-${
+                        weekNames[slotSchedule.weekDayEnd]
+                      }`
+                }: ${slotSchedule.start} - ${slotSchedule.end}`;
+              }
+            });
+            // for (let j = 0; j < selectedSlots[i].length; j += appointmentLength) {
+            //   // loop for case of several appointments on one day
+            //   day += `${weekNames[i]}: `;
+            //   const startTime = selectedSlots[i][j].time;
+            //   const [hours, minutes] = selectedSlots[i][j + appointmentLength - 1].time.split(':');
+            //   const endTime = addMinutes(new Date(1970, 0, 1, hours, minutes), 30);
+            //   day += startTime + ' - ' + format(endTime, 'HH:mm');
+            //   if (selectedSlots[i].length > j + appointmentLength + 1) day += '\n'; // addes new lines except last time range of the day
+            // }
             schedule.push(day);
           }
         }

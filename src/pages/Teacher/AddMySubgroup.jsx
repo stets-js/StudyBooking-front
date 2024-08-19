@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import {useSelector} from 'react-redux';
+
+import Switch from 'react-switch';
 // import {error} from '@pnotify/core';
 import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
 import {getCourses, getTeacherCourses} from '../../helpers/course/course';
@@ -14,6 +16,7 @@ import NewMySubgroup from '../../components/modals/NewMySubgroup/NewMySubgroup';
 import {useParams} from 'react-router-dom';
 import EditButton from '../../components/Buttons/Edit';
 import DeleteButton from '../../components/Buttons/Delete';
+import classNames from 'classnames';
 
 export default function AddMySubgroup() {
   const {teacherId} = useParams() || null;
@@ -28,6 +31,8 @@ export default function AddMySubgroup() {
   const [selectedClassType, setSelectedClassType] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [teacherType, setTeacherType] = useState(2);
+  const [calendarType, setCalendarType] = useState(false); // false - 9-22, true 00 -24
+  const [calendarData, setCalendarData] = useState({startingDate: 9, amount: 26, length: 58});
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
@@ -78,17 +83,32 @@ export default function AddMySubgroup() {
   }, [selectedCourse]);
   const [slots, setSlots] = useState([]);
 
-  const handleCellClick = ({time, weekDay, isSelected}) => {
+  const handleCellClick = ({time, weekDay, isSelected, changeCalendarType}) => {
     if (selectedClassType === null || !selectedCourse || !subGroup) return;
     const selectedSlotsTMP = [];
-
+    let isMovingDay = -1;
     for (let i = 0; i < (selectedClassType.value === 7 ? 3 : 2); i++) {
       const slotTime = format(addMinutes(time, 30 * i), 'HH:mm');
       if (slots.some(el => el.weekDay === weekDay && el.time[0] === slotTime)) {
         return;
       }
+      const [hours, minutes] = slotTime.split(':');
+      let weekDayCopy = weekDay;
+      let rowSpan = selectedClassType.value === 7 ? 3 : 2;
+      if (i !== 0) {
+        if (hours === '00' && minutes === '00') {
+          rowSpan -= i;
+          isMovingDay = i;
+        } else rowSpan = 0;
+      }
+      if (hours === '21' && minutes === '30' && i !== (selectedClassType.value === 7 ? 3 : 2) - 1) {
+        changeCalendarType();
+      }
+      if (hours === '00' && minutes === '00' && i !== 0) weekDayCopy = (weekDayCopy + 1) % 7;
+
       selectedSlotsTMP.push({
-        weekDay,
+        weekDay: weekDayCopy,
+        skip: weekDayCopy !== weekDay,
         time: [
           slotTime,
           format(addMinutes(time, 30 * (selectedClassType.value === 7 ? 3 : 2)), 'HH:mm')
@@ -99,9 +119,10 @@ export default function AddMySubgroup() {
         mentorId: +userId,
         subgroupId: subGroup.value,
         appointmentTypeId: selectedClassType.value,
-        rowSpan: i === 0 ? (selectedClassType.value === 7 ? 3 : 2) : 0
+        rowSpan: rowSpan
       });
     }
+    if (isMovingDay !== -1) selectedSlotsTMP[0].rowSpan = isMovingDay;
     if (!isSelected) setSlots(prev => [...prev, ...selectedSlotsTMP]);
   };
   return (
@@ -202,6 +223,26 @@ export default function AddMySubgroup() {
                 </div>
               </div>
               <br />
+              {/* <div>
+                <label>
+                  <span>9-22</span>
+                  <Switch
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={switched => {
+                      setCalendarType(!calendarType);
+                      setCalendarData(
+                        !switched
+                          ? {startingDate: 9, amount: 26, length: 58}
+                          : {startingDate: 0, amount: 48, length: 40}
+                      );
+                    }}
+                    checked={calendarType}
+                  />
+                  <span>00-24</span>
+                </label>
+              </div> */}
+              <br />
               {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
                 <>
                   <div className={tableStyles.button__wrapper}>
@@ -235,81 +276,91 @@ export default function AddMySubgroup() {
                     <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
                       <table className={tableStyles.tableBody} key="calendar">
                         <tbody>
-                          {Array.from({length: 26}, (_, timeIndex) => {
-                            // 24 - for making 20:30 last cell
+                          {Array.from({length: calendarData.amount}, (_, timeIndex) => {
                             const currentTime = addMinutes(
-                              new Date(1970, 0, 1, 9, 0),
+                              new Date(1970, 0, 1, calendarData.startingDate, 0),
                               timeIndex * 30
                             );
-                            if (currentTime.getHours() >= 9)
-                              return (
-                                <tr key={Math.random() * 1000 - 1}>
-                                  {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
-                                    (date, dateIndex) => {
-                                      const curr_slot = slots.find(
-                                        slot =>
-                                          slot.time[0] === format(currentTime, 'HH:mm') &&
-                                          slot.weekDay === dateIndex
-                                      );
-                                      if (curr_slot && curr_slot.rowSpan === 0) return <></>;
-                                      return (
-                                        <td
-                                          rowSpan={curr_slot ? curr_slot.rowSpan : 1}
-                                          key={`${dateIndex}${currentTime}`}>
-                                          {
-                                            <button
-                                              type="button"
-                                              style={
-                                                curr_slot?.rowSpan
-                                                  ? {
-                                                      height: `${58 * curr_slot?.rowSpan}px`
-                                                    }
-                                                  : {}
-                                              }
-                                              className={`${tableStyles.cell} ${
-                                                tableStyles.black_borders
-                                              } ${
-                                                timeIndex === 0 ||
-                                                timeIndex === 25 ||
+                            return (
+                              <tr key={Math.random() * 1000 - 1}>
+                                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
+                                  (date, dateIndex) => {
+                                    const curr_slot = slots.find(
+                                      slot =>
+                                        slot.time[0] === format(currentTime, 'HH:mm') &&
+                                        slot.weekDay === dateIndex
+                                    );
+                                    if (curr_slot && curr_slot.rowSpan === 0) return <></>;
+                                    return (
+                                      <td
+                                        rowSpan={curr_slot ? curr_slot.rowSpan : 1}
+                                        key={`${dateIndex}${currentTime}`}>
+                                        {
+                                          <button
+                                            type="button"
+                                            style={
+                                              curr_slot?.rowSpan
+                                                ? {
+                                                    height: `${
+                                                      calendarData.length * curr_slot?.rowSpan
+                                                    }px`
+                                                  }
+                                                : {}
+                                            }
+                                            className={classNames(
+                                              tableStyles.cell,
+                                              tableStyles.black_borders,
+                                              timeIndex === 0 ||
+                                                timeIndex === calendarData.amount - 1 ||
                                                 dateIndex === 0 ||
                                                 dateIndex === 6
-                                                  ? tableStyles.cell__outer
-                                                  : tableStyles.cell__inner
-                                              } ${
-                                                // key can be generated only for appointed
-                                                !curr_slot?.rowSpan && selectedCourse && subGroup
-                                                  ? appointmentStyles[`hover__group`]
-                                                  : ''
-                                              } ${curr_slot ? styles.selectedCell : ''}`}
-                                              onClick={() => {
-                                                handleCellClick({
-                                                  time: currentTime,
-                                                  weekDay: dateIndex,
-                                                  isSelected: curr_slot
-                                                });
-                                              }}>
-                                              <div className={tableStyles.cell__content__wrapper}>
-                                                {curr_slot ? (
-                                                  <>
-                                                    <div>
-                                                      {curr_slot.time[0]}
-                                                      <br />-<br />
-                                                      {curr_slot.timeEnd}
-                                                    </div>
-                                                  </>
-                                                ) : (
-                                                  format(currentTime, 'HH:mm')
-                                                )}
-                                              </div>
-                                            </button>
-                                          }
-                                        </td>
-                                      );
-                                    }
-                                  )}
-                                </tr>
-                              );
-                            return <></>;
+                                                ? tableStyles.cell__outer
+                                                : tableStyles.cell__inner,
+                                              // key can be generated only for appointed
+                                              !curr_slot?.rowSpan && selectedCourse && subGroup
+                                                ? appointmentStyles[`hover__group`]
+                                                : '',
+                                              curr_slot ? styles.selectedCell : '',
+                                              calendarData.startingDate === 0
+                                                ? tableStyles.cell__small
+                                                : ''
+                                            )}
+                                            onClick={() => {
+                                              handleCellClick({
+                                                time: currentTime,
+                                                weekDay: dateIndex,
+                                                isSelected: curr_slot,
+                                                changeCalendarType: () => {
+                                                  setCalendarType(true);
+                                                  setCalendarData({
+                                                    startingDate: 0,
+                                                    amount: 48,
+                                                    length: 40
+                                                  });
+                                                }
+                                              });
+                                            }}>
+                                            <div className={tableStyles.cell__content__wrapper}>
+                                              {curr_slot ? (
+                                                <>
+                                                  <div>
+                                                    {curr_slot.time[0]}
+                                                    <br />-<br />
+                                                    {curr_slot.timeEnd}
+                                                  </div>
+                                                </>
+                                              ) : (
+                                                format(currentTime, 'HH:mm')
+                                              )}
+                                            </div>
+                                          </button>
+                                        }
+                                      </td>
+                                    );
+                                  }
+                                )}
+                              </tr>
+                            );
                           })}
                         </tbody>
                       </table>

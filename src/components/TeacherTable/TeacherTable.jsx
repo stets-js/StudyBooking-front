@@ -65,7 +65,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
         startDate: format(startDates[0], 'yyyy-MM-dd'),
         endDate: format(startDates[6], 'yyyy-MM-dd')
       });
-      dispatch(setWeekScheduler(filterAndUpdateSlots(slots, lessons.data)));
+      dispatch(setWeekScheduler(filterAndUpdateSlots(slots, lessons.data, slotsAmount)));
     };
     try {
       fetchSlots();

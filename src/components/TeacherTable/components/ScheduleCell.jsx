@@ -27,6 +27,7 @@ export default function ScheduleCell({
   if ((slot?.subgroupId || slot?.ReplacementId) && !slot.rowSpan) {
     return <></>;
   }
+
   return (
     <td key={slot?.weekDay} rowSpan={slot?.rowSpan || 1}>
       {
@@ -71,17 +72,29 @@ export default function ScheduleCell({
             {slot?.rowSpan ? (
               <>
                 <div>
-                  {format(currentTime, 'HH:mm')}
-                  <br />-<br />
-                  {format(addMinutes(currentTime, 30 * slot?.rowSpan), 'HH:mm')}
+                  {slot?.LessonSchedule
+                    ? slot.LessonSchedule.startTime
+                    : format(currentTime, 'HH:mm')}
+                  <br /> - <br />
+                  {slot?.LessonSchedule
+                    ? slot.LessonSchedule.endTime
+                    : format(
+                        addMinutes(
+                          currentTime,
+                          30 * (slot?.appointmentTypeId === 1 ? 3 : 2) || slot?.rowSpan
+                        ),
+                        'HH:mm'
+                      )}
                 </div>
                 <div className={tableStyles.tags__wrapper}>
-                  <span className={tableStyles.tags__item}>
-                    {!slot.ReplacementId
-                      ? slot?.SubGroup?.Course?.shortening
-                      : slot?.Replacement?.SubGroup?.Course?.shortening}
-                  </span>
-                  {!slot.Replacement && (
+                  {slot.rowSpan >= 2 && (
+                    <span className={tableStyles.tags__item}>
+                      {!slot.ReplacementId
+                        ? slot?.SubGroup?.Course?.shortening
+                        : slot?.Replacement?.SubGroup?.Course?.shortening}
+                    </span>
+                  )}
+                  {!slot.Replacement && slot.rowSpan >= 2 && (
                     <span className={tableStyles.tags__item}>
                       {slot?.SubGroup?.SubgroupMentors &&
                       (slot?.SubGroup?.SubgroupMentors || [])[0]?.TeacherTypeId === 1

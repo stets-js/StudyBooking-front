@@ -138,6 +138,7 @@ const Form = ({
           }); // in this case inside subgroupId is string with name
           jsonData = {...jsonData, subgroupId: +subgroup.data.id};
         }
+        // return console.log(jsonData.slots);
         return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
           ? createReplacement(jsonData, userId)
           : updateSubGroupAndAddMentor({id: jsonData.subgroupId, body: jsonData, userId})
@@ -149,18 +150,23 @@ const Form = ({
             for (let i = 0; i <= 6; i++) {
               // week itterating
               if (jsonData.slots[i].length > 0) {
-                const body = {
-                  weekDay: i,
-                  time: jsonData.slots[i].map(el => el.time),
-                  appointmentTypeId: appointmentType.data[0]['id'],
-                  userId: jsonData.mentorId,
-                  startDate: jsonData.startDate,
-                  endDate: jsonData.endDate
-                };
-                body[JSON.parse(jsonData.isReplacement) ? 'ReplacementId' : 'subgroupId'] =
-                  newDocId;
-                // console.log(body);
-                await bulkUpdate(body);
+                console.log(jsonData.slots[i]);
+                jsonData.slots[i].forEach(async slot => {
+                  if (slot.schedule && slot.schedule.weekDayOrigin === i) {
+                    const body = {
+                      weekDay: i,
+                      time: [slot.schedule.start, slot.schedule.end],
+                      appointmentTypeId: appointmentType.data[0]['id'],
+                      userId: jsonData.mentorId,
+                      startDate: jsonData.startDate,
+                      endDate: jsonData.endDate
+                    };
+                    body[JSON.parse(jsonData.isReplacement) ? 'ReplacementId' : 'subgroupId'] =
+                      newDocId;
+                    await bulkUpdate(body);
+                  }
+                  // console.log(body);
+                });
               }
             }
             return !errorsuccessMessage && onSubmit && onSubmitModified();

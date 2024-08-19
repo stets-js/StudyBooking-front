@@ -12,7 +12,7 @@ const NewMySubgroup = ({isOpen, handleClose, slots, setSlots, info}) => {
   const calculateSchedule = () => {
     let tmpSchedule = '';
     slots.forEach(slot => {
-      if (slot.rowSpan) {
+      if (slot.rowSpan && !slot.skip) {
         tmpSchedule += `${weekDays[slot.weekDay]}: ${slot.time[0]} - ${slot.timeEnd}\n`;
       }
     });
@@ -42,8 +42,10 @@ const NewMySubgroup = ({isOpen, handleClose, slots, setSlots, info}) => {
                 });
                 if (res) {
                   await slots
-                    .filter(slot => slot.rowSpan !== 0)
-                    .forEach(slot => bulkLessonCreate(slot));
+                    .filter(slot => slot.rowSpan !== 0 && !slot.skip)
+                    .forEach(slot => {
+                      bulkLessonCreate(slot);
+                    });
                   await updateSubGroup({
                     id: info.subGroup.value,
                     body: {startDate: info.startDate, endDate: info.endDate}

@@ -46,8 +46,7 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
       setEmail('');
       setPassword('');
     } catch (err) {
-      console.log(err);
-      error(err.message);
+      error({delay: 1000, text: err.response.data.message ?? 'Something went wrong'});
     }
   };
   return (

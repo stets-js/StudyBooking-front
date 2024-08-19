@@ -17,21 +17,20 @@ export default function WeekChanger({startDates, setStartDates, userName, handle
   return (
     <div>
       <div className={classNames(styles.dates_wrapper, styles.date_selector)}>
-        {/* {
-          <label>
-            <span>9-22</span>
-            <Switch
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onChange={() => {
-                setCalendarType(!calendarType);
-                handleCalendarChange(!calendarType);
-              }}
-              checked={calendarType}
-            />
-            <span>00-24</span>
-          </label>
-        } */}
+        {/* <label>
+          <span>9-22</span>
+          <Switch
+            uncheckedIcon={false}
+            checkedIcon={false}
+            onChange={() => {
+              setCalendarType(!calendarType);
+              handleCalendarChange(!calendarType);
+            }}
+            checked={calendarType}
+          />
+          <span>00-24</span>
+        </label> */}
+
         <div className={styles.flex}>
           <button onClick={handlePrevWeek} className={styles.week_selector}>
             {`<`}

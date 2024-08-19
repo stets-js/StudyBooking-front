@@ -130,7 +130,6 @@ export default function UsersPage({MIC_flag = false}) {
     const setAllData = async () => {
       if (lesson) {
         console.log(lesson);
-        console.log('123');
         setLessonId(lesson.id);
         setStartDate(lesson.date);
         setEndDate(lesson.date);
@@ -166,20 +165,17 @@ export default function UsersPage({MIC_flag = false}) {
         clearTable={clearTable}></AppointmentButtons>
       <AppointmentHeaderTable startDates={startDates}></AppointmentHeaderTable>
 
-      <div className={styles.scroller}>
-        <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
-          <AppointmentBodyTable
-            setLessonAmount={setLessonAmount}
-            selectedClassType={selectedClassType}
-            selectedSlotsAmount={selectedSlotsAmount}
-            slotsData={slotsData}
-            setSelectedSlotsAmount={setSelectedSlotsAmount}
-            setTeachersIds={setTeachersIds}
-            excludeId={excludeId}
-            startDate={startDate}
-            endDate={endDate}></AppointmentBodyTable>
-        </div>
-      </div>
+      <AppointmentBodyTable
+        setLessonAmount={setLessonAmount}
+        selectedClassType={selectedClassType}
+        selectedSlotsAmount={selectedSlotsAmount}
+        slotsData={slotsData}
+        setSelectedSlotsAmount={setSelectedSlotsAmount}
+        setTeachersIds={setTeachersIds}
+        excludeId={excludeId}
+        startDate={startDate}
+        endDate={endDate}></AppointmentBodyTable>
+
       <SetAppointment
         lessonId={lessonId}
         setSubGroup={setSubGroup}

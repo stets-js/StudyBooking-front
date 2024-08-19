@@ -18,17 +18,22 @@ export const HandleCellClick = async ({
   lesson = false
 }) => {
   let teachersIdsNew = [];
+  const [hours, minutes] = timeStr.split(':');
+  const oneDaySlot = hours === '00';
+  // oneDaySlot is bool for case when placing lesson on first hour of the day
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
     // validating slots
-    const [hours, minutes] = timeStr.split(':');
     const currentTime = addMinutes(new Date(1970, 0, 1, hours, minutes), slotIndex * 30);
+    const formattedCurrTime = format(currentTime, 'HH:mm');
     const isAlreadySelected = selectedSlots.selectedSlots[weekDay]?.find(
-      el => el?.time === format(currentTime, 'HH:mm')
+      el => el?.time === formattedCurrTime
     );
     if (isAlreadySelected) {
       return lesson ? 1 : null;
     }
-    const slots = slotsData[weekDay]?.[format(currentTime, 'HH:mm')];
+    let weekIndex = weekDay;
+    if (formattedCurrTime.split(':')[0] === '00' && !oneDaySlot) weekIndex += 1 % 7;
+    const slots = slotsData[weekIndex]?.[formattedCurrTime];
     if (!slots || !slots.length) return error({delay: 1000, text: 'Not enough slots'});
     teachersIdsNew.push(slots.map(el => el.userId));
   }
@@ -44,21 +49,41 @@ export const HandleCellClick = async ({
     });
     return;
   }
-
+  let weekDayCopy = weekDay;
+  const newSlots = [];
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
     const [hours, minutes] = timeStr.split(':');
-    const currentTime = addMinutes(new Date(1970, 0, 1, hours, minutes), slotIndex * 30);
-    dispatch({
+    let currentTime = addMinutes(new Date(1970, 0, 1, hours, minutes), slotIndex * 30);
+    currentTime = format(currentTime, 'HH:mm');
+
+    let [newHours, newMinutes] = currentTime.split(':');
+    console.log(newSlots);
+    console.log(newHours, newMinutes, 'New new new!!');
+    if (newHours === '00' && !oneDaySlot) {
+      newHours = Number(newHours) % 24;
+      if (newSlots[slotIndex - 1]) {
+        newSlots[slotIndex - 1].payload.slot.rowSpan = slotIndex;
+        if (weekDay === weekDayCopy) weekDayCopy = (weekDayCopy + 1) % 7;
+      }
+    }
+    newSlots.push({
       type: 'ADD_SELECTED_SLOTS',
       payload: {
-        weekDay,
+        weekDay: weekDayCopy,
         slot: {
-          time: format(currentTime, 'HH:mm'),
-          rowSpan: slotIndex === 0 ? numSlotsToCheck : 0
+          time: `${typeof newHours === typeof 1 ? `0${newHours}` : newHours}:${newMinutes}`,
+          rowSpan: slotIndex === 0 || (newHours === 0 && newMinutes === '00') ? numSlotsToCheck : 0
         }
       }
     });
   }
+  newSlots[0].payload.slot.schedule = {
+    weekDayOrigin: weekDay,
+    weekDayEnd: weekDayCopy,
+    start: timeStr,
+    end: newSlots[newSlots.length - 1].payload.slot.time
+  };
+  newSlots.map(slot => dispatch(slot));
 
   setSelectedSlotsAmount(selectedSlotsAmount + 1);
   setTeachersIds(excludeId(teachersIdsNew));
