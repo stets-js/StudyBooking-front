@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import {useSelector} from 'react-redux';
-
+import {error} from '@pnotify/core';
 import Switch from 'react-switch';
 // import {error} from '@pnotify/core';
 import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
@@ -125,6 +125,16 @@ export default function AddMySubgroup() {
     if (isMovingDay !== -1) selectedSlotsTMP[0].rowSpan = isMovingDay;
     if (!isSelected) setSlots(prev => [...prev, ...selectedSlotsTMP]);
   };
+
+  useEffect(() => {
+    const checkDate = async () => {
+      if (endDate && startDate && +endDate[0] === +startDate[0])
+        return error({text: 'End date and start date can`t be in one year', delay: 1000});
+    };
+    try {
+      checkDate();
+    } catch (e) {}
+  }, [startDate, endDate]);
   return (
     <div className={styles.add_my_subgroup__wrapper}>
       <div className={styles.add_my_subgroup__intro}>
