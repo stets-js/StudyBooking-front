@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {format, getDay, addMinutes} from 'date-fns';
 import Select from 'react-select';
 import {Link} from 'react-router-dom';
-
+import classNames from 'classnames';
 import selectorStyles from '../../styles/selector.module.scss';
 import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
@@ -22,6 +22,11 @@ export default function AvaliableTable() {
     label: 'Group',
     value: 'group'
   });
+  const [teacherTypes] = useState([
+    {label: 'Soft', value: 1},
+    {label: 'Tech', value: 2}
+  ]);
+  const [selectedTeacherType, setSelectedTeacherType] = useState({label: 'Tech', value: 2});
   const generateTimeSlots = () => {
     const startTime = new Date().setHours(9, 0, 0, 0);
     const endTime = new Date().setHours(20, 30, 0, 0);
@@ -59,7 +64,7 @@ export default function AvaliableTable() {
       await getFreeUsers(
         selectedCourse,
         getDay(currentDate) - 1 < 0 ? 6 : getDay(currentDate) - 1,
-        `appointmentType=${selectedAppointment.value}`
+        `appointmentType=${selectedAppointment.value}&teacherType=${selectedTeacherType.value}`
       )
     ).availableSlots;
     setScheduleTable(prevSchedule => {
@@ -74,11 +79,11 @@ export default function AvaliableTable() {
     });
   };
   useEffect(() => {
-    if (selectedCourse) {
+    if (selectedCourse && selectedTeacherType) {
       fetchUsers();
       // setValueGenerated(true);
     }
-  }, [selectedCourse, selectedAppointment, currentDate]);
+  }, [selectedCourse, selectedAppointment, currentDate, selectedTeacherType]);
 
   return (
     <div>
@@ -88,9 +93,29 @@ export default function AvaliableTable() {
             options={courses}
             placeholder="Select course"
             required
-            className={`${selectorStyles.selector} ${selectorStyles.selector__fullwidth} ${selectorStyles.selector__filtering} ${styles.available_nav__item}`}
+            className={classNames(
+              selectorStyles.selector,
+              selectorStyles.selector__fullwidth,
+              selectorStyles.selector__filtering,
+              styles.available_nav__item
+            )}
             onChange={choice => {
               setSelectedCourse(choice.value);
+            }}
+          />
+          <Select
+            options={teacherTypes}
+            placeholder="Select teacher type"
+            required
+            value={selectedTeacherType}
+            className={classNames(
+              selectorStyles.selector,
+              selectorStyles.selector__fullwidth,
+              selectorStyles.selector__filtering,
+              styles.available_nav__item
+            )}
+            onChange={choice => {
+              setSelectedTeacherType(choice);
             }}
           />
           <Select
@@ -98,7 +123,12 @@ export default function AvaliableTable() {
             placeholder="Appointment type"
             required
             defaultValue={selectedAppointment}
-            className={`${selectorStyles.selector} ${selectorStyles.selector__fullwidth} ${selectorStyles.selector__filtering} ${styles.available_nav__item}`}
+            className={classNames(
+              selectorStyles.selector,
+              selectorStyles.selector__fullwidth,
+              selectorStyles.selector__filtering,
+              styles.available_nav__item
+            )}
             onChange={choice => {
               SetSelectedAppointment(choice);
             }}
