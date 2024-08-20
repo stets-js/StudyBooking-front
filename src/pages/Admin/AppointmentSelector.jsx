@@ -109,8 +109,9 @@ export default function UsersPage({MIC_flag = false}) {
       if (endDate && +endDate[0] !== 0)
         error({text: 'End date can`t be less than start', delay: 1000});
       return;
-    } else if (endDate && startDate && +endDate[0] === +startDate[0])
-      return error({text: 'End date and start date can`t be in one year', delay: 1000});
+    }
+    // else if (endDate && startDate && +endDate[0] === +startDate[0])
+    //   return error({text: 'End date and start date can`t be in one year', delay: 1000});
 
     if (selectedCourse && teachersIds && startDate && endDate && selectedClassType) {
       fetchData();
