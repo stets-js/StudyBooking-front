@@ -126,15 +126,15 @@ export default function AddMySubgroup() {
     if (!isSelected) setSlots(prev => [...prev, ...selectedSlotsTMP]);
   };
 
-  useEffect(() => {
-    const checkDate = async () => {
-      if (endDate && startDate && +endDate[0] === +startDate[0])
-        return error({text: 'End date and start date can`t be in one year', delay: 1000});
-    };
-    try {
-      checkDate();
-    } catch (e) {}
-  }, [startDate, endDate]);
+  // useEffect(() => {
+  //   const checkDate = async () => {
+  //     if (endDate && startDate && +endDate[0] === +startDate[0])
+  //       return error({text: 'End date and start date can`t be in one year', delay: 1000});
+  //   };
+  //   try {
+  //     checkDate();
+  //   } catch (e) {}
+  // }, [startDate, endDate]);
   return (
     <div className={styles.add_my_subgroup__wrapper}>
       <div className={styles.add_my_subgroup__intro}>
