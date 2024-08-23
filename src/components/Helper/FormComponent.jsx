@@ -58,7 +58,7 @@ export default function Form({bugOrIdea = 1, title, describeIt, description, pre
 
         <div className={styles.form__input__wrapper}>
           <label for="Name" className={styles.form__label}>
-            Ваше Ім'я
+            Ваше Ім'я та Прізвище
           </label>
           <input
             id="Name"
