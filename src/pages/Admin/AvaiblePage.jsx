@@ -146,7 +146,7 @@ export default function AvaliableTable() {
                 <tr key={time}>
                   <td className={tableStyles.cell__available}>
                     <div
-                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} `}>
+                      className={`${tableStyles.cell} ${tableStyles.black_borders} ${tableStyles.cell__outer} ${tableStyles.cell__higher} `}>
                       {time}
                     </div>
                   </td>
