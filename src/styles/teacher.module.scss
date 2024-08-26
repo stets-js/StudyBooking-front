@@ -487,6 +487,7 @@ body {
   height: 100%;
   // margin-bottom: 10px;
   margin-top: 10px;
+  z-index: 20;
   > input {
     font-family: $poppins;
     font-size: 20px !important;
