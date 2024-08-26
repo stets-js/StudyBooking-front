@@ -120,15 +120,16 @@ export default function ScheduleCell({
                         ? slot.LessonSchedule.startTime
                         : format(currentTime, 'HH:mm')}
                       <br /> - <br />
-                      {slot?.LessonSchedule
-                        ? slot.LessonSchedule.endTime
-                        : format(
-                            addMinutes(
-                              currentTime,
-                              30 * (slot?.appointmentTypeId === 1 ? 3 : 2) || slot?.rowSpan
-                            ),
-                            'HH:mm'
-                          )}
+                      {format(
+                        addMinutes(
+                          currentTime,
+                          30 *
+                            ([1, 7, 9].includes(slot?.appointmentTypeId) // groups ids
+                              ? 3
+                              : 2) || slot?.rowSpan
+                        ),
+                        'HH:mm'
+                      )}
                     </div>
                     <div className={tableStyles.tags__wrapper}>
                       {slot.rowSpan >= 2 && (
