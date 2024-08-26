@@ -18,6 +18,7 @@ import {createReplacement, updateReplacement} from '../../helpers/replacement/re
 import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
 import {deleteOneLesson} from '../../helpers/lessons/lesson';
+import {addMinutes, format} from 'date-fns';
 const root = document.querySelector('#root');
 
 defaults.delay = 1000;
@@ -118,16 +119,22 @@ const Form = ({
       if (type.type.includes('appointment')) {
         jsonData.slots = JSON.parse(jsonData.slots);
         // 0 - group, 1 - private, 2 - junior_group
-        const searchQuery = `name=${
-          JSON.parse(jsonData.isReplacement) ? 'replacement' : 'appointed'
-        }_${
-          Number(jsonData.appointmentType) === 1
-            ? 'group'
-            : Number(jsonData.appointmentType) === 8
-            ? 'private'
-            : 'junior_group'
-        }`;
-        const appointmentType = await getAppointmentTypes(searchQuery);
+        const isReplacement = JSON.parse(jsonData.isReplacement);
+        const appointmentType = Number(jsonData.appointmentType);
+        console.log(appointmentType);
+        const appointmentTypeId =
+          appointmentType === 1
+            ? isReplacement // group
+              ? 9
+              : 7
+            : appointmentType === 2 // private
+            ? isReplacement
+              ? 10
+              : 8
+            : isReplacement // kids group
+            ? 12
+            : 11;
+        // const appointmentType = await getAppointmentTypes(searchQuery);
         if (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)) {
           await deleteOneLesson(jsonData.lessonId); //delete lesson that is replaced
         }
@@ -153,10 +160,17 @@ const Form = ({
                 console.log(jsonData.slots[i]);
                 jsonData.slots[i].forEach(async slot => {
                   if (slot.schedule && slot.schedule.weekDayOrigin === i) {
+                    const time = [];
+                    for (let i = 0; i < slot.rowSpan; i++) {
+                      time.push(
+                        format(addMinutes(new Date(`1970 ${slot.schedule.start}`), 30 * i), 'HH:mm')
+                      );
+                    }
                     const body = {
                       weekDay: i,
-                      time: [slot.schedule.start, slot.schedule.end],
-                      appointmentTypeId: appointmentType.data[0]['id'],
+                      time: time,
+                      rowSpan: slot.rowSpan,
+                      appointmentTypeId: appointmentTypeId,
                       userId: jsonData.mentorId,
                       startDate: jsonData.startDate,
                       endDate: jsonData.endDate

@@ -19,6 +19,7 @@ import Banner from './components/Banner';
 import InfoButton from '../Buttons/Info';
 import ReferalButton from '../Buttons/Referal';
 import ReferalModalWindow from '../modals/ReferalModal/ReferalModalWindow';
+import classNames from 'classnames';
 
 export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   const dispatch = useDispatch();
@@ -73,7 +74,6 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
       console.log(error);
     }
   }, [userId, dispatch, startDates]);
-
   const [referalDetails, setReferalDetails] = useState(false);
   return (
     <div>
@@ -114,7 +114,12 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
         userName={user.name}
       />
       <div>
-        <table className={`${tableStyles.calendar} ${tableStyles.tableHeader}`}>
+        <table
+          className={classNames(
+            tableStyles.calendar,
+
+            tableStyles.tableHeader
+          )}>
           <thead>
             <tr>
               {startDates.map((startDate, dateIndex) => (
@@ -129,7 +134,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
           </thead>
         </table>
         <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
-          <table className={tableStyles.tableBody}>
+          <table className={classNames(tableStyles.tableBody, tableStyles.teacher_calendar)}>
             <tbody>
               {Array.from({length: slotsAmount}, (_, timeIndex) => {
                 // 24 - for making 20:30 last cell

@@ -26,7 +26,10 @@ const weekScheduler = (state = initialState, action) => {
         weekScheduler: state.weekScheduler.map((daySlots, index) => {
           if (index === action.payload.weekDay) {
             return daySlots.map(slot => {
-              return slot.time === action.payload.time ? action.payload : slot;
+              return slot.time === action.payload.time &&
+                slot.appointmentTypeId === action.payload.appointmentTypeId
+                ? action.payload
+                : slot;
             });
           }
           return daySlots;

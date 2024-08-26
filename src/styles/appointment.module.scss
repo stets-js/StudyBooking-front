@@ -74,7 +74,7 @@
   background-color: $indiv-color;
  }
  &__free:hover {
-  background-color: transparent;
+  background-color: white !important;
  }
  &__group:hover {
   background-color: $group-color;

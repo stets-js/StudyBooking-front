@@ -30,7 +30,12 @@ export const HandleCellClick = async ({
     return <></>;
   }
   // case for opening  the details of a occupied cell
-  console.log(slot);
+  let multiSlot =
+    slots &&
+    slots.length === 2 &&
+    slots.every(slot => !slot.subgroupId) &&
+    slots[0].appointmentTypeId !== slots[1].appointmentTypeId;
+  // return;
   if (slot && (slot.subgroupId || slot.ReplacementId)) {
     setSelectedSlotDetails(slots.length > 1 ? slots : slot);
     setOpenSlotDetails(true);
@@ -40,28 +45,45 @@ export const HandleCellClick = async ({
     // type free - delete slot
     const weekStart = format(startDates[0], 'yyyy-MM-dd');
     const weekEnd = format(startDates[6], 'yyyy-MM-dd');
-    if (slot.startDate >= weekStart && slot.startDate <= weekEnd) {
-      await deleteSlotForUser(userId, slot.id);
-      dispatch(DeleteSlotFromWeek(slot.id));
+    if (
+      slot.startDate >= weekStart &&
+      slot.startDate <= weekEnd &&
+      slot.startDate === addDays(date, -7)
+    ) {
+      try {
+        await deleteSlotForUser(userId, slot.id);
+        dispatch(DeleteSlotFromWeek(slot.id));
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       // set slot endDate to date -7 days
-      const res = await updateSlot(userId, slot.id, {endDate: addDays(date, -7)});
-      if (res.data) dispatch(DeleteSlotFromWeek(slot.id));
+      if (slot.id) {
+        const res = await updateSlot(userId, slot.id, {endDate: addDays(date, -7)});
+        if (res.data) dispatch(DeleteSlotFromWeek(slot.id));
+      }
     }
   } else if (
     slot &&
     selectedAppointment.name !== 'free' &&
-    slot.appointmentTypeId !== selectedAppointment.id
+    slot.appointmentTypeId !== selectedAppointment.id &&
+    multiSlot
   ) {
-    const res = await updateSlot(userId, slot.id, {
-      appointmentTypeId: selectedAppointment.id
-    });
-    if (res.data) dispatch(updateSlotForWeek(res.data));
-  } else if (!slot && selectedAppointment.id !== 3) {
+    return;
+    // const res = await updateSlot(userId, slot.id, {
+    //   appointmentTypeId: selectedAppointment.id
+    // });
+    // if (res.data) dispatch(updateSlotForWeek(res.data));
+  } else if (
+    (!slot && selectedAppointment.id !== 3) ||
+    (slot &&
+      selectedAppointment.name !== 'free' &&
+      slot.appointmentTypeId !== selectedAppointment.id &&
+      !multiSlot)
+  ) {
     // Free slots cant be placed
     const prevWeekStart = format(addDays(date, -dateIndex - 7), 'yyyy-MM-dd');
     const prevWeekEnd = format(addDays(date, -dateIndex - 1), 'yyyy-MM-dd');
-    console.log(selectedAppointment);
     await dispatch(
       addNewSlotToWeek({
         userId: +userId,

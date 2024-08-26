@@ -281,7 +281,6 @@ const SetAppointment = ({
                         subGroup?.value && subGroups.find(sub => sub.value === subGroup.value)[0]
                       }
                       options={subGroups}
-                      key={Math.random() * 100 - 10}
                       required
                       placeholder="Select subgroup"
                       onChange={el => setSubGroup(el)}

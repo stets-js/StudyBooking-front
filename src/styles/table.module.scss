@@ -6,24 +6,24 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.refferal{
-  display:flex;
+.refferal {
+  display: flex;
   position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  &__img{
+  &__img {
     width: 99%;
   }
-  &__button{
+  &__button {
     position: absolute;
     top: calc(25% - 20px);
     font-size: 42px;
-    display:flex;
+    display: flex;
     align-items: center;
     row-gap: 20px;
     flex-direction: column;
-    color:white;
+    color: white;
     font-weight: bold;
   }
 }
@@ -48,18 +48,18 @@
 .table {
   background-color: white;
 }
-.delete_icon{
+.delete_icon {
   z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px; 
-  height:25px; 
+  width: 25px;
+  height: 25px;
   background-image: url('https://img.icons8.com/?size=100&id=104401&format=png&color=000000');
   background-size: cover;
   cursor: pointer;
 }
-// 
+//
 .calendar {
   width: 90%;
   table-layout: fixed;
@@ -102,8 +102,15 @@ td {
 .cell__header__mySubgroup:first-child {
   border-left: 0;
 }
-
+.teacher_calendar table tr {
+  width: 100%;
+}
+.teacher_calendar tr td {
+  width: calc(100% / 7);
+  position: relative;
+}
 .cell {
+  // display: grid;
   background-color: transparent;
   font-family: $poppins;
   width: 100%;
@@ -115,7 +122,47 @@ td {
   font-size: 24px;
   position: relative;
   box-sizing: border-box;
-  &__break{
+  &__split {
+    display: flex;
+    width: 100% !important;
+    // width: 50%;
+    // : 220px;
+    &__item {
+      &:first-of-type {
+        border-right: 0 !important;
+        border: 1px solid black;
+        &::before {
+          border-right: 0 !important;
+        }
+      }
+      &:last-of-type {
+        border: 1px solid black;
+        border-left: 0 !important;
+        &::before {
+          border-left: 0 !important;
+        }
+      }
+      flex: 1;
+      // width: 50%;
+    }
+    &__group:hover {
+      background-image: linear-gradient(to right, $group-color 50%, transparent 50%) !important;
+    }
+    &__private:hover {
+      background-image: linear-gradient(to left, $indiv-color 50%, transparent 50%) !important;
+    }
+  }
+  &__time {
+    font-size: 24px;
+    font-family: $poppins;
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  &__break {
     word-break: break-all;
   }
   &__small {
@@ -135,9 +182,9 @@ td {
       width: auto !important;
       font-size: 30px !important;
     }
-
     // border-image: linear-gradient(to top, #000 77%, transparent 77%) 1 100% !important;
   }
+
   &__content {
     &__wrapper {
       position: relative;
@@ -179,16 +226,26 @@ td {
   }
 }
 @media (max-width: 768px) {
-  .cell {
+  .cell,
+  .cell__time {
     font-size: 12px;
   }
   .cell__header {
     font-size: 12px !important;
   }
 }
+tr:first-child .cell__split__item,
+tr:last-child .cell__split__item {
+  border: 0 !important;
+}
+td:first-child .cell__split__item,
+td:last-child .cell__split__item {
+  border: 0 !important;
+}
 tr:first-child .cell__outer::before {
   // first row, with half-borders
   content: '';
+  pointer-events: none;
   display: block;
   position: absolute;
   bottom: 0;
@@ -200,6 +257,7 @@ tr:first-child .cell__outer::before {
   border-top: 0;
   z-index: 1;
 }
+
 tr:first-child td:first-child .cell__outer {
   &::before {
     border-left-color: transparent;
@@ -214,6 +272,7 @@ tr:first-child td:last-child .cell__outer {
 
 tr td:first-child .cell__outer {
   &::before {
+    pointer-events: none;
     content: '';
     display: block;
     position: absolute;
@@ -230,6 +289,7 @@ tr td:first-child .cell__outer {
 }
 tr td:last-child .cell__outer {
   &::before {
+    pointer-events: none;
     content: '';
     display: block;
     position: absolute;
@@ -247,6 +307,7 @@ tr td:last-child .cell__outer {
 tr:last-child td:not(:first-child):not(:last-child) {
   .cell__outer {
     &::before {
+      pointer-events: none;
       content: '';
       display: block;
       position: absolute;
@@ -278,6 +339,7 @@ tr:last-child td:last-child {
 }
 tr:only-of-type td .cell__outer::before {
   content: '';
+  pointer-events: none;
   border-top: 0;
   border-bottom: 0;
   display: block;
