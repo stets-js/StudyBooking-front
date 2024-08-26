@@ -72,8 +72,8 @@
     margin-left: 10% !important;
   }
   &__small {
-    width: 70% !important;
-    margin-left: 15% !important;
+    width: 90% !important;
+    // margin-left: 15% !important;
   }
 }
 tr,
@@ -223,6 +223,9 @@ td {
   }
   &__inner {
     border: 1px solid black;
+  }
+  &__higher{
+    height: 250px;
   }
 }
 @media (max-width: 768px) {
