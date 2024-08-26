@@ -53,12 +53,14 @@ export const HandleCellClick = async ({
   const newSlots = [];
   for (let slotIndex = 0; slotIndex < numSlotsToCheck; slotIndex++) {
     const [hours, minutes] = timeStr.split(':');
+
     let currentTime = addMinutes(new Date(1970, 0, 1, hours, minutes), slotIndex * 30);
     currentTime = format(currentTime, 'HH:mm');
-
     let [newHours, newMinutes] = currentTime.split(':');
+
     console.log(newSlots);
     console.log(newHours, newMinutes, 'New new new!!');
+
     if (newHours === '00' && !oneDaySlot) {
       newHours = Number(newHours) % 24;
       if (newSlots[slotIndex - 1]) {
@@ -66,6 +68,7 @@ export const HandleCellClick = async ({
         if (weekDay === weekDayCopy) weekDayCopy = (weekDayCopy + 1) % 7;
       }
     }
+
     newSlots.push({
       type: 'ADD_SELECTED_SLOTS',
       payload: {
@@ -77,12 +80,14 @@ export const HandleCellClick = async ({
       }
     });
   }
+  const endTime = addMinutes(new Date(1970, 0, 1, hours, minutes), numSlotsToCheck * 30);
   newSlots[0].payload.slot.schedule = {
     weekDayOrigin: weekDay,
     weekDayEnd: weekDayCopy,
     start: timeStr,
-    end: newSlots[newSlots.length - 1].payload.slot.time
+    end: format(endTime, 'HH:mm')
   };
+  console.log(newSlots[0]);
   newSlots.map(slot => dispatch(slot));
 
   setSelectedSlotsAmount(selectedSlotsAmount + 1);

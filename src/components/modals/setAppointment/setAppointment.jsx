@@ -98,7 +98,7 @@ const SetAppointment = ({
                     : `${weekNames[slotSchedule.weekDayOrigin]}-${
                         weekNames[slotSchedule.weekDayEnd]
                       }`
-                }: ${slotSchedule.start} - ${slotSchedule.end}`;
+                }: ${slotSchedule.start} - ${slotSchedule.end}\n`;
               }
             });
             // for (let j = 0; j < selectedSlots[i].length; j += appointmentLength) {
