@@ -28,11 +28,10 @@ export default function ScheduleCell({
     return <></>;
   }
   const multiSlot =
-    // slots &&
-    // slots.length === 2 &&
-    // slots.every(slot => !slot.subgroupId) &&
-    // slots[0].appointmentTypeId !== slots[1].appointmentTypeId;  // MULTISLOT !!!!
-    false; // for now its hidden from users
+    slots &&
+    slots.length === 2 &&
+    slots.every(slot => !slot.subgroupId) &&
+    slots[0].appointmentTypeId !== slots[1].appointmentTypeId;
   if (multiSlot) {
     slots.sort((a, b) => a.appointmentTypeId - b.appointmentTypeId);
     console.log(slots);
@@ -88,14 +87,14 @@ export default function ScheduleCell({
                     !MIC_flag
                     ? appointmentStyles[`hover__${selectedAppointment?.name}`]
                     : '',
-                  slot ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`] : ''
-                  // slot?.appointmentTypeId &&
-                  //   slots.length > 0 &&
-                  //   !multiSlot &&
-                  //   !slot.subgroupId &&
-                  //   slot.appointmentTypeId !== selectedAppointment.id
-                  //   ? tableStyles[`cell__split__${selectedAppointment.name}`]
-                  //   : '' // MULTISLOT !!!!
+                  slot ? appointmentStyles[`type_selector__${slot?.AppointmentType?.name}`] : '',
+                  slot?.appointmentTypeId &&
+                    slots.length > 0 &&
+                    !multiSlot &&
+                    !slot.subgroupId &&
+                    slot.appointmentTypeId !== selectedAppointment.id
+                    ? tableStyles[`cell__split__${selectedAppointment.name}`]
+                    : ''
                 )}
                 onClick={() => {
                   HandleCellClick({

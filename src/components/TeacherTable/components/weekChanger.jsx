@@ -17,7 +17,7 @@ export default function WeekChanger({startDates, setStartDates, userName, handle
   return (
     <div>
       <div className={classNames(styles.dates_wrapper, styles.date_selector)}>
-        {/* <label>
+        <label>
           <span>9-22</span>
           <Switch
             uncheckedIcon={false}
@@ -29,7 +29,7 @@ export default function WeekChanger({startDates, setStartDates, userName, handle
             checked={calendarType}
           />
           <span>00-24</span>
-        </label> */}
+        </label>
 
         <div className={styles.flex}>
           <button onClick={handlePrevWeek} className={styles.week_selector}>

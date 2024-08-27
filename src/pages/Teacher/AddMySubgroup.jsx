@@ -233,7 +233,7 @@ export default function AddMySubgroup() {
                 </div>
               </div>
               <br />
-              {/* <div>
+              <div>
                 <label>
                   <span>9-22</span>
                   <Switch
@@ -251,7 +251,7 @@ export default function AddMySubgroup() {
                   />
                   <span>00-24</span>
                 </label>
-              </div> */}
+              </div>
               <br />
               {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
                 <>
