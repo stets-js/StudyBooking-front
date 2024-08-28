@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Switch from 'react-switch';
 
 import styles from '../../styles/SuperAdminPage.module.scss';
 import {getUsers} from '../../helpers/user/user';
@@ -13,9 +14,11 @@ import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCo
 
 export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title = true}) {
   const [limit] = useState(40);
+  const userId = useSelector(state => state.auth.user.id);
   const [offset, setOffset] = useState(0);
   const [totalAmount, setTotalAmount] = useState(limit);
   const [reset, setReset] = useState(false);
+  const [isAllMentors, setIsAllMentors] = useState(true);
 
   const teachers = useSelector(state => state.usersPage.mentors);
   const [filterName, setFilterName] = useState(null);
@@ -32,7 +35,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
           filterName || filterCourses.length > 0 ? '&teachersFilter=true' : ''
         }${filterName ? '&name=' + filterName : ''}${
           filterCourses.length > 0 ? '&courses=' + JSON.stringify(filterCourses) : ''
-        }`
+        }${!isAllMentors ? '&adminId=' + userId : ''}`
       );
       setOffset(res.newOffset);
       setTotalAmount(res.totalCount);
@@ -93,7 +96,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
         <div className={styles.wrapper} key={'index1'}>
           {title && <p className={styles.mini_title}>Mentors</p>}
 
-          <ul className={`${styles.main_wrapper} ${styles.filter_wrapper}`}>
+          <ul className={`${styles.main_wrapper}`}>
             <li className={`${styles.ul_items} ${styles.filter_wrapper}`}>
               <Fade
                 style={{marginBottom: '10px'}}
@@ -116,6 +119,20 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
                     setCoursesModal(!coursesModal);
                   }}
                   alignValue={true}></FormInput>
+                <label>
+                  <span>My</span>
+                  <Switch
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={switched => {
+                      // setCalendarType(!calendarType);
+                      setIsAllMentors(!isAllMentors);
+                      setReset(true);
+                    }}
+                    checked={isAllMentors}
+                  />
+                  <span>All</span>
+                </label>
               </Fade>
             </li>
 

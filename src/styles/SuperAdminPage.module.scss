@@ -18,8 +18,14 @@
   margin-left:33%;
 }
 .filter_wrapper{
-  margin-top:0px;
+  display: grid !important;
+  margin-top: -34px !important;
   column-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.filter_wrapper > *:nth-child(3) {
+  grid-column: span 2; 
 }
 .courses_filter{
   padding: 10px;
@@ -78,7 +84,7 @@
   border-right: 2px solid black;
   height: auto;
   align-items: center;
-  width: 232px;
+  width: 260px;
   padding-right: 20px;
   padding-left: 20px;
   &:nth-last-child(1) {
