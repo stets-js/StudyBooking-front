@@ -3,7 +3,7 @@ import Modal from '../../Modal/Modal';
 import FormInput from '../../FormInput/FormInput';
 import Select from 'react-select';
 import React, {useEffect, useState} from 'react';
-import {postUser, patchUser, deleteUser} from '../../../helpers/user/user';
+import {postUser, patchUser, deleteUser, getUserById} from '../../../helpers/user/user';
 import {success} from '@pnotify/core';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -21,6 +21,7 @@ import {
   updateSuperAdmins
 } from '../../../redux/action/usersPage.action';
 import {useDispatch} from 'react-redux';
+import TeamLeadsBlock from './TeamLeadsBlock';
 
 const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item}) => {
   const dispatch = useDispatch();
@@ -35,25 +36,38 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
     // (1);
     roles.find(el => el.label === 'teacher')?.value || 1
   );
-  useEffect(() => {
-    setName(item.name);
-    setCity(item.city);
-    setPhone(item.phone);
-    setRating(item.rating);
-    setEmail(item.email);
-    setRole(item.role);
-    setPassword('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
-
+  const [teamLeaders, setTeamLeaders] = useState([]);
   useEffect(() => {
     if (!edit) {
+      setCity(item.city);
+      setPhone(item.phone);
+      setRating(item.rating);
+      setRole(item.role);
       setName('');
       setRating(5);
       setEmail('');
       setPassword('');
     }
-  }, [edit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, edit]);
+  const fetchUserById = async id => {
+    const {data} = await getUserById(id);
+    if (data) {
+      setName(data.name);
+      setCity(data.city);
+      setPhone(data.phone);
+      setRating(data.rating);
+      setEmail(data.email);
+      setRole(data.role);
+      setTeamLeaders(data.MentorTeams);
+    }
+  };
+  useEffect(() => {
+    if (isOpen && edit) {
+      fetchUserById(item.id);
+    }
+  }, [isOpen, edit]);
+
   const handlePasswordReset = async () => {
     try {
       await forgotPassword(email);
@@ -149,7 +163,7 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                   label="Phone"
                   name={'phone'}
                   preferredCountries={['ua']}
-                  placeholder={'(096)-12-34567'}
+                  placeholder={'+380-(096)-12-34567'}
                   required={true}
                   value={phone}
                   className={styles.phone}
@@ -178,19 +192,7 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
               isRequired={true}
               handler={setEmail}
             />
-            {/* {!edit && (
-              <FormInput
-                classname="input__bottom"
-                title="Password:"
-                type="password"
-                name="password"
-                max={50}
-                value={password}
-                placeholder="Password"
-                isRequired={true}
-                handler={setPassword}
-              />
-            )} */}
+
             {!edit && (
               <Select
                 title="Role:"
@@ -201,6 +203,13 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 key={Math.random() * 1000 - 10}
                 placeholder={'Role'}
                 onChange={el => setRole(el.value)}></Select>
+            )}
+            {edit && (
+              <TeamLeadsBlock
+                teamLeaders={teamLeaders}
+                mentorId={item.id}
+                updateUser={mentorId => fetchUserById(mentorId)}
+              />
             )}
             {edit && (
               <button

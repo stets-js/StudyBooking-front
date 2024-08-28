@@ -111,9 +111,26 @@ const loginMIC = credentials => {
     }
   });
 };
-
+const addMentorToAdminTeam = credentials => {
+  return axios
+    .post('/users/team', credentials)
+    .then(res => res)
+    .catch(error => {
+      throw error;
+    });
+};
+const removeMentorToAdminTeam = credentials => {
+  return axios
+    .delete('/users/team', {data: credentials})
+    .then(res => res)
+    .catch(error => {
+      throw error;
+    });
+};
 export {
   loginMIC,
+  addMentorToAdminTeam,
+  removeMentorToAdminTeam,
   getRoles,
   getUsersByRole,
   postUser,

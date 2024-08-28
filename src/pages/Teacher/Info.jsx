@@ -134,7 +134,7 @@ export default function Info() {
                 label="Phone"
                 name={'phone'}
                 preferredCountries={['ua']}
-                placeholder={'(096)-12-34567'}
+                placeholder={'+380-(096)-12-34567'}
                 required={true}
                 value={user?.phone}
                 className={styles.phone}
