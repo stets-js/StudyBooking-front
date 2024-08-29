@@ -93,7 +93,7 @@ i18next.init({
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
       <I18nextProvider i18n={i18next}>
       <ConfirmProvider>
-        {userRole === 'superAdmin' && <ChangeLanguage></ChangeLanguage>}
+        {/* {userRole === 'superAdmin' && <ChangeLanguage></ChangeLanguage>} */}
         <Routes>
           {auth && ['administrator', 'superAdmin'].includes(userRole) ? (
             //  userRole.toLowerCase().includes('admin')
