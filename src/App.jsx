@@ -39,10 +39,26 @@ import ManagerHome from './pages/QCManager/ManagerHome';
 import ReportPage from './pages/Teacher/ReportPage';
 import Helper from './components/Helper/Helper';
 import {FooterProvider} from './components/Footer/FooterProvider';
+import i18next from 'i18next';
+import global_en from './translations/en/global.json';
+import global_ua from './translations/ua/global.json';
+import { I18nextProvider } from 'react-i18next';
+import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
 
 const App = () => {
   const dispatch = useDispatch();
-
+i18next.init({
+  interpolation: { escapeValue: false },
+  lng: 'en', 
+  resources: {
+    en: {
+      global: global_en
+    },
+    ua: {
+      global: global_ua
+    }
+  }
+})
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
   const jwtExp = useSelector(state => state.auth.user.exp);
@@ -75,7 +91,9 @@ const App = () => {
   return (
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
+      <I18nextProvider i18n={i18next}>
       <ConfirmProvider>
+        {userRole === 'superAdmin' && <ChangeLanguage></ChangeLanguage>}
         <Routes>
           {auth && ['administrator', 'superAdmin'].includes(userRole) ? (
             //  userRole.toLowerCase().includes('admin')
@@ -190,6 +208,7 @@ const App = () => {
           <Helper />
         </FooterProvider>
       </ConfirmProvider>
+      </I18nextProvider>
     </>
   );
 };

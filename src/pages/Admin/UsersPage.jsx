@@ -9,14 +9,17 @@ import SuperAdminList from '../../components/UsersPage/superAdminList';
 import AdminList from '../../components/UsersPage/adminList';
 import MentorList from '../../components/UsersPage/mentorList';
 import InfoButton from '../../components/Buttons/Info';
+import { useTranslation } from 'react-i18next';
 
 export default function UsersPage() {
+  const { t } = useTranslation('global');
+  
   const [isOpen, setIsOpen] = useState(false);
   const userRole = useSelector(state => state.auth.user.role);
   const [title, setTitle] = useState('New User');
   const [item, setItem] = useState({});
   const [edit, setEdit] = useState(false);
-
+  
   const [roles] = useState([
     {label: 'teacher', value: 1},
     {label: 'administrator', value: 2},
@@ -65,7 +68,7 @@ export default function UsersPage() {
   return (
     <>
       <div className={styles.main_wrapper}>
-        <h3 className={styles.main_title}>Manage users</h3>
+        <h3 className={styles.main_title}>{t('usersPage.title')}</h3>
         {['administrator', 'superAdmin'].includes(userRole) && (
           <div className={styles.new_user}>
             <div className={styles.btn_wrapper}>
