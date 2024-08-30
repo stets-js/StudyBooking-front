@@ -1,6 +1,9 @@
 import Modal from '../../Modal/Modal';
 import React, {useState, useEffect} from 'react';
 import {success, error} from '@pnotify/core';
+import Select from 'react-select';
+import {useSelector} from 'react-redux';
+import classNames from 'classnames';
 
 import Form from '../../Form/Form';
 import {getSlotDetails, getSubgroupJSON, updateSubGroup} from '../../../helpers/subgroup/subgroup';
@@ -8,11 +11,18 @@ import FormInput from '../../FormInput/FormInput';
 import MentorTable from './mentorTable';
 import EditButton from '../../Buttons/Edit';
 import DeleteButton from '../../Buttons/Delete';
+import SelectorStyles from '../../../styles/selector.module.scss';
 import buttonStyles from '../../Buttons/buttons.module.scss';
 import InfoButton from '../../Buttons/Info';
+import formInputStyles from '../../../styles/FormInput.module.scss';
 const ChangeSubGroup = ({isOpen, handleClose, id}) => {
   const [element, setElement] = useState({});
   const [editActive, setEditActive] = useState(false);
+  const courses = useSelector(state => state.courses.courses).map(el => ({
+    label: el.name,
+    value: el.id
+  }));
+
   const fetchData = async () => {
     try {
       const data = await getSlotDetails(id);
@@ -41,6 +51,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
             }}
             name={element.name}
             description={element.description}
+            CourseId={element.CourseId}
             link={element.link}
             title="Subgroup edit"
             onSubmit={() => {
@@ -58,6 +69,26 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                   name: e
                 }))
               }></FormInput>
+            {!editActive ? (
+              <FormInput
+                title="Course:"
+                value={courses.find(course => course.value === element.CourseId)?.label}
+                placeholder={'Wait..'}
+                disabled
+              />
+            ) : (
+              <>
+                <p className={formInputStyles.input__title}>Course: </p>
+                <Select
+                  onChange={e => setElement(prev => ({...prev, CourseId: e.value}))}
+                  options={courses}
+                  className={classNames(
+                    SelectorStyles.selector,
+                    SelectorStyles.selector__fullwidth
+                  )}
+                  value={courses.find(course => course.value === element.CourseId)}></Select>
+              </>
+            )}
             <FormInput
               title="Descripion"
               value={element.description}
@@ -116,7 +147,8 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                           body: {
                             name: element.name,
                             description: element.description,
-                            link: element.link
+                            link: element.link,
+                            CourseId: element.CourseId
                           }
                         });
                         if (res) {
