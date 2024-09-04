@@ -1,0 +1,74 @@
+@import '../../styles/App.scss';
+
+.survey {
+
+  &__question {
+    font-family: $poppins;
+    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    text-align: justify;
+}
+&__button {
+  width: 100%;
+  font-size: 20px;
+  background-color: rgba(201, 202, 202, 0.946);
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  border-radius: 15px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+
+  &__input {
+    display: none;
+  }
+
+  label {
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: #7f99f7;
+    color:white;
+  }
+
+  &.selected {
+    background-color: #7f99f7;
+    color: white;
+  }
+
+  &__input{
+    width: 100%;
+    // visibility: hidden;
+    height: 100%;
+  }
+  &__wrapper {
+    display: flex;
+    column-gap: 20px;
+  }
+}
+&__complete{
+    &__button{
+        // width: 100%;
+        width: 30%;
+        font-size: 28px;
+        background-color: rgba(93, 246, 103, 0.572);
+        display: inline-block;
+        padding: 16px;
+        border-radius: 15px;
+        cursor: pointer;
+        margin: 5px;
+        transition: background-color 0.3s ease;
+    &:hover{
+        background-color: rgba(93, 246, 103, 0.871);
+    }
+    &:disabled{
+        background-color: rgb(240, 100, 100);
+        color:black;
+    }
+    }
+}
+}

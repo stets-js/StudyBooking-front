@@ -27,6 +27,15 @@
   max-height: 90vh;
 }
 
+.survey{
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  width: 90vw !important;
+  height: 90vh !important;
+}
+
 @media (max-width: 768px) {
   .Modal{
     min-width: 70vw;    

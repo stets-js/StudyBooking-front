@@ -44,6 +44,7 @@ import global_en from './translations/en/global.json';
 import global_ua from './translations/ua/global.json';
 import {I18nextProvider} from 'react-i18next';
 import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
+import SurveyModal from './components/Survey/SurveyModal';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ const App = () => {
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
       <I18nextProvider i18n={i18next}>
+        {/* {<SurveyModal></SurveyModal>} */}
         <ConfirmProvider>
           {userRole === 'superAdmin' && <ChangeLanguage></ChangeLanguage>}
           <Routes>
