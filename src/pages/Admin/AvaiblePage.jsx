@@ -159,7 +159,7 @@ export default function AvaliableTable() {
                             <Link
                               className={`${styles.teacher_name} ${styles.ul_items} ${styles.ul_items_link} `}
                               target="_self"
-                              to={`../teacher/${user.id}`}>
+                              to={`../teacher/calendar/${user.id}`}>
                               <span className={styles.ul_items_text}>
                                 {user.name}
                                 {index !== users.length - 1 && ', '}
