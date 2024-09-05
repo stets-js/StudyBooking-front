@@ -71,4 +71,14 @@
     }
     }
 }
+&__textarea{
+  width: 100%;
+  background-color: rgba(201, 202, 202, 0.946);
+  height: 3em;
+  border-radius: 15px;
+  font-family: $poppins;
+  font-size: 20px;
+  resize: none;
+  padding: 10px;
+}
 }

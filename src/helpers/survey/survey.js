@@ -12,8 +12,16 @@ const getSurvey = id => {
       throw error;
     });
 };
+const getUserAnswered = (id, body) => {
+  return axios
+    .post(`/survey/${id}`, body)
+    .then(res => res.data)
+    .catch(error => {
+      throw error;
+    });
+};
 const sendAnswers = (userId, answers, SurveyId) => {
   return axios.post(`/survey/answers/bulk`, {userId, SurveyId, answers});
 };
 
-export {getSurvey, sendAnswers};
+export {getSurvey, sendAnswers, getUserAnswered};

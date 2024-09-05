@@ -1,40 +1,63 @@
 import React, {useEffect, useState} from 'react';
 import Modal from '../Modal/Modal';
 import styles from './survey.module.scss';
-import {getSurvey, sendAnswers} from '../../helpers/survey/survey';
+import {getSurvey, getUserAnswered, sendAnswers} from '../../helpers/survey/survey';
 import {useSelector} from 'react-redux';
 
 const SurveyModal = () => {
   let userId = useSelector(state => state.auth.user.id);
   const SurveyId = 1;
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [isAnswered, setIsAnswered] = useState(true);
+  const [isFullyAnsw, setIsFullyAnsw] = useState(false);
+
+  const fetchIsAnswered = async () => {
+    const res = await getUserAnswered(SurveyId);
+    setIsAnswered(res.isAnswered);
+  };
 
   const fetchSurvey = async () => {
     const res = await getSurvey(SurveyId);
-    console.log(res);
     setQuestions(res.Questions);
+    setIsOpen(true);
   };
 
   useEffect(() => {
-    fetchSurvey();
+    fetchIsAnswered();
   }, []);
+
+  useEffect(() => {
+    if (!isAnswered) {
+      fetchSurvey();
+    }
+  }, [isAnswered]);
+
   useEffect(() => {
     setSelectedAnswers(
       questions.reduce((acc, question) => {
-        acc[question.id] = null;
+        acc[question.id] = question.type === 'yes_no' ? null : '';
         return acc;
       }, {})
     );
   }, [questions]);
+
   const handleAnswerSelect = (questionId, answer) => {
     setSelectedAnswers({
       ...selectedAnswers,
       [questionId]: answer
     });
   };
-  const [isFullyAnsw, setIsFullyAnsw] = useState(false);
+
+  const handleTextAnswerChange = (questionId, event) => {
+    const answer = event.target.value;
+    setSelectedAnswers({
+      ...selectedAnswers,
+      [questionId]: answer
+    });
+  };
+
   useEffect(() => {
     if (Object.values(selectedAnswers).every(answer => answer !== null)) {
       setIsFullyAnsw(true);
@@ -48,34 +71,43 @@ const SurveyModal = () => {
     console.log(res);
     setIsOpen(false);
   };
+  console.log(selectedAnswers);
   return (
     <>
       {isOpen && (
         <Modal open={isOpen} classname_box={'survey'}>
-          <h1>Вітаю! Це обов'язкове опитування опитування!</h1>
+          <h1>Вітаю! Це обов'язкове опитування!</h1>
           {questions.map(question => (
             <div key={question.id} className={styles.survey__question}>
               <p>{question.text}</p>
               <div className={styles.survey__button__wrapper}>
-                {question.answers.map(answ => (
-                  <div
-                    key={answ}
-                    className={`${styles.survey__button} ${
-                      selectedAnswers[question.id] === answ ? styles.selected : ''
-                    }`}
-                    onClick={() => handleAnswerSelect(question.id, answ)}>
-                    <input
-                      type="radio"
-                      id={`${question.id}${answ}`}
-                      name={question.id}
-                      value={answ}
-                      className={styles.survey__button__input}
-                      checked={selectedAnswers[question.id] === answ}
-                      onChange={() => handleAnswerSelect(question.id, answ)}
-                    />
-                    <label htmlFor={`${question.id}${answ}`}>{answ}</label>
-                  </div>
-                ))}
+                {question.type === 'yes_no' ? (
+                  question.answers.map(answ => (
+                    <div
+                      key={answ}
+                      className={`${styles.survey__button} ${
+                        selectedAnswers[question.id] === answ ? styles.selected : ''
+                      }`}
+                      onClick={() => handleAnswerSelect(question.id, answ)}>
+                      <input
+                        type="radio"
+                        id={`${question.id}${answ}`}
+                        name={question.id}
+                        value={answ}
+                        className={styles.survey__button__input}
+                        checked={selectedAnswers[question.id] === answ}
+                        onChange={() => handleAnswerSelect(question.id, answ)}
+                      />
+                      <label htmlFor={`${question.id}${answ}`}>{answ}</label>
+                    </div>
+                  ))
+                ) : (
+                  <textarea
+                    value={selectedAnswers[question.id] || ''}
+                    onChange={e => handleTextAnswerChange(question.id, e)}
+                    className={styles.survey__textarea}
+                  />
+                )}
               </div>
             </div>
           ))}
