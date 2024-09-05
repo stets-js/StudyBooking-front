@@ -61,7 +61,7 @@ const App = () => {
     }
   });
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
+  const jwtToken = useSelector(state => state.auth.token);
   const jwtExp = useSelector(state => state.auth.user.exp);
   const userRole = useSelector(state => state.auth.user.role);
   const MIC_user = useSelector(state => state.auth.MIC);
@@ -78,7 +78,7 @@ const App = () => {
   // useEffect(() => {
   axios.interceptors.request.use(
     function (config) {
-      config.headers.Authorization = 'Bearer ' + Cookies.get('token');
+      config.headers.Authorization = 'Bearer ' + (jwtToken || Cookies.get('token'));
       if (MIC_user?.name) {
         config.headers = {...config.headers, mic: true};
       }
@@ -93,9 +93,9 @@ const App = () => {
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
       <I18nextProvider i18n={i18next}>
-        {/* {<SurveyModal></SurveyModal>} */}
         <ConfirmProvider>
           {userRole === 'superAdmin' && <ChangeLanguage></ChangeLanguage>}
+          {/* {['administrator', 'superAdmin'].includes(userRole) && <SurveyModal></SurveyModal>} */}
           <Routes>
             {auth && ['administrator', 'superAdmin'].includes(userRole) ? (
               //  userRole.toLowerCase().includes('admin')
