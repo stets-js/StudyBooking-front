@@ -12,6 +12,7 @@ const SurveyModal = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [isAnswered, setIsAnswered] = useState(true);
   const [isFullyAnsw, setIsFullyAnsw] = useState(false);
+  const [survey, setSurvey] = useState(null);
 
   const fetchIsAnswered = async () => {
     const res = await getUserAnswered(SurveyId);
@@ -21,6 +22,7 @@ const SurveyModal = () => {
   const fetchSurvey = async () => {
     const res = await getSurvey(SurveyId);
     setQuestions(res.Questions);
+    setSurvey({...res, Question: undefined});
     setIsOpen(true);
   };
 
@@ -74,9 +76,9 @@ const SurveyModal = () => {
   console.log(selectedAnswers);
   return (
     <>
-      {isOpen && (
+      {isOpen && survey && (
         <Modal open={isOpen} classname_box={'survey'}>
-          <h1>Вітаю! Це обов'язкове опитування!</h1>
+          <h1>{survey.description}</h1>
           {questions.map(question => (
             <div key={question.id} className={styles.survey__question}>
               <p>{question.text}</p>
