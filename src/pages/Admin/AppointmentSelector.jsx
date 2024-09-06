@@ -34,92 +34,14 @@ export default function UsersPage({MIC_flag = false}) {
   const [startDates] = useState(Array.from({length: 7}, (_, i) => addDays(initialStartDate, i)));
   const [startDate, setStartDate] = useState(format(startDates[0], 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState(undefined);
+  const [renderTeachers, setRenderTeachers] = useState(false);
 
   const [excludeTeacherId, setExcludeTeacherId] = useState(null); // for case of replacing through lesson page
   const [subGroup, setSubGroup] = useState({label: null, value: null});
-  const excludeId = arr => {
-    if (excludeTeacherId)
-      return arr.filter(el => {
-        return el !== excludeTeacherId;
-      });
-    else return arr;
-  };
-  const [renderTeachers, setRenderTeachers] = useState(false);
-  dispatch({type: 'SET_SELECTEDS_SLOTS'});
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const data = await getCourses();
-      setCourses(
-        data.data.map(el => {
-          return {label: el.name, value: el.id};
-        })
-      );
-    };
-    fetchCourses();
-  }, []);
+
   const [isReplacement, setIsReplacement] = useState(false);
-  useEffect(() => {
-    const fetchUsersIds = async () => {
-      try {
-        const usersIds = await getTeachersByCourse(selectedCourse, teacherType);
-        setTeachersIds(excludeId(usersIds));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (selectedCourse) {
-      fetchUsersIds();
-    }
-    if (renderTeachers) setRenderTeachers(false);
-  }, [selectedCourse, renderTeachers, teacherType]);
 
   const {lesson} = location.state || {};
-  useEffect(() => {
-    const fetchData = async () => {
-      const slotsResponse = await getSlotsForUsers({
-        userIds: teachersIds,
-        startDate,
-        endDate,
-        appointmentTypeId: selectedClassType === 11 ? 1 : selectedClassType
-        // 11 is junior group, basicly it need same slots as group(id 1)
-      });
-      const slots = slotsResponse.data;
-      const organizedSlots = {};
-      slots.forEach(slot => {
-        const weekDay = slot.weekDay;
-        const time = slot.time;
-
-        if (!organizedSlots[weekDay]) {
-          organizedSlots[weekDay] = {};
-        }
-
-        if (!organizedSlots[weekDay][time]) {
-          organizedSlots[weekDay][time] = [];
-        }
-
-        organizedSlots[weekDay][time].push(slot);
-      });
-
-      setSlotsData(organizedSlots);
-    };
-    if (endDate < startDate) {
-      console.log(startDate, endDate);
-      // add snackebar for alerting  user about wrong input
-      // case when full data is setted, but its wrong formatted
-      if (endDate && +endDate[0] !== 0)
-        error({text: 'End date can`t be less than start', delay: 1000});
-      return;
-    }
-    // else if (endDate && startDate && +endDate[0] === +startDate[0])
-    //   return error({text: 'End date and start date can`t be in one year', delay: 1000});
-
-    if (selectedCourse && teachersIds && startDate && endDate && selectedClassType) {
-      fetchData();
-    }
-  }, [selectedCourse, teachersIds, startDate, endDate, selectedClassType]);
-  const handleClose = () => {
-    setIsOpen(!isOpen);
-  };
   const [lessonId, setLessonId] = useState(null);
   const clearTable = () => {
     if (selectedSlotsAmount !== 0 || lesson) {
@@ -130,20 +52,105 @@ export default function UsersPage({MIC_flag = false}) {
     }
   };
 
+  const excludeId = arr => {
+    if (excludeTeacherId)
+      return arr.filter(el => {
+        return el !== excludeTeacherId;
+      });
+    else return arr;
+  };
+  dispatch({type: 'SET_SELECTEDS_SLOTS'});
+  const fetchCourses = async () => {
+    const data = await getCourses();
+    setCourses(
+      data.data.map(el => {
+        return {label: el.name, value: el.id};
+      })
+    );
+  };
   useEffect(() => {
-    const setAllData = async () => {
-      if (lesson) {
-        console.log(lesson);
-        setLessonId(lesson.id);
-        setStartDate(lesson.date);
-        setEndDate(lesson.date);
-        setSelectedCourse(lesson.courseId);
-        setSelectedClassType(lesson.appointmentId);
-        setSubGroup({value: lesson.subgroupId});
-        setExcludeTeacherId(lesson.userId);
-        setIsReplacement(true);
+    fetchCourses();
+  }, []);
+  const fetchUsersIds = async () => {
+    try {
+      const usersIds = await getTeachersByCourse(selectedCourse, teacherType);
+      setTeachersIds(excludeId(usersIds));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (selectedCourse) {
+      fetchUsersIds();
+    }
+    if (renderTeachers) setRenderTeachers(false);
+  }, [selectedCourse, renderTeachers, teacherType]);
+
+  const fetchData = async () => {
+    const slotsResponse = await getSlotsForUsers({
+      userIds: teachersIds,
+      startDate,
+      endDate,
+      appointmentTypeId: selectedClassType === 11 ? 1 : selectedClassType
+      // 11 is junior group, basicly it need same slots as group(id 1)
+    });
+    const slots = slotsResponse.data;
+    const organizedSlots = {};
+    slots.forEach(slot => {
+      const weekDay = slot.weekDay;
+      const time = slot.time;
+
+      if (!organizedSlots[weekDay]) {
+        organizedSlots[weekDay] = {};
       }
-    };
+
+      if (!organizedSlots[weekDay][time]) {
+        organizedSlots[weekDay][time] = [];
+      }
+
+      organizedSlots[weekDay][time].push(slot);
+    });
+
+    setSlotsData(organizedSlots);
+  };
+  useEffect(() => {
+    console.log(endDate, startDate);
+    if (endDate && startDate && +endDate[3] === +startDate[3]) {
+      error({text: 'End date and start date can`t be in one year', delay: 1000});
+      clearTable();
+      setSlotsData([]);
+      return;
+    }
+    if (endDate < startDate) {
+      // add snackebar for alerting  user about wrong input
+      // case when full data is setted, but its wrong formatted
+      if (endDate && +endDate[0] !== 0)
+        error({text: 'End date can`t be less than start', delay: 1000});
+      return;
+    }
+
+    if (selectedCourse && teachersIds && startDate && endDate && selectedClassType) {
+      fetchData();
+    }
+  }, [selectedCourse, teachersIds, startDate, endDate, selectedClassType]);
+  const handleClose = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const setAllData = async () => {
+    if (lesson) {
+      console.log(lesson);
+      setLessonId(lesson.id);
+      setStartDate(lesson.date);
+      setEndDate(lesson.date);
+      setSelectedCourse(lesson.courseId);
+      setSelectedClassType(lesson.appointmentId);
+      setSubGroup({value: lesson.subgroupId});
+      setExcludeTeacherId(lesson.userId);
+      setIsReplacement(true);
+    }
+  };
+  useEffect(() => {
     setAllData();
   }, []);
   return (

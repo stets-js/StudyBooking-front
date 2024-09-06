@@ -63,7 +63,7 @@ const SetAppointment = ({
   const fetchTeachers = async () => {
     try {
       getUsers(
-        `users=${JSON.stringify(teachersIds)}&sortBySubgroups=true`
+        `users=${JSON.stringify(teachersIds)}&role=teacher&sortBySubgroups=true`
         // &sortBySubgroups=${teacherType === 2 ? 'tech' : 'soft'}
       ).then(teachersData => {
         setTeachers(

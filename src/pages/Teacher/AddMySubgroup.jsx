@@ -125,16 +125,20 @@ export default function AddMySubgroup() {
     if (isMovingDay !== -1) selectedSlotsTMP[0].rowSpan = isMovingDay;
     if (!isSelected) setSlots(prev => [...prev, ...selectedSlotsTMP]);
   };
+  const [conditionalForCalendar, setConditionals] = useState(false);
 
-  // useEffect(() => {
-  //   const checkDate = async () => {
-  //     if (endDate && startDate && +endDate[0] === +startDate[0])
-  //       return error({text: 'End date and start date can`t be in one year', delay: 1000});
-  //   };
-  //   try {
-  //     checkDate();
-  //   } catch (e) {}
-  // }, [startDate, endDate]);
+  useEffect(() => {
+    const checkDate = () => {
+      if (endDate && startDate && +endDate[3] === +startDate[3]) {
+        error({text: 'End date and start date can`t be in one year', delay: 1000});
+        return false;
+      }
+      return true;
+    };
+    setConditionals(
+      startDate && endDate && startDate <= endDate && selectedClassType !== null && checkDate()
+    );
+  }, [endDate, selectedClassType, startDate]);
   return (
     <div className={styles.add_my_subgroup__wrapper}>
       <div className={styles.add_my_subgroup__intro}>
@@ -253,7 +257,7 @@ export default function AddMySubgroup() {
                 </label>
               </div>
               <br />
-              {startDate && endDate && startDate <= endDate && selectedClassType !== null && (
+              {conditionalForCalendar && (
                 <>
                   <div className={tableStyles.button__wrapper}>
                     <EditButton

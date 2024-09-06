@@ -109,9 +109,9 @@ const App = () => {
                     <Route path={path.spreadsheet} element={<Spreadsheet></Spreadsheet>} />
                   )}
                   <Route path={path.lessons} element={<LessonsPage />} />
-                  <Route path={path.users} element={<UsersPage />} />
                   <Route path={path.courses} element={<CoursesPage />} />
                   <Route path={path.appointments} element={<Appointment />} />
+                  <Route path={path.users} element={<UsersPage />} />
                   <Route path={path.avaliableTable} element={<AvaliableTable />} />
                   <Route
                     path={path.superAdmin + path.teacher}

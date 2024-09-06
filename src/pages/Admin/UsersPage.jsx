@@ -9,17 +9,17 @@ import SuperAdminList from '../../components/UsersPage/superAdminList';
 import AdminList from '../../components/UsersPage/adminList';
 import MentorList from '../../components/UsersPage/mentorList';
 import InfoButton from '../../components/Buttons/Info';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 export default function UsersPage() {
-  const { t } = useTranslation('global');
-  
+  const {t} = useTranslation('global');
+
   const [isOpen, setIsOpen] = useState(false);
   const userRole = useSelector(state => state.auth.user.role);
   const [title, setTitle] = useState('New User');
   const [item, setItem] = useState({});
   const [edit, setEdit] = useState(false);
-  
+
   const [roles] = useState([
     {label: 'teacher', value: 1},
     {label: 'administrator', value: 2},
