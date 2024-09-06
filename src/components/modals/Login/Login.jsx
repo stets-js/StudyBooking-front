@@ -49,6 +49,18 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
       error({delay: 1000, text: err.response.data.message ?? 'Something went wrong'});
     }
   };
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (!forgotPasswordFlag) {
+        handleSubmit(event);
+      } else {
+        forgotPassword(email);
+        success({text: 'Лист був відправлений на пошту!'});
+        setForgotPasswordFlag(!forgotPasswordFlag);
+      }
+    }
+  };
   return (
     <>
       {isOpen && (
@@ -58,7 +70,7 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
           classname_wrapper={'login__wrapper'}
           classname_box={'login__box'}>
           <h3 className={styles.title}>Log In</h3>
-          <form>
+          <form onKeyDown={handleKeyDown}>
             <FormInput
               classname={styles.title}
               title={!MIC_flag ? 'Email:' : 'Login:'}
@@ -85,6 +97,7 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
             <p>
               <button
                 className={styles.forgot}
+                tabIndex="-10"
                 onClick={e => {
                   e.preventDefault();
                   setForgotPasswordFlag(!forgotPasswordFlag);
