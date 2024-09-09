@@ -27,27 +27,32 @@ export default function ImportReports({setReports}) {
   const newReports = async () => {
     setTotal(0);
     setChecked(0);
-    const res = await fetchReports(spreadsheetId, selectedSheet);
+    const res = await addReports(spreadsheetId, selectedSheet);
     console.log(res);
     if (res) {
-      success({text: 'Звіти вигрузились з таблиці, починається загрузко до букінга', delay: 1000});
-      setTotal(res.data.length);
-      if (res.data.length > 50) {
-        console.log(res.data.length / 50);
-        for (let i = 0; i < res.data.length / 50; i++) {
-          const slicedData = res.data.slice(i * 50, 50 * i + 50);
-          const result = await addReports(spreadsheetId, selectedSheet, {
-            rows: slicedData,
-            sheetName: selectedSheet
-          });
-          console.log(result);
-          setChecked(prev => prev + slicedData.length);
-          setReports(prev => [...prev, ...result.data.reports]);
-          if (result.data.notFound.length > 0)
-            setNotFound(prev => [...prev, ...result.data.notFound]);
-        }
-      }
-    }
+      setNotFound(res.data.notFound);
+      setReports(res.data.reports.slice(0, 30));
+    } // const res = await fetchReports(spreadsheetId, selectedSheet);
+    // console.log(res);
+    // if (res) {
+    //   success({text: 'Звіти вигрузились з таблиці, починається загрузко до букінга', delay: 1000});
+    //   setTotal(res.data.length);
+    //   if (res.data.length > 50) {
+    //     console.log(res.data.length / 50);
+    //     for (let i = 0; i < res.data.length / 50; i++) {
+    //       const slicedData = res.data.slice(i * 50, 50 * i + 50);
+    //       const result = await addReports(spreadsheetId, selectedSheet, {
+    //         rows: slicedData,
+    //         sheetName: selectedSheet
+    //       });
+    //       console.log(result);
+    //       setChecked(prev => prev + slicedData.length);
+    //       setReports(prev => [...prev, ...result.data.reports]);
+    //       if (result.data.notFound.length > 0)
+    //         setNotFound(prev => [...prev, ...result.data.notFound]);
+    //     }
+    //   }
+    // }
   };
   const [selectedSheet, setSelectedSheet] = useState(null);
   return (

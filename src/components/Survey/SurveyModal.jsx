@@ -73,11 +73,10 @@ const SurveyModal = () => {
     console.log(res);
     setIsOpen(false);
   };
-  console.log(selectedAnswers);
   return (
     <>
       {isOpen && survey && (
-        <Modal open={isOpen} classname_box={'survey'}>
+        <Modal open={isOpen} classname_box={'survey'} onClose={() => {}}>
           <h1>{survey.description}</h1>
           {questions.map(question => (
             <div key={question.id} className={styles.survey__question}>
