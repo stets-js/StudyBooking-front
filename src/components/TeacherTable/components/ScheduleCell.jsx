@@ -36,7 +36,6 @@ export default function ScheduleCell({
     slots.sort((a, b) => a.appointmentTypeId - b.appointmentTypeId);
     console.log(slots);
   }
-
   return (
     <td key={`${slot?.weekDay} ${format(currentTime, 'HH:mm')}`} rowSpan={slot?.rowSpan || 1}>
       {!slot?.rowSpan && (
@@ -141,7 +140,9 @@ export default function ScheduleCell({
                       {!slot.Replacement && slot.rowSpan >= 2 && (
                         <span className={tableStyles.tags__item}>
                           {slot?.SubGroup?.SubgroupMentors &&
-                          (slot?.SubGroup?.SubgroupMentors || [])[0]?.TeacherTypeId === 1
+                          (slot?.SubGroup?.SubgroupMentors || []).find(
+                            el => el.mentorId === user.id
+                          )?.TeacherTypeId === 1
                             ? 'soft'
                             : 'tech'}
                         </span>

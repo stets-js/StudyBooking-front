@@ -27,8 +27,10 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
     setSlot(Array.isArray(slots) ? slots[0] : slots);
   }, [slots]);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
-  const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || [])[0];
-  console.log(slot?.SubGroup);
+
+  const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || []).find(
+    el => el.mentorId === +userId
+  );
   return (
     <>
       {isOpen && slot && (
@@ -94,8 +96,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
                 appointmentLength={(() => {
                   let count = 0;
                   (Array.isArray(slots) ? slots : [slots]).map(
-                    slot =>
-                      (count += slot?.SubGroup?.SubgroupMentors[0]?.schedule.split('\n').length)
+                    slot => (count += subgroupMentors.schedule.split('\n').length)
                   );
                   return count + (Array.isArray(slots) ? slots : [slots]).length / 2;
                 })()}
@@ -105,7 +106,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
                         .map(slot => {
                           return (
                             `${slot?.SubGroup?.name}: \n` +
-                            slot?.SubGroup?.SubgroupMentors[0].schedule
+                            subgroupMentors.schedule
                               .split('\n')
                               .map(sc => {
                                 return sc ? `\t${sc}\n` : '';
@@ -114,7 +115,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
                           );
                         })
                         .join('')
-                    : slot?.SubGroup?.SubgroupMentors[0].schedule
+                    : subgroupMentors.schedule
                   // subgroupMentors.schedule.split(',').join('\n')
                 }
                 disabled={true}
