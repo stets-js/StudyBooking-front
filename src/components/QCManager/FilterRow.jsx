@@ -2,23 +2,22 @@ import React, {useEffect} from 'react';
 import {useState} from 'react';
 import classNames from 'classnames';
 import Select from 'react-select';
-import {format} from 'date-fns';
-import Clear from '../../img/clear.svg';
-
+import Arrow from '../../img/down-arrow.png';
 import tableStyles from '../../styles/table.module.scss';
 import selectorStyles from '../../styles/selector.module.scss';
 import styles from './Manager.module.scss';
-import FormInput from '../FormInput/FormInput';
 import {getSheets} from '../../helpers/spreadsheet/spreadsheet';
 import {getUsers} from '../../helpers/user/user';
+import {getCourses} from '../../helpers/course/course';
 
-export default function FitlerRow({reports, filterData, setFilterData, teacherPage = false}) {
+export default function FitlerRow({filterData, setFilterData, teacherPage = false}) {
   const [status] = useState([
     {label: 'Погодження', value: 'Pending'},
     {label: 'Погоджено', value: 'Approved'},
     {label: 'Апеляція', value: 'Declined'}
   ]);
   const [mentors, setMentors] = useState([]);
+  const [courses, setCourses] = useState([]);
   const fetchUsers = async () => {
     const users = await getUsers(`role=teacher`);
     setMentors(
@@ -27,38 +26,23 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
       })
     );
   };
+  const fetchCourses = async () => {
+    const courses = await getCourses();
+    setCourses([
+      ...courses.data.map(el => {
+        return {label: el.name, value: el.id};
+      }),
+      {label: 'Soft', value: 'Soft'}
+    ]);
+  };
 
   useEffect(() => {
-    if (!filterData.mentorId) {
-      fetchUsers();
-    }
+    fetchUsers();
+    fetchCourses();
   }, []);
 
-  useEffect(() => {
-    setFilterData(prev => {
-      const filteredReports = reports.filter(report => {
-        const matchMentorId = !filterData.mentorId || report.mentorId === filterData.mentorId;
-        const matchStatus = !filterData.status || report.status === filterData.status;
-        const matchSheet = !filterData.sheet || report.sheet === filterData.sheet;
-        return matchMentorId && matchStatus && matchSheet;
-      });
-
-      return {
-        ...prev,
-        reports: filteredReports
-      };
-    });
-  }, [filterData.mentorId, filterData.status, filterData.sheet, reports]);
-
-  useEffect(() => {
-    setFilterData(prev => {
-      return {...prev, reports: reports};
-    });
-  }, [reports]);
   const classes = () => {
-    return filterData.reports.length > 0
-      ? [tableStyles.cell, tableStyles.cell__outer, tableStyles.cell__mySubgroup]
-      : [tableStyles.cell, tableStyles.cell__outer, tableStyles.cell__mySubgroup];
+    return [tableStyles.cell, tableStyles.cell__outer, tableStyles.cell__mySubgroup];
   };
 
   const spreadsheetId = '1gbBpJfNZzkURPnOIghqPWDxkDovdRKVK_YxlotmkcIY';
@@ -78,7 +62,20 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
   return (
     <tr key={'filter_row'}>
       <td className={tableStyles.cell__mySubgroup}>
-        <div className={classNames(classes())}></div>
+        <div className={classNames(classes())}>
+          <Select
+            className={selectorStyles.selector}
+            options={courses}
+            isClearable
+            placeholder="Course"
+            value={courses.filter(course => course.value === filterData?.courseId)}
+            onChange={e => {
+              setFilterData(prev => {
+                return {...prev, reset: true, courseId: e?.value || null};
+              });
+            }}
+          />
+        </div>
       </td>
       <td className={tableStyles.cell__mySubgroup}>
         <div className={classNames(classes())}></div>
@@ -94,7 +91,7 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
               value={mentors.filter(mentor => mentor.value === filterData?.mentorId)}
               onChange={e => {
                 setFilterData(prev => {
-                  return {...prev, mentorId: e?.value || null};
+                  return {...prev, reset: true, mentorId: e?.value || null};
                 });
               }}
             />
@@ -111,14 +108,28 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
               value={sheets.find(sheet => sheet.label === filterData.sheet)}
               onChange={e => {
                 setFilterData(prev => {
-                  return {...prev, sheet: e?.label || null};
+                  return {...prev, reset: true, sheet: e?.label || null};
                 });
               }}></Select>
           </div>
         </div>
       </td>
       <td className={tableStyles.cell__mySubgroup}>
-        <div className={classNames(classes())}></div>
+        <div className={classNames(classes())}>
+          <button
+            onClick={() => {
+              setFilterData(prev => {
+                return {...prev, reset: true, mark: prev.mark === 'DESC' ? 'ASC' : 'DESC'};
+              });
+            }}
+            className={classNames(
+              styles.filter__button,
+              styles.filter__button__no_border,
+              filterData.mark === 'ASC' && styles.filter__button__up
+            )}>
+            <img src={Arrow} alt=">"></img>
+          </button>
+        </div>
       </td>
       <td className={tableStyles.cell__mySubgroup}>
         <div className={classNames(classes())}>
@@ -130,7 +141,7 @@ export default function FitlerRow({reports, filterData, setFilterData, teacherPa
             value={status.filter(stat => stat.label === filterData?.status)}
             onChange={e => {
               setFilterData(prev => {
-                return {...prev, status: e?.label || null};
+                return {...prev, reset: true, status: e?.label || null};
               });
             }}
           />

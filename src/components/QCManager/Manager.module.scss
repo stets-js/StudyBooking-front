@@ -36,6 +36,7 @@
 }
 
 .filter {
+
   &__wrapper {
     display: flex;
     justify-content: space-around;
@@ -70,7 +71,14 @@
     &:hover {
       scale: (1.1);
     }
+    &__no_border{
+      border:none
+    }
+    &__up{
+      rotate: 180deg;
+    }
   }
+
 }
 
 .notFound{

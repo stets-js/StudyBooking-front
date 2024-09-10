@@ -11,17 +11,24 @@ import tableStyles from '../../styles/table.module.scss';
 import selectorStyles from '../../styles/selector.module.scss';
 import styles from './Manager.module.scss';
 import FormInput from '../FormInput/FormInput';
-import {updateReport} from '../../helpers/manager/qcmanager';
+import {getReports, updateReport} from '../../helpers/manager/qcmanager';
 import FitlerRow from './FilterRow';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-export default function Tbody({offsetData, reports, updateData, teacherPage}) {
+export default function Tbody({teacherPage}) {
+  const [reports, setReports] = useState([]);
+  const [offsetData, setOffsetData] = useState({
+    total: 0,
+    limit: 20,
+    offset: 0
+  });
   const [isEdit, setIsEdit] = useState(-1);
   const [filterData, setFilterData] = useState({
-    mentorId: null,
-    reports: reports,
-    date: null,
-    status: null
+    mentorId: undefined,
+    date: undefined,
+    status: undefined,
+    mark: 'DESC',
+    reset: false
   });
 
   const [status] = useState([
@@ -31,6 +38,36 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
   ]);
   const [editData, setEditData] = useState({mark: null, status: null});
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchAllReports = async () => {
+    const data = await getReports(
+      `?limit=${offsetData.limit}&offset=${filterData.reset ? 0 : offsetData.offset}&mark=${
+        filterData.mark || 'DESC'
+      }&mentorId=${filterData.mentorId}&status=${filterData.status}&sheet=${
+        filterData.sheet
+      }&course=${filterData.courseId}`
+    );
+    setReports(prev => (filterData.reset ? data.data : [...prev, ...data.data]));
+
+    setOffsetData(prevOffsetData => {
+      return {
+        ...prevOffsetData,
+        total: data.totalCount,
+        offset: filterData.reset ? 0 : data.newOffset
+      };
+    });
+    setFilterData(prev => {
+      return {...prev, reset: false};
+    });
+  };
+  useEffect(() => {
+    fetchAllReports();
+  }, []);
+  useEffect(() => {
+    if (filterData.reset) {
+      fetchAllReports();
+    }
+  }, [filterData]);
   const edit = (index, report) => {
     setIsEdit(index);
     setEditData({mark: report.mark, status: null});
@@ -38,39 +75,33 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
   const onSave = async id => {
     await updateReport(id, editData);
     setIsEdit(-1);
-    updateData(offsetData);
+    fetchAllReports();
   };
 
-  useEffect(() => {
-    setFilterData(prev => {
-      return {...prev, reports: reports};
-    });
-  }, [reports]);
-  console.log(offsetData, offsetData.offset + offsetData.limit <= offsetData.total);
   return (
     <>
       <div className={styles.filter__wrapper}></div>
       <div className={classNames(tableStyles.calendar, tableStyles.scroller)} id="scroller">
-        <table className={tableStyles.tableBody}>
-          <tbody>
-            <InfiniteScroll
-              // height={'600px'}
-              width={'100%'}
-              dataLength={reports.length} //This is important field to render the next data
-              next={updateData}
-              hasMore={1}
-              scrollableTarget="scroller">
-              {reports.length > 0 && (
-                <FitlerRow
-                  reports={reports}
-                  setFilterData={setFilterData}
-                  filterData={filterData}
-                  teacherPage={teacherPage}
-                />
-              )}
-
-              {filterData.reports.length > 0 ? (
-                filterData.reports.map((report, index) => {
+        <InfiniteScroll
+          // height={'600px'}
+          width={'100%'}
+          dataLength={reports.length} //This is important field to render the next data
+          next={fetchAllReports}
+          hasMore={1}
+          scrollableTarget="scroller">
+          <table className={tableStyles.tableBody}>
+            <tbody>
+              <FitlerRow
+                updateReport={query => {
+                  fetchAllReports(query, true);
+                }}
+                reports={reports}
+                setFilterData={setFilterData}
+                filterData={filterData}
+                teacherPage={teacherPage}
+              />
+              {reports.length > 0 ? (
+                reports.map((report, index) => {
                   if (!report) return <></>;
                   return (
                     <tr key={'' + report.id}>
@@ -81,7 +112,19 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                             tableStyles.cell__outer,
                             tableStyles.cell__mySubgroup
                           )}>
-                          {report.Course ? report.Course.name : report.course}
+                          <button
+                            className={styles.filter__button}
+                            onClick={() => {
+                              setFilterData(prev => {
+                                return {
+                                  ...prev,
+                                  courseId: report.courseId || report.course,
+                                  reset: true
+                                };
+                              });
+                            }}>
+                            {report.Course ? report.Course.name : report.course}
+                          </button>
                         </div>
                       </td>
                       <td className={tableStyles.cell__mySubgroup}>
@@ -89,7 +132,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                           className={classNames(
                             tableStyles.cell,
                             tableStyles.cell__mySubgroup,
-                            index === filterData.reports.length - 1
+                            index === reports.length - 1
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           )}>
@@ -102,7 +145,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                             className={classNames(
                               tableStyles.cell,
                               tableStyles.cell__mySubgroup,
-                              index === filterData.reports.length - 1
+                              index === reports.length - 1
                                 ? tableStyles.cell__outer
                                 : tableStyles.cell__inner
                             )}>
@@ -110,7 +153,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                               className={styles.filter__button}
                               onClick={() => {
                                 setFilterData(prev => {
-                                  return {...prev, mentorId: report.User?.id};
+                                  return {...prev, mentorId: report.User?.id, reset: true};
                                 });
                               }}>
                               {report.User?.name}
@@ -123,7 +166,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                           className={classNames(
                             tableStyles.cell,
                             tableStyles.cell__mySubgroup,
-                            index === filterData.reports.length - 1
+                            index === reports.length - 1
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           )}>
@@ -131,7 +174,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                             className={styles.filter__button}
                             onClick={() => {
                               setFilterData(prev => {
-                                return {...prev, sheet: report.sheetName};
+                                return {...prev, sheet: report.sheetName, reset: true};
                               });
                             }}>
                             {report.sheetName}
@@ -143,29 +186,29 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                           className={classNames(
                             tableStyles.cell,
                             tableStyles.cell__mySubgroup,
-                            index === filterData.reports.length - 1
+                            index === reports.length - 1
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           )}>
                           {isEdit !== index ? (
-                            <>{report.mark}</>
+                            <>{report.total}</>
                           ) : !teacherPage ? (
                             <>
                               <FormInput
                                 type="number"
                                 min={0}
                                 max={100}
-                                placeholder={report.mark}
-                                value={editData.mark}
+                                placeholder={report.total}
+                                value={editData.total}
                                 handler={e =>
                                   setEditData(prev => {
-                                    return {...prev, mark: e};
+                                    return {...prev, total: e};
                                   })
                                 }
                               />
                             </>
                           ) : (
-                            <>{report.mark}</>
+                            <>{report.total}</>
                           )}
                         </div>
                       </td>
@@ -174,7 +217,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                           className={classNames(
                             tableStyles.cell,
                             tableStyles.cell__mySubgroup,
-                            index === filterData.reports.length - 1
+                            index === reports.length - 1
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           )}>
@@ -192,7 +235,7 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                               )}
                               onClick={() => {
                                 setFilterData(prev => {
-                                  return {...prev, status: report.status};
+                                  return {...prev, status: report.status, reset: true};
                                 });
                               }}>
                               {report.status}
@@ -245,9 +288,9 @@ export default function Tbody({offsetData, reports, updateData, teacherPage}) {
                   </td>
                 </tr>
               )}
-            </InfiniteScroll>
-          </tbody>
-        </table>
+            </tbody>
+          </table>{' '}
+        </InfiniteScroll>
       </div>
     </>
   );
