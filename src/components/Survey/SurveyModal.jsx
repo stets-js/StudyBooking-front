@@ -15,7 +15,7 @@ const SurveyModal = () => {
   const [survey, setSurvey] = useState(null);
 
   const fetchIsAnswered = async () => {
-    const res = await getUserAnswered(SurveyId);
+    const res = await getUserAnswered(SurveyId, {userId});
     setIsAnswered(res.isAnswered);
   };
 
