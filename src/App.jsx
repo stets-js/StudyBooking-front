@@ -95,7 +95,7 @@ const App = () => {
       <I18nextProvider i18n={i18next}>
         <ConfirmProvider>
           {userRole === 'superAdmin' && <ChangeLanguage></ChangeLanguage>}
-          {['administrator', 'superAdmin'].includes(userRole) && <SurveyModal></SurveyModal>}
+          <SurveyModal></SurveyModal>
           <Routes>
             {auth && ['administrator', 'superAdmin'].includes(userRole) ? (
               //  userRole.toLowerCase().includes('admin')
