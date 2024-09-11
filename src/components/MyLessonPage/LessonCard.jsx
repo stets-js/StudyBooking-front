@@ -1,6 +1,6 @@
 import React from 'react';
 
-import style from '../Statistic/statistic.module.scss';
+import style from '../LessonsPage/statistic.module.scss';
 import UserAvatar from '../MentorChooser/UserAvatar';
 import InfoButton from '../Buttons/Info';
 

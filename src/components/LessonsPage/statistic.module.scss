@@ -1,0 +1,112 @@
+@import '../../styles/App.scss';
+.main{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 100px;
+    &__cards{
+     margin-left: 0;
+     height: 626px;
+
+    }
+}
+.card {
+  &__wrapper {
+    &:first-of-type {
+      margin-top: 20px;
+    }
+    font-family: $poppins;
+    font-size: 24px;
+    line-height: 1.5em;
+    border: 1px solid black;
+    border-radius: 25px;
+    display: flex;
+    width: 75%;
+    margin-left: calc(25% / 2);
+    padding: 10px 15px;
+    margin-bottom: 20px;
+  }
+  &__topic {
+    &__container {
+      display: flex;
+      justify-content: flex-start;
+      column-gap: 5px;
+    }
+  }
+  &__schedule {
+    display: flex;
+    justify-content: flex-start;
+  }
+  &__feedback {
+    display: flex;
+    justify-content: flex-start;
+  }
+  &__course {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+  }
+  &__text {
+    &__container {
+      width: calc(100% - 200px);
+      margin-left: 35px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 4px;
+    }
+  }
+  &__leftAlign {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
+
+.filtering {
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+  }
+  &__date {
+    margin-top: 10px;
+    width: 220px;
+  }
+}
+
+.table {
+  &__wrapper {
+    min-width: 220px;
+    padding: 10px;
+  }
+  &__cell {
+    font-family: $poppins;
+    font-size: 26px;
+    padding: 5px;
+    border: 1px solid black;
+    border-left: 0;
+    border-right: 0;
+    cursor: pointer;
+    transition: 0.1s;
+    &:hover{
+        transform: scale(1.1);
+    }
+  }
+}
+
+tr {
+  &:first-child {
+    .table__cell {
+      border-top: 0;
+    }
+  }
+  &:last-child {
+    .table__cell {
+      border-bottom: 0;
+    }
+  }
+}

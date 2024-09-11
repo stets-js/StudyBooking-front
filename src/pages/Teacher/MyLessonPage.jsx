@@ -5,9 +5,9 @@ import {format} from 'date-fns';
 import {getLessons} from '../../helpers/lessons/lesson';
 import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import LessonCard from '../../components/MyLessonPage/LessonCard';
-import FilteringBlock from '../../components/Statistic/FilteringBlock';
 import WriteFeedback from '../../components/modals/Feedback/WriteFeedback';
+import FilteringBlock from '../../components/LessonsPage/FilteringBlock';
+import LessonCard from '../../components/LessonsPage/LessonCard';
 
 export default function MyLessonPage() {
   const {teacherId} = useParams() || null;

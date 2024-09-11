@@ -45,7 +45,7 @@ export default function LessonCard({lesson, setLessons}) {
       .catch(e => console.log('no ' + e));
   };
   return (
-    <div className={style.card__wrapper}>
+    <div className={style.card__wrapper} key={lesson.id}>
       <UserAvatar mentor={lesson.User}></UserAvatar>
       <div className={style.card__text__container}>
         <div className={style.card__leftAlign}>
@@ -60,16 +60,16 @@ export default function LessonCard({lesson, setLessons}) {
         <div className={style.card__leftAlign}>
           <span>Course: {lesson?.SubGroup?.Course.name}</span>
         </div>
-        <div className={style.card__leftAlign}>
+        {/* <div className={style.card__leftAlign}>
           <span>Topic: {lesson.LessonTopic?.topic || 'No topic yet'}</span>
-        </div>
+        </div> */}
         <div className={style.card__leftAlign}>
           {weekDays[lesson.LessonSchedule.weekDay]}: {lesson.LessonSchedule.startTime} -{' '}
           {lesson.LessonSchedule.endTime}
         </div>
-        <div className={style.card__leftAlign}>
+        {/* <div className={style.card__leftAlign}>
           Feedback: {lesson?.Feedback?.report || 'No feedback yet :('}
-        </div>
+        </div> */}
       </div>
       <div>
         <InfoButton text="Replace" onClick={handleReplaceClick}></InfoButton>
