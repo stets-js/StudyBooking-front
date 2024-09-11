@@ -10,6 +10,7 @@ import {
   allUsersStats,
   allUsersStatsByCourse,
   referalSheet,
+  updateSurvey,
   usersActivity,
   usersActivityByCourse
 } from '../../helpers/spreadsheet/spreadsheet';
@@ -53,6 +54,12 @@ export default function TableBody() {
       link: 'https://docs.google.com/spreadsheets/d/1oLtCH6ZTyg6Q0ZNQaukxHciJRHRh-wjINAf7R6ctTAk/edit?usp=sharing',
       onClick: usersActivity,
       dates: true
+    },
+    {
+      title: 'Опитування',
+      link: 'https://docs.google.com/spreadsheets/d/1yXL-m63lfL6R3DSrOY73YkwdcJFB1bnKYvYkTDnN0VU/edit?usp=sharing',
+      onClick: updateSurvey,
+      dates: false
     }
   ]);
   const outerOrInnerCell = index => {

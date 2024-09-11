@@ -36,7 +36,9 @@ const usersActivity = dates => {
     `/spreadsheet/activity?start=${format(start, 'yyyy-MM-dd')}&end=${format(end, 'yyyy-MM-dd')}`
   );
 };
-
+const updateSurvey = (id = 1) => {
+  return axios.get(`/spreadsheet/survey/${id}`);
+};
 const usersActivityByCourse = (dates, selectedCourse) => {
   const {start, end} = dates;
 
@@ -68,5 +70,6 @@ export {
   allUsersStats,
   allUsersStatsByCourse,
   usersActivity,
-  usersActivityByCourse
+  usersActivityByCourse,
+  updateSurvey
 };
