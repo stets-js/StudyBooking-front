@@ -14,8 +14,14 @@ import FormInput from '../FormInput/FormInput';
 import {getReports, updateReport} from '../../helpers/manager/qcmanager';
 import FitlerRow from './FilterRow';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import {useParams} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 export default function Tbody({teacherPage}) {
+  const {teacherId} = useParams() || null;
+  let userId = useSelector(state => state.auth.user.id);
+  const userRole = useSelector(state => state.auth.user.role);
+  if (teacherId) userId = teacherId; //case when admin is logged in and wants to see another teachers schedule
   const [reports, setReports] = useState([]);
   const [offsetData, setOffsetData] = useState({
     total: 0,
@@ -24,13 +30,13 @@ export default function Tbody({teacherPage}) {
   });
   const [isEdit, setIsEdit] = useState(-1);
   const [filterData, setFilterData] = useState({
-    mentorId: undefined,
+    mentorId: userRole !== 'QC manager' ? userId : undefined,
     date: undefined,
     status: undefined,
     mark: 'DESC',
     reset: false
   });
-
+  console.log(teacherId);
   const [status] = useState([
     {label: 'Погодження', value: 'Pending'},
     {label: 'Погоджено', value: 'Approved'},
