@@ -59,6 +59,7 @@ export default function TableBody() {
       title: 'Опитування',
       link: 'https://docs.google.com/spreadsheets/d/1yXL-m63lfL6R3DSrOY73YkwdcJFB1bnKYvYkTDnN0VU/edit?usp=sharing',
       onClick: updateSurvey,
+      withoutInput: true,
       dates: false
     }
   ]);
@@ -195,7 +196,9 @@ export default function TableBody() {
                             error('Увага, без вибраного курса не всі данні будуть завантажені');
                           try {
                             success('Запит відправився, очікуйте :)');
-                            const res = await row.onClick(dates, selectedCourse);
+                            const res = await (row.withoutInput
+                              ? row.onClick()
+                              : row.onClick(dates, selectedCourse));
                             if (res) success({text: 'success', delay: 800});
                           } catch (e) {
                             error({
