@@ -14,7 +14,32 @@ export default function LessonCard({lesson, setLessons}) {
   const navigate = useNavigate();
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const confirm = useConfirm();
-
+  const translateAppointmentTypeName = name => {
+    switch (name) {
+      case 'universal':
+        return 'Universal';
+      case 'appointed_group':
+        return 'Appointed group';
+      case 'appointed_private':
+        return 'Appointed private';
+      case 'appointed_junior_group':
+        return 'Appointed jun group';
+      case 'free':
+        return 'Remove';
+      case 'group':
+        return 'Group';
+      case 'private':
+        return 'Private';
+      case 'replacement_group':
+        return 'Group replacement';
+      case 'replacement_private':
+        return 'Private replacement';
+      case 'replacement_junior_group':
+        return 'Jun group replacement';
+      default:
+        return name;
+    }
+  };
   const handleReplaceClick = () => {
     navigate(`../${path.appointments}`, {
       state: {
@@ -46,34 +71,20 @@ export default function LessonCard({lesson, setLessons}) {
   };
   return (
     <div className={style.card__wrapper} key={lesson.id}>
-      <UserAvatar mentor={lesson.User}></UserAvatar>
       <div className={style.card__text__container}>
-        <div className={style.card__leftAlign}>
-          <span>Subgroup: {lesson?.SubGroup?.name}</span>
+        <span>{lesson?.SubGroup?.name}</span>
+        <span>{lesson?.SubGroup?.Course.name}</span>
+        <span>{translateAppointmentTypeName(lesson.AppointmentType.name)}</span>
+        <span>
+          {lesson.LessonSchedule.startTime} - {lesson.LessonSchedule.endTime}
+        </span>
+        <div>
+          <InfoButton text="Replace" onClick={handleReplaceClick}></InfoButton>
+          <DeleteButton onClick={handleDelete}></DeleteButton>
         </div>
-        <div className={style.card__leftAlign}>
-          <span>Type: {lesson.AppointmentType.name}</span>
-        </div>
-        <div className={style.card__leftAlign}>
-          <span>Replacement: {lesson.ReplacementId ? 'Yes' : 'No'}</span>
-        </div>
-        <div className={style.card__leftAlign}>
-          <span>Course: {lesson?.SubGroup?.Course.name}</span>
-        </div>
-        {/* <div className={style.card__leftAlign}>
-          <span>Topic: {lesson.LessonTopic?.topic || 'No topic yet'}</span>
-        </div> */}
-        <div className={style.card__leftAlign}>
-          {weekDays[lesson.LessonSchedule.weekDay]}: {lesson.LessonSchedule.startTime} -{' '}
-          {lesson.LessonSchedule.endTime}
-        </div>
-        {/* <div className={style.card__leftAlign}>
-          Feedback: {lesson?.Feedback?.report || 'No feedback yet :('}
-        </div> */}
       </div>
-      <div>
-        <InfoButton text="Replace" onClick={handleReplaceClick}></InfoButton>
-        <DeleteButton onClick={handleDelete}></DeleteButton>
+      <div className={style.card__avatar}>
+        <UserAvatar mentor={lesson.User}></UserAvatar>
       </div>
     </div>
   );

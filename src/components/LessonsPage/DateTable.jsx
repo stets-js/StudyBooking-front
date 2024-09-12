@@ -1,13 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
-import {useDispatch, useSelector} from 'react-redux';
-import Switch from 'react-switch';
+import React, {useState} from 'react';
+import {format, addMinutes} from 'date-fns';
 
 import tableStyles from '../../styles/table.module.scss';
 import styles from './statistic.module.scss';
 import classNames from 'classnames';
 
-export default function DateTable({lessons, onClick}) {
+export default function DateTable({lessons, onClick, selectedTime}) {
   const [startingHour, setStartingHour] = useState(9);
   const [slotsAmount, setSlotsAmount] = useState(26);
 
@@ -23,7 +21,10 @@ export default function DateTable({lessons, onClick}) {
             return (
               <tr key={Math.random() * 100 - 1}>
                 <td
-                  className={styles.table__cell}
+                  className={classNames(
+                    styles.table__cell,
+                    selectedTime === formattedTime && styles.table__cell__selected
+                  )}
                   onClick={() => {
                     onClick(formattedTime);
                   }}>

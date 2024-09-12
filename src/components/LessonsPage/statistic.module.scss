@@ -5,11 +5,17 @@
     column-gap: 100px;
     &__cards{
      margin-left: 0;
+     display: flex;
+     flex-direction: column;
+      align-items: center;
      height: 626px;
 
     }
 }
 .card {
+  &__avatar{
+    min-width: 250px;
+  }
   &__wrapper {
     &:first-of-type {
       margin-top: 20px;
@@ -20,8 +26,7 @@
     border: 1px solid black;
     border-radius: 25px;
     display: flex;
-    width: 75%;
-    margin-left: calc(25% / 2);
+    width: 90%;
     padding: 10px 15px;
     margin-bottom: 20px;
   }
@@ -50,12 +55,12 @@
   }
   &__text {
     &__container {
-      width: calc(100% - 200px);
-      margin-left: 35px;
+      flex:1;
       display: flex;
       flex-direction: column;
+      text-align: start;
       justify-content: center;
-      row-gap: 4px;
+      row-gap: 1em;
     }
   }
   &__leftAlign {
@@ -81,19 +86,24 @@
 .table {
   &__wrapper {
     min-width: 220px;
-    padding: 10px;
+    // padding: 10px;
   }
   &__cell {
     font-family: $poppins;
     font-size: 26px;
-    padding: 5px;
+    padding: 10px;
     border: 1px solid black;
     border-left: 0;
     border-right: 0;
     cursor: pointer;
-    transition: 0.1s;
+    transition: 0.3s;
     &:hover{
-        transform: scale(1.1);
+        background-color: rgba(120, 234, 128, 0.68);
+    }
+    
+    &__selected{
+      transition: 0.1s;
+      background-color: rgb(120, 234, 127);
     }
   }
 }

@@ -81,7 +81,11 @@ export default function LessonsPage() {
         currDate={currDate}
         setCurrDate={setCurrDate}></FilteringBlock>
       <div className={styles.main}>
-        <DateTable lessons={lessons} onClick={time => setSelectedTime(time)} />
+        <DateTable
+          lessons={lessons}
+          selectedTime={selectedTime}
+          onClick={time => setSelectedTime(time)}
+        />
         <div className={classNames(styles.main__cards, tableStyles.calendar, tableStyles.scroller)}>
           {selectedTime.length > 0 ? (
             lessons[selectedTime].map((lesson, index) => {
