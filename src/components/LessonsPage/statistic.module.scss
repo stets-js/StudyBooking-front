@@ -81,6 +81,17 @@
     margin-top: 10px;
     width: 220px;
   }
+  &__switch{
+    align-items: center;
+    height: 64px;
+    display: flex;
+    column-gap: 5px;
+    justify-content: center;
+    &__text{
+      font-size: 24px;
+      font-family: $poppins;
+    }
+  }
 }
 
 .table {

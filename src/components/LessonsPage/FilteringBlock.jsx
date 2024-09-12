@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import {format} from 'date-fns';
-
+import Switch from 'react-switch';
 import {getCourses} from '../../helpers/course/course';
 import selectorStyles from '../../styles/selector.module.scss';
 import FormInput from '../FormInput/FormInput';
 import style from './statistic.module.scss';
-export default function FilteringBlock({setSelectedCourse, currDate, setCurrDate}) {
+export default function FilteringBlock({setSelectedCourse, currDate, setCurrDate, onSwitchChange}) {
   const [courses, setCourses] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
   const fetchCourses = async () => {
     const res = await getCourses();
     if (res)
@@ -22,6 +23,19 @@ export default function FilteringBlock({setSelectedCourse, currDate, setCurrDate
   }, []);
   return (
     <div className={style.filtering__container}>
+      <div className={style.filtering__switch}>
+        <span className={style.filtering__switch__text}>9-22</span>
+        <Switch
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onChange={() => {
+            onSwitchChange(isChecked);
+            setIsChecked(!isChecked);
+          }}
+          checked={isChecked}
+        />
+        <span className={style.filtering__switch__text}>00-24</span>
+      </div>
       <Select
         options={courses}
         isClearable

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styles from '../../components/LessonsPage/statistic.module.scss';
 import tableStyles from '../../styles/table.module.scss';
-
+import Switch from 'react-switch';
 import {getLessons} from '../../helpers/lessons/lesson';
 import LessonCard from '../../components/LessonsPage/LessonCard';
 import FilteringBlock from '../../components/LessonsPage/FilteringBlock';
@@ -15,7 +15,7 @@ export default function LessonsPage() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currDate, setCurrDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('');
-  console.log(selectedTime);
+  const [slotsData, setSlotsData] = useState({startingTime: 9, amount: 26});
   const generateEmptyStructure = () => {
     let schedule = {};
 
@@ -28,10 +28,10 @@ export default function LessonsPage() {
     }
     setLessons(schedule);
   };
-  useEffect(() => {
-    generateEmptyStructure();
-    fetchLessons();
-  }, []);
+  // useEffect(() => {
+  //   generateEmptyStructure();
+  //   fetchLessons();
+  // }, []);
   const fetchLessons = async () => {
     try {
       const {data} = await getLessons(
@@ -56,32 +56,23 @@ export default function LessonsPage() {
       console.log(error);
     }
   };
-  // useEffect(() => {
-  //   fetchLessons();
-  // }, [selectedCourse, currDate]);
+  useEffect(() => {
+    generateEmptyStructure();
+    console.log(123);
+    fetchLessons();
+  }, [selectedCourse, currDate]);
   return (
     <>
-      {/* <label>
-        <span>9-22</span>
-        <Switch
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onChange={() => {
-            // setCalendarType(!calendarType);
-            // setStartingHour(!calendarType ? 0 : 9);
-            // setSlotsSettings(!calendarType ? {height: 40, amount: 48} : {height: 58, amount: 26});
-            // handleCalendarChange(!calendarType);
-          }}
-          //   checked={calendarType}
-        />
-        <span>00-24</span>
-      </label> */}
       <FilteringBlock
         setSelectedCourse={setSelectedCourse}
+        onSwitchChange={checked =>
+          setSlotsData(checked ? {startingTime: 9, amount: 26} : {startingTime: 0, amount: 48})
+        }
         currDate={currDate}
         setCurrDate={setCurrDate}></FilteringBlock>
       <div className={styles.main}>
         <DateTable
+          slotsData={slotsData}
           lessons={lessons}
           selectedTime={selectedTime}
           onClick={time => setSelectedTime(time)}
