@@ -162,9 +162,9 @@ const Form = ({
                 jsonData.slots[i].forEach(async slot => {
                   if (slot.schedule && slot.schedule.weekDayOrigin === i) {
                     const time = [];
-                    for (let i = 0; i < slot.rowSpan; i++) {
+                    for (let j = 0; j < slot.rowSpan; j++) {
                       time.push(
-                        format(addMinutes(new Date(`1970 ${slot.schedule.start}`), 30 * i), 'HH:mm')
+                        format(addMinutes(new Date(`1970 ${slot.schedule.start}`), 30 * j), 'HH:mm')
                       );
                     }
                     const body = {
