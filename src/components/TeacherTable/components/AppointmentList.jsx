@@ -47,8 +47,8 @@ export default function AppointmentList({
         return 'Appointed group';
       case 'appointed_private':
         return 'Appointed private';
-      case 'appointed_junior_group':
-        return 'Appointed jun group';
+      case 'appointed_kids_group':
+        return 'Appointed kids group';
       case 'free':
         return 'Remove';
       case 'group':
@@ -59,8 +59,8 @@ export default function AppointmentList({
         return 'Group replacement';
       case 'replacement_private':
         return 'Private replacement';
-      case 'replacement_junior_group':
-        return 'Jun group replacement';
+      case 'replacement_kids_group':
+        return 'Kids group replacement';
       default:
         return name;
     }

@@ -6,7 +6,6 @@ import {
   DeleteSlotFromWeek,
   addNewSlotToWeek,
   removeSlotFromWeekByTime,
-  updateSlotForWeek,
   updateSlotForWeekByTime
 } from '../../../redux/action/weekScheduler.action';
 

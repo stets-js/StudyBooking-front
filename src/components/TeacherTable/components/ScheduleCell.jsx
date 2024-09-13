@@ -39,7 +39,11 @@ export default function ScheduleCell({
   return (
     <td key={`${slot?.weekDay} ${format(currentTime, 'HH:mm')}`} rowSpan={slot?.rowSpan || 1}>
       {!slot?.rowSpan && (
-        <span className={tableStyles.cell__time}>{format(currentTime, 'HH:mm')}</span>
+        <span
+          className={tableStyles.cell__time}
+          key={`${slot?.weekDay} ${format(currentTime, 'HH:mm')} span`}>
+          {format(currentTime, 'HH:mm')}
+        </span>
       )}
       <div
         className={
@@ -137,7 +141,7 @@ export default function ScheduleCell({
                             : slot?.Replacement?.SubGroup?.Course?.shortening}
                         </span>
                       )}
-                      {!slot.Replacement && slot.rowSpan >= 2 && (
+                      {slot.rowSpan >= 2 && !slot.Replacement ? (
                         <span className={tableStyles.tags__item}>
                           {slot?.SubGroup?.SubgroupMentors &&
                           (slot?.SubGroup?.SubgroupMentors || []).find(
@@ -146,6 +150,8 @@ export default function ScheduleCell({
                             ? 'soft'
                             : 'tech'}
                         </span>
+                      ) : (
+                        <span className={tableStyles.tags__item}>Repl</span>
                       )}
                       {slots.length > 1 && (
                         <span className={tableStyles.tags__item}>x{slots.length}</span>

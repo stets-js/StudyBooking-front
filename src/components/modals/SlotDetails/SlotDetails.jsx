@@ -10,6 +10,9 @@ import HeaderLinks from './HeaderLinks';
 const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
   const [topics, setTopics] = useState([]);
   const dispatch = useDispatch();
+  const [slot, setSlot] = useState(Array.isArray(slots) ? slots[0] : slots);
+
+  const [subgroupData, setSubgropData] = useState(null);
   const fetchData = async () => {
     const res = await getTopics();
     if (res)
@@ -22,10 +25,13 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
   useEffect(() => {
     fetchData();
   }, []);
-  const [slot, setSlot] = useState(Array.isArray(slots) ? slots[0] : slots);
   useEffect(() => {
     setSlot(Array.isArray(slots) ? slots[0] : slots);
   }, [slots]);
+  useEffect(() => {
+    console.log(slot);
+    setSubgropData(slot?.SubGroup);
+  }, [slot]);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
 
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || []).find(
@@ -33,10 +39,10 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
   );
   return (
     <>
-      {isOpen && slot && (
+      {isOpen && slot && subgroupData && (
         <Modal open={isOpen} onClose={handleClose} className={styles.modal_wrapper}>
           <div>
-            {!slot.ReplacementId && (
+            {Array.isArray(slots) && slots.length > 1 ? (
               <div>
                 {(Array.isArray(slots) ? slots : [slots]).map(slot => (
                   <HeaderLinks
@@ -46,17 +52,19 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
                     end={slot?.SubGroup?.endDate}></HeaderLinks>
                 ))}
               </div>
+            ) : (
+              <HeaderLinks
+                link={subgroupData?.link}
+                name={subgroupData?.name}
+                start={subgroupData?.startDate}
+                end={subgroupData?.endDate}></HeaderLinks>
             )}
 
             <FormInput
               title="Course:"
               type="text"
               name="course"
-              value={
-                slot.ReplacementId
-                  ? slot.Replacement.SubGroup.Course.name
-                  : slot?.SubGroup?.Course.name
-              }
+              value={subgroupData.Course.name}
               placeholder="Course"
               disabled={true}
             />
@@ -67,7 +75,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
               name="subgroupName"
               value={
                 slot.ReplacementId
-                  ? slot?.Replacement?.SubGroup?.name
+                  ? subgroupData?.name
                   : (Array.isArray(slots) ? slots : [slots])
                       .map(slot => slot?.SubGroup?.name)
                       .join(', ')
@@ -79,11 +87,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
               title="Appointer:"
               type="text"
               name="course"
-              value={
-                slot.ReplacementId
-                  ? slot?.Replacement?.SubGroup?.Admin?.name
-                  : slot?.SubGroup?.Admin?.name
-              }
+              value={subgroupData?.Admin?.name}
               placeholder="Administrator"
               disabled={true}
             />
@@ -127,7 +131,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
               classname="input__bottom"
               title="Description:"
               type="text"
-              value={slot?.SubGroup?.description || slot?.Replacement?.SubGroup?.description}
+              value={subgroupData?.description}
               disabled={true}
               textArea={true}
             />
@@ -143,14 +147,14 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
               />
             )}
 
-            <FormInput
+            {/* <FormInput
               classname="input__bottom"
               title="Feedback:"
               type="text"
               disabled={1}
               value={slot?.Feedback?.report || ''}
               textArea={true}
-            />
+            /> */}
           </div>
         </Modal>
       )}

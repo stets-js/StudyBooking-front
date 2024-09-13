@@ -152,7 +152,7 @@ const Form = ({
         )
           .then(async data => {
             console.log(data);
-            const replacecmentId = isReplacement ? data.data.id : undefined;
+            const replacementId = isReplacement ? data.data.id : undefined;
             // console.log(data, newDocId);
             success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
@@ -176,7 +176,7 @@ const Form = ({
                       startDate: jsonData.startDate,
                       endDate: jsonData.endDate,
                       subgroupId: +jsonData.subgroupId,
-                      ReplacecmentId: replacecmentId
+                      ReplacementId: replacementId
                     };
 
                     // body[isReplacement ? 'ReplacementId' : 'subgroupId'] = newDocId;
