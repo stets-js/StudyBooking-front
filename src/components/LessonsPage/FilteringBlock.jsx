@@ -8,7 +8,11 @@ import FormInput from '../FormInput/FormInput';
 import style from './statistic.module.scss';
 export default function FilteringBlock({setSelectedCourse, currDate, setCurrDate, onSwitchChange}) {
   const [courses, setCourses] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState({
+    teamLeadOnly: false,
+    replacements: false,
+    fullDay: false
+  });
   const fetchCourses = async () => {
     const res = await getCourses();
     if (res)
@@ -21,18 +25,50 @@ export default function FilteringBlock({setSelectedCourse, currDate, setCurrDate
   useEffect(() => {
     fetchCourses();
   }, []);
+  useEffect(() => {
+    onSwitchChange(isChecked);
+  }, [isChecked]);
   return (
     <div className={style.filtering__container}>
+      <div className={style.filtering__switch}>
+        <span className={style.filtering__switch__text}>My</span>
+        <Switch
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onChange={() => {
+            setIsChecked(prev => {
+              return {...prev, teamLeadOnly: !isChecked.teamLeadOnly};
+            });
+          }}
+          checked={!isChecked.teamLeadOnly}
+        />
+        <span className={style.filtering__switch__text}>All</span>
+      </div>
+      <div className={style.filtering__switch}>
+        <span className={style.filtering__switch__text}>Lessons</span>
+        <Switch
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onChange={() => {
+            setIsChecked(prev => {
+              return {...prev, replacements: !isChecked.replacements};
+            });
+          }}
+          checked={isChecked.replacements}
+        />
+        <span className={style.filtering__switch__text}>Replacements</span>
+      </div>
       <div className={style.filtering__switch}>
         <span className={style.filtering__switch__text}>9-22</span>
         <Switch
           uncheckedIcon={false}
           checkedIcon={false}
           onChange={() => {
-            onSwitchChange(isChecked);
-            setIsChecked(!isChecked);
+            setIsChecked(prev => {
+              return {...prev, fullDay: !isChecked.fullDay};
+            });
           }}
-          checked={isChecked}
+          checked={isChecked.fullDay}
         />
         <span className={style.filtering__switch__text}>00-24</span>
       </div>

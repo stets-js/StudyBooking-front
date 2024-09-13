@@ -73,7 +73,9 @@ export default function LessonCard({lesson, setLessons}) {
     <div className={style.card__wrapper} key={lesson.id}>
       <div className={style.card__text__container}>
         <span>{lesson?.SubGroup?.name}</span>
-        <span>{lesson?.SubGroup?.Course.name}</span>
+        <span>
+          {lesson?.SubGroup?.Course.name} {lesson.ReplacementId && '[Replacement]'}
+        </span>
         <span>{translateAppointmentTypeName(lesson.AppointmentType.name)}</span>
         <span>
           {lesson.LessonSchedule.startTime} - {lesson.LessonSchedule.endTime}

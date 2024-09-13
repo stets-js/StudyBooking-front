@@ -15,7 +15,12 @@ export default function LessonsPage() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currDate, setCurrDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('');
-  const [slotsData, setSlotsData] = useState({startingTime: 9, amount: 26});
+  const [slotsData, setSlotsData] = useState({
+    startingTime: 9,
+    amount: 26,
+    teamLeadOnly: false,
+    replacements: false
+  });
   const generateEmptyStructure = () => {
     let schedule = {};
 
@@ -37,6 +42,8 @@ export default function LessonsPage() {
       const {data} = await getLessons(
         `date=${format(currDate, 'yyyy-MM-dd')}${
           selectedCourse ? '&courseId=' + selectedCourse : ''
+        }${slotsData.teamLeadOnly ? '&teamLeadOnly=true' : ''}${
+          slotsData.replacements ? '&replacements=true' : ''
         }`
       );
       // generateEmptyStructure();
@@ -60,14 +67,25 @@ export default function LessonsPage() {
     generateEmptyStructure();
     console.log(123);
     fetchLessons();
-  }, [selectedCourse, currDate]);
+  }, [selectedCourse, currDate, slotsData]);
   return (
     <>
       <FilteringBlock
         setSelectedCourse={setSelectedCourse}
-        onSwitchChange={checked =>
-          setSlotsData(checked ? {startingTime: 9, amount: 26} : {startingTime: 0, amount: 48})
-        }
+        onSwitchChange={checked => {
+          console.log(checked);
+
+          setSlotsData(prev => {
+            let obj = {};
+            if (checked.fullDay) {
+              obj = {...obj, ...{startingTime: 0, amount: 48}};
+            } else {
+              obj = {...obj, ...{startingTime: 9, amount: 26}};
+            }
+            obj = {...obj, replacements: checked.replacements, teamLeadOnly: checked.teamLeadOnly};
+            return obj;
+          });
+        }}
         currDate={currDate}
         setCurrDate={setCurrDate}></FilteringBlock>
       <div className={styles.main}>
