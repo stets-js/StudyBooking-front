@@ -115,7 +115,7 @@ export default function UsersPage({MIC_flag = false}) {
   };
   useEffect(() => {
     console.log(endDate, startDate);
-    if (endDate && startDate && +endDate[3] === +startDate[3]) {
+    if (endDate && startDate && +endDate[3] === +startDate[3] && !isReplacement) {
       error({text: 'End date and start date can`t be in one year', delay: 1000});
       clearTable();
       setSlotsData([]);
@@ -136,7 +136,6 @@ export default function UsersPage({MIC_flag = false}) {
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
-
   const setAllData = async () => {
     if (lesson) {
       console.log(lesson);
@@ -144,7 +143,7 @@ export default function UsersPage({MIC_flag = false}) {
       setStartDate(lesson.date);
       setEndDate(lesson.date);
       setSelectedCourse(lesson.courseId);
-      setSelectedClassType(lesson.appointmentId);
+      setSelectedClassType(lesson.appointmentId === 7 ? 1 : 8 ? 2 : 11);
       setSubGroup({value: lesson.subgroupId});
       setExcludeTeacherId(lesson.userId);
       setIsReplacement(true);

@@ -135,7 +135,7 @@ const Form = ({
             ? 12
             : 11;
         // const appointmentType = await getAppointmentTypes(searchQuery);
-        if (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)) {
+        if (isReplacement) {
           await deleteOneLesson(jsonData.lessonId); //delete lesson that is replaced
         }
         if (JSON.parse(jsonData.MIC_flag)) {
@@ -146,12 +146,13 @@ const Form = ({
           jsonData = {...jsonData, subgroupId: +subgroup.data.id};
         }
         // return console.log(jsonData.slots);
-        return await (jsonData?.isReplacement && JSON.parse(jsonData.isReplacement)
+        return await (isReplacement
           ? createReplacement(jsonData, userId)
           : updateSubGroupAndAddMentor({id: jsonData.subgroupId, body: jsonData, userId})
         )
           .then(async data => {
-            const newDocId = data?.subgroupMentor?.subgroupId || data?.data?.id;
+            console.log(data);
+            const replacecmentId = isReplacement ? data.data.id : undefined;
             // console.log(data, newDocId);
             success({text: status.successMessage || 'Success', delay: 1000});
             for (let i = 0; i <= 6; i++) {
@@ -173,10 +174,12 @@ const Form = ({
                       appointmentTypeId: appointmentTypeId,
                       userId: jsonData.mentorId,
                       startDate: jsonData.startDate,
-                      endDate: jsonData.endDate
+                      endDate: jsonData.endDate,
+                      subgroupId: +jsonData.subgroupId,
+                      ReplacecmentId: replacecmentId
                     };
-                    body[JSON.parse(jsonData.isReplacement) ? 'ReplacementId' : 'subgroupId'] =
-                      newDocId;
+
+                    // body[isReplacement ? 'ReplacementId' : 'subgroupId'] = newDocId;
                     await bulkUpdate(body);
                   }
                   // console.log(body);

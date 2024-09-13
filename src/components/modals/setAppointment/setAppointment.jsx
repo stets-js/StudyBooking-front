@@ -234,7 +234,6 @@ const SetAppointment = ({
                   type="text"
                   name="link"
                   placeholder="link"
-                  isRequired={true}
                   handler={setLink}
                 />
                 <div className={styles.input__block}>
