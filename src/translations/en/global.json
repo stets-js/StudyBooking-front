@@ -1,5 +1,244 @@
 {
-    "usersPage":{
-        "title": "Manage users"
+  "usersPage": {
+    "title": "Manage users"
+  },
+  "superAdmin": {
+    "header": {
+      "users": "Users",
+      "courses": "Courses",
+      "lessons": "Lessons",
+      "appointment": "Appointment",
+      "mentors": "Available mentors",
+      "subgroups": "Subgroups",
+      "replacements": "Replacements",
+      "spreadsheet": "Spreadsheet"
+    },
+    "users": {
+      "title": "Manage users",
+      "button": "Add new user",
+      "addUserModal": {
+        "title": "New User",
+        "name": "Name",
+        "rating": "Rating",
+        "phone": "Phone",
+        "city": "City",
+        "email": "Email",
+        "saveBtn": "Save",
+        "roles": ["teacher", "administrator", "superAdmin"],
+        "exit": "Click here or outside to exit"
+      },
+      "table": {
+        "headers": ["Super admin", "Appointers", "Mentors"],
+        "mentors": {
+          "namePlaceholder": "Name",
+          "coursesPlaceholder": "Courses",
+          "filter": ["My", "All"],
+          "editModal": {
+            "title": "Edit",
+            "name": "Name",
+            "rating": "Rating",
+            "phone": "Phone",
+            "city": "City",
+            "email": "Email",
+            "teamleaders": {
+              "text": "Teamleaders",
+              "add": ["Select...", "Create"]
+            },
+            "buttons": ["Forgot password", "Save", "Courses", "Delete"],
+            "exit": "Click here or outside to exit"
+          }
+        }
+      }
     }
+  },
+  "teacher": {
+    "header": {
+      "timetable": "Timetable",
+      "mySubgroups": "My subgroups",
+      "addMySubgroup": "Add my subgroup",
+      "information": "Information",
+      "statistics": "Statistics"
+    },
+    "timetable": {
+      "refferal": {
+        "title": "Want to know more?",
+        "buttonText": "Click",
+        "modalTitle": "Get 💸 to your salary for attracting new students!",
+        "modalText": "People with a lot of friends are your chance.🤩",
+        "faq": {
+          "title": "And further, by the book - FAQ 👇🏻",
+          "list": {
+            "1": {
+              "q": "👉🏻 Who is a «qualified contact»?",
+              "a": "It's not a duplicate, it's not a fake, the potential client has a child aged 5 to 17 and interest in studying with us"
+            },
+            "2": {
+              "q": "👉🏻 What to do?",
+              "a": [
+                "1️⃣ Add your current phone number to the Booking system.",
+                "2️⃣ Enter the data of potential clients in the form here or send it to all interested parents at https://referral.goiteens.com/team/. The field ‘Friend's phone number’ should contain your number.",
+                "3️⃣ The manager calls all applications and invites the potential client to a trial lesson",
+                "4️⃣ After attending a trial lesson, you get a reward, and the child gets a 500 UAH discount on the course"
+              ]
+            },
+            "3": {
+              "q": "👉🏻 When will I receive the bonus?",
+              "a": [
+                "As soon as your friend completes the trial lesson, we'll add your reward to the payout as ‘add to salary’.",
+                "Attract new clients to GoITeens anywhere and get a salary increase!"
+              ]
+            }
+          },
+          "contact": "P.S. If you need flyers or have any questions, please contact me at https://t.me/anna_odzhykovska",
+          "exitText": "Click outside to exit"
+        }
+      },
+      "symbols": {
+        "group": "Group",
+        "private": "Private",
+        "remove": "Remove",
+        "list": [
+          "replacement_kids_group",
+          "appointed_kids_group",
+          "Appointed private",
+          "Appointed group",
+          "Group replacement",
+          "Private replacement"
+        ],
+        "mentor": "Mentor"
+      }
+    },
+    "mySubgroups": {
+      "courseInput": {
+        "placeholder": "selectCourse",
+        "options": {
+          "advancedProg": "ADVANCED PROGRAM",
+          "art": "ART",
+          "internal": "INTERNAL",
+          "marathon": "MARATHON",
+          "miniCourse": "MINI COURSE",
+          "demo": "DEMO",
+          "schoolForTeachers": "SCHOOL FOR TEACHERS",
+          "school": "SCHOOL",
+          "design": "DESIGN",
+          "digitalDesign": "DIGITAL DESIGN",
+          "designJuniour": "DESIGN JUNIOR",
+          "frontEndEnDIGITAL DESIGNg": "FRONTEND ENG",
+          "gamedev": "GAMEDEV",
+          "graphicDesign": "GRAPHIC DESIGN",
+          "logic": "LOGIC",
+          "math": "MATH",
+          "math2": "Math 2",
+          "math3": "Math 3",
+          "math4": "Math 4",
+          "math5": "Math 5",
+          "math6": "Math 6",
+          "mathTeens": "Math Teens (7-9)",
+          "minecraft": "MINECRAFT",
+          "minecraftEducation": "MINECRAFT ED",
+          "minecraftKids": "MINECRAFT KIDS",
+          "motionDesign": "MOTION DESIGN",
+          "python": "PYTHON",
+          "pythonJunior": "PYTHON JUNIOR",
+          "roblox": "ROBLOX",
+          "scratch": "SCRATCH",
+          "drawing": "DRAWING",
+          "webDesign": "WEB DESIGN",
+          "frontEnd": "FRONTEND",
+          "summerEng": "SUMMER ENG"
+        }
+      },
+      "nameFilterInput": {
+        "placeholder": "Filter by name"
+      },
+      "table": {
+        "header": [
+          "Name",
+          "Course",
+          "Appointer",
+          "Description",
+          "Schedule",
+          "Action"
+        ]
+      },
+      "edit": {
+        "lessonType": {
+          "placeholder": "Lesson type",
+          "types": ["Group", "Individual", "Kids group"]
+        },
+        "oldSchedule": "Old schedule:",
+        "newSchedule": "New schedule:"
+      }
+    },
+    "information": {
+      "profile": {
+        "name": "Name:",
+        "email": "Email:",
+        "city": "City:",
+        "slack": "Slack:",
+        "phone": "Phone:",
+        "telegram": "Telegram",
+        "experience": "Expirience (years):",
+        "courses": "Courses:",
+        "description": "Description:",
+        "editBtnText": "Edit",
+        "edit": {
+          "photoUpload": "Upload",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        }
+      },
+      "table": {
+        "header": ["Name", "Array", "Action"],
+        "btnsTexts": ["Edit", "Add"]
+      }
+    },
+    "statistics": {
+      "start": "Start",
+      "end": "End"
+    }
+  },
+  "login": "Logged",
+  "fullDaysOfWeek": {
+    "mon": "Monday",
+    "tue": "Tuesday",
+    "wed": "Wednesday",
+    "thu": "Thursday",
+    "fri": "Friday",
+    "sat": "Saturday",
+    "sun": "Sunday"
+  },
+  "daysOfWeek": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "proposals": {
+    "nameAndLastnameLabel": "Your first and last name",
+    "addPhoto": "Add a screenshot",
+    "send": "Send",
+    "ideas": {
+      "text": "I have an idea",
+      "describeIdea": "Describe your idea",
+      "imagineResult": "How do you imagine the end result? (you can leave a link)"
+    },
+    "bugs": {
+      "describeBug": "Describe the bug",
+      "selections": [
+        "Teacher's page",
+        "Add my subgroup",
+        "My subgroups",
+        "Information",
+        "Statistics",
+        "Edit my subgroup",
+        "Report",
+        "Reset password",
+        "Home page"
+      ]
+    }
+  }
 }
