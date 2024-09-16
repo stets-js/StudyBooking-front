@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {useState} from 'react';
 import classNames from 'classnames';
 import Select from 'react-select';
-import {format} from 'date-fns';
 
 import EditButton from '../Buttons/Edit';
 import DeleteButton from '../Buttons/Delete';
@@ -16,6 +15,7 @@ import FitlerRow from './FilterRow';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
+import InfoButton from '../Buttons/Info';
 
 export default function Tbody({teacherPage}) {
   const {teacherId} = useParams() || null;
@@ -282,6 +282,13 @@ export default function Tbody({teacherPage}) {
                                 onClick={() => setIsEdit(-1)}></DeleteButton>
                             </div>
                           )}
+                          <InfoButton
+                            text="Апеляція"
+                            onClick={() => {
+                              window.open(
+                                'https://docs.google.com/forms/d/e/1FAIpQLScQa0r5NHzT_Q_LxwfunuaCpSjh5DsJUJS6vIMSIdU1WQZIuw/viewform'
+                              );
+                            }}></InfoButton>
                         </div>
                       </td>
                     </tr>

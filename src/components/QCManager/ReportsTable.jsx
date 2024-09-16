@@ -1,5 +1,5 @@
 import React from 'react';
-
+import styles from './Manager.module.scss';
 import TableHeader from '../TableComponent/TableHeader';
 import Tbody from './TBody';
 
