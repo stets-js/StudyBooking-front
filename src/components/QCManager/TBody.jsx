@@ -89,8 +89,10 @@ export default function Tbody({teacherPage}) {
       <div className={styles.filter__wrapper}></div>
       <div className={classNames(tableStyles.calendar, tableStyles.scroller)} id="scroller">
         <InfiniteScroll
+          style={{height: '100%'}}
           // height={'600px'}
           width={'100%'}
+          height={'100%'}
           dataLength={reports.length} //This is important field to render the next data
           next={fetchAllReports}
           hasMore={1}
