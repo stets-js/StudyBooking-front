@@ -6,7 +6,13 @@ import {getCourses} from '../../helpers/course/course';
 import selectorStyles from '../../styles/selector.module.scss';
 import FormInput from '../FormInput/FormInput';
 import style from './statistic.module.scss';
-export default function FilteringBlock({setSelectedCourse, currDate, setCurrDate, onSwitchChange}) {
+export default function FilteringBlock({
+  setSelectedCourse,
+  currDate,
+  setCurrDate,
+  onSwitchChange,
+  isTeamLead = false
+}) {
   const [courses, setCourses] = useState([]);
   const [isChecked, setIsChecked] = useState({
     teamLeadOnly: false,
@@ -30,20 +36,22 @@ export default function FilteringBlock({setSelectedCourse, currDate, setCurrDate
   }, [isChecked]);
   return (
     <div className={style.filtering__container}>
-      <div className={style.filtering__switch}>
-        <span className={style.filtering__switch__text}>My</span>
-        <Switch
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onChange={() => {
-            setIsChecked(prev => {
-              return {...prev, teamLeadOnly: !isChecked.teamLeadOnly};
-            });
-          }}
-          checked={!isChecked.teamLeadOnly}
-        />
-        <span className={style.filtering__switch__text}>All</span>
-      </div>
+      {isTeamLead && (
+        <div className={style.filtering__switch}>
+          <span className={style.filtering__switch__text}>My</span>
+          <Switch
+            uncheckedIcon={false}
+            checkedIcon={false}
+            onChange={() => {
+              setIsChecked(prev => {
+                return {...prev, teamLeadOnly: !isChecked.teamLeadOnly};
+              });
+            }}
+            checked={!isChecked.teamLeadOnly}
+          />
+          <span className={style.filtering__switch__text}>All</span>
+        </div>
+      )}
       <div className={style.filtering__switch}>
         <span className={style.filtering__switch__text}>Lessons</span>
         <Switch
