@@ -1,13 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {error, success} from '@pnotify/core';
 import {format} from 'date-fns';
-
-import {getLessons} from '../../helpers/lessons/lesson';
+import classNames from 'classnames';
 import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
+
+import {getLessons} from '../../helpers/lessons/lesson';
 import WriteFeedback from '../../components/modals/Feedback/WriteFeedback';
 import FilteringBlock from '../../components/LessonsPage/FilteringBlock';
 import LessonCard from '../../components/LessonsPage/LessonCard';
+import DateTable from '../../components/LessonsPage/DateTable';
+import styles from '../../components/LessonsPage/statistic.module.scss';
+import tableStyles from '../../styles/table.module.scss';
+import {fetchLessons, generateEmptyStructure} from '../../components/LessonsPage/functions';
 
 export default function MyLessonPage() {
   const {teacherId} = useParams() || null;
@@ -18,49 +23,59 @@ export default function MyLessonPage() {
   const [currDate, setCurrDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState(null);
+  const [selectedTime, setSelectedTime] = useState('');
+  const [slotsData, setSlotsData] = useState({
+    startingTime: 9,
+    amount: 26,
+    replacements: false
+  });
 
-  const fetchLessons = async () => {
-    try {
-      const {data} = await getLessons(
-        `mentorId=${userId}&date=${format(currDate, 'yyyy-MM-dd')}${
-          selectedCourse ? '&courseId=' + selectedCourse : ''
-        }`
-      );
-      if (data) {
-        setLessons(data.data);
-        // setOffset(data.newOffset);
-        // setTotalAmount(data.totalCount);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    fetchLessons();
-  }, []);
-  useEffect(() => {
-    fetchLessons();
-  }, [selectedCourse, currDate]);
-
+    setLessons(generateEmptyStructure());
+    console.log(123);
+    fetchLessons(
+      `mentorId=${userId}&date=${format(currDate, 'yyyy-MM-dd')}${
+        selectedCourse ? '&courseId=' + selectedCourse : ''
+      }${slotsData.teamLeadOnly ? '&teamLeadOnly=true' : ''}${
+        slotsData.replacements ? '&replacements=true' : ''
+      }`,
+      setLessons
+    );
+  }, [selectedCourse, currDate, slotsData]);
   return (
     <>
       <FilteringBlock
         setSelectedCourse={setSelectedCourse}
         currDate={currDate}
+        onSwitchChange={checked => {
+          setSlotsData(prev => {
+            let obj = {};
+            if (checked.fullDay) {
+              obj = {...obj, ...{startingTime: 0, amount: 48}};
+            } else {
+              obj = {...obj, ...{startingTime: 9, amount: 26}};
+            }
+            obj = {...obj, replacements: checked.replacements};
+            return obj;
+          });
+        }}
         setCurrDate={setCurrDate}></FilteringBlock>
-      <div>
-        {(lessons || []).map(lesson => {
-          return (
-            <LessonCard
-              lesson={lesson}
-              setLessons={setLessons}
-              onClick={lesson => {
-                setIsOpen(true);
-                setSelectedLesson(lesson);
-              }}></LessonCard>
-          );
-        })}
-        {lessons.length === 0 ? <>Ops, no lessons today :(</> : <></>}
+      <div className={styles.main}>
+        <DateTable
+          slotsData={slotsData}
+          lessons={lessons}
+          selectedTime={selectedTime}
+          onClick={time => setSelectedTime(time)}
+        />
+        <div className={classNames(styles.main__cards, tableStyles.calendar, tableStyles.scroller)}>
+          {selectedTime.length > 0 ? (
+            lessons[selectedTime].map((lesson, index) => {
+              return <LessonCard lesson={lesson} setLessons={setLessons}></LessonCard>;
+            })
+          ) : (
+            <h2>Select time</h2>
+          )}
+        </div>
       </div>
 
       <WriteFeedback

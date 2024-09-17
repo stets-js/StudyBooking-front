@@ -9,6 +9,7 @@ import LessonCard from '../../components/LessonsPage/LessonCard';
 import FilteringBlock from '../../components/LessonsPage/FilteringBlock';
 import DateTable from '../../components/LessonsPage/DateTable';
 import classNames from 'classnames';
+import {fetchLessons, generateEmptyStructure} from '../../components/LessonsPage/functions';
 
 export default function LessonsPage() {
   const [lessons, setLessons] = useState(null);
@@ -21,57 +22,29 @@ export default function LessonsPage() {
     teamLeadOnly: false,
     replacements: false
   });
-  const generateEmptyStructure = () => {
-    let schedule = {};
 
-    let currentTime = new Date();
-    currentTime.setHours(0, 0, 0, 0);
-
-    for (let i = 0; i < 49; i++) {
-      schedule[format(currentTime, 'HH:mm')] = [];
-      currentTime.setMinutes(currentTime.getMinutes() + 30);
-    }
-    setLessons(schedule);
-  };
   // useEffect(() => {
   //   generateEmptyStructure();
   //   fetchLessons();
   // }, []);
-  const fetchLessons = async () => {
-    try {
-      const {data} = await getLessons(
-        `date=${format(currDate, 'yyyy-MM-dd')}${
-          selectedCourse ? '&courseId=' + selectedCourse : ''
-        }${slotsData.teamLeadOnly ? '&teamLeadOnly=true' : ''}${
-          slotsData.replacements ? '&replacements=true' : ''
-        }`
-      );
-      // generateEmptyStructure();
-      if (data) {
-        data.data.forEach(lesson => {
-          const lessonStartTime = lesson.LessonSchedule.startTime;
-          setLessons(prev => {
-            return {
-              ...prev,
-              [lessonStartTime]: [...(prev[lessonStartTime] || []), lesson] // Update specific time slot with the lesson
-            };
-          });
-          // setLessons(data.data);
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   useEffect(() => {
     generateEmptyStructure();
     console.log(123);
-    fetchLessons();
+    fetchLessons(
+      `date=${format(currDate, 'yyyy-MM-dd')}${
+        selectedCourse ? '&courseId=' + selectedCourse : ''
+      }${slotsData.teamLeadOnly ? '&teamLeadOnly=true' : ''}${
+        slotsData.replacements ? '&replacements=true' : ''
+      }`,
+      setLessons
+    );
   }, [selectedCourse, currDate, slotsData]);
   return (
     <>
       <FilteringBlock
         setSelectedCourse={setSelectedCourse}
+        isTeamLead
         onSwitchChange={checked => {
           console.log(checked);
 
