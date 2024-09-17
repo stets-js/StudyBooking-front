@@ -16,10 +16,12 @@ import DeleteButton from '../../components/Buttons/Delete';
 import {bulkLessonCreate, deleteLessons} from '../../helpers/lessons/lesson';
 import {updateSubgroupMentor} from '../../helpers/subgroup/subgroup';
 import {useSelector} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 export default function EditMySubgroup() {
   const location = useLocation();
   const confirm = useConfirm();
+  const {t} = useTranslation('global');
 
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
@@ -31,7 +33,7 @@ export default function EditMySubgroup() {
   const [oldSchedule, setOldSchedule] = useState(group.schedule);
   const [newSchedule, setNewSchedule] = useState('');
   const [slots, setSlots] = useState([]);
-  const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const weekDays = t('daysOfWeek', {returnObjects: true});
   const calculateSchedule = () => {
     let tmpSchedule = '';
     slots.forEach(slot => {
@@ -44,7 +46,7 @@ export default function EditMySubgroup() {
 
   const handleCellClick = ({time, weekDay, isSelected}) => {
     const selectedSlotsTMP = [];
-    if (!selectedClassType) return error({text: 'Select lesson Type', delay: 1000});
+    if (!selectedClassType) return error({text: t('teacher.mySubgroups.edit.error'), delay: 1000});
     for (let i = 0; i < (selectedClassType.value === 7 ? 3 : 2); i++) {
       const slotTime = format(addMinutes(time, 30 * i), 'HH:mm');
       if (slots.some(el => el.weekDay === weekDay && el.time === slotTime)) {
@@ -82,7 +84,7 @@ export default function EditMySubgroup() {
         <Select
           key={Math.random() * 1000 - 10}
           className={`${styles.selector} ${styles.selector__filtering}`}
-          placeholder="Lesson Type"
+          placeholder={t('teacher.mySubgroups.edit.lessonType.placeholder')}
           value={
             selectedClassType !== null &&
             appointmentTypes.filter(el => el.value === selectedClassType.value)
@@ -96,21 +98,29 @@ export default function EditMySubgroup() {
         />
         <div className={teacherStyles.editMySubgroup__info__schedule__container}>
           <div className={teacherStyles.editMySubgroup__info__schedule__item}>
-            <h2>Old schedule:</h2>
+            <h2>{t('teacher.mySubgroups.edit.oldSchedule')}</h2>
             {oldSchedule.split('\n').map(el => {
+              let day = '';
+              if (el) {
+                day = t(`daysOfWeek.${el.slice(0, 3).toLowerCase()}`);
+              }
               return (
                 <React.Fragment key={el}>
-                  {el} <br />
+                  {day + el.slice(day.length > 0 ? 3 : 0)} <br />
                 </React.Fragment>
               );
             })}
           </div>
           <div className={teacherStyles.editMySubgroup__info__schedule__item}>
-            <h2>New schedule:</h2>
+            <h2>{t('teacher.mySubgroups.edit.newSchedule')}</h2>
             {newSchedule.split('\n').map(el => {
+              let day = '';
+              if (el) {
+                day = t(`daysOfWeek.${el.slice(0, 3).toLowerCase()}`);
+              }
               return (
                 <React.Fragment key={el}>
-                  {el} <br />
+                  {day + el.slice(day.length > 0 ? 3 : 0)} <br />
                 </React.Fragment>
               );
             })}
@@ -120,11 +130,11 @@ export default function EditMySubgroup() {
       <>
         <div className={tableStyles.button__wrapper}>
           <EditButton
-            text="Confirm"
+            text={t('teacher.mySubgroups.edit.buttons.conf')}
             disabled={slots.length === 0}
             onClick={() => {
               confirm({
-                description: 'All correct?',
+                description: t('teacher.mySubgroups.edit.confirm.desc'),
                 confirmationText: 'Yes',
                 cancelText: 'No',
                 confirmationButtonProps: {autoFocus: true}
@@ -157,7 +167,7 @@ export default function EditMySubgroup() {
             }}
             classname={'button__add'}></EditButton>
           <DeleteButton
-            text="Clear"
+            text={t('teacher.mySubgroups.edit.buttons.clear')}
             onClick={() => {
               setSlots([]);
             }}></DeleteButton>
@@ -168,7 +178,7 @@ export default function EditMySubgroup() {
               <tr>
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dateIndex) => (
                   <th key={dateIndex} className={`${tableStyles.columns} ${tableStyles.sticky}`}>
-                    <div className={tableStyles.cell__header}>{day}</div>
+                    <div className={tableStyles.cell__header}>{weekDays[day.toLowerCase()]}</div>
                   </th>
                 ))}
               </tr>

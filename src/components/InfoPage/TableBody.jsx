@@ -10,8 +10,11 @@ import DeleteButton from '../Buttons/Delete';
 import {addUserDocument, updateUserDocument} from '../../helpers/document/user-document';
 import {useSelector} from 'react-redux';
 import {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 
 export default function InfoTableBody({documents, userDocuments, setUserDocuments}) {
+  const {t} = useTranslation('global');
+
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
   if (teacherId) userId = teacherId;
@@ -64,7 +67,8 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                           const doc = (edit ? duplicatedDocs : userDocuments || []).find(
                             userDocument => userDocument.DocumentTypeId === document.id
                           );
-                          if (!doc || doc.documents.length === 0) return 'No documents found';
+                          if (!doc || doc.documents.length === 0)
+                            return t('teacher.information.table.noDocs');
                           const docList = doc.documents;
                           return docList.map((eachUrl, index) => {
                             return (
@@ -106,7 +110,7 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                         }`}>
                         <input
                           className={formInput.input}
-                          placeholder="Place url here"
+                          placeholder={t('teacher.information.table.ph')}
                           value={inputUrl}
                           onChange={e => {
                             setInputUrl(e.currentTarget.value);
@@ -120,16 +124,15 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                       <div className={`${tableStyles.cell} ${tableStyles.cell__outer}`}>
                         {addFlag !== index ? (
                           <InfoButton
-                            text={'Add'}
+                            text={t('buttons.add')}
                             onClick={() => {
                               setAddFlag(index);
                             }}></InfoButton>
                         ) : (
                           <EditButton
-                            text="Save"
+                            text={t('buttons.save')}
                             onClick={async () => {
                               const res = await submitDocument(document.id);
-                              console.log(123);
                               setAddFlag(-1);
                               setInputUrl('');
                             }}></EditButton>
@@ -144,9 +147,9 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
       </table>
       {edit && (
         <>
-          <DeleteButton text={'Cancel'} onClick={() => setEdit(!edit)}></DeleteButton>
+          <DeleteButton text={t('buttons.cancel')} onClick={() => setEdit(!edit)}></DeleteButton>
           <EditButton
-            text={'Update'}
+            text={t('buttons.update')}
             onClick={async () => {
               duplicatedDocs.forEach(async (duplicatedDoc, index) => {
                 if (
@@ -156,7 +159,6 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                   try {
                     const {data} = await updateUserDocument(duplicatedDoc);
                     if (data?.documents) {
-                      console.log('here?');
                       setUserDocuments(prev => {
                         return prev.map(oneDoc => {
                           if (oneDoc.DocumentTypeId === data.DocumentTypeId) return data;
@@ -164,7 +166,6 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
                         });
                       });
                     } else {
-                      console.log('here');
                       setUserDocuments(prev => {
                         return prev.filter(
                           item => item.DocumentTypeId !== duplicatedDoc.DocumentTypeId
@@ -180,7 +181,9 @@ export default function InfoTableBody({documents, userDocuments, setUserDocument
             }}></EditButton>
         </>
       )}
-      {addFlag !== -1 && <DeleteButton text="Cancel" onClick={() => setAddFlag(-1)}></DeleteButton>}{' '}
+      {addFlag !== -1 && (
+        <DeleteButton text={t('buttons.cancel')} onClick={() => setAddFlag(-1)}></DeleteButton>
+      )}{' '}
       {!edit && addFlag === -1 && (
         <EditButton
           onClick={() => {

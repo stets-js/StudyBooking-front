@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import Switch from 'react-switch';
 import styles from '../../../styles/teacher.module.scss';
+import {useTranslation} from 'react-i18next';
 
 export default function WeekChanger({startDates, setStartDates, userName, handleCalendarChange}) {
   const handlePrevWeek = () => {
@@ -14,6 +15,8 @@ export default function WeekChanger({startDates, setStartDates, userName, handle
     setStartDates(startDates.map(startDate => addDays(startDate, 7)));
   };
   const [calendarType, setCalendarType] = useState(false);
+  const {t} = useTranslation('global');
+
   return (
     <div>
       <div className={classNames(styles.dates_wrapper, styles.date_selector)}>
@@ -43,7 +46,9 @@ export default function WeekChanger({startDates, setStartDates, userName, handle
           </button>
         </div>
 
-        <div className={styles.mentor_name}>Mentor: {userName}</div>
+        <div className={styles.mentor_name}>
+          {t('teacher.timetable.symbols.mentor')}: {userName}
+        </div>
       </div>
     </div>
   );

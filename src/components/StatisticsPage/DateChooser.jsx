@@ -2,14 +2,17 @@ import React from 'react';
 import styles from './statistics.module.scss';
 import classNames from 'classnames';
 import FormInput from '../FormInput/FormInput';
+import {useTranslation} from 'react-i18next';
 
 export default function DateChooser({dates, setDates}) {
+  const {t} = useTranslation('global');
+
   return (
     <div className={styles.date__wrapper}>
       <div className={styles.date__item}>
         <FormInput
           type="date"
-          title={'Start'}
+          title={t('teacher.statistics.start')}
           value={dates.start}
           handler={e => {
             setDates(prev => {
@@ -20,7 +23,7 @@ export default function DateChooser({dates, setDates}) {
       <div className={styles.date__item}>
         <FormInput
           type="date"
-          title={'End'}
+          title={t('teacher.statistics.end')}
           value={dates.end}
           handler={e => {
             setDates(prev => {

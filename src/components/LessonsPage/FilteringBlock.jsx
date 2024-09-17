@@ -6,6 +6,7 @@ import {getCourses} from '../../helpers/course/course';
 import selectorStyles from '../../styles/selector.module.scss';
 import FormInput from '../FormInput/FormInput';
 import style from './statistic.module.scss';
+import {useTranslation} from 'react-i18next';
 export default function FilteringBlock({
   setSelectedCourse,
   currDate,
@@ -13,6 +14,8 @@ export default function FilteringBlock({
   onSwitchChange,
   isTeamLead = false
 }) {
+  const {t} = useTranslation('global');
+
   const [courses, setCourses] = useState([]);
   const [isChecked, setIsChecked] = useState({
     teamLeadOnly: false,
@@ -38,7 +41,7 @@ export default function FilteringBlock({
     <div className={style.filtering__container}>
       {isTeamLead && (
         <div className={style.filtering__switch}>
-          <span className={style.filtering__switch__text}>My</span>
+          <span className={style.filtering__switch__text}>{t('lessons.my')}</span>
           <Switch
             uncheckedIcon={false}
             checkedIcon={false}
@@ -49,11 +52,11 @@ export default function FilteringBlock({
             }}
             checked={!isChecked.teamLeadOnly}
           />
-          <span className={style.filtering__switch__text}>All</span>
+          <span className={style.filtering__switch__text}>{t('lessons.all')}</span>
         </div>
       )}
       <div className={style.filtering__switch}>
-        <span className={style.filtering__switch__text}>Lessons</span>
+        <span className={style.filtering__switch__text}>{t('lessons.lessons')}</span>
         <Switch
           uncheckedIcon={false}
           checkedIcon={false}
@@ -64,7 +67,7 @@ export default function FilteringBlock({
           }}
           checked={isChecked.replacements}
         />
-        <span className={style.filtering__switch__text}>Replacements</span>
+        <span className={style.filtering__switch__text}>{t('lessons.repl')}</span>
       </div>
       <div className={style.filtering__switch}>
         <span className={style.filtering__switch__text}>9-22</span>
@@ -84,7 +87,7 @@ export default function FilteringBlock({
         options={courses}
         isClearable
         className={selectorStyles.selector}
-        placeholder={'Course..'}
+        placeholder={t('lessons.course')}
         onChange={e => {
           setSelectedCourse(e?.value || null);
         }}

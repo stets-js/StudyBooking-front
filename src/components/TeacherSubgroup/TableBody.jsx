@@ -6,8 +6,12 @@ import tableStyles from '../../styles/table.module.scss';
 import EditButton from '../Buttons/Edit';
 import path from '../../helpers/routerPath';
 import {useSelector} from 'react-redux';
+import {useTranslation} from 'react-i18next';
+import classNames from 'classnames';
 
 export default function TableBody({filteredSubgroups}) {
+  const {t} = useTranslation('global');
+
   const navigate = useNavigate();
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
@@ -22,47 +26,59 @@ export default function TableBody({filteredSubgroups}) {
                 <tr key={'' + group.id}>
                   <td className={tableStyles.cell__mySubgroup}>
                     <div
-                      className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
+                      className={classNames(
+                        tableStyles.cell,
+                        tableStyles.cell__outer,
+                        tableStyles.cell__mySubgroup
+                      )}>
                       {group?.SubGroup.name}
                     </div>
                   </td>
                   <td className={tableStyles.cell__mySubgroup}>
                     <div
-                      className={`${tableStyles.cell} ${tableStyles.cell__mySubgroup} ${
+                      className={classNames(
+                        tableStyles.cell,
+                        tableStyles.cell__mySubgroup,
                         index === 0 || index === filteredSubgroups.length - 1
                           ? tableStyles.cell__outer
                           : tableStyles.cell__inner
-                      }`}>
+                      )}>
                       {group?.SubGroup.Course.name}
                     </div>
                   </td>
                   <td className={tableStyles.cell__mySubgroup}>
                     <div
-                      className={`${tableStyles.cell} ${
+                      className={classNames(
+                        tableStyles.cell,
                         index === 0 || index === filteredSubgroups.length - 1
                           ? tableStyles.cell__outer
-                          : tableStyles.cell__inner
-                      } ${tableStyles.cell__mySubgroup}`}>
-                      {group?.SubGroup?.Admin?.name || 'Self appointed'}
+                          : tableStyles.cell__inner,
+                        tableStyles.cell__mySubgroup
+                      )}>
+                      {group?.SubGroup?.Admin?.name || t('teacher.mySubgroups.table.self')}
                     </div>
                   </td>
                   <td className={tableStyles.cell__mySubgroup}>
                     <div
-                      className={`${tableStyles.cell} ${
+                      className={classNames(
+                        tableStyles.cell,
                         index === 0 || index === filteredSubgroups.length - 1
                           ? tableStyles.cell__outer
-                          : tableStyles.cell__inner
-                      } ${tableStyles.cell__mySubgroup}`}>
+                          : tableStyles.cell__inner,
+                        tableStyles.cell__mySubgroup
+                      )}>
                       {group?.SubGroup.description}
                     </div>
                   </td>
                   <td className={tableStyles.cell__mySubgroup} key={'schedule' + group.id}>
                     <div
-                      className={`${tableStyles.cell} ${
+                      className={classNames(
+                        tableStyles.cell,
                         index === 0 || index === filteredSubgroups.length - 1
                           ? tableStyles.cell__outer
-                          : tableStyles.cell__inner
-                      } ${tableStyles.cell__mySubgroup}`}>
+                          : tableStyles.cell__inner,
+                        tableStyles.cell__mySubgroup
+                      )}>
                       <div>
                         <div className={tableStyles.cell__mySubgroup__years}>
                           {group?.SubGroup.startDate &&
@@ -71,9 +87,13 @@ export default function TableBody({filteredSubgroups}) {
                               format(group?.SubGroup.endDate, 'dd.MM.yyyy')}
                         </div>
                         {(group.schedule || '').split('\n').map(el => {
+                          let day = '';
+                          if (el) {
+                            day = t(`daysOfWeek.${el.slice(0, 3).toLowerCase()}`);
+                          }
                           return (
                             <React.Fragment key={el}>
-                              {el} <br />
+                              {day + el.slice(day.length > 0 ? 3 : 0)} <br />
                             </React.Fragment>
                           );
                         })}
@@ -82,9 +102,12 @@ export default function TableBody({filteredSubgroups}) {
                   </td>
                   <td className={tableStyles.cell__mySubgroup}>
                     <div
-                      className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
+                      className={classNames(
+                        tableStyles.cell,
+                        tableStyles.cell__outer,
+                        tableStyles.cell__mySubgroup
+                      )}>
                       <EditButton
-                        text="Edit"
                         onClick={() => {
                           navigate(`../${path.editMySubgroup}${teacherId ? teacherId : ''}`, {
                             state: {

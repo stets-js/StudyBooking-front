@@ -9,8 +9,12 @@ import {getCourses} from '../../helpers/course/course';
 import FormInput from '../../components/FormInput/FormInput';
 import TableBody from '../../components/TeacherSubgroup/TableBody';
 import TableHeader from '../../components/TableComponent/TableHeader';
+import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 
 export default function TeacherSubgroupPage() {
+  const {t} = useTranslation('global');
+
   const [subgroups, setSubgroups] = useState([]);
   const [courses, setCourses] = useState([]);
   const {teacherId} = useParams() || null;
@@ -54,18 +58,18 @@ export default function TeacherSubgroupPage() {
     <>
       <div className={styles.filters}>
         <Select
-          className={`${styles.selector} ${styles.selector__filtering} ${styles.filters__item}`}
+          className={classNames(styles.selector, styles.selector__filtering, styles.filters__item)}
           isClearable
           value={filterCourse}
           options={courses}
-          placeholder="Select course"
+          placeholder={t('teacher.mySubgroups.courseInput.placeholder')}
           isMulti
           onChange={e => setFilterCourse(e)}
         />
         <div className={`${styles.filters__item}`}>
           <FormInput
             type="text"
-            placeholder="Filter by name"
+            placeholder={t('teacher.mySubgroups.nameFilterInput.placeholder')}
             value={filterName}
             handler={setFilterName}
           />
@@ -73,14 +77,7 @@ export default function TeacherSubgroupPage() {
       </div>
       <div>
         <TableHeader
-          headers={[
-            'Name',
-            'Course',
-            'Appointer',
-            'Description',
-            'Schedule',
-            'Action'
-          ]}></TableHeader>
+          headers={t('teacher.mySubgroups.table.header', {returnObjects: true})}></TableHeader>
         <TableBody filteredSubgroups={filteredSubgroups}></TableBody>
       </div>
     </>

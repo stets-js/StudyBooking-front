@@ -15,8 +15,11 @@ import {getDocumentType} from '../../helpers/document/document-type';
 import {getUserDocuments} from '../../helpers/document/user-document';
 import TableHeader from '../../components/TableComponent/TableHeader';
 import InfoTableBody from '../../components/InfoPage/TableBody';
+import {useTranslation} from 'react-i18next';
 
 export default function Info() {
+  const {t} = useTranslation('global');
+
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
   if (teacherId) userId = teacherId; //case when admin is logged in and wants to see another teachers schedule
@@ -39,10 +42,10 @@ export default function Info() {
       const res = await patchUser(user);
       if (!res) setUser(backupUser);
       else {
-        success({text: 'Updated info :)', delay: 1000});
+        success({text: t('teacher.information.notify.success'), delay: 1000});
       }
     } catch (e) {
-      error({text: 'Sorry, something went wrong :(', delay: 1000});
+      error({text: t('teacher.information.notify.err '), delay: 1000});
       setUser(backupUser);
     }
   };
@@ -93,14 +96,14 @@ export default function Info() {
             <div>
               <FormInput
                 type={'text'}
-                title={'Name:'}
+                title={t('teacher.information.profile.name')}
                 value={user?.name}
                 disabled={!editActive}
                 width={'90%'}
                 handler={e => setUser({...user, name: e})}></FormInput>
               <FormInput
                 type={'text'}
-                title={'Email:'}
+                title={t('teacher.information.profile.email')}
                 value={user?.email}
                 disabled={true}
                 width={'90%'}
@@ -110,7 +113,7 @@ export default function Info() {
           <div className={styles.info__inline}>
             <FormInput
               type={'text'}
-              title={'City:'}
+              title={t('teacher.information.profile.city')}
               value={user?.city}
               width={'100%'}
               label_classname={'no_margin'}
@@ -119,7 +122,7 @@ export default function Info() {
             <div className={focusToSlack ? styles.bot__focus_slack : ''}>
               <FormInput
                 type={'text'}
-                title={'Slack:'}
+                title={t('teacher.information.profile.slack')}
                 value={user?.slack}
                 disabled={!editActive}
                 width={'100%'}
@@ -129,9 +132,9 @@ export default function Info() {
             </div>
 
             <div className={`${styles.info__item} ${styles.phone__wrapper}`}>
-              <span className={styles.phone__label}>Phone:</span>
+              <span className={styles.phone__label}>{t('teacher.information.profile.phone')}</span>
               <PhoneInput
-                label="Phone"
+                label={t('teacher.information.profile.phone')}
                 name={'phone'}
                 preferredCountries={['ua']}
                 placeholder={'+380-(096)-12-34567'}
@@ -146,7 +149,7 @@ export default function Info() {
             </div>
             <FormInput
               type={'text'}
-              title={'Telegram:'}
+              title={t('teacher.information.profile.telegram')}
               value={user?.telegram}
               disabled={!editActive}
               width={'100%'}
@@ -155,7 +158,7 @@ export default function Info() {
               handler={e => setUser({...user, telegram: e})}></FormInput>
             <FormInput
               type={'number'}
-              title={'Expirience (years):'}
+              title={t('teacher.information.profile.experience')}
               value={user?.expirience}
               disabled={!editActive}
               label_classname={'no_margin'}
@@ -164,7 +167,9 @@ export default function Info() {
               handler={e => setUser({...user, expirience: e})}></FormInput>
             {teacherId && (
               <div className={styles.bot__wrapper}>
-                <label className={classNames(styles.input__label, styles.bot__label)}>Bots:</label>
+                <label className={classNames(styles.input__label, styles.bot__label)}>
+                  {t('teacher.information.profile.bots')}
+                </label>
                 <div className={styles.bot__pictures}>
                   <a
                     className={styles.ul_item_link}
@@ -206,12 +211,13 @@ export default function Info() {
             )}
           </div>
           <div className={classNames(styles.info__item, styles.info__label)}>
-            Courses: <span>{(user?.teachingCourses || []).map(el => el.name).join(', ')}</span>
+            {t('teacher.information.profile.courses')}{' '}
+            <span>{(user?.teachingCourses || []).map(el => el.name).join(', ')}</span>
           </div>
           <div className={styles.info__item}>
             <FormInput
               textArea
-              title={'Description:'}
+              title={t('teacher.information.profile.description')}
               value={user?.description}
               disabled={!editActive}
               handler={e => setUser({...user, description: e})}></FormInput>
@@ -232,14 +238,14 @@ export default function Info() {
                   updateUser();
                   setFocusToSlack(false);
                 }}
-                text={'Confirm'}></EditButton>
+                text={t('buttons.confirm')}></EditButton>
               <DeleteButton
                 onClick={() => {
                   setEditActive(false);
                   setUser(backupUser);
                   setFocusToSlack(false);
                 }}
-                text={'Cancel'}></DeleteButton>
+                text={t('buttons.cancel')}></DeleteButton>
             </div>
           )}
         </div>
@@ -247,7 +253,10 @@ export default function Info() {
 
       <div className={styles.info__wrapper}>
         <div className={styles.info__container}>
-          <TableHeader headers={['Name', 'Array', 'Action']}></TableHeader>
+          <TableHeader
+            headers={t('teacher.information.table.header', {
+              returnObjects: true
+            })}></TableHeader>
           <InfoTableBody
             documents={documentType}
             userDocuments={userDocuments}

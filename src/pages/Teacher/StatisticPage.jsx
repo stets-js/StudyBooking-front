@@ -10,6 +10,7 @@ import {getLessonsForUser} from '../../helpers/lessons/lesson';
 import AmountTable from '../../components/StatisticsPage/AmountTable';
 import LessonsTable from '../../components/StatisticsPage/LessonsTable';
 import DateChooser from '../../components/StatisticsPage/DateChooser';
+import {useTranslation} from 'react-i18next';
 
 const getFirstAndLastDateOfMonth = () => {
   const now = new Date();

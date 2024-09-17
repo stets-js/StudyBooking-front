@@ -2,6 +2,18 @@
   "usersPage": {
     "title": "Manage users"
   },
+  "appointmentList": {
+    "universal": "Universal",
+    "appointed_group": "Appointed group",
+    "appointed_private": "Appointed private",
+    "appointed_kids_group": "Appointed kids group",
+    "free": "Remove",
+    "group": "Group",
+    "private": "Private",
+    "replacement_group": "Group replacement",
+    "replacement_private": "Private replacement",
+    "replacement_kids_group": "Kids group replacement"
+  },
   "superAdmin": {
     "header": {
       "users": "Users",
@@ -57,26 +69,31 @@
       "mySubgroups": "My subgroups",
       "addMySubgroup": "Add my subgroup",
       "information": "Information",
-      "statistics": "Statistics"
+      "statistics": "Statistics",
+      "reports": "Reports",
+      "lessons": "Lessons"
     },
     "timetable": {
       "refferal": {
-        "title": "Want to know more?",
+        "title": "Do you want to know more?",
         "buttonText": "Click",
         "modalTitle": "Get 💸 to your salary for attracting new students!",
-        "modalText": "People with a lot of friends are your chance.🤩",
+        "modalPar1": "Register your friends, acquaintances, and anyone interested for a trial lesson at GoITeens and receive 200 UAH for each person who attends the trial lesson.",
+        "modalPar2": "People with lots of friends – this is your chance. 🤩",
         "faq": {
           "title": "And further, by the book - FAQ 👇🏻",
           "list": {
             "1": {
               "q": "👉🏻 Who is a «qualified contact»?",
-              "a": "It's not a duplicate, it's not a fake, the potential client has a child aged 5 to 17 and interest in studying with us"
+              "a": [
+                "It's not a duplicate, it's not a fake, the potential client has a child aged 5 to 17 and interest in studying with us"
+              ]
             },
             "2": {
               "q": "👉🏻 What to do?",
               "a": [
                 "1️⃣ Add your current phone number to the Booking system.",
-                "2️⃣ Enter the data of potential clients in the form here or send it to all interested parents at https://referral.goiteens.com/team/. The field ‘Friend's phone number’ should contain your number.",
+                "2️⃣ Enter the data of potential clients in the form here or send it to all interested parents at <a href='https://referral.goiteens.com/team/'>https://referral.goiteens.com/team</a>. The field ‘Friend's phone number’ should contain your number.",
                 "3️⃣ The manager calls all applications and invites the potential client to a trial lesson",
                 "4️⃣ After attending a trial lesson, you get a reward, and the child gets a 500 UAH discount on the course"
               ]
@@ -89,7 +106,7 @@
               ]
             }
           },
-          "contact": "P.S. If you need flyers or have any questions, please contact me at https://t.me/anna_odzhykovska",
+          "contact": "P.S. If you need flyers or have any questions, please contact me at <a href='https://t.me/anna_odzhykovska'>https://t.me/anna_odzhykovska</a>",
           "exitText": "Click outside to exit"
         }
       },
@@ -106,11 +123,20 @@
           "Private replacement"
         ],
         "mentor": "Mentor"
+      },
+      "slotDetails": {
+        "course": "Course:",
+        "name": "Subgroup name:",
+        "appointer": "Appointer:",
+        "schedule": "Schedule:",
+        "desc": "Description:",
+        "repl_desc": "Description for replacement:"
       }
     },
+
     "mySubgroups": {
       "courseInput": {
-        "placeholder": "selectCourse",
+        "placeholder": "Select Course",
         "options": {
           "advancedProg": "ADVANCED PROGRAM",
           "art": "ART",
@@ -152,25 +178,44 @@
         "placeholder": "Filter by name"
       },
       "table": {
-        "header": [
-          "Name",
-          "Course",
-          "Appointer",
-          "Description",
-          "Schedule",
-          "Action"
-        ]
+        "header": ["Name", "Course", "Appointer", "Description", "Schedule", "Action"],
+        "self": "Self appointed"
       },
       "edit": {
+        "error": "Select lesson Type",
+        "buttons": {
+          "conf": "Confirm",
+          "clear": "Clear"
+        },
         "lessonType": {
           "placeholder": "Lesson type",
           "types": ["Group", "Individual", "Kids group"]
         },
         "oldSchedule": "Old schedule:",
-        "newSchedule": "New schedule:"
+        "newSchedule": "New schedule:",
+        "confirm": {
+          "desc": "All correct?",
+          "yes": "Yes",
+          "No": "No"
+        }
       }
     },
+    "addMySub": {
+      "par1": "You can add your subgroups that you already teach, for this, fill in the information",
+      "action1": "Select course: ",
+      "placeholder1": "Select course",
+      "action2": "Select subgroup:",
+      "ph2": "Select subgroup",
+      "action3": "Select time period and type of subgroup",
+      "st": "Start",
+      "end": "End",
+      "type": "Lesson Type"
+    },
     "information": {
+      "notify": {
+        "success": "Data updated !",
+        "err": "Something went wrong"
+      },
       "profile": {
         "name": "Name:",
         "email": "Email:",
@@ -182,6 +227,7 @@
         "courses": "Courses:",
         "description": "Description:",
         "editBtnText": "Edit",
+        "bots": "Bots",
         "edit": {
           "photoUpload": "Upload",
           "confirm": "Confirm",
@@ -190,12 +236,23 @@
       },
       "table": {
         "header": ["Name", "Array", "Action"],
-        "btnsTexts": ["Edit", "Add"]
+        "btnsTexts": ["Edit", "Add"],
+          "ph":"Place url here",
+          "noDocs":"No document found"
       }
     },
     "statistics": {
       "start": "Start",
-      "end": "End"
+      "end": "End",
+      "headers":{
+        "Group":"Group",
+        "Replaced group":"Replaced group",
+        "Private":"Private",
+        "Replaced private":"Replaced private",
+        "Jun group":"Jun group",
+        "Replaced Jun group":"Replaced Jun group",
+        "Total":"Total"
+      }
     }
   },
   "login": "Logged",
@@ -240,5 +297,41 @@
         "Home page"
       ]
     }
+  },
+  "lessons":{
+    "select":"Select time",
+    "empty": "No lessons",
+    "lessons":"Lessons",
+    "repl":"Replacements",
+    "my":"My",
+    "all":"All",
+    "course":"Course"
+
+  },
+  "modals": {
+    "newSub": {
+      "title": "New subgroup",
+      "name": "Name",
+      "course": "Course",
+      "type": "Type",
+      "schedule": "Schedule",
+      "st": "Start",
+      "end": "End"
+  
+    }
+  },
+  "buttons": {
+    "edit": "Edit",
+    "del": "Delete",
+    "info": "Info",
+    "ref": "Referal",
+    "ct": "Create",
+    "cl": "Clear",
+    "confirm":"Confirm",
+    "cancel": "Cancel",
+    "add":"Add",
+    "save":"Save",
+    "update":"Update"
   }
+
 }

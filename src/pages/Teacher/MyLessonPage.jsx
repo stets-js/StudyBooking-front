@@ -13,8 +13,11 @@ import DateTable from '../../components/LessonsPage/DateTable';
 import styles from '../../components/LessonsPage/statistic.module.scss';
 import tableStyles from '../../styles/table.module.scss';
 import {fetchLessons, generateEmptyStructure} from '../../components/LessonsPage/functions';
+import {useTranslation} from 'react-i18next';
 
 export default function MyLessonPage() {
+  const {t} = useTranslation('global');
+
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
   if (teacherId) userId = teacherId; //case when admin is logged in and wants to see another teachers schedule
@@ -69,11 +72,15 @@ export default function MyLessonPage() {
         />
         <div className={classNames(styles.main__cards, tableStyles.calendar, tableStyles.scroller)}>
           {selectedTime.length > 0 ? (
-            lessons[selectedTime].map((lesson, index) => {
-              return <LessonCard lesson={lesson} setLessons={setLessons}></LessonCard>;
-            })
+            lessons[selectedTime].length > 0 ? (
+              lessons[selectedTime].map((lesson, index) => {
+                return <LessonCard lesson={lesson} setLessons={setLessons}></LessonCard>;
+              })
+            ) : (
+              <h2>{t('lessons.empty')}</h2>
+            )
           ) : (
-            <h2>Select time</h2>
+            <h2>{t('lessons.select')}</h2>
           )}
         </div>
       </div>

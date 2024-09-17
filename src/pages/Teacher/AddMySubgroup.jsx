@@ -17,8 +17,11 @@ import {useParams} from 'react-router-dom';
 import EditButton from '../../components/Buttons/Edit';
 import DeleteButton from '../../components/Buttons/Delete';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 
 export default function AddMySubgroup() {
+  const {t} = useTranslation('global');
+
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
   if (teacherId) userId = teacherId; //case when admin is logged in and wants to see another teachers schedule
@@ -53,20 +56,19 @@ export default function AddMySubgroup() {
     });
   }, []);
   useEffect(() => {
-    if (courses)
+    if (courses && courses.length > 0) {
       getTeacherCourses(userId).then(data => {
-        const newUserCourses = data.data;
-        newUserCourses.forEach(userCourse => {
-          const course = courses.find(el => el.id === userCourse.courseId);
-          if (course)
-            setUserCourses(prev => [
-              ...prev,
-              {label: course.name, value: course.id, TeacherTypeId: userCourse.TeacherTypeId}
-            ]);
+        const newUserCourses = data.data.map(el => {
+          const c = courses.find(course => course.id === el.courseId);
+          console.log(c, el.courseId);
+          return {label: c.name, value: c.id, TeacherTypeId: el.TeacherTypeId};
         });
+        setUserCourses(newUserCourses);
       });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
+  console.log(userCourses);
   useEffect(() => {
     const fetchSubGroups = async () => {
       try {
@@ -141,17 +143,14 @@ export default function AddMySubgroup() {
   }, [endDate, selectedClassType, startDate]);
   return (
     <div className={styles.add_my_subgroup__wrapper}>
-      <div className={styles.add_my_subgroup__intro}>
-        Hello, this is the page with instructions for mentors. You should fill in the fields with
-        info about the groups you already have in your scedule
-      </div>
+      <div className={styles.add_my_subgroup__intro}>{t('teacher.addMySub.par1')}</div>
       <div>
-        <h2>1. Select course: </h2>
+        <h2>{t('teacher.addMySub.action1')}</h2>
 
         <Select
           name="courses"
           options={userCourses}
-          placeholder="Select course"
+          placeholder={t('teacher.addMySub.placeholder1')}
           required
           className={`${styles.selector} ${styles.selector__filtering}`}
           onChange={choice => {
@@ -163,7 +162,7 @@ export default function AddMySubgroup() {
         <>
           <div>
             <br />
-            <h2>2. Select subgroup: </h2>
+            <h2>{t('teacher.addMySub.action2')}</h2>
             <Select
               name="subGroupSelector"
               className={styles.selector}
@@ -171,7 +170,7 @@ export default function AddMySubgroup() {
               options={subGroups}
               key={Math.random() * 100 - 10}
               required
-              placeholder="Select subgroup"
+              placeholder={t('teacher.addMySub.ph2')}
               onChange={el => {
                 setSubGroup(el);
               }}
@@ -180,19 +179,19 @@ export default function AddMySubgroup() {
           {selectedCourse && subGroup && (
             <>
               <br />
-              <h2>3. Select time period and type of subgroup: </h2>
+              <h2>{t('teacher.addMySub.action3')}</h2>
               <div className={styles.add_my_subgroup__date_wrapper}>
                 <div>
                   <FormInput
                     type={'date'}
-                    title={'Start'}
+                    title={t('teacher.addMySub.st')}
                     value={startDate}
                     handler={setStartDate}></FormInput>
                 </div>
                 <div>
                   <FormInput
                     type={'date'}
-                    title={'End'}
+                    title={t('teacher.addMySub.end')}
                     classname={'right'}
                     value={endDate}
                     pattern="\d{2}.\d{2}.\d{4}"
@@ -210,7 +209,7 @@ export default function AddMySubgroup() {
                 <Select
                   key={Math.random() * 1000 - 10}
                   className={`${styles.selector} ${styles.selector__filtering}`}
-                  placeholder="Lesson Type"
+                  placeholder={t('teacher.addMySub.type')}
                   value={
                     selectedClassType !== null &&
                     appointmentTypes.filter(el => el.value === selectedClassType.value)
@@ -261,12 +260,12 @@ export default function AddMySubgroup() {
                 <>
                   <div className={tableStyles.button__wrapper}>
                     <EditButton
-                      text="Create"
+                      text={t('buttons.ct')}
                       disabled={slots.length === 0}
                       onClick={() => setIsOpen(true)}
                       classname={'button__add'}></EditButton>
                     <DeleteButton
-                      text="Clear"
+                      text={t('buttons.cl')}
                       onClick={() => {
                         setSlots([]);
                       }}></DeleteButton>
@@ -280,7 +279,9 @@ export default function AddMySubgroup() {
                               <th
                                 key={dateIndex}
                                 className={`${tableStyles.columns} ${tableStyles.sticky}`}>
-                                <div className={tableStyles.cell__header}>{day}</div>
+                                <div className={tableStyles.cell__header}>
+                                  {t(`daysOfWeek.${day.toLowerCase()}`)}
+                                </div>
                               </th>
                             )
                           )}

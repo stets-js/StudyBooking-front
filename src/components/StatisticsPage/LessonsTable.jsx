@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './statistics.module.scss';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 
 export default function LessonsTable({lessonsByDay}) {
   const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -24,6 +25,8 @@ export default function LessonsTable({lessonsByDay}) {
         return id;
     }
   };
+  const {t} = useTranslation('global');
+
   return (
     <div className={classNames(styles.table__wrapper, styles.table__wrapper__lesson)}>
       <table className={styles.table}>
@@ -40,7 +43,13 @@ export default function LessonsTable({lessonsByDay}) {
                       styles.table__lesson__cell,
                       styles.table__lesson__cell__date
                     )}>
-                    {day} ({weekDays[weekDay === 0 ? 6 : weekDay - 1]})
+                    {day} (
+                    {t(
+                      `fullDaysOfWeek.${weekDays[weekDay === 0 ? 6 : weekDay - 1]
+                        .slice(0, 3)
+                        .toLowerCase()}`
+                    )}
+                    )
                   </td>
                 </tr>
                 {lessons.map(lesson => (

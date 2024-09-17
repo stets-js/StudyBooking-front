@@ -1,8 +1,11 @@
 import React from 'react';
 
 import buttonStyles from './buttons.module.scss';
+import {useTranslation} from 'react-i18next';
 
-export default function EditButton({onClick, classname, text = 'Edit', disabled = 0}) {
+export default function EditButton({onClick, classname, text, disabled = 0}) {
+  const {t} = useTranslation('global');
+
   return (
     <button
       disabled={disabled}
@@ -11,7 +14,7 @@ export default function EditButton({onClick, classname, text = 'Edit', disabled 
         e.preventDefault();
         onClick();
       }}>
-      {text}
+      {text || t('buttons.edit')}
     </button>
   );
 }

@@ -5,6 +5,7 @@ import appointmentStyles from '../../../styles/appointment.module.scss';
 import {getAppointmentTypes} from '../../../helpers/teacher/appointment-type';
 import 'react-tooltip/dist/react-tooltip.css';
 import {Tooltip} from 'react-tooltip';
+import {useTranslation} from 'react-i18next';
 
 export default function AppointmentList({
   setAppointmentTypes,
@@ -12,6 +13,8 @@ export default function AppointmentList({
   user,
   setSelectedAppointment
 }) {
+  const {t} = useTranslation('global');
+
   useEffect(() => {
     const fetchAppointmentType = async () => {
       try {
@@ -38,29 +41,28 @@ export default function AppointmentList({
     fetchAppointmentType();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const translateAppointmentTypeName = name => {
     switch (name) {
       case 'universal':
-        return 'Universal';
+        return t('appointmentList.universal');
       case 'appointed_group':
-        return 'Appointed group';
+        return t('appointmentList.appointed_group');
       case 'appointed_private':
-        return 'Appointed private';
+        return t('appointmentList.appointed_private');
       case 'appointed_kids_group':
-        return 'Appointed kids group';
+        return t('appointmentList.appointed_kids_group');
       case 'free':
-        return 'Remove';
+        return t('appointmentList.free');
       case 'group':
-        return 'Group';
+        return t('appointmentList.group');
       case 'private':
-        return 'Private';
+        return t('appointmentList.private');
       case 'replacement_group':
-        return 'Group replacement';
+        return t('appointmentList.replacement_group');
       case 'replacement_private':
-        return 'Private replacement';
+        return t('appointmentList.replacement_private');
       case 'replacement_kids_group':
-        return 'Kids group replacement';
+        return t('appointmentList.replacement_kids_group');
       default:
         return name;
     }

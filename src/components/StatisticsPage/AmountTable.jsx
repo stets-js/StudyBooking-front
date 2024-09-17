@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './statistics.module.scss';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 
 const typeTranslator = id => {
   switch (+id) {
@@ -41,6 +42,8 @@ const typeReverseTranslator = typeName => {
 };
 
 export default function AmountTable({typeAmounts}) {
+  const {t} = useTranslation('global');
+
   const orderHeaders = headers => {
     const order = [
       'Group',
@@ -61,7 +64,7 @@ export default function AmountTable({typeAmounts}) {
           <tr>
             {headers.map(header => (
               <td key={header} className={classNames(styles.table__cell, styles.table__header)}>
-                {header}
+                {t(`teacher.statistics.headers.${header}`)}
               </td>
             ))}
           </tr>

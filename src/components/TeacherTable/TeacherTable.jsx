@@ -20,9 +20,12 @@ import InfoButton from '../Buttons/Info';
 import ReferalButton from '../Buttons/Referal';
 import ReferalModalWindow from '../modals/ReferalModal/ReferalModalWindow';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 
 export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   const dispatch = useDispatch();
+  const {t} = useTranslation('global');
+
   const [user, setUser] = useState('');
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,7 +53,6 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   useEffect(() => {
     initialStartDate.setHours(startingHour, 0, 0, 0);
     setStartDates(Array.from({length: 7}, (_, i) => addDays(initialStartDate, i)));
-    console.log('changing');
   }, [startingHour]);
 
   useEffect(() => {
@@ -80,9 +82,9 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
       {!isAdmin && <Banner setUser={setUser} user={user}></Banner>}
       <div className={styles.refferal}>
         <div className={styles.refferal__button}>
-          <span>Хочеш дізнатися більше?</span>
+          <span>{t('teacher.timetable.refferal.title')}</span>
           <ReferalButton
-            text="Натискай"
+            text={t('teacher.timetable.refferal.buttonText')}
             onClick={() => {
               setReferalDetails(true);
             }}></ReferalButton>
@@ -125,8 +127,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
               {startDates.map((startDate, dateIndex) => (
                 <th key={dateIndex} className={`${tableStyles.columns} ${tableStyles.sticky}`}>
                   <div className={tableStyles.cell__header}>
-                    {format(startDate, 'EEEE').charAt(0).toUpperCase() +
-                      format(startDate, 'EEEE').slice(1, 3)}
+                    {t(`daysOfWeek.${format(startDate, 'EEEE').slice(0, 3).toLowerCase()}`)}
                   </div>
                 </th>
               ))}

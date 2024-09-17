@@ -3,6 +3,7 @@ import Header from '../../components/Header/Header';
 import path from '../../helpers/routerPath';
 import {Outlet} from 'react-router-dom';
 import {useSelector} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 const TeacherWrapper = ({
   hideLogo = false,
@@ -10,33 +11,35 @@ const TeacherWrapper = ({
   bottom_padding = false,
   mic = false
 }) => {
+  const {t} = useTranslation('global');
+
   const id = useSelector(state => state.selectedUser.id);
   let endpoints = [
     {
-      text: 'Timetable',
+      text: t('teacher.header.timetable'),
       path: id || mic ? `/${mic ? 'mic' : 'admin'}/teacher/calendar/${id}` : path.teacher
     },
     {
-      text: 'My subgroups',
+      text: t('teacher.header.mySubgroups'),
       path: id ? `${path.mySubgroups}${id}` : path.mySubgroups
     }
   ];
   if (!mic) {
     endpoints.push(
       {
-        text: 'Add my subgroup',
+        text: t('teacher.header.addMySubgroup'),
         path: id ? `${path.addMySubgroup}${id}` : path.addMySubgroup
       },
-      {text: 'Information', path: id ? `${path.info}${id}` : path.info},
-      {text: 'Statistics', path: id ? `${path.statistics}${id}` : path.statistics}
+      {text: t('teacher.header.information'), path: id ? `${path.info}${id}` : path.info},
+      {text: t('teacher.header.statistics'), path: id ? `${path.statistics}${id}` : path.statistics}
     );
   }
 
   if (id) {
     //admins only
     endpoints.push(
-      {text: 'Reports', path: id ? `${path.report}${id}` : path.report},
-      {text: 'Lessons', path: id ? `${path.MyLesson}${id}` : path.MyLesson}
+      {text: t('teacher.header.reports'), path: id ? `${path.report}${id}` : path.report},
+      {text: t('teacher.header.lessons'), path: id ? `${path.MyLesson}${id}` : path.MyLesson}
     );
   }
   return (

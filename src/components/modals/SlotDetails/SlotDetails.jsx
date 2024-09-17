@@ -6,10 +6,12 @@ import Modal from '../../Modal/Modal';
 import styles from './slotDetails.module.scss';
 import {getTopics, patchLesson} from '../../../helpers/lessons/lesson';
 import HeaderLinks from './HeaderLinks';
+import {useTranslation} from 'react-i18next';
 
 const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
   const [topics, setTopics] = useState([]);
-  const dispatch = useDispatch();
+  const {t} = useTranslation('global');
+
   const [slot, setSlot] = useState(Array.isArray(slots) ? slots[0] : slots);
 
   const [subgroupData, setSubgropData] = useState(null);
@@ -29,7 +31,6 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
     setSlot(Array.isArray(slots) ? slots[0] : slots);
   }, [slots]);
   useEffect(() => {
-    console.log(slot);
     setSubgropData(slot?.SubGroup);
   }, [slot]);
   if (!(slot && (slot.SubGroup || slot.Replacement))) return <></>;
@@ -61,7 +62,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
             )}
 
             <FormInput
-              title="Course:"
+              title={t('teacher.timetable.slotDetails.course')}
               type="text"
               name="course"
               value={subgroupData.Course.name}
@@ -70,7 +71,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
             />
 
             <FormInput
-              title="Name:"
+              title={t('teacher.timetable.slotDetails.name')}
               type="text"
               name="subgroupName"
               value={
@@ -80,11 +81,11 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
                       .map(slot => slot?.SubGroup?.name)
                       .join(', ')
               }
-              placeholder="Course"
+              placeholder="Subgroup name"
               disabled={true}
             />
             <FormInput
-              title="Appointer:"
+              title={t('teacher.timetable.slotDetails.appointer')}
               type="text"
               name="course"
               value={subgroupData?.Admin?.name}
@@ -94,7 +95,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
             {!slot.ReplacementId && (
               <FormInput
                 classname="input__bottom"
-                title="Schedule:"
+                title={t('teacher.timetable.slotDetails.schedule')}
                 type="text"
                 name="schedule"
                 appointmentLength={(() => {
@@ -120,7 +121,14 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
                         })
                         .join('')
                     : subgroupMentors.schedule
-                  // subgroupMentors.schedule.split(',').join('\n')
+                        .split(',')
+                        .map(oneDay => {
+                          let oneDaySchedule =
+                            t(`daysOfWeek.${oneDay.slice(0, 3).toLowerCase()}`) + oneDay.slice(3);
+                          return oneDaySchedule;
+                        })
+                        .join('\n')
+                  // subgroupMentors.schedule.
                 }
                 disabled={true}
                 textArea={true}
@@ -129,7 +137,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
 
             <FormInput
               classname="input__bottom"
-              title="Description:"
+              title={t('teacher.timetable.slotDetails.desc')}
               type="text"
               value={subgroupData?.description}
               disabled={true}
@@ -139,22 +147,13 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
             {slot.ReplacementId && (
               <FormInput
                 classname="input__bottom"
-                title="Description to replacement:"
+                title={t('teacher.timetable.slotDetails.repl_desc')}
                 type="text"
                 value={slot.Replacement.description}
                 disabled={true}
                 textArea={true}
               />
             )}
-
-            {/* <FormInput
-              classname="input__bottom"
-              title="Feedback:"
-              type="text"
-              disabled={1}
-              value={slot?.Feedback?.report || ''}
-              textArea={true}
-            /> */}
           </div>
         </Modal>
       )}
