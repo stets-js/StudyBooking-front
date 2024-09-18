@@ -106,7 +106,7 @@
               ]
             }
           },
-          "contact": "P.S. Якщо вам потрібні флаєри або є питання, зв'яжіться зі мною за посиланням https://t.me/anna_odzhykovska",
+          "contact": "P.S. Якщо вам потрібні флаєри або є питання, зв'яжіться зі мною за посиланням <a href='https://t.me/anna_odzhykovska'>https://t.me/anna_odzhykovska</a>",
           "exitText": "Натисніть зовні, щоб вийти"
         }
       },

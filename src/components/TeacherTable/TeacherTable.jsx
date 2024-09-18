@@ -3,7 +3,6 @@ import {format, addDays, startOfWeek, addMinutes} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 
 import tableStyles from '../../styles/table.module.scss';
-import styles from '../../styles/table.module.scss';
 
 import {getSlotsForUser} from '../../helpers/teacher/slots';
 import {cleanOccupiedSlots} from '../../redux/action/teacher.action';
@@ -80,7 +79,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
   return (
     <div>
       {!isAdmin && <Banner setUser={setUser} user={user}></Banner>}
-      <div className={styles.refferal}>
+      {/* <div className={styles.refferal}>
         <div className={styles.refferal__button}>
           <span>{t('teacher.timetable.refferal.title')}</span>
           <ReferalButton
@@ -98,7 +97,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
         <ReferalModalWindow
           isOpen={referalDetails}
           handleClose={() => setReferalDetails(false)}></ReferalModalWindow>
-      )}
+      )} */}
       <AppointmentList
         setAppointmentTypes={setAppointmentTypes}
         appointmentTypes={appointmentTypes}

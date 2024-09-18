@@ -7,6 +7,7 @@ import CloudinaryUploadWidget from '../../components/Cloudinary/UploadWidget';
 import {getUserById, patchUser} from '../../helpers/user/user';
 import FormInput from '../../components/FormInput/FormInput';
 import styles from '../../styles/teacher.module.scss';
+import tableStyles from '../../styles/table.module.scss';
 import PhoneInput from 'react-phone-input-2';
 import EditButton from '../../components/Buttons/Edit';
 import DeleteButton from '../../components/Buttons/Delete';
@@ -16,6 +17,8 @@ import {getUserDocuments} from '../../helpers/document/user-document';
 import TableHeader from '../../components/TableComponent/TableHeader';
 import InfoTableBody from '../../components/InfoPage/TableBody';
 import {useTranslation} from 'react-i18next';
+import ReferalButton from '../../components/Buttons/Referal';
+import ReferalModalWindow from '../../components/modals/ReferalModal/ReferalModalWindow';
 
 export default function Info() {
   const {t} = useTranslation('global');
@@ -68,8 +71,28 @@ export default function Info() {
   }, []);
 
   console.log(user);
+  const [referalDetails, setReferalDetails] = useState(false);
   return (
     <>
+      <div className={tableStyles.refferal}>
+        <div className={tableStyles.refferal__button}>
+          <span>{t('teacher.timetable.refferal.title')}</span>
+          <ReferalButton
+            text={t('teacher.timetable.refferal.buttonText')}
+            onClick={() => {
+              setReferalDetails(true);
+            }}></ReferalButton>
+        </div>
+        <img
+          className={tableStyles.refferal__img}
+          src="https://res.cloudinary.com/dn4cdsmqr/image/upload/v1721037700/Referral_etkc0a.png"
+          alt="alt"></img>
+      </div>
+      {referalDetails && (
+        <ReferalModalWindow
+          isOpen={referalDetails}
+          handleClose={() => setReferalDetails(false)}></ReferalModalWindow>
+      )}
       <div className={styles.info__wrapper}>
         <div className={styles.info__container}>
           <div className={styles.info__name_block}>
