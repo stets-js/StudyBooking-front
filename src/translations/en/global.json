@@ -82,6 +82,21 @@
       }
     }
   },
+  "admin": {
+    "courses": {
+      "title": "Manage Courses",
+      "new": "New",
+      "filter":"Filter by name",
+      "listHeader":"Courses",
+      "modal":{
+        "title":"Change course's info",
+        "name":"Name",
+        "short":"Shortening",
+        "amount":"Group amount",
+        "admin":"Administator"
+      }
+    }
+  },
   "teacher": {
     "header": {
       "timetable": "Timetable",
@@ -328,6 +343,13 @@
 
   },
   "modals": {
+    "ex":"Click here or outside to exit",
+    "newCourse":{
+      "title": "New Course",
+      "name":"Name",
+      "short":"Shortening",
+      "admin":"Administator"
+    },
     "courses":{
       "button":"Courses",
       "title":"Teaches courses",

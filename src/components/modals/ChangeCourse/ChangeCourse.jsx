@@ -6,8 +6,11 @@ import FormInput from '../../FormInput/FormInput';
 import styles from '../../../styles/FormInput.module.scss';
 import {getUsers} from '../../../helpers/user/user';
 import Select from 'react-select';
+import {useTranslation} from 'react-i18next';
 
 const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
+  const {t} = useTranslation('global');
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState(0);
   const [teamLead, setTeamLead] = useState([{label: 'a', value: 0}]);
@@ -70,41 +73,41 @@ const ChangeCourse = ({isOpen, handleClose, id, courseArray}) => {
             number={number}
             teamLeadId={teamLeadId}
             shortening={shortening}
-            title="Change course's info">
+            title={t('admin.courses.modal.title')}>
             <FormInput
-              title="Name:"
+              title={t('admin.courses.modal.name') + ':'}
               type="text"
               name="name"
               value={name}
-              placeholder="Name"
+              placeholder={t('admin.courses.modal.name')}
               isRequired={true}
               handler={setName}
             />
             <FormInput
-              title="Shortening:"
+              title={t('admin.courses.modal.short') + ':'}
               type="text"
               name="shortening"
               value={shortening}
-              placeholder="Shortening"
+              placeholder={t('admin.courses.modal.short')}
               isRequired={true}
               handler={setShortening}
             />
             <FormInput
-              title="Group number:"
+              title={t('admin.courses.modal.amount') + ':'}
               type="number"
               name="group_number"
               min={0}
               value={number}
               disabled={1}
-              placeholder="Group number"
+              placeholder={t('admin.courses.modal.amount')}
               isRequired={true}
               handler={setNumber}
             />
             <label htmlFor="teamLead" className={styles.input__label}>
-              <p className={styles.input__title}>Administator: </p>
+              <p className={styles.input__title}>{t('admin.courses.modal.admin')}: </p>
             </label>
             <Select
-              key={'Rerender_element' + Math.random() * (1000 - 100)}
+              key={'Rerender_element' + Math.random() * 100 - 1}
               defaultValue={teamLead.filter(tl => tl.value === teamLeadId)[0]}
               className={styles.selector}
               options={teamLead}

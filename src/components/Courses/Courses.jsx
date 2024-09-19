@@ -7,6 +7,7 @@ import {Fade} from 'react-awesome-reveal';
 
 export default function Courses({text, isOpenModal, role, filterName}) {
   const [courses, setCorses] = useState([]);
+
   const [id, setId] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

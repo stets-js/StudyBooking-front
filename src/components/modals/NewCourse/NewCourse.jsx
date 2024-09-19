@@ -7,8 +7,11 @@ import {getUsers} from '../../../helpers/user/user';
 import Select from 'react-select';
 import styles from '../../../styles/FormInput.module.scss';
 import {useSelector} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 const NewCourse = ({isOpen, handleClose}) => {
+  const {t} = useTranslation('global');
+
   const userId = useSelector(state => state.auth.user.id);
   const [name, setName] = useState('');
   const [teamLead, setTeamLead] = useState({label: '', value: null});
@@ -47,30 +50,30 @@ const NewCourse = ({isOpen, handleClose}) => {
             name={name}
             team_lead_id={selectedTeamLead}
             shortening={shortening}
-            title="New course">
+            title={t('modals.newCourse.title')}>
             <FormInput
-              title="Name:"
+              title={t('modals.newCourse.name') + ':'}
               type="text"
               name="name"
               max={50}
               value={name}
-              placeholder="Name"
+              placeholder={t('modals.newCourse.name')}
               isRequired={true}
               handler={setName}
             />
             <FormInput
-              title="Shortening:"
+              title={t('modals.newCourse.short') + ':'}
               type="text"
               name="Shortening"
               max={50}
               value={shortening}
-              placeholder="Shortening"
+              placeholder={t('modals.newCourse.short')}
               isRequired={true}
               handler={setShortening}
             />
 
             <label htmlFor="teamLead" className={styles.input__label}>
-              <p className={styles.input__title}>Administator: </p>
+              <p className={styles.input__title}>{t('modals.newCourse.admin')} </p>
             </label>
             <Select
               defaultValue={teamLead.filter(user => user.value === userId)}

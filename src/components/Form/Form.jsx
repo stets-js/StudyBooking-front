@@ -357,7 +357,7 @@ const Form = ({
           onClick={() => {
             onSubmitModified();
           }}>
-          Click here or outside to exit
+          {t('modals.ex')}
         </p>
       )}
     </div>
