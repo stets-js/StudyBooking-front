@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
 import {setAdmins} from '../../redux/action/usersPage.action';
+import {useTranslation} from 'react-i18next';
 
 export default function AdminList({setTitle, setEdit, setIsOpen, setItem, title = true}) {
   const userRole = useSelector(state => state.auth.user.role);
@@ -22,11 +23,13 @@ export default function AdminList({setTitle, setEdit, setIsOpen, setItem, title 
     fetchAdmins();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const {t} = useTranslation('global');
+
   return (
     <div className={styles.wrapper} key={'index1'}>
       <React.Fragment key={1}>
         <div key={'index'}>
-          {title && <p className={styles.mini_title}>Appointers</p>}
+          {title && <p className={styles.mini_title}>{t('superAdmin.users.table.headers.app')}</p>}
 
           <ul className={styles.main_wrapper}>
             {(admins || []).map(item => {

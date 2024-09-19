@@ -19,6 +19,7 @@ import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
 import {deleteOneLesson} from '../../helpers/lessons/lesson';
 import {addMinutes, format} from 'date-fns';
+import {useTranslation} from 'react-i18next';
 const root = document.querySelector('#root');
 
 defaults.delay = 1000;
@@ -56,6 +57,8 @@ const Form = ({
   changeCourses = false,
   ...formData
 }) => {
+  const {t} = useTranslation('global');
+
   const [isOpen, setIsOpen] = useState(false);
   const [isChangeManagerCoursesOpen, setIsChangeManagerCoursesOpen] = useState(false);
   const [errorsuccessMessage, setError] = useState(false);
@@ -287,7 +290,7 @@ const Form = ({
           )}
 
           {!type.button && !editButton && (
-            <InputSubmit buttonTitle={buttonTitle ? buttonTitle : 'Save'} />
+            <InputSubmit buttonTitle={buttonTitle ? buttonTitle : t('buttons.save')} />
           )}
           {isCancelConfConsult && <InputDelete handleDelete={cancelConfConsultOnClickFn} />}
           {postpone && (

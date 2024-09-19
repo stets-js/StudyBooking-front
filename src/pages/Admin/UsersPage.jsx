@@ -16,7 +16,7 @@ export default function UsersPage() {
 
   const [isOpen, setIsOpen] = useState(false);
   const userRole = useSelector(state => state.auth.user.role);
-  const [title, setTitle] = useState('New User');
+  const [title, setTitle] = useState(t('superAdmin.users.addUserModal.title'));
   const [item, setItem] = useState({});
   const [edit, setEdit] = useState(false);
 
@@ -77,10 +77,10 @@ export default function UsersPage() {
                 data-modal="new-user"
                 onClick={() => {
                   setIsOpen(!isOpen);
-                  setTitle('New User');
+                  setTitle(t('superAdmin.users.addUserModal.title'));
                   setEdit(false);
                 }}>
-                Add new user
+                {t('superAdmin.users.button')}
               </button>
               <NewUser
                 isOpen={isOpen}
@@ -100,15 +100,15 @@ export default function UsersPage() {
               <InfoButton
                 classname={'button__small'}
                 onClick={() => handleListChange('superAdmin')}
-                text={'Super'}></InfoButton>
+                text={t('superAdmin.users.small.sup')}></InfoButton>
               <InfoButton
                 classname={'button__small'}
                 onClick={() => handleListChange('admin')}
-                text={'Appointers'}></InfoButton>
+                text={t('superAdmin.users.small.admin')}></InfoButton>
               <InfoButton
                 classname={'button__small'}
                 onClick={() => handleListChange('mentor')}
-                text={'Mentors'}></InfoButton>
+                text={t('superAdmin.users.small.mentor')}></InfoButton>
             </div>
             <div className={styles.main_wrapper2}>
               {activeList === 'superAdmin' && (

@@ -11,6 +11,7 @@ import {Link} from 'react-router-dom';
 import FormInput from '../../components/FormInput/FormInput';
 import {cleanMentors, setMentors} from '../../redux/action/usersPage.action';
 import ChangeManagerCourses from '../modals/ChangeManagerCourses/ChangeManagerCourses';
+import {useTranslation} from 'react-i18next';
 
 export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title = true}) {
   const [limit] = useState(40);
@@ -19,6 +20,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
   const [totalAmount, setTotalAmount] = useState(limit);
   const [reset, setReset] = useState(false);
   const [isAllMentors, setIsAllMentors] = useState(true);
+  const {t} = useTranslation('global');
 
   const teachers = useSelector(state => state.usersPage.mentors);
   const [filterName, setFilterName] = useState(null);
@@ -94,7 +96,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
     <>
       <React.Fragment key={2}>
         <div className={styles.wrapper} key={'index1'}>
-          {title && <p className={styles.mini_title}>Mentors</p>}
+          {title && <p className={styles.mini_title}>{t('superAdmin.users.table.headers.men')}</p>}
 
           <ul className={`${styles.main_wrapper}`}>
             <li className={`${styles.ul_items} ${styles.filter_wrapper}`}>
@@ -107,12 +109,12 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
                 key={`item.id`}>
                 <FormInput
                   type={'text'}
-                  placeholder={`Name`}
+                  placeholder={t('superAdmin.users.table.mentors.namePlaceholder')}
                   classname={'green'}
                   value={filterName}
                   handler={setFilterName}></FormInput>
                 <FormInput
-                  value={'Courses'}
+                  value={t('superAdmin.users.table.mentors.coursesPlaceholder')}
                   type={'button'}
                   classname={'green'}
                   handler={() => {
@@ -120,7 +122,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
                   }}
                   alignValue={true}></FormInput>
                 <label>
-                  <span>My</span>
+                  <span>{t('superAdmin.users.table.mentors.filter.my')}</span>
                   <Switch
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -131,7 +133,7 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
                     }}
                     checked={isAllMentors}
                   />
-                  <span>All</span>
+                  <span>{t('superAdmin.users.table.mentors.filter.all')}</span>
                 </label>
               </Fade>
             </li>
@@ -169,7 +171,9 @@ export default function MentorList({setItem, setTitle, setEdit, setIsOpen, title
                         // data-modal="change-user"
                         onClick={() => {
                           setIsOpen(true);
-                          setTitle(`Edit ${item.name}`);
+                          setTitle(
+                            `${t('superAdmin.users.table.mentors.editModal.title')} ${item.name}`
+                          );
                           setItem({
                             name: item.name,
                             role: item.RoleId,

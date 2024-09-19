@@ -7,10 +7,13 @@ import {Fade} from 'react-awesome-reveal';
 import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {setSuperAdmins} from '../../redux/action/usersPage.action';
+import {useTranslation} from 'react-i18next';
 
 export default function SuperAdminList({setIsOpen, setTitle, setItem, setEdit, title = true}) {
   const superAdmins = useSelector(state => state.usersPage.superAdmins);
   const userRole = useSelector(state => state.auth.user.role);
+  const {t} = useTranslation('global');
+
   const dispatch = useDispatch();
   const fetchSuperAdmins = async () => {
     try {
@@ -25,7 +28,7 @@ export default function SuperAdminList({setIsOpen, setTitle, setItem, setEdit, t
     <div className={styles.wrapper} key={'index0'}>
       <React.Fragment key={1}>
         <div key={'index'}>
-          {title && <p className={styles.mini_title}>Super admin </p>}
+          {title && <p className={styles.mini_title}>{t('superAdmin.users.table.headers.sup')} </p>}
           <ul className={styles.main_wrapper}>
             {(superAdmins || []).map(item => {
               return (

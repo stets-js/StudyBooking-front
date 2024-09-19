@@ -22,14 +22,17 @@ import {
 } from '../../../redux/action/usersPage.action';
 import {useDispatch} from 'react-redux';
 import TeamLeadsBlock from './TeamLeadsBlock';
+import {useTranslation} from 'react-i18next';
 
-const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item}) => {
+const NewUser = ({isOpen, handleClose, title, edit, roles, item}) => {
   const dispatch = useDispatch();
+  const {t} = useTranslation('global');
+
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState('+380');
   const [city, setCity] = useState('');
   // console.log(roles.find(el => el.label === 'teacher'));
   const [role, setRole] = useState(
@@ -135,30 +138,32 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
               failMessage: 'Failed to create user',
               successMessageDelete: `Deleted user ${item.name}!`
             }}
-            title={title}>
+            title={title || t('superAdmin.users.addUserModal')}>
             <FormInput
-              title="Name:"
+              title={t('superAdmin.users.addUserModal.name') + ':'}
               type="text"
               name="name"
               max={50}
               value={name}
-              placeholder="Name"
+              placeholder={t('superAdmin.users.addUserModal.name')}
               isRequired={true}
               handler={setName}
             />
             <FormInput
-              title="Rating:"
+              title={t('superAdmin.users.addUserModal.rating') + ':'}
               type="text"
               name="rating"
               max={50}
               value={rating}
-              placeholder="Rating"
+              placeholder={t('superAdmin.users.addUserModal.rating')}
               isRequired={true}
               handler={setRating}
             />
             <div className={styles.input__block}>
               <div className={styles.phone__wrapper}>
-                <span className={styles.phone__label}>Phone:</span>
+                <span className={styles.phone__label}>
+                  {t('superAdmin.users.addUserModal.phone') + ':'}
+                </span>
                 <PhoneInput
                   label="Phone"
                   name={'phone'}
@@ -173,35 +178,35 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
                 />
               </div>
               <FormInput
-                title="City:"
+                title={t('superAdmin.users.addUserModal.city') + ':'}
                 type="text"
                 name="city"
                 value={city}
-                placeholder="City"
+                placeholder={t('superAdmin.users.addUserModal.city')}
                 handler={setCity}
               />
             </div>
             <FormInput
               classname="input__bottom"
-              title="Email:"
+              title={t('superAdmin.users.addUserModal.email') + ':'}
               type="text"
               name="email"
               max={50}
               value={email}
-              placeholder="Email"
+              placeholder={t('superAdmin.users.addUserModal.email')}
               isRequired={true}
               handler={setEmail}
             />
 
             {!edit && (
               <Select
-                title="Role:"
+                title={t('superAdmin.users.addUserModal.role')}
                 className={styles.selector}
                 options={roles}
                 required={true}
                 value={roles.find(el => el.value === role)}
                 key={Math.random() * 1000 - 10}
-                placeholder={'Role'}
+                placeholder={t('superAdmin.users.addUserModal.role')}
                 onChange={el => setRole(el.value)}></Select>
             )}
             {edit && (
@@ -214,15 +219,15 @@ const NewUser = ({isOpen, handleClose, title = 'New user: ', edit, roles, item})
             {edit && (
               <button
                 className={styles.forgotPassword}
-                title="Password:"
+                title={t('superAdmin.users.addUserModal.pwd')}
                 type="button"
                 name="password"
-                placeholder="Password"
+                placeholder={t('superAdmin.users.addUserModal.pwd')}
                 isRequired={true}
                 onClick={() => {
                   handlePasswordReset();
                 }}>
-                Forgot password
+                {t('superAdmin.users.addUserModal.forgotPwd')}
               </button>
             )}
           </Form>

@@ -17,6 +17,7 @@ import {
   setTeacherCourses,
   updateTeacherCourse
 } from '../../../redux/action/course.action';
+import {useTranslation} from 'react-i18next';
 
 const ChangeManagerCourses = ({
   isOpen,
@@ -28,6 +29,8 @@ const ChangeManagerCourses = ({
   forFilters = false
 }) => {
   const dispatch = useDispatch();
+  const {t} = useTranslation('global');
+
   const courses = useSelector(state => state.courses.courses);
   const teacherCourses = useSelector(state => state.courses.teacherCourses) || [];
   // const [teacherTypes, setTeacherTypes] = useState([]);
@@ -85,12 +88,9 @@ const ChangeManagerCourses = ({
   return (
     <>
       <Modal open={isOpen} onClose={handleClose}>
-        <h1 className={styles.title}>Teacher courses</h1>
+        <h1 className={styles.title}>{t('modals.courses.title')}</h1>
         <h3 className={styles.managerLinkTitle}>
-          {forFilters
-            ? `Pick courses for filtering, and close this window
-          to apply changes:`
-            : 'Choose courses'}
+          {forFilters ? t('modals.courses.action1') : t('modals.courses.action2')}
           {/* Teacher :TODO: make href */}
           {/* <a className={styles.managerLink} href={`/user/${managerInfo.id}/planning`}>
             {managerInfo.name}

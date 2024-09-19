@@ -8,8 +8,10 @@ import Clear from '../../../img/clear.svg';
 import {useSelector} from 'react-redux';
 import EditButton from '../../Buttons/Edit';
 import {addMentorToAdminTeam, removeMentorToAdminTeam} from '../../../helpers/user/user';
+import {useTranslation} from 'react-i18next';
 
 const TeamLeadsBlock = ({teamLeaders, mentorId, updateUser}) => {
+  const {t} = useTranslation('global');
   const [isAddTl, setIsAddTl] = useState(false);
   const admins = useSelector(state => state.usersPage.admins);
   const superAdmins = useSelector(state => state.usersPage.superAdmins);
@@ -26,7 +28,7 @@ const TeamLeadsBlock = ({teamLeaders, mentorId, updateUser}) => {
   return (
     <div className={styles.teamLeaders}>
       <label className={styles.teamLeaders__label}>
-        TeamLeaders:{' '}
+        {t('superAdmin.users.tl.title')}
         <button
           className={styles.teamLeaders__add}
           onClick={e => {

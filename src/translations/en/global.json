@@ -28,6 +28,14 @@
     "users": {
       "title": "Manage users",
       "button": "Add new user",
+      "small":{
+        "sup":"Super",
+        "admin":"Appointers",
+        "mentor":"Mentors"
+      },
+      "tl":{
+        "title":"Team leaders:"
+      },
       "addUserModal": {
         "title": "New User",
         "name": "Name",
@@ -36,15 +44,26 @@
         "city": "City",
         "email": "Email",
         "saveBtn": "Save",
+        "role":"Role",
+        "pwd":"Password",
+        "forgotPwd":"Forgot password",
         "roles": ["teacher", "administrator", "superAdmin"],
         "exit": "Click here or outside to exit"
       },
       "table": {
-        "headers": ["Super admin", "Appointers", "Mentors"],
+        "headers": {
+          "sup":"Super admin",
+          "app":"Appointers",
+          "men":"Mentors"
+        },
         "mentors": {
           "namePlaceholder": "Name",
           "coursesPlaceholder": "Courses",
-          "filter": ["My", "All"],
+          "filter": {
+            "my":"My",
+            "all": "All"
+          },
+          
           "editModal": {
             "title": "Edit",
             "name": "Name",
@@ -309,6 +328,18 @@
 
   },
   "modals": {
+    "courses":{
+      "button":"Courses",
+      "title":"Teaches courses",
+      "action1":"Pick courses for filtering and close this window",
+      "action2":"Choose courses"
+
+    },
+    "dl":{
+      "conf":"Delete this item?",
+      "yes":"Yes",
+      "no":"No"
+    },
     "newSub": {
       "title": "New subgroup",
       "name": "Name",

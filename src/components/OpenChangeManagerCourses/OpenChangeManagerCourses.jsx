@@ -1,6 +1,9 @@
+import {useTranslation} from 'react-i18next';
 import styles from './OpenChangeManagerCourses.module.scss';
 
 const OpenChangeManagerCourses = ({OpenChangeManagerCoursesFunc, curState}) => {
+  const {t} = useTranslation('global');
+
   return (
     <button
       className={styles.input__submit}
@@ -9,7 +12,7 @@ const OpenChangeManagerCourses = ({OpenChangeManagerCoursesFunc, curState}) => {
         e.preventDefault();
         OpenChangeManagerCoursesFunc(!curState);
       }}>
-      Courses
+      {t('modals.courses.button')}
     </button>
   );
 };
