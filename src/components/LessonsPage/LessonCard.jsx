@@ -9,6 +9,7 @@ import path from '../../helpers/routerPath';
 import {useConfirm} from 'material-ui-confirm';
 import {deleteOneLesson} from '../../helpers/lessons/lesson';
 import {success} from '@pnotify/core';
+import {useTranslation} from 'react-i18next';
 
 export default function LessonCard({lesson, setLessons}) {
   const navigate = useNavigate();
@@ -69,6 +70,8 @@ export default function LessonCard({lesson, setLessons}) {
       })
       .catch(e => console.log('no ' + e));
   };
+  const {t} = useTranslation('global');
+
   return (
     <div className={style.card__wrapper} key={lesson.id}>
       <div className={style.card__text__container}>
@@ -81,7 +84,7 @@ export default function LessonCard({lesson, setLessons}) {
           {lesson.LessonSchedule.startTime} - {lesson.LessonSchedule.endTime}
         </span>
         <div>
-          <InfoButton text="Replace" onClick={handleReplaceClick}></InfoButton>
+          <InfoButton text={t('buttons.repl')} onClick={handleReplaceClick}></InfoButton>
           <DeleteButton onClick={handleDelete}></DeleteButton>
         </div>
       </div>

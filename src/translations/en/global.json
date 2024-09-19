@@ -382,6 +382,7 @@
     "cl": "Clear",
     "confirm":"Confirm",
     "cancel": "Cancel",
+    "repl":"Replace",
     "add":"Add",
     "save":"Save",
     "update":"Update"

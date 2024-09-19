@@ -8,8 +8,11 @@ import LessonCard from '../../components/LessonsPage/LessonCard';
 import FilteringBlock from '../../components/LessonsPage/FilteringBlock';
 import DateTable from '../../components/LessonsPage/DateTable';
 import {fetchLessons, generateEmptyStructure} from '../../components/LessonsPage/functions';
+import {useTranslation} from 'react-i18next';
 
 export default function LessonsPage() {
+  const {t} = useTranslation('global');
+
   const [lessons, setLessons] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currDate, setCurrDate] = useState(new Date());
@@ -20,11 +23,6 @@ export default function LessonsPage() {
     teamLeadOnly: false,
     replacements: false
   });
-
-  // useEffect(() => {
-  //   generateEmptyStructure();
-  //   fetchLessons();
-  // }, []);
 
   useEffect(() => {
     fetchLessons(
@@ -70,7 +68,7 @@ export default function LessonsPage() {
               return <LessonCard lesson={lesson} setLessons={setLessons}></LessonCard>;
             })
           ) : (
-            <h2>Select time</h2>
+            <h2>{t('lessons.select')}</h2>
           )}
         </div>
       </div>
