@@ -1,14 +1,12 @@
 import {format} from 'date-fns';
 import React, {useEffect, useState} from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import classNames from 'classnames';
+
 import styles from '../../components/LessonsPage/statistic.module.scss';
 import tableStyles from '../../styles/table.module.scss';
-import Switch from 'react-switch';
-import {getLessons} from '../../helpers/lessons/lesson';
 import LessonCard from '../../components/LessonsPage/LessonCard';
 import FilteringBlock from '../../components/LessonsPage/FilteringBlock';
 import DateTable from '../../components/LessonsPage/DateTable';
-import classNames from 'classnames';
 import {fetchLessons, generateEmptyStructure} from '../../components/LessonsPage/functions';
 
 export default function LessonsPage() {
@@ -29,8 +27,6 @@ export default function LessonsPage() {
   // }, []);
 
   useEffect(() => {
-    generateEmptyStructure();
-    console.log(123);
     fetchLessons(
       `date=${format(currDate, 'yyyy-MM-dd')}${
         selectedCourse ? '&courseId=' + selectedCourse : ''

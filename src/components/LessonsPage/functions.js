@@ -19,6 +19,7 @@ export const fetchLessons = async (options, setLessons) => {
     const {data} = await getLessons(options);
     // generateEmptyStructure();
     if (data) {
+      setLessons(generateEmptyStructure());
       data.data.forEach(lesson => {
         const lessonStartTime = lesson.LessonSchedule.startTime;
         setLessons(prev => {
