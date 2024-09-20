@@ -7,9 +7,12 @@ import DeleteButton from '../../Buttons/Delete';
 import {deleteMentorFromSubgroup} from '../../../helpers/subgroup/subgroup';
 import {deleteLessons} from '../../../helpers/lessons/lesson';
 import {useDispatch} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit, subgroupId}) {
-  const headers = ['Mentor', 'Type', 'Schedule', 'Action'];
+  const {t} = useTranslation('global');
+
+  const headers = t('modals.editSub.mentorTable.headers', {returnObjects: true});
   const dispatch = useDispatch();
   return (
     <>
@@ -32,7 +35,7 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
               <tr>
                 <td colSpan={3}>
                   <div className={`${tableStyles.cell} ${tableStyles.cell__outer}`}>
-                    {'No mentors assigned'}
+                    {t('modals.editSub.mentorTable.empty')}
                   </div>
                 </td>
               </tr>
@@ -83,11 +86,15 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
                             ? tableStyles.cell__outer
                             : tableStyles.cell__inner
                         }`}>
-                        {mentor.schedule.split(',').map(el => {
+                        {mentor.schedule.split('\n').map(el => {
+                          let day = '';
+                          if (el) {
+                            day = t(`daysOfWeek.${el.slice(0, 3).toLowerCase()}`);
+                          }
                           return (
-                            <>
-                              {el} <br />
-                            </>
+                            <React.Fragment key={el}>
+                              {day + el.slice(day.length > 0 ? 3 : 0)} <br />
+                            </React.Fragment>
                           );
                         })}
                       </div>
@@ -116,7 +123,7 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
                               });
                             }
                           }}
-                          text={'Delete'}
+                          text={t('buttons.del')}
                           classname={'button__delete__small'}></DeleteButton>
                       </td>
                     )}

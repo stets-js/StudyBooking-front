@@ -4,18 +4,24 @@ import {success, error} from '@pnotify/core';
 import Select from 'react-select';
 import {useSelector} from 'react-redux';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 
 import Form from '../../Form/Form';
-import {getSlotDetails, getSubgroupJSON, updateSubGroup} from '../../../helpers/subgroup/subgroup';
-import FormInput from '../../FormInput/FormInput';
 import MentorTable from './mentorTable';
+import {getSlotDetails, getSubgroupJSON, updateSubGroup} from '../../../helpers/subgroup/subgroup';
+
+import FormInput from '../../FormInput/FormInput';
 import EditButton from '../../Buttons/Edit';
 import DeleteButton from '../../Buttons/Delete';
+import InfoButton from '../../Buttons/Info';
+
 import SelectorStyles from '../../../styles/selector.module.scss';
 import buttonStyles from '../../Buttons/buttons.module.scss';
-import InfoButton from '../../Buttons/Info';
 import formInputStyles from '../../../styles/FormInput.module.scss';
+
 const ChangeSubGroup = ({isOpen, handleClose, id}) => {
+  const {t} = useTranslation('global');
+
   const [element, setElement] = useState({});
   const [editActive, setEditActive] = useState(false);
   const courses = useSelector(state => state.courses.courses).map(el => ({
@@ -53,15 +59,15 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
             description={element.description}
             CourseId={element.CourseId}
             link={element.link}
-            title="Subgroup edit"
+            title={t('modals.editSub.title')}
             onSubmit={() => {
               handleClose();
               // setRender(true);
             }}>
             <FormInput
-              title="Name"
+              title={t('modals.editSub.name') + ':'}
               value={element.name}
-              placeholder={'Wait..'}
+              placeholder={t('modals.editSub.name')}
               disabled={!editActive}
               handler={e =>
                 setElement(prevElement => ({
@@ -71,14 +77,14 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
               }></FormInput>
             {!editActive ? (
               <FormInput
-                title="Course:"
+                title={t('modals.editSub.course') + ':'}
                 value={courses.find(course => course.value === element.CourseId)?.label}
                 placeholder={'Wait..'}
                 disabled
               />
             ) : (
               <>
-                <p className={formInputStyles.input__title}>Course: </p>
+                <p className={formInputStyles.input__title}>{t('modals.editSub.course')}: </p>
                 <Select
                   onChange={e => setElement(prev => ({...prev, CourseId: e.value}))}
                   options={courses}
@@ -90,7 +96,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
               </>
             )}
             <FormInput
-              title="Descripion"
+              title={t('modals.editSub.desc')}
               value={element.description}
               placeholder={'Wait..'}
               disabled={!editActive}
@@ -101,7 +107,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                 }))
               }></FormInput>
             <FormInput
-              title="Link to group chat"
+              title={t('modals.editSub.link')}
               value={element.link}
               placeholder={'Wait..'}
               disabled={!editActive}

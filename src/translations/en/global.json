@@ -28,13 +28,13 @@
     "users": {
       "title": "Manage users",
       "button": "Add new user",
-      "small":{
-        "sup":"Super",
-        "admin":"Appointers",
-        "mentor":"Mentors"
+      "small": {
+        "sup": "Super",
+        "admin": "Appointers",
+        "mentor": "Mentors"
       },
-      "tl":{
-        "title":"Team leaders:"
+      "tl": {
+        "title": "Team leaders:"
       },
       "addUserModal": {
         "title": "New User",
@@ -44,26 +44,26 @@
         "city": "City",
         "email": "Email",
         "saveBtn": "Save",
-        "role":"Role",
-        "pwd":"Password",
-        "forgotPwd":"Forgot password",
+        "role": "Role",
+        "pwd": "Password",
+        "forgotPwd": "Forgot password",
         "roles": ["teacher", "administrator", "superAdmin"],
         "exit": "Click here or outside to exit"
       },
       "table": {
         "headers": {
-          "sup":"Super admin",
-          "app":"Appointers",
-          "men":"Mentors"
+          "sup": "Super admin",
+          "app": "Appointers",
+          "men": "Mentors"
         },
         "mentors": {
           "namePlaceholder": "Name",
           "coursesPlaceholder": "Courses",
           "filter": {
-            "my":"My",
+            "my": "My",
             "all": "All"
           },
-          
+
           "editModal": {
             "title": "Edit",
             "name": "Name",
@@ -86,15 +86,36 @@
     "courses": {
       "title": "Manage Courses",
       "new": "New",
-      "filter":"Filter by name",
-      "listHeader":"Courses",
-      "modal":{
-        "title":"Change course's info",
-        "name":"Name",
-        "short":"Shortening",
-        "amount":"Group amount",
-        "admin":"Administator"
+      "filter": "Filter by name",
+      "listHeader": "Courses",
+      "modal": {
+        "title": "Change course's info",
+        "name": "Name",
+        "short": "Shortening",
+        "amount": "Group amount",
+        "admin": "Administator"
       }
+    },
+    "appointment": {
+      "sucess": {
+        "created": "Successfully created "
+      },
+      "err": {
+        "failToCreate": "Failed to create ",
+        "sameYear": "Start and end can`t be in same year",
+        "endGtStart": "End can`t be less than start",
+        "notEnough": "Not enough slots",
+        "diffTeach": "Can`t find avaible teacher, Slots occupied by different teachers"
+      },
+      "amount": "Lesson amount:",
+      "st": "Start",
+      "end": "End",
+      "selectCourse": "Select course",
+      "lessonType": "Lesson type"
+    },
+    "subgroups": {
+      "course": "Course",
+      "name": "Name"
     }
   },
   "teacher": {
@@ -271,21 +292,21 @@
       "table": {
         "header": ["Name", "Array", "Action"],
         "btnsTexts": ["Edit", "Add"],
-          "ph":"Place url here",
-          "noDocs":"No document found"
+        "ph": "Place url here",
+        "noDocs": "No document found"
       }
     },
     "statistics": {
       "start": "Start",
       "end": "End",
-      "headers":{
-        "Group":"Group",
-        "Replaced group":"Replaced group",
-        "Private":"Private",
-        "Replaced private":"Replaced private",
-        "Jun group":"Jun group",
-        "Replaced Jun group":"Replaced Jun group",
-        "Total":"Total"
+      "headers": {
+        "Group": "Group",
+        "Replaced group": "Replaced group",
+        "Private": "Private",
+        "Replaced private": "Replaced private",
+        "Jun group": "Jun group",
+        "Replaced Jun group": "Replaced Jun group",
+        "Total": "Total"
       }
     }
   },
@@ -332,45 +353,69 @@
       ]
     }
   },
-  "lessons":{
-    "select":"Select time",
+  "lessons": {
+    "select": "Select time",
     "empty": "No lessons",
-    "lessons":"Lessons",
-    "repl":"Replacements",
-    "my":"My",
-    "all":"All",
-    "course":"Course"
-
+    "lessons": "Lessons",
+    "repl": "Replacements",
+    "my": "My",
+    "all": "All",
+    "course": "Course"
   },
   "modals": {
-    "ex":"Click here or outside to exit",
-    "newCourse":{
+    "ex": "Click here or outside to exit",
+    "setApp": {
+      "men": "Mentors:",
+      "plachold1": "Select teacher",
+      "plachold2": "Select appointer",
+      "App": "Appointer:",
+      "course": "Course",
+      "link": "Link to group chat",
+      "plachold3": "Link",
+      "st": "Start",
+      "end": "End",
+      "schedule": "Schedule:",
+      "subgroup": "Subgroups",
+      "plachold4": "Select subgroup",
+      "newSub": "New subgroup:"
+    },
+    "newCourse": {
       "title": "New Course",
-      "name":"Name",
-      "short":"Shortening",
-      "admin":"Administator"
+      "name": "Name",
+      "short": "Shortening",
+      "admin": "Administator"
     },
-    "courses":{
-      "button":"Courses",
-      "title":"Teaches courses",
-      "action1":"Pick courses for filtering and close this window",
-      "action2":"Choose courses"
-
+    "courses": {
+      "button": "Courses",
+      "title": "Teaches courses",
+      "action1": "Pick courses for filtering and close this window",
+      "action2": "Choose courses"
     },
-    "dl":{
-      "conf":"Delete this item?",
-      "yes":"Yes",
-      "no":"No"
+    "dl": {
+      "conf": "Delete this item?",
+      "yes": "Yes",
+      "no": "No"
     },
     "newSub": {
       "title": "New subgroup",
       "name": "Name",
       "course": "Course",
+      "desc": "Description:",
       "type": "Type",
       "schedule": "Schedule",
       "st": "Start",
       "end": "End"
-  
+    },
+    "editSub": {
+      "title": "Subgroup editing",
+      "name": "Name",
+      "course": "Course",
+      "desc": "Description",
+      "link": "Link to group chat",
+      "mentorTable": {
+        "headers": ["Mentor", "Type", "Schedule", "Action"],
+        "empty": "No mentors assigned"
+      }
     }
   },
   "buttons": {
@@ -380,12 +425,11 @@
     "ref": "Referal",
     "ct": "Create",
     "cl": "Clear",
-    "confirm":"Confirm",
+    "confirm": "Confirm",
     "cancel": "Cancel",
-    "repl":"Replace",
-    "add":"Add",
-    "save":"Save",
-    "update":"Update"
+    "repl": "Replace",
+    "add": "Add",
+    "save": "Save",
+    "update": "Update"
   }
-
 }

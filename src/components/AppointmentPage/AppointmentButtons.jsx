@@ -10,6 +10,7 @@ import {RadioButton, RadioGroup} from '@trendmicro/react-radio';
 import '@trendmicro/react-radio/dist/react-radio.css';
 import EditButton from '../Buttons/Edit';
 import DeleteButton from '../Buttons/Delete';
+import {useTranslation} from 'react-i18next';
 export default function AppointmentButtons({
   startDate,
   isReplacement,
@@ -30,6 +31,8 @@ export default function AppointmentButtons({
   MIC_flag
 }) {
   const dispatch = useDispatch();
+  const {t} = useTranslation('global');
+
   const token = MIC_flag;
   let appointmentTypes = [
     {label: 'Group', value: 1},
@@ -43,7 +46,7 @@ export default function AppointmentButtons({
         <div className={styles.chooser_selector__item__date}>
           <FormInput
             type={'date'}
-            title={'Start'}
+            title={t('admin.appointment.st')}
             value={startDate}
             // defaultValue={isReplacement ? startDate : null}
             // pattern="(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).\d{4}"
@@ -52,7 +55,7 @@ export default function AppointmentButtons({
         <div className={styles.chooser_selector__item__date}>
           <FormInput
             type={'date'}
-            title={'End'}
+            title={t('admin.appointment.end')}
             classname={'right'}
             value={endDate}
             pattern="\d{2}.\d{2}.\d{4}"
@@ -65,7 +68,7 @@ export default function AppointmentButtons({
             <Select
               options={courses}
               value={courses.filter(course => course.value === selectedCourse)}
-              placeholder="Select course"
+              placeholder={t('admin.appointment.selectCourse')}
               required
               className={`${styles.selector} ${styles.selector__filtering}`}
               onChange={choice => {
@@ -79,7 +82,7 @@ export default function AppointmentButtons({
             <Select
               key={Math.random() * 100 - 10}
               className={`${styles.selector} ${styles.selector__filtering}`}
-              placeholder="Lesson Type"
+              placeholder={t('admin.appointment.lessonType')}
               value={
                 selectedClassType !== null &&
                 appointmentTypes.filter(el => el.value === selectedClassType)
@@ -122,14 +125,14 @@ export default function AppointmentButtons({
           className={`${styles.chooser_selector__item} ${styles.chooser_selector__item__buttons}`}>
           <EditButton
             onClick={handleClose}
-            text="Create"
+            text={t('buttons.ct')}
             disabled={selectedSlotsAmount === 0}
             classname={'button__add'}></EditButton>
           <DeleteButton
             onClick={e => {
               clearTable();
             }}
-            text="Clear"></DeleteButton>
+            text={t('buttons.cl')}></DeleteButton>
         </div>
       </div>
     </>

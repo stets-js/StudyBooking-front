@@ -6,8 +6,11 @@ import Form from '../../Form/Form';
 import Select from 'react-select';
 import styles from '../../../styles/FormInput.module.scss';
 import {postSubGroup} from '../../../helpers/subgroup/subgroup';
+import {useTranslation} from 'react-i18next';
 
 const NewSubgroup = ({isOpen, handleClose}) => {
+  const {t} = useTranslation('global');
+
   const [courses, setCourses] = useState([]);
   const [subgroup, setSubgroup] = useState({name: '', description: '', CourseId: null});
   const fetchCourses = async () => {
@@ -49,13 +52,13 @@ const NewSubgroup = ({isOpen, handleClose}) => {
               failMessage: 'Failed to create subgroup'
             }}
             subgroup={JSON.stringify(subgroup)}
-            title="New subgroup">
+            title={t('modals.newSub.title')}>
             <FormInput
-              title="Name:"
+              title={t('modals.newSub.name') + ':'}
               type="text"
               name="name"
               value={subgroup.name}
-              placeholder="Name"
+              placeholder={t('modals.newSub.name')}
               isRequired={true}
               handler={e => {
                 setSubgroup({...subgroup, name: e});
@@ -63,7 +66,7 @@ const NewSubgroup = ({isOpen, handleClose}) => {
             />
 
             <label htmlFor="Courses" className={styles.input__label}>
-              <p className={styles.input__title}>Course: </p>
+              <p className={styles.input__title}>{t('modals.newSub.course')}: </p>
             </label>
             <Select
               defaultValue={courses.filter(course => course.value === subgroup.CourseId)}
@@ -74,7 +77,7 @@ const NewSubgroup = ({isOpen, handleClose}) => {
               onChange={choice => setSubgroup({...subgroup, CourseId: choice.value})}
             />
             <FormInput
-              title="Description:"
+              title={t('modals.newSub.desc')}
               type="text"
               name="description"
               value={subgroup.description}

@@ -1,5 +1,6 @@
 import {addMinutes, format} from 'date-fns';
 import {error} from '@pnotify/core';
+import {useTranslation} from 'react-i18next';
 
 export const HandleCellClick = async ({
   weekDay,
@@ -17,6 +18,8 @@ export const HandleCellClick = async ({
   endDate,
   lesson = false
 }) => {
+  const {t} = useTranslation('global');
+
   let teachersIdsNew = [];
   const [hours, minutes] = timeStr.split(':');
   const oneDaySlot = hours === '00';
@@ -34,7 +37,8 @@ export const HandleCellClick = async ({
     let weekIndex = weekDay;
     if (formattedCurrTime.split(':')[0] === '00' && !oneDaySlot) weekIndex += 1 % 7;
     const slots = slotsData[weekIndex]?.[formattedCurrTime];
-    if (!slots || !slots.length) return error({delay: 1000, text: 'Not enough slots'});
+    if (!slots || !slots.length)
+      return error({delay: 1000, text: t('admin.appointment.err.notEnough')});
     teachersIdsNew.push(slots.map(el => el.userId));
   }
   teachersIdsNew = teachersIdsNew[0].filter(id => {
@@ -44,7 +48,7 @@ export const HandleCellClick = async ({
   if (!teachersIdsNew || !teachersIdsNew.length) {
     // validating  that there is at least one teacher in the array
     error({
-      text: 'Cant find avaible teacher, Slots occupied by different teachers',
+      text: t('admin.appointment.err.diffTeach'),
       delay: 1000
     });
     return;
@@ -57,9 +61,6 @@ export const HandleCellClick = async ({
     let currentTime = addMinutes(new Date(1970, 0, 1, hours, minutes), slotIndex * 30);
     currentTime = format(currentTime, 'HH:mm');
     let [newHours, newMinutes] = currentTime.split(':');
-
-    console.log(newSlots);
-    console.log(newHours, newMinutes, 'New new new!!');
 
     if (newHours === '00' && !oneDaySlot) {
       newHours = Number(newHours) % 24;

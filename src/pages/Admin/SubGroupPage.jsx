@@ -8,9 +8,11 @@ import {getCourses} from '../../helpers/course/course';
 import ChangeSubGroup from '../../components/modals/ChangeSubGroup/ChangeSubGroup';
 import NewSubgroup from '../../components/modals/NewSubgroup/NewSubgroup';
 import SubgroupTable from '../../components/SubgroupPage/SubgroupTable';
-import CalendarSubgroupTable from '../../components/SubgroupPage/CalendarSubroupTable';
+import {useTranslation} from 'react-i18next';
 
 export default function SubGroupPage() {
+  const {t} = useTranslation('global');
+
   const [subGroups, setSubGroups] = useState([]);
   const [offset, setOffset] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,13 +47,13 @@ export default function SubGroupPage() {
           onClick={() => {
             setIsOpenCreation(!isOpenCreation);
           }}>
-          New
+          {t('buttons.add')}
         </button>
         <div className={`${styles.filter_wrapper} ${styles.filter_wrapper__available}`}>
           <Select
             className={`${styles.selector} ${styles.selector__filtering} ${styles.filter_wrapper__available__item}`}
             options={courses}
-            placeholder={'Course'}
+            placeholder={t('admin.subgroups.course')}
             onChange={el => {
               setOffset(0);
               setSelectedCourse(el?.value || null);
@@ -61,7 +63,7 @@ export default function SubGroupPage() {
           <div className={`${styles.filter_wrapper__available__item} ${styles.name_long}`}>
             <FormInput
               type="text"
-              placeholder="Name..."
+              placeholder={t('admin.subgroups.name')}
               height={'52px'}
               // disabled={isOneDay}
               value={searchQuery}

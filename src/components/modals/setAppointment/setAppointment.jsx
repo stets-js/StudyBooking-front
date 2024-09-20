@@ -11,6 +11,7 @@ import {addMinutes, format} from 'date-fns';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
 import {useParams} from 'react-router-dom';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 const SetAppointment = ({
   lessonId,
   setSubGroup,
@@ -28,6 +29,8 @@ const SetAppointment = ({
   onSubmit,
   teacherType
 }) => {
+  const {t} = useTranslation('global');
+
   const {token} = useParams();
   teachersIds = JSON.parse(teachersIds);
   const [link, setLink] = useState('');
@@ -92,12 +95,10 @@ const SetAppointment = ({
               if (slot.schedule) {
                 const slotSchedule = slot.schedule;
                 console.log(slotSchedule);
-                day += `${
-                  slotSchedule.weekDayOrigin === slotSchedule.weekDayEnd
-                    ? weekNames[slotSchedule.weekDayOrigin]
-                    : `${weekNames[slotSchedule.weekDayOrigin]}-${
-                        weekNames[slotSchedule.weekDayEnd]
-                      }`
+                day += `${t(`daysOfWeek.${weekNames[slotSchedule.weekDayOrigin].toLowerCase()}`)}${
+                  slotSchedule.weekDayOrigin !== slotSchedule.weekDayEnd
+                    ? ' - ' + t(`daysOfWeek.${weekNames[slotSchedule.weekDayEnd].toLowerCase()}`)
+                    : ''
                 }: ${slotSchedule.start} - ${slotSchedule.end}\n`;
               }
             });
@@ -180,7 +181,7 @@ const SetAppointment = ({
               // window.location.reload();
             }}
             status={{
-              successMessage: `Successfully created ${
+              successMessage: `${t('admin.appointment.sucess')}${
                 isReplacement
                   ? 'replacement'
                   : appointmentType === 1
@@ -189,12 +190,12 @@ const SetAppointment = ({
                   ? 'private'
                   : 'junior group'
               }`,
-              failMessage: `Failed to create ${
+              failMessage: `${t('admin.appointment.err.failToCreate')}${
                 appointmentType === 1 ? 'group' : appointmentType === 8 ? 'private' : 'junior group'
               }`
             }}>
             <label htmlFor="teacher" className={styles.input__label}>
-              Mentor:
+              {t('modals.setApp.men')}
             </label>
             <Select
               name="teacher"
@@ -203,11 +204,11 @@ const SetAppointment = ({
               options={teachers}
               required
               key={Math.random() * 100 - 10}
-              placeholder="Select teacher"
+              placeholder={t('modals.setApp.plachold1')}
               onChange={el => setSelectedTeacher(el.value)}
             />
             <label htmlFor="teacher" className={styles.input__label}>
-              Appointer:
+              {t('modals.setApp.App')}
             </label>
             <Select
               name="appointer"
@@ -216,30 +217,30 @@ const SetAppointment = ({
               options={admins}
               required
               key={Math.random() * 100 - 10}
-              placeholder="Select appointer"
+              placeholder={t('modals.setApp.plachold2')}
               onChange={el => setSelectedAdmin(el.value)}
             />
             <FormInput
-              title="Course:"
+              title={t('modals.setApp.course') + ':'}
               type="text"
               name="course"
               value={course?.label}
-              placeholder="Course"
+              placeholder={t('modals.setApp.course')}
               disabled={true}
             />
             {!isReplacement && isOpen ? (
               <>
                 <FormInput
-                  title="Link to group chat:"
+                  title={t('modals.setApp.link')}
                   type="text"
                   name="link"
-                  placeholder="link"
+                  placeholder={t('modals.setApp.plachold3')}
                   handler={setLink}
                 />
                 <div className={styles.input__block}>
                   <FormInput
                     classname="input__bottom"
-                    title="Start:"
+                    title={t('modals.setApp.st')}
                     type="date"
                     name="startDate"
                     value={startDate}
@@ -248,7 +249,7 @@ const SetAppointment = ({
                   />
                   <FormInput
                     classname="input__bottom"
-                    title="End:"
+                    title={t('modals.setApp.end')}
                     type="date"
                     name="EndDate"
                     disabled={true}
@@ -260,7 +261,7 @@ const SetAppointment = ({
 
                 <FormInput
                   classname="input__bottom"
-                  title="Schedule:"
+                  title={t('modals.setApp.schedule')}
                   type="text"
                   name="schedule"
                   value={schedule.join('\n')}
@@ -271,7 +272,7 @@ const SetAppointment = ({
                 {!MIC_flag ? (
                   <>
                     <label htmlFor="subGroupSelector" className={styles.input__label}>
-                      Subgroup:
+                      {t('modals.setApp.subgroup')}
                     </label>
                     <Select
                       name="subGroupSelector"
@@ -281,7 +282,7 @@ const SetAppointment = ({
                       }
                       options={subGroups}
                       required
-                      placeholder="Select subgroup"
+                      placeholder={t('modals.setApp.plachold4')}
                       onChange={el => setSubGroup(el)}
                     />
                   </>
@@ -289,7 +290,7 @@ const SetAppointment = ({
                   <>
                     <FormInput
                       classname="input__bottom"
-                      title="New subgroup:"
+                      title={t('modals.setApp.newSub')}
                       type="text"
                       name="subgroup"
                       placeholder="Name - GoIteens_UA_Individual_Training_Course"

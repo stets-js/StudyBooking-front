@@ -4,17 +4,17 @@ import {error} from '@pnotify/core';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLocation} from 'react-router-dom';
 
-import styles from '../../styles/teacher.module.scss';
-import tableStyles from '../../styles/table.module.scss';
 import {getCourses, getTeachersByCourse} from '../../helpers/course/course';
 import {getSlotsForUsers} from '../../helpers/teacher/slots';
 import SetAppointment from '../../components/modals/setAppointment/setAppointment';
 import AppointmentButtons from '../../components/AppointmentPage/AppointmentButtons';
 import AppointmentHeaderTable from '../../components/AppointmentPage/AppointmentHeaderTable';
 import AppointmentBodyTable from '../../components/AppointmentPage/AppointmentBodyTable';
+import {useTranslation} from 'react-i18next';
 
 export default function UsersPage({MIC_flag = false}) {
   const location = useLocation();
+  const {t} = useTranslation('global');
 
   const dispatch = useDispatch();
   const [slotsData, setSlotsData] = useState([]);
@@ -116,7 +116,7 @@ export default function UsersPage({MIC_flag = false}) {
   useEffect(() => {
     console.log(endDate, startDate);
     if (endDate && startDate && +endDate[3] === +startDate[3] && !isReplacement) {
-      error({text: 'End date and start date can`t be in one year', delay: 1000});
+      error({text: t('admin.appointment.err.sameYear'), delay: 1000});
       clearTable();
       setSlotsData([]);
       return;
@@ -125,7 +125,7 @@ export default function UsersPage({MIC_flag = false}) {
       // add snackebar for alerting  user about wrong input
       // case when full data is setted, but its wrong formatted
       if (endDate && +endDate[0] !== 0)
-        error({text: 'End date can`t be less than start', delay: 1000});
+        error({text: t('admin.appointment.err.endGtStart'), delay: 1000});
       return;
     }
 
@@ -154,7 +154,9 @@ export default function UsersPage({MIC_flag = false}) {
   }, []);
   return (
     <div>
-      <h3>Lesson amount: {lessonAmount}</h3>
+      <h3>
+        {t('admin.appointment.amount')} {lessonAmount}
+      </h3>
       <AppointmentButtons
         selectedCourse={selectedCourse}
         MIC_flag={MIC_flag}
