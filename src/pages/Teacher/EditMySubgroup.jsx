@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import Select from 'react-select';
 import {success, error} from '@pnotify/core';
 import {useConfirm} from 'material-ui-confirm';
-
+import Switch from 'react-switch';
 import {addMinutes, format} from 'date-fns';
 import {useLocation, useParams} from 'react-router-dom';
 
@@ -17,12 +17,17 @@ import {bulkLessonCreate, deleteLessons} from '../../helpers/lessons/lesson';
 import {updateSubgroupMentor} from '../../helpers/subgroup/subgroup';
 import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
+import classNames from 'classnames';
 
 export default function EditMySubgroup() {
   const location = useLocation();
   const confirm = useConfirm();
   const {t} = useTranslation('global');
-
+  const [slotData, setSlotData] = useState({
+    startingHour: 9,
+    slotsAmount: 26,
+    slotsHeight: 58
+  });
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
   if (teacherId) userId = teacherId;
@@ -33,7 +38,8 @@ export default function EditMySubgroup() {
   const [oldSchedule, setOldSchedule] = useState(group.schedule);
   const [newSchedule, setNewSchedule] = useState('');
   const [slots, setSlots] = useState([]);
-  const weekDays = t('daysOfWeek', {returnObjects: true});
+  const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  console.log(weekDays);
   const calculateSchedule = () => {
     let tmpSchedule = '';
     slots.forEach(slot => {
@@ -43,7 +49,6 @@ export default function EditMySubgroup() {
     });
     setNewSchedule(tmpSchedule);
   };
-
   const handleCellClick = ({time, weekDay, isSelected}) => {
     const selectedSlotsTMP = [];
     if (!selectedClassType) return error({text: t('teacher.mySubgroups.edit.error'), delay: 1000});
@@ -116,6 +121,7 @@ export default function EditMySubgroup() {
             {newSchedule.split('\n').map(el => {
               let day = '';
               if (el) {
+                console.log(el);
                 day = t(`daysOfWeek.${el.slice(0, 3).toLowerCase()}`);
               }
               return (
@@ -126,6 +132,26 @@ export default function EditMySubgroup() {
             })}
           </div>
         </div>
+        <label>
+          <span>9-22</span>
+          <Switch
+            uncheckedIcon={false}
+            checkedIcon={false}
+            onChange={() => {
+              setSlotData(prev => {
+                const res =
+                  prev.startingHour === 0
+                    ? {startingHour: 9, slotsAmount: 26, slotsHeight: 58}
+                    : {startingHour: 0, slotsAmount: 48, slotsHeight: 40};
+                return res;
+              });
+              // setCalendarType(!calendarType);
+              // handleCalendarChange(!calendarType);
+            }}
+            checked={slotData.startingHour === 0}
+          />
+          <span>00-24</span>
+        </label>
       </div>
       <>
         <div className={tableStyles.button__wrapper}>
@@ -187,10 +213,13 @@ export default function EditMySubgroup() {
           <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
             <table className={tableStyles.tableBody} key="calendar">
               <tbody>
-                {Array.from({length: 26}, (_, timeIndex) => {
+                {Array.from({length: slotData.slotsAmount}, (_, timeIndex) => {
                   // 24 - for making 20:30 last cell
-                  const currentTime = addMinutes(new Date(1970, 0, 1, 9, 0), timeIndex * 30);
-                  if (currentTime.getHours() >= 9)
+                  const currentTime = addMinutes(
+                    new Date(1970, 0, 1, slotData.startingHour, 0),
+                    timeIndex * 30
+                  );
+                  if (currentTime.getHours() >= slotData.startingHour)
                     return (
                       <tr key={Math.random() * 1000 - 1}>
                         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
@@ -211,23 +240,26 @@ export default function EditMySubgroup() {
                                     style={
                                       curr_slot?.rowSpan
                                         ? {
-                                            height: `${58 * curr_slot?.rowSpan}px`
+                                            height: `${slotData.slotsHeight * curr_slot?.rowSpan}px`
                                           }
                                         : {}
                                     }
-                                    className={`${tableStyles.cell} ${tableStyles.black_borders} ${
+                                    className={classNames(
+                                      tableStyles.cell,
+                                      slotData.startingHour === 0 ? tableStyles.cell__small : '',
+                                      tableStyles.black_borders,
                                       timeIndex === 0 ||
-                                      timeIndex === 25 ||
-                                      dateIndex === 0 ||
-                                      dateIndex === 6
+                                        timeIndex === slotData.slotsAmount - 1 ||
+                                        dateIndex === 0 ||
+                                        dateIndex === 6
                                         ? tableStyles.cell__outer
-                                        : tableStyles.cell__inner
-                                    } ${
+                                        : tableStyles.cell__inner,
                                       // key can be generated only for appointed
                                       !curr_slot?.rowSpan && group
                                         ? appointmentStyles[`hover__group`]
-                                        : ''
-                                    } ${curr_slot ? styles.selectedCell : ''}`}
+                                        : '',
+                                      curr_slot ? styles.selectedCell : ''
+                                    )}
                                     onClick={() => {
                                       handleCellClick({
                                         time: currentTime,

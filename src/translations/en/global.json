@@ -320,6 +320,15 @@
     "sat": "Saturday",
     "sun": "Sunday"
   },
+  "daysOfWeekArr":[
+     "Mon",
+     "Tue",
+     "Wed",
+     "Thu",
+     "Fri",
+     "Sat",
+     "Sun"
+  ],
   "daysOfWeek": {
     "mon": "Mon",
     "tue": "Tue",

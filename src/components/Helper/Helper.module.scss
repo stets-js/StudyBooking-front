@@ -2,7 +2,7 @@
 
 .helper {
   z-index: 20;
-  font-size: 48px;
+  font-size: 24px;
   color: white;
   border-radius: 50%;
   background-color: $helper-blue;
@@ -10,7 +10,12 @@
   position: fixed;
   right: 20px;
   bottom: 20px;
-  width: 60px;
+  width: 30px;
+  transition: 0.3s;
+  &:hover{
+    width: 60px;
+    font-size: 48px;
+  }
 }
 .button {
   width: 225px;

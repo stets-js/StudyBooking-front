@@ -75,7 +75,6 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
       console.log(error);
     }
   }, [userId, dispatch, startDates]);
-  const [referalDetails, setReferalDetails] = useState(false);
   return (
     <div>
       {!isAdmin && <Banner setUser={setUser} user={user}></Banner>}
