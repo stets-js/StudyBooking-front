@@ -36,7 +36,7 @@ export default function Tbody({teacherPage}) {
     mark: 'DESC',
     reset: false
   });
-  console.log(teacherId);
+  console.log(userRole);
   const [status] = useState([
     {label: 'Погодження', value: 'Pending'},
     {label: 'Погоджено', value: 'Approved'},
@@ -45,21 +45,21 @@ export default function Tbody({teacherPage}) {
   const [editData, setEditData] = useState({mark: null, status: null});
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchAllReports = async () => {
+  const fetchAllReports = async (reset = false) => {
     const data = await getReports(
-      `?limit=${offsetData.limit}&offset=${filterData.reset ? 0 : offsetData.offset}&mark=${
-        filterData.mark || 'DESC'
-      }&mentorId=${filterData.mentorId}&status=${filterData.status}&sheet=${
-        filterData.sheet
-      }&course=${filterData.courseId}`
+      `?limit=${offsetData.limit}&offset=${
+        filterData.reset || reset ? 0 : offsetData.offset
+      }&mark=${filterData.mark || 'DESC'}&mentorId=${filterData.mentorId}&status=${
+        filterData.status
+      }&sheet=${filterData.sheet}&course=${filterData.courseId}`
     );
-    setReports(prev => (filterData.reset ? data.data : [...prev, ...data.data]));
+    setReports(prev => (filterData.reset || reset ? data.data : [...prev, ...data.data]));
 
     setOffsetData(prevOffsetData => {
       return {
         ...prevOffsetData,
         total: data.totalCount,
-        offset: filterData.reset ? 0 : data.newOffset
+        offset: filterData.reset || reset ? 0 : data.newOffset
       };
     });
     setFilterData(prev => {
@@ -78,10 +78,11 @@ export default function Tbody({teacherPage}) {
     setIsEdit(index);
     setEditData({mark: report.mark, status: null});
   };
-  const onSave = async id => {
-    await updateReport(id, editData);
+  const onSave = async (id, data = null) => {
+    await updateReport(id, data || editData);
+
     setIsEdit(-1);
-    fetchAllReports();
+    fetchAllReports(true);
   };
 
   return (
@@ -95,7 +96,7 @@ export default function Tbody({teacherPage}) {
           height={'100%'}
           dataLength={reports.length} //This is important field to render the next data
           next={fetchAllReports}
-          hasMore={1}
+          hasMore={reports.length === 20}
           scrollableTarget="scroller">
           <table className={tableStyles.tableBody}>
             <tbody>
@@ -267,30 +268,46 @@ export default function Tbody({teacherPage}) {
                       </td>
                       <td className={tableStyles.cell__mySubgroup}>
                         <div
-                          className={`${tableStyles.cell} ${tableStyles.cell__outer} ${tableStyles.cell__mySubgroup}`}>
-                          {isEdit !== index ? (
-                            <EditButton
-                              text="Змінити"
-                              onClick={() => {
-                                edit(index, report);
-                              }}></EditButton>
-                          ) : (
-                            <div className={styles.buttons}>
+                          className={classNames(
+                            tableStyles.cell,
+                            tableStyles.cell__outer,
+                            tableStyles.cell__mySubgroup
+                          )}>
+                          {userRole === 'QC manager' ? (
+                            isEdit !== index ? (
                               <EditButton
-                                text="Зберегти"
-                                onClick={() => onSave(report.id)}></EditButton>
-                              <DeleteButton
-                                text="Відміна"
-                                onClick={() => setIsEdit(-1)}></DeleteButton>
-                            </div>
+                                text="Змінити"
+                                onClick={() => {
+                                  edit(index, report);
+                                }}
+                              />
+                            ) : (
+                              <div className={styles.buttons}>
+                                <EditButton
+                                  text="Зберегти"
+                                  onClick={() => onSave(report.id)}></EditButton>
+                                <DeleteButton
+                                  text="Відміна"
+                                  onClick={() => setIsEdit(-1)}></DeleteButton>
+                              </div>
+                            )
+                          ) : (
+                            <EditButton
+                              text="Погодитись"
+                              onClick={() => {
+                                onSave(report.id, {mark: report.mark, status: 'Погоджено'});
+                              }}
+                            />
                           )}
-                          <InfoButton
-                            text="Апеляція"
-                            onClick={() => {
-                              window.open(
-                                'https://docs.google.com/forms/d/e/1FAIpQLScQa0r5NHzT_Q_LxwfunuaCpSjh5DsJUJS6vIMSIdU1WQZIuw/viewform'
-                              );
-                            }}></InfoButton>
+                          {userRole !== 'QC manager' && (
+                            <InfoButton
+                              text="Апеляція"
+                              onClick={() => {
+                                window.open(
+                                  'https://docs.google.com/forms/d/e/1FAIpQLScQa0r5NHzT_Q_LxwfunuaCpSjh5DsJUJS6vIMSIdU1WQZIuw/viewform'
+                                );
+                              }}></InfoButton>
+                          )}
                         </div>
                       </td>
                     </tr>
