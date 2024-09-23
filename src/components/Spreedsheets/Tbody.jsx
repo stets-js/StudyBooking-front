@@ -162,7 +162,7 @@ export default function TableBody() {
                         <div className={styles.dates__wrapper}>
                           <FormInput
                             type={'date'}
-                            value={format(dates.start, 'yyyy-MM-dd')}
+                            value={dates.start && format(dates.start, 'yyyy-MM-dd')}
                             handler={e =>
                               setDates(prev => {
                                 return {...prev, start: e};
@@ -173,7 +173,7 @@ export default function TableBody() {
                           <span>{'<->'}</span>
                           <FormInput
                             type={'date'}
-                            value={format(dates.end, 'yyyy-MM-dd')}
+                            value={dates.end && format(dates.end, 'yyyy-MM-dd')}
                             handler={e =>
                               setDates(prev => {
                                 return {...prev, end: e};
