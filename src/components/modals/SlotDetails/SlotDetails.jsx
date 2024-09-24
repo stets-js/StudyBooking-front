@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useConfirm} from 'material-ui-confirm';
 
 import FormInput from '../../FormInput/FormInput';
 import Modal from '../../Modal/Modal';
@@ -7,9 +7,12 @@ import styles from './slotDetails.module.scss';
 import {getTopics, patchLesson} from '../../../helpers/lessons/lesson';
 import HeaderLinks from './HeaderLinks';
 import {useTranslation} from 'react-i18next';
+import InfoButton from '../../Buttons/Info';
+import DeleteButton from '../../Buttons/Delete';
 
 const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
   const [topics, setTopics] = useState([]);
+  const confirm = useConfirm();
   const {t} = useTranslation('global');
 
   const [slot, setSlot] = useState(Array.isArray(slots) ? slots[0] : slots);
@@ -38,6 +41,26 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
   const subgroupMentors = (slot?.SubGroup?.SubgroupMentors || []).find(
     el => el.mentorId === +userId
   );
+  const handleStatusChange = async () => {
+    confirm({
+      description: t('confirms.slotDetails.desc'),
+      confirmationText: t('confirms.slotDetails.yes'),
+      cancellationText: t('confirms.slotDetails.no'),
+      confirmationButtonProps: {autoFocus: true}
+    })
+      .then(async () => {
+        const data = await patchLesson(slot.id, {status: 'canceled'});
+        // const data = await confirmProjectToBlock(marathon._id, blockId, projectId);
+        // setMyProject(data);
+        console.log(data);
+        if (data.statusText === 'OK') {
+          console.log('changed');
+          setSlot(prev => ({...prev, status: 'canceled'}));
+        }
+      })
+      .catch(e => console.log('no ' + e));
+  };
+  console.log(slot);
   return (
     <>
       {isOpen && slot && subgroupData && (
@@ -154,6 +177,19 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
                 textArea={true}
               />
             )}
+            <div className={styles.status}>
+              {t('status.text')}: {t('status.' + slot.status)}
+            </div>
+            <div>
+              {/* <InfoButton text={t('buttons.compl')} /> */}
+              {slot.status !== 'canceled' && (
+                <DeleteButton
+                  onClick={handleStatusChange}
+                  classname={'fullWidth'}
+                  text={t('buttons.not_compl')}
+                />
+              )}
+            </div>
           </div>
         </Modal>
       )}

@@ -17,7 +17,7 @@ import {getAppointmentTypes} from '../../helpers/teacher/appointment-type';
 import {createReplacement, updateReplacement} from '../../helpers/replacement/replacement';
 import {cleanTeacherCourses} from '../../redux/action/course.action';
 import {useDispatch} from 'react-redux';
-import {deleteOneLesson} from '../../helpers/lessons/lesson';
+import {deleteOneLesson, patchLesson} from '../../helpers/lessons/lesson';
 import {addMinutes, format} from 'date-fns';
 import {useTranslation} from 'react-i18next';
 const root = document.querySelector('#root');
@@ -139,7 +139,8 @@ const Form = ({
             : 11;
         // const appointmentType = await getAppointmentTypes(searchQuery);
         if (isReplacement) {
-          await deleteOneLesson(jsonData.lessonId); //delete lesson that is replaced
+          await patchLesson(jsonData.lessonId, {status: 'replaced'});
+          // await deleteOneLesson(jsonData.lessonId); //delete lesson that is replaced
         }
         if (JSON.parse(jsonData.MIC_flag)) {
           const subgroup = await postSubGroup({

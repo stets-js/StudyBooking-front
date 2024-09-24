@@ -2,11 +2,13 @@ import axios from '../axios-config';
 const getLessons = options => {
   return axios.get(`/lessons?` + options);
 };
-const getLessonsForUser = ({mentorId, startDateLesson, endDateLesson}) => {
+const getLessonsForUser = ({mentorId, startDateLesson, endDateLesson, status = null}) => {
   //   start, end - start and end of the week
   return axios
     .get(
-      `/lessons?mentorId=${mentorId}&startDateLesson=${startDateLesson}&endDateLesson=${endDateLesson}`
+      `/lessons?mentorId=${mentorId}&startDateLesson=${startDateLesson}&endDateLesson=${endDateLesson}${
+        status ? '&status=' + JSON.stringify(status) : ''
+      }`
     )
     .then(res => res.data)
     .catch(error => {

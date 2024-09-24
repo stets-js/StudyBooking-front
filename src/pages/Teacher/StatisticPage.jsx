@@ -10,7 +10,6 @@ import {getLessonsForUser} from '../../helpers/lessons/lesson';
 import AmountTable from '../../components/StatisticsPage/AmountTable';
 import LessonsTable from '../../components/StatisticsPage/LessonsTable';
 import DateChooser from '../../components/StatisticsPage/DateChooser';
-import {useTranslation} from 'react-i18next';
 
 const getFirstAndLastDateOfMonth = () => {
   const now = new Date();
@@ -48,7 +47,8 @@ export default function StatisticPage() {
     const data = await getLessonsForUser({
       mentorId: userId,
       startDateLesson: dates.start,
-      endDateLesson: dates.end
+      endDateLesson: dates.end,
+      status: ['idle', 'completed']
     });
     clearDict(typeAmounts);
     setLessonsByDay({});

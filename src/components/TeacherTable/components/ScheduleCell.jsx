@@ -156,6 +156,9 @@ export default function ScheduleCell({
                       {slots.length > 1 && (
                         <span className={tableStyles.tags__item}>x{slots.length}</span>
                       )}
+                      {slots[0].status === 'canceled' && (
+                        <span className={tableStyles.tags__item}>canceled</span>
+                      )}
                     </div>
                   </div>
                 )}

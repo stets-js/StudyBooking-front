@@ -389,6 +389,7 @@ th:first-child .cell__header {
     font-size: 13px;
     width: inherit;
     margin-top: auto;
+    height: auto;
     margin-bottom: 10px;
     text-align: center;
     align-items: center;
@@ -399,6 +400,7 @@ th:first-child .cell__header {
     position: absolute;
     left: 0;
     border-radius: 25px;
+    padding: 1px;
     min-width: 50px;
     background-color: rgb(244, 248, 214);
     &:not(:first-of-type) {

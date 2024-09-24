@@ -320,15 +320,7 @@
     "sat": "Saturday",
     "sun": "Sunday"
   },
-  "daysOfWeekArr":[
-     "Mon",
-     "Tue",
-     "Wed",
-     "Thu",
-     "Fri",
-     "Sat",
-     "Sun"
-  ],
+  "daysOfWeekArr": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
   "daysOfWeek": {
     "mon": "Mon",
     "tue": "Tue",
@@ -427,6 +419,19 @@
       }
     }
   },
+  "confirms": {
+    "slotDetails": {
+      "desc": "Are you sure?",
+      "yes": "Yes",
+      "no":"No"
+    }
+  },
+  "status":{
+    "text":"Status",
+    "canceled":"Canceled",
+    "idle":"Idle",
+    "replaced":"Replaced"
+  },
   "buttons": {
     "edit": "Edit",
     "del": "Delete",
@@ -439,6 +444,8 @@
     "repl": "Replace",
     "add": "Add",
     "save": "Save",
-    "update": "Update"
+    "update": "Update",
+    "compl": "Completed",
+    "not_compl": "Not conducted"
   }
 }
