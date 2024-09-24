@@ -17,7 +17,7 @@ import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import InfoButton from '../Buttons/Info';
 
-export default function Tbody({teacherPage}) {
+export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
   const {teacherId} = useParams() || null;
   let userId = useSelector(state => state.auth.user.id);
   const userRole = useSelector(state => state.auth.user.role);
@@ -74,6 +74,13 @@ export default function Tbody({teacherPage}) {
       fetchAllReports();
     }
   }, [filterData]);
+  useEffect(() => {
+    if (needToUpdate) {
+      setNeedToUpdate(false);
+      setFilterData(prev => ({...prev, reset: true}));
+      setOffsetData(prev => ({...prev, offset: 0}));
+    }
+  }, [needToUpdate]);
   const edit = (index, report) => {
     setIsEdit(index);
     setEditData({mark: report.mark, status: null});
@@ -314,11 +321,13 @@ export default function Tbody({teacherPage}) {
                   );
                 })
               ) : (
-                <tr key={'No'}>
-                  <td className={tableStyles.cell__mySubgroup} colSpan={teacherPage ? 6 : 7}>
-                    <div>No reports for now!</div>
-                  </td>
-                </tr>
+                <>
+                  <tr key={'No'}>
+                    <td className={tableStyles.cell__mySubgroup} colSpan={teacherPage ? 6 : 7}>
+                      <div>No reports for now!</div>
+                    </td>
+                  </tr>
+                </>
               )}
             </tbody>
           </table>{' '}

@@ -7,11 +7,12 @@ import ReportsTable from '../../components/QCManager/ReportsTable';
 import ImportReports from '../../components/QCManager/ImportReports';
 
 export default function ManagerHome() {
+  const [needToUpdate, setNeedToUpdate] = useState(false);
   return (
     <div>
-      <ImportReports></ImportReports>
+      <ImportReports update={() => setNeedToUpdate(true)}></ImportReports>
       {/* <NewReport fetchAllReports={fetchAllReports} /> */}
-      <ReportsTable></ReportsTable>
+      <ReportsTable needToUpdate={needToUpdate} setNeedToUpdate={setNeedToUpdate}></ReportsTable>
     </div>
   );
 }

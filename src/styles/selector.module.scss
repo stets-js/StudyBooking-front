@@ -4,13 +4,15 @@
     margin-top: 10px;
     font-family: $poppins;
     word-wrap: break-word;
-    z-index: 15;
+    z-index: 20 !important;
     // hardcode for not overlapping multiple selectors in one place
     &:nth-child(1) { z-index: 15; }
     &:nth-child(2) { z-index: 14; }
     &:nth-child(3) { z-index: 13; }
     &:nth-child(4) { z-index: 12; }
-    
+    &__topZ{
+      z-index: 220 !important;
+    }
   &__fullwidth{
     width: 100%;
   }
@@ -37,11 +39,11 @@
     display: none;
   }
   .selector [class*='menu'] {
-    /* Your styles for the specific div with a class containing 'menu' */
   
     z-index: 20 !important;
     :has(div) {
-      z-index: 1 !important;
+      z-index: 1000;
+
       background-color: white;
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */

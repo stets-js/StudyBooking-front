@@ -5,7 +5,8 @@ import styles from './Manager.module.scss';
 import {addReports, fetchReports, getSheets} from '../../helpers/spreadsheet/spreadsheet';
 import SelectStyles from '../../styles/selector.module.scss';
 import EditButton from '../Buttons/Edit';
-export default function ImportReports({setReports}) {
+import classNames from 'classnames';
+export default function ImportReports({update}) {
   const spreadsheetId = '1gbBpJfNZzkURPnOIghqPWDxkDovdRKVK_YxlotmkcIY';
   const [sheets, setSheets] = useState([]);
   const fetchSheets = async () => {
@@ -31,7 +32,8 @@ export default function ImportReports({setReports}) {
     console.log(res);
     if (res) {
       setNotFound(res.data.notFound);
-      setReports(res.data.reports.slice(0, 30));
+      update();
+      // setReports(res.data.reports.slice(0, 30));
     } // const res = await fetchReports(spreadsheetId, selectedSheet);
     // console.log(res);
     // if (res) {
@@ -59,12 +61,10 @@ export default function ImportReports({setReports}) {
     <>
       <div className={styles.report__wrapper}>
         <Select
-          className={SelectStyles.selector}
+          className={classNames(SelectStyles.selector, SelectStyles.selector__topZ)}
           options={sheets}
           onChange={e => setSelectedSheet(e.label)}></Select>
-        <span>
-          Завантажено {checked} з {total}
-        </span>
+
         <EditButton
           text="Вигрузити"
           onClick={() => {
