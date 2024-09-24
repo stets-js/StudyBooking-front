@@ -1,6 +1,5 @@
 import {addMinutes, format} from 'date-fns';
 import {error} from '@pnotify/core';
-import {useTranslation} from 'react-i18next';
 
 export const HandleCellClick = async ({
   weekDay,
@@ -16,10 +15,9 @@ export const HandleCellClick = async ({
   setLessonAmount,
   startDate,
   endDate,
-  lesson = false
+  lesson = false,
+  t
 }) => {
-  const {t} = useTranslation('global');
-
   let teachersIdsNew = [];
   const [hours, minutes] = timeStr.split(':');
   const oneDaySlot = hours === '00';

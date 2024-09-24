@@ -6,6 +6,7 @@ import styles from '../../styles/teacher.module.scss';
 import tableStyles from '../../styles/table.module.scss';
 import {HandleCellClick} from './HandleCellClick';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 
 export default function AppointmentBodyTable({
   selectedClassType,
@@ -18,6 +19,8 @@ export default function AppointmentBodyTable({
   startDate,
   endDate
 }) {
+  const {t} = useTranslation('global');
+
   const selectedSlots = useSelector(state => state.selectedSlots);
   const [startingHour, setStartingHour] = useState(9);
   const [slotsSettings, setSlotsSettings] = useState({height: 58, amount: 26});
@@ -124,7 +127,8 @@ export default function AppointmentBodyTable({
                                   dispatch,
                                   slotsData,
                                   startDate,
-                                  endDate
+                                  endDate,
+                                  t
                                 })
                               }>
                               <span>
