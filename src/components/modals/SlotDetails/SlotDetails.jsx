@@ -52,8 +52,7 @@ const SlotDetails = ({isOpen, handleClose, slots, userId}) => {
         const data = await patchLesson(slot.id, {status: 'canceled'});
         // const data = await confirmProjectToBlock(marathon._id, blockId, projectId);
         // setMyProject(data);
-        console.log(data);
-        if (data.statusText === 'OK') {
+        if (data) {
           console.log('changed');
           setSlot(prev => ({...prev, status: 'canceled'}));
         }

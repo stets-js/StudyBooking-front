@@ -421,7 +421,7 @@
   },
   "confirms": {
     "slotDetails": {
-      "desc": "Are you sure?",
+      "desc": "Are you sure to cancel this lesson?",
       "yes": "Yes",
       "no":"No"
     }
