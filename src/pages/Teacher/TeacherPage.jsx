@@ -18,11 +18,6 @@ export default function TeacherPage({MIC_flag = false}) {
 
   const steps = [
     {
-      target: '#nav_admin',
-      content: 'This is my Navigation!',
-      disableBeacon: true
-    },
-    {
       target: '#nav_mentor',
       content: 'This is my Navigation!',
       disableBeacon: true
