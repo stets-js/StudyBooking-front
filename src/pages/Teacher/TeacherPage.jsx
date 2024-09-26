@@ -23,14 +23,14 @@ export default function TeacherPage({MIC_flag = false}) {
       disableBeacon: true
     },
     {
-      target: '#header_0',
+      target: '#thead',
       disableBeacon: true,
-      content: 'This is monday!'
+      content: 'This is header!'
     },
     {
-      target: '#header_1',
+      target: '#tbody',
       disableBeacon: true,
-      content: 'This another awesome feature!'
+      content: 'This is body!'
     }
   ];
   const [runTour, setRunTour] = useState(false);

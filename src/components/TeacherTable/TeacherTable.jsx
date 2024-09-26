@@ -120,7 +120,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
 
             tableStyles.tableHeader
           )}>
-          <thead>
+          <thead id="thead">
             <tr>
               {startDates.map((startDate, dateIndex) => (
                 <th key={dateIndex} className={`${tableStyles.columns} ${tableStyles.sticky}`}>
@@ -132,7 +132,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
             </tr>
           </thead>
         </table>
-        <div className={`${tableStyles.calendar} ${tableStyles.scroller}`}>
+        <div className={`${tableStyles.calendar} ${tableStyles.scroller}`} id="tbody">
           <table className={classNames(tableStyles.tableBody, tableStyles.teacher_calendar)}>
             <tbody>
               {Array.from({length: slotsAmount}, (_, timeIndex) => {
