@@ -40,9 +40,8 @@ export default function TeacherPage({MIC_flag = false}) {
   };
   return (
     <>
-      {userRole === 'superAdmin' && (
+      {isAdmin && (
         <>
-          {' '}
           <InfoButton onClick={handleTourStart} text={'Start Tour'}></InfoButton>
           <Joyride
             steps={steps}
