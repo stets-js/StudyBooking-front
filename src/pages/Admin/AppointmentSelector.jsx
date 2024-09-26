@@ -140,13 +140,15 @@ export default function UsersPage({MIC_flag = false}) {
     if (lesson) {
       console.log(lesson);
       setLessonId(lesson.id);
-      setStartDate(lesson.date);
-      setEndDate(lesson.date);
+      setStartDate(lesson.start);
+      setEndDate(lesson.end);
       setSelectedCourse(lesson.courseId);
-      setSelectedClassType(lesson.appointmentId === 7 ? 1 : 8 ? 2 : 11);
+      setSelectedClassType(
+        lesson.appointmentId ? (lesson.appointmentId === 7 ? 1 : 8 ? 2 : 11) : null
+      );
       setSubGroup({value: lesson.subgroupId});
       setExcludeTeacherId(lesson.userId);
-      setIsReplacement(true);
+      setIsReplacement(lesson.id ? true : false);
     }
   };
   useEffect(() => {

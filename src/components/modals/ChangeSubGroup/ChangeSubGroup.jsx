@@ -18,9 +18,13 @@ import InfoButton from '../../Buttons/Info';
 import SelectorStyles from '../../../styles/selector.module.scss';
 import buttonStyles from '../../Buttons/buttons.module.scss';
 import formInputStyles from '../../../styles/FormInput.module.scss';
+import {useNavigate} from 'react-router-dom';
+import path from '../../../helpers/routerPath';
+import {format} from 'date-fns';
 
 const ChangeSubGroup = ({isOpen, handleClose, id}) => {
   const {t} = useTranslation('global');
+  const navigate = useNavigate();
 
   const [element, setElement] = useState({});
   const [editActive, setEditActive] = useState(false);
@@ -28,7 +32,7 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
     label: el.name,
     value: el.id
   }));
-
+  console.log(element);
   const fetchData = async () => {
     try {
       const data = await getSlotDetails(id);
@@ -184,6 +188,20 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                     link.parentNode.removeChild(link);
                   }}
                   text={'Download'}></InfoButton>
+                <InfoButton
+                  onClick={async () => {
+                    navigate(`../${path.appointments}`, {
+                      state: {
+                        lesson: {
+                          start: format(element.startDate, 'yyyy-MM-dd'),
+                          end: format(element.endDate, 'yyyy-MM-dd'),
+                          subgroupId: element.id,
+                          courseId: element.CourseId
+                        }
+                      }
+                    });
+                  }}
+                  text={'Appoint'}></InfoButton>
               </div>
             </div>
           </Form>

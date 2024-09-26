@@ -7,7 +7,7 @@ import tableStyles from '../../styles/table.module.scss';
 import LessonCard from '../../components/LessonsPage/LessonCard';
 import FilteringBlock from '../../components/LessonsPage/FilteringBlock';
 import DateTable from '../../components/LessonsPage/DateTable';
-import {fetchLessons, generateEmptyStructure} from '../../components/LessonsPage/functions';
+import {fetchLessons} from '../../components/LessonsPage/functions';
 import {useTranslation} from 'react-i18next';
 
 export default function LessonsPage() {

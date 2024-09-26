@@ -46,7 +46,9 @@ export default function LessonCard({lesson, setLessons}) {
       state: {
         lesson: {
           id: lesson.id,
-          date: lesson.date,
+          start: lesson.date,
+
+          end: lesson.date,
           appointmentId: lesson.appointmentTypeId,
           subgroupId: lesson.subgroupId,
           weekDay: lesson.LessonSchedule.weekDay,
