@@ -124,7 +124,7 @@ export default function TeacherTable({userId, isAdmin, MIC_flag}) {
             <tr>
               {startDates.map((startDate, dateIndex) => (
                 <th key={dateIndex} className={`${tableStyles.columns} ${tableStyles.sticky}`}>
-                  <div className={tableStyles.cell__header}>
+                  <div className={tableStyles.cell__header} id={`header_${dateIndex}`}>
                     {t(`daysOfWeek.${format(startDate, 'EEEE').slice(0, 3).toLowerCase()}`)}
                   </div>
                 </th>

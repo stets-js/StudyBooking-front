@@ -45,6 +45,7 @@ const TeacherWrapper = ({
   return (
     <>
       <Header
+        role="mentor"
         hideLogo={hideLogo}
         hideLogin={hideLogin}
         endpoints={endpoints}

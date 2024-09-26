@@ -11,7 +11,8 @@ export default function Header({
   user,
   hideLogo,
   hideLogin,
-  bottom_padding
+  bottom_padding,
+  role = 'admin'
 }) {
   const loggedUser = useSelector(state => state.auth);
   return (
@@ -25,7 +26,7 @@ export default function Header({
           <img src={logo} alt="logo" className={styles['logoImg']} />
         </a>
       )}
-      {loggedUser.isAuthenticated && <Navigation user={user} links={endpoints} />}
+      {loggedUser.isAuthenticated && <Navigation role={role} user={user} links={endpoints} />}
       {!hideLogin && <LoginBox loggedUser={loggedUser} MIC_flag={MIC_flag} />}
     </header>
   );
