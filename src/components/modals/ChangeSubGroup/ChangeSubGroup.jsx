@@ -32,7 +32,6 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
     label: el.name,
     value: el.id
   }));
-  console.log(element);
   const fetchData = async () => {
     try {
       const data = await getSlotDetails(id);
@@ -193,8 +192,12 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                     navigate(`../${path.appointments}`, {
                       state: {
                         lesson: {
-                          start: format(element.startDate, 'yyyy-MM-dd'),
-                          end: format(element.endDate, 'yyyy-MM-dd'),
+                          start: element.startDate
+                            ? format(element.startDate, 'yyyy-MM-dd')
+                            : element.startDate,
+                          end: element.endDate
+                            ? format(element.endDate, 'yyyy-MM-dd')
+                            : element.endDate,
                           subgroupId: element.id,
                           courseId: element.CourseId
                         }
