@@ -131,10 +131,10 @@ export default function AddMySubgroup() {
 
   useEffect(() => {
     const checkDate = () => {
-      if (endDate && startDate && +endDate[3] === +startDate[3]) {
-        error({text: 'End date and start date can`t be in one year', delay: 1000});
-        return false;
-      }
+      // if (endDate && startDate && +endDate[3] === +startDate[3]) {
+      //   error({text: 'End date and start date can`t be in one year', delay: 1000});
+      //   return false;
+      // }
       return true;
     };
     setConditionals(

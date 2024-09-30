@@ -115,12 +115,12 @@ export default function UsersPage({MIC_flag = false}) {
   };
   useEffect(() => {
     console.log(endDate, startDate);
-    if (endDate && startDate && +endDate[3] === +startDate[3] && !isReplacement) {
-      error({text: t('admin.appointment.err.sameYear'), delay: 1000});
-      clearTable();
-      setSlotsData([]);
-      return;
-    }
+    // if (endDate && startDate && +endDate[3] === +startDate[3] && !isReplacement) {
+    //   error({text: t('admin.appointment.err.sameYear'), delay: 1000});
+    //   clearTable();
+    //   setSlotsData([]);
+    //   return;
+    // }
     if (endDate < startDate) {
       // add snackebar for alerting  user about wrong input
       // case when full data is setted, but its wrong formatted

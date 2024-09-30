@@ -59,14 +59,15 @@ export default function AvaliableTable() {
 
   const fetchUsers = async () => {
     setScheduleTable(generateTimeSlots());
-
+    
     const freeUsers = (
       await getFreeUsers(
         selectedCourse,
         getDay(currentDate) - 1 < 0 ? 6 : getDay(currentDate) - 1,
-        `appointmentType=${selectedAppointment.value}&teacherType=${selectedTeacherType.value}`
+        `appointmentType=${selectedAppointment.value}&teacherType=${selectedTeacherType.value}&date=${format(currentDate,'yyyy-MM-dd')}`
       )
     ).availableSlots;
+    console.log(freeUsers)
     setScheduleTable(prevSchedule => {
       const newSchedule = [...prevSchedule];
       freeUsers.forEach(el => {
