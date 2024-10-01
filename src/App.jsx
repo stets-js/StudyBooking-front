@@ -44,7 +44,7 @@ import global_en from './translations/en/global.json';
 import global_ua from './translations/ua/global.json';
 import {I18nextProvider} from 'react-i18next';
 import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
-import SurveyModal from './components/Survey/SurveyModal';
+// import SurveyModal from './components/Survey/SurveyModal';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -95,7 +95,7 @@ const App = () => {
       <I18nextProvider i18n={i18next}>
         <ConfirmProvider>
           {userRole === 'superAdmin' && <ChangeLanguage></ChangeLanguage>}
-          {userRole !== 'QC manager' && isAuthenticated && <SurveyModal></SurveyModal>}
+          {/* {userRole !== 'QC manager' && isAuthenticated && <SurveyModal></SurveyModal>}*/}
           <Routes>
             {auth && ['administrator', 'superAdmin'].includes(userRole) ? (
               //  userRole.toLowerCase().includes('admin')
