@@ -8,7 +8,10 @@ export default function DeleteButton({onClick, classname, text}) {
   return (
     <button
       className={`${buttonStyles.button} ${buttonStyles.button__delete} ${buttonStyles[classname]}`}
-      onClick={() => onClick()}>
+      onClick={e => {
+        e.preventDefault();
+        onClick();
+      }}>
       {text || t('buttons.del')}
     </button>
   );
