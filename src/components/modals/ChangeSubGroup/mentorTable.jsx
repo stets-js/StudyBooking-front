@@ -102,7 +102,8 @@ export default function MentorTable({subgroupMentors, setSubgroupMentors, isEdit
                     {isEdit && (
                       <td className={`${tableStyles.cell} ${tableStyles.cell__small}`}>
                         <DeleteButton
-                          onClick={async () => {
+                          onClick={async e => {
+                            e.preventDefault();
                             if (mentor.mentorId && mentor.subgroupId) {
                               await deleteLessons({
                                 mentorId: mentor.mentorId,
