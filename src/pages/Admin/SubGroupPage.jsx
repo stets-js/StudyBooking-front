@@ -79,7 +79,7 @@ export default function SubGroupPage() {
             options={courses}
             placeholder={t('admin.subgroups.course')}
             onChange={el => {
-              infiniteScrollData(prev => ({...prev, offset: 0}));
+              setInfiniteScrollData(prev => ({...prev, offset: 0}));
               setSelectedCourse(el?.value || null);
             }}
             // isDisabled={isOneDay}
