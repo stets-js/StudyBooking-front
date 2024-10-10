@@ -68,9 +68,25 @@ export default function UsersPage({MIC_flag = false}) {
       })
     );
   };
+  const fetchQueryData = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const excludeUser = searchParams.get('excludeUser');
+    const courseId = searchParams.get('courseId');
+    const subgroupId = searchParams.get('subgroupId');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+    if (excludeUser) setExcludeTeacherId(+excludeUser);
+    if (courseId) setSelectedCourse(+courseId);
+    if (subgroupId) setSubGroup({value: +subgroupId});
+    if (startDate) setStartDate(JSON.parse(startDate));
+    if (endDate) setEndDate(JSON.parse(endDate));
+  };
+
   useEffect(() => {
     fetchCourses();
+    fetchQueryData();
   }, []);
+
   const fetchUsersIds = async () => {
     try {
       const usersIds = await getTeachersByCourse(selectedCourse, teacherType);

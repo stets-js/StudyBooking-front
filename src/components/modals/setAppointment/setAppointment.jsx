@@ -89,12 +89,10 @@ const SetAppointment = ({
         }
         for (let i = 0; i <= 6; i++) {
           let day = '';
-          console.log(selectedSlots);
           if (selectedSlots[i].length > 0) {
             selectedSlots[i].forEach(slot => {
               if (slot.schedule) {
                 const slotSchedule = slot.schedule;
-                console.log(slotSchedule);
                 day += `${t(`daysOfWeek.${weekNames[slotSchedule.weekDayOrigin].toLowerCase()}`)}${
                   slotSchedule.weekDayOrigin !== slotSchedule.weekDayEnd
                     ? ' - ' + t(`daysOfWeek.${weekNames[slotSchedule.weekDayEnd].toLowerCase()}`)
@@ -141,7 +139,6 @@ const SetAppointment = ({
     setSchedule([]);
     handleClose();
   };
-
   useEffect(() => {
     if (subGroups.length > 0 && !subGroup?.label && subGroup?.value) {
       // case when replacing (there is info about group id only, so need to set label)
@@ -278,7 +275,10 @@ const SetAppointment = ({
                       name="subGroupSelector"
                       className={styles.selector}
                       value={
-                        subGroup?.value && subGroups.find(sub => sub.value === subGroup.value)[0]
+                        subGroups &&
+                        subGroups.length > 0 &&
+                        subGroup?.value &&
+                        subGroups.find(sub => sub.value === subGroup.value)
                       }
                       options={subGroups}
                       required
