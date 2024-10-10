@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 // import Switch from 'react-switch';
+import SwitchSelector from 'react-switch-selector';
 
 import styles from '../../styles/teacher.module.scss';
 import FormInput from '../../components/FormInput/FormInput';
@@ -14,13 +15,14 @@ export default function SubGroupPage() {
   const {t} = useTranslation('global');
 
   const [subGroups, setSubGroups] = useState([]);
-  const [offset, setOffset] = useState(0);
+  const [infiniteScrollData, setInfiniteScrollData] = useState({offset: 0, limit: 40, total: 0});
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courses, setCourses] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenCreation, setIsOpenCreation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(0);
   // const [isOneDay, setIsOneDay] = useState(false);
   const fetchCourses = async () => {
     try {
@@ -38,7 +40,29 @@ export default function SubGroupPage() {
   useEffect(() => {
     fetchCourses();
   }, []);
+  const options = [
+    {
+      label: 'Усі',
+      value: '0'
+    },
+    {
+      label: 'Не призначені',
+      value: '1'
+    },
+    {
+      label: 'В очікувані',
+      value: '2'
+    },
+    {
+      label: 'Призначені',
+      value: '3'
+    }
+  ];
 
+  const onChange = newValue => {
+    setSelectedStatus(newValue);
+  };
+  const initialSelectedIndex = options.findIndex(({value}) => value === selectedStatus);
   return (
     <div>
       <div>
@@ -55,7 +79,7 @@ export default function SubGroupPage() {
             options={courses}
             placeholder={t('admin.subgroups.course')}
             onChange={el => {
-              setOffset(0);
+              infiniteScrollData(prev => ({...prev, offset: 0}));
               setSelectedCourse(el?.value || null);
             }}
             // isDisabled={isOneDay}
@@ -70,25 +94,23 @@ export default function SubGroupPage() {
               handler={setSearchQuery}
             />
           </div>
-          {/* <div className={`${styles.one_day_wrapper} ${styles.filter_wrapper__available__item}`}>
-            <label>
-              <span className={styles.date_selector}>One day</span>
-            </label>
-            <Switch
-              className={styles.remove_svg_switch}
-              trackColor={{true: 'red', false: 'grey'}}
-              onChange={() => {
-                setIsOneDay(!isOneDay);
-              }}
-              checked={isOneDay}
+          <div className={styles.multi_select}>
+            <SwitchSelector
+              onChange={onChange}
+              options={options}
+              initialSelectedIndex={initialSelectedIndex}
+              backgroundColor={'#d9d9d9'}
+              fontColor={'#000'}
             />
-          </div> */}
+            <span>({infiniteScrollData.total})</span>
+          </div>
         </div>
 
         {/* {!isOneDay ? ( */}
         <SubgroupTable
-          offset={offset}
-          setOffset={setOffset}
+          selectedStatus={selectedStatus}
+          infiniteScrollData={infiniteScrollData}
+          setInfiniteScrollData={setInfiniteScrollData}
           setSubGroups={setSubGroups}
           setIsOpen={setIsOpen}
           setSelectedId={setSelectedId}

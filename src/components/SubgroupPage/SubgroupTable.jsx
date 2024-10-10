@@ -17,26 +17,26 @@ export default function SubgroupTable({
   setSubGroups,
   subGroups,
   selectedCourse,
-  offset,
-  setOffset,
+  infiniteScrollData,
+  setInfiniteScrollData,
+  selectedStatus,
   searchQuery
 }) {
   const confirm = useConfirm();
-  const [limit] = useState(40);
-  const [total, setTotal] = useState(0);
+
   const [reset, setReset] = useState(false);
   const fetchData = async (query = '') => {
     try {
       const data = await getSubGroups(
-        `offset=${reset ? 0 : offset}&limit=${limit}&name=${searchQuery}${
-          selectedCourse !== null ? '&CourseId=' + selectedCourse : ''
-        }` + query
+        `status=${selectedStatus}&offset=${reset ? 0 : infiniteScrollData.offset}&limit=${
+          infiniteScrollData.limit
+        }&name=${searchQuery}${selectedCourse !== null ? '&CourseId=' + selectedCourse : ''}` +
+          query
       );
       setSubGroups(prev => {
         return [...prev, ...data.data];
       });
-      setOffset(data.newOffset);
-      setTotal(data.totalCount);
+      setInfiniteScrollData(prev => ({...prev, total: data.totalCount, offset: data.newOffset}));
     } catch (e) {
       // error('Something went wrong');
       console.log(e);
@@ -55,7 +55,7 @@ export default function SubgroupTable({
 
     const delayedFetch = async () => {
       clearTimeout(timeoutId);
-      await setOffset(0);
+      await setInfiniteScrollData(prev => ({...prev, offset: 0}));
       await setSubGroups([]);
       timeoutId = setTimeout(fetchDataWithDelay, 500);
     };
@@ -66,13 +66,12 @@ export default function SubgroupTable({
 
   useEffect(() => {
     setReset(true);
-  }, [selectedCourse]);
-
+  }, [selectedCourse, selectedStatus]);
   useEffect(() => {
     if (reset) {
       setSubGroups([]);
-      setOffset(0);
-      setTotal(0);
+      setInfiniteScrollData(prev => ({...prev, total: 0, offset: 0}));
+
       fetchData();
       setReset(false);
     }
@@ -99,7 +98,9 @@ export default function SubgroupTable({
           <InfiniteScroll
             dataLength={subGroups.length} //This is important field to render the next data
             next={fetchData}
-            hasMore={offset + limit <= total}
+            hasMore={
+              infiniteScrollData.offset + infiniteScrollData.limit <= infiniteScrollData.total
+            }
             loader={<h4>Loading...</h4>}
             scrollableTarget="scroller"
             className={tableStyles.no_scroll}
