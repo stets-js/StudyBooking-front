@@ -9,7 +9,7 @@ import Form from '../../Form/Form';
 import {getUsers} from '../../../helpers/user/user';
 import {addMinutes, format} from 'date-fns';
 import {getSubGroups} from '../../../helpers/subgroup/subgroup';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import classNames from 'classnames';
 import {useTranslation} from 'react-i18next';
 const SetAppointment = ({
@@ -145,6 +145,17 @@ const SetAppointment = ({
       setSubGroup(subGroups.find(sub => sub.value === subGroup.value));
     }
   }, [subGroup, subGroups]);
+  const location = useLocation();
+
+  const fetchQueryData = () => {
+    const {lesson} = location.state || {};
+    setLink(lesson?.link || '');
+    console.log(lesson, 'ssss');
+  };
+  useEffect(() => {
+    if (isOpen) fetchQueryData();
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
@@ -231,6 +242,7 @@ const SetAppointment = ({
                   title={t('modals.setApp.link')}
                   type="text"
                   name="link"
+                  value={link}
                   placeholder={t('modals.setApp.plachold3')}
                   handler={setLink}
                 />

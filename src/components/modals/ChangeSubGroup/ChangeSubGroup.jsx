@@ -199,7 +199,8 @@ const ChangeSubGroup = ({isOpen, handleClose, id}) => {
                             ? format(element.endDate, 'yyyy-MM-dd')
                             : element.endDate,
                           subgroupId: element.id,
-                          courseId: element.CourseId
+                          courseId: element.CourseId,
+                          link: element.link
                         }
                       }
                     });
