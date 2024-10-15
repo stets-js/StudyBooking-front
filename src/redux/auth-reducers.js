@@ -8,8 +8,7 @@ const initialState = {
     id: null
   },
   MIC: {},
-  token: null,
-  slackIdSync: ''
+  token: null
 };
 
 const authReducer = (state = initialState, action) => {
