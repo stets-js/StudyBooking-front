@@ -95,6 +95,7 @@ const App = () => {
   const slackId = new URLSearchParams(window.location.search).get('slackId');
 
   const sendSync = async () => {
+    console.log(slackIdSync, 'here??');
     const res = await axios.post('/auth/slack', {slackId: slackIdSync});
 
     console.log('Slack ID успешно отправлен:', res.data);
@@ -106,7 +107,9 @@ const App = () => {
     // });
   };
   useEffect(() => {
+    console.log(slackId);
     if (slackId && slackId.length > 0) {
+      console.log(slackId);
       dispatch({type: 'SYNC_SLACK_START', payload: {slackId: slackId}});
     }
   }, [slackId]);
