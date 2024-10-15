@@ -112,7 +112,7 @@ const App = () => {
       console.log(slackId);
       dispatch({type: 'SYNC_SLACK_START', payload: {slackId: slackId}});
     }
-  }, [slackId]);
+  }, [dispatch, slackId]);
 
   useEffect(() => {
     console.log(slackIdSync, auth);
