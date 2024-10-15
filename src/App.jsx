@@ -92,24 +92,30 @@ const App = () => {
   );
   // }, [token]);
   const slackId = new URLSearchParams(window.location.search).get('slackId');
+
+  const sendSync = async slackId => {
+    axios
+      .post('/auth/slack', {slackId})
+      .then(response => {
+        console.log('Slack ID успешно отправлен:', response.data);
+        success({text: 'Синхронізовано!', delay: 1000});
+        localStorage.removeItem('slackId');
+      })
+      .catch(error => {
+        console.error('Ошибка при отправке Slack ID:', error);
+      });
+  };
   useEffect(() => {
-    if (slackId) {
+    if (slackId && !auth) {
       localStorage.setItem('slackId', slackId);
+    } else {
+      sendSync(slackId);
     }
   }, [slackId]);
   useEffect(() => {
     const storedSlackId = localStorage.getItem('slackId');
     if (auth && storedSlackId) {
-      axios
-        .post('/auth/slack', {slackId: storedSlackId})
-        .then(response => {
-          console.log('Slack ID успешно отправлен:', response.data);
-          success({text: 'Синхронізовано!', delay: 1000});
-          localStorage.removeItem('slackId');
-        })
-        .catch(error => {
-          console.error('Ошибка при отправке Slack ID:', error);
-        });
+      sendSync(storedSlackId);
     }
   }, [auth]);
   return (
