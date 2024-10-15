@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom';
 
 import './styles/App.scss';
@@ -44,6 +44,8 @@ import global_en from './translations/en/global.json';
 import global_ua from './translations/ua/global.json';
 import {I18nextProvider} from 'react-i18next';
 import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
+import Automatizers from './components/Automatizers/Automatizers';
+import {success} from '@pnotify/core';
 // import SurveyModal from './components/Survey/SurveyModal';
 
 const App = () => {
@@ -89,6 +91,27 @@ const App = () => {
     }
   );
   // }, [token]);
+  const slackId = new URLSearchParams(window.location.search).get('slackId');
+  useEffect(() => {
+    if (slackId) {
+      localStorage.setItem('slackId', slackId);
+    }
+  }, [slackId]);
+  useEffect(() => {
+    const storedSlackId = localStorage.getItem('slackId');
+    if (auth && storedSlackId) {
+      axios
+        .post('/auth/slack', {slackId: storedSlackId})
+        .then(response => {
+          console.log('Slack ID успешно отправлен:', response.data);
+          success({text: 'Синхронізовано!', delay: 1000});
+          localStorage.removeItem('slackId');
+        })
+        .catch(error => {
+          console.error('Ошибка при отправке Slack ID:', error);
+        });
+    }
+  }, [auth]);
   return (
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}
@@ -130,6 +153,7 @@ const App = () => {
                     <Route path={`${path.statistics}:teacherId`} element={<StatisticPage />} />
                     <Route path={`${path.report}:teacherId`} element={<ReportPage />} />
                   </Route>
+                  <Route path={path.zoho} element={<Automatizers></Automatizers>} />
                   <Route path={path.subgroups} element={<SubGroupPage />} />
                   <Route path={path.replacements} element={<ReplacementsPage />} />
                 </Route>
