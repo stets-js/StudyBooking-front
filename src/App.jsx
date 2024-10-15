@@ -44,7 +44,7 @@ import global_en from './translations/en/global.json';
 import global_ua from './translations/ua/global.json';
 import {I18nextProvider} from 'react-i18next';
 import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
-import Automatizers from './components/Automatizers/Automatizers';
+// import Automatizers from './components/Automatizers/Automatizers';
 import {success} from '@pnotify/core';
 // import SurveyModal from './components/Survey/SurveyModal';
 
@@ -159,7 +159,7 @@ const App = () => {
                     <Route path={`${path.statistics}:teacherId`} element={<StatisticPage />} />
                     <Route path={`${path.report}:teacherId`} element={<ReportPage />} />
                   </Route>
-                  <Route path={path.zoho} element={<Automatizers></Automatizers>} />
+                  {/* <Route path={path.zoho} element={<Automatizers></Automatizers>} /> */}
                   <Route path={path.subgroups} element={<SubGroupPage />} />
                   <Route path={path.replacements} element={<ReplacementsPage />} />
                 </Route>
