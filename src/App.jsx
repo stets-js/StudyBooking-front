@@ -68,6 +68,7 @@ const App = () => {
   const userRole = useSelector(state => state.auth.user.role);
   const MIC_user = useSelector(state => state.auth.MIC);
   const auth = isAuthenticated && (jwtExp * 1000 > Date.now() || MIC_user?.name !== undefined);
+  const slackIdSync = useSelector(state => state.auth.slackIdSync);
   if (isAuthenticated && !auth) {
     console.log('logout :(');
     dispatch({
@@ -93,31 +94,27 @@ const App = () => {
   // }, [token]);
   const slackId = new URLSearchParams(window.location.search).get('slackId');
 
-  const sendSync = async slackId => {
-    axios
-      .post('/auth/slack', {slackId})
-      .then(response => {
-        console.log('Slack ID успешно отправлен:', response.data);
-        success({text: 'Синхронізовано!', delay: 1000});
-        localStorage.removeItem('slackId');
-      })
-      .catch(error => {
-        console.error('Ошибка при отправке Slack ID:', error);
-      });
+  const sendSync = async () => {
+    const res = await axios.post('/auth/slack', {slackId: slackIdSync});
+
+    console.log('Slack ID успешно отправлен:', res.data);
+    success({text: 'Синхронізовано!', delay: 1000});
+    dispatch({type: 'SYNC_SLACK_END'});
+
+    // .catch(error => {
+    //   console.error('Ошибка при отправке Slack ID:', error);
+    // });
   };
   useEffect(() => {
-    if (slackId && !auth) {
-      localStorage.setItem('slackId', slackId);
-    } else {
-      sendSync(slackId);
+    if (slackId && slackId.length > 0) {
+      dispatch({type: 'SYNC_SLACK_START', payload: {slackId: slackId}});
     }
   }, [slackId]);
+
   useEffect(() => {
-    const storedSlackId = localStorage.getItem('slackId');
-    if (auth && storedSlackId) {
-      sendSync(storedSlackId);
-    }
-  }, [auth]);
+    console.log(slackIdSync, auth);
+    if (slackIdSync && auth) sendSync();
+  }, [slackIdSync, auth]);
   return (
     <>
       {/* ConfrimProvider just for subGroup confirmation of deleting  */}

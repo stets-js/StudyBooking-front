@@ -8,7 +8,8 @@ const initialState = {
     id: null
   },
   MIC: {},
-  token: null
+  token: null,
+  slackIdSync: ''
 };
 
 const authReducer = (state = initialState, action) => {
@@ -49,6 +50,10 @@ const authReducer = (state = initialState, action) => {
           token: action.payload.token
         };
       }
+    case 'SYNC_SLACK_START':
+      return {...state, slackIdSync: action.payload.slackId};
+    case 'SYNC_SLACK_END':
+      return {...state, slackIdSync: ''};
     case 'LOGOUT':
       Cookies.remove('token');
       return initialState;
