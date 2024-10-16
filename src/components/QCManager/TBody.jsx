@@ -91,7 +91,6 @@ export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
     setIsEdit(-1);
     fetchAllReports(true);
   };
-
   return (
     <>
       <div className={styles.filter__wrapper}></div>
@@ -103,19 +102,18 @@ export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
           height={'100%'}
           dataLength={reports.length} //This is important field to render the next data
           next={fetchAllReports}
-          hasMore={reports.length === 20}
-          scrollableTarget="scroller">
+          hasMore={offsetData.offset + offsetData.limit <= offsetData.total}>
           <table className={tableStyles.tableBody}>
+            <FitlerRow
+              updateReport={query => {
+                fetchAllReports(query, true);
+              }}
+              reports={reports}
+              setFilterData={setFilterData}
+              filterData={filterData}
+              teacherPage={teacherPage}
+            />
             <tbody>
-              <FitlerRow
-                updateReport={query => {
-                  fetchAllReports(query, true);
-                }}
-                reports={reports}
-                setFilterData={setFilterData}
-                filterData={filterData}
-                teacherPage={teacherPage}
-              />
               {reports.length > 0 ? (
                 reports.map((report, index) => {
                   if (!report) return <></>;
@@ -152,7 +150,9 @@ export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
                               ? tableStyles.cell__outer
                               : tableStyles.cell__inner
                           )}>
-                          {report?.SubGroup?.name}
+                          <a href={report?.link} target="_blank" rel="noreferrer">
+                            Click
+                          </a>
                         </div>
                       </td>
                       {!teacherPage && (

@@ -44,7 +44,7 @@ import global_en from './translations/en/global.json';
 import global_ua from './translations/ua/global.json';
 import {I18nextProvider} from 'react-i18next';
 import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
-// import Automatizers from './components/Automatizers/Automatizers';
+import Automatizers from './components/Automatizers/Automatizers';
 import {success} from '@pnotify/core';
 // import SurveyModal from './components/Survey/SurveyModal';
 

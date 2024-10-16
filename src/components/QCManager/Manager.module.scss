@@ -100,3 +100,11 @@
 .infiniteScroll{
   height: 100%;
 }
+
+.thead{
+  position: sticky;
+  top:0;
+  z-index: 10;
+  border: 0;
+  background-color: white;
+}

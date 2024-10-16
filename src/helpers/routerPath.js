@@ -42,6 +42,7 @@ const path = {
   replacements: 'replacements',
   //QC manager
   QCManager: '/qc-manager/',
-  report: 'report/'
+  report: 'report/',
+  zoho: 'zoho/'
 };
 export default path;
