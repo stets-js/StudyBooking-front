@@ -107,7 +107,15 @@ const Automatizers = () => {
             <select
               className={styles.select}
               value={filters.Product_Category}
-              onChange={e => setFilters({...filters, Product_Category: e.target.value})}>
+              onChange={e => {
+                const selectedCategory = e.target.value;
+                setFilters({
+                  Product_Category: selectedCategory,
+                  Product_Name: '',
+                  Training_Start_Date: '',
+                  searchQuery: ''
+                });
+              }}>
               <option value="">All Courses</option>
               {[...new Set(data.map(item => item.Product_Category))].map(category => (
                 <option key={category} value={category}>
