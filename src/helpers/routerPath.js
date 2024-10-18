@@ -43,6 +43,8 @@ const path = {
   //QC manager
   QCManager: '/qc-manager/',
   report: 'report/',
+  //activator
+  activator: '/activator/',
   zoho: 'zoho/'
 };
 export default path;

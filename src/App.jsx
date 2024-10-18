@@ -46,6 +46,7 @@ import {I18nextProvider} from 'react-i18next';
 import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
 import Automatizers from './components/Automatizers/Automatizers';
 import {success} from '@pnotify/core';
+import ActivatorWrapper from './pages/Activator/ActivatorWrapper';
 // import SurveyModal from './components/Survey/SurveyModal';
 
 const App = () => {
@@ -183,6 +184,14 @@ const App = () => {
                 <Route path={path.home} element={<Navigate to={`${path.QCManager}`} />}></Route>
                 <Route path={path.home} element={<ManagerWrapper />}>
                   <Route path={path.QCManager} element={<ManagerHome />} />
+                </Route>
+              </>
+            ) : auth && userRole === 'Activator' ? (
+              <>
+                <Route path={path.home} element={<Navigate to={`${path.activator}`} />}></Route>
+                <Route path={path.home} element={<ActivatorWrapper />}>
+                  <Route path={path.activator} element={<Automatizers />} />
+                  <Route path={path.subgroups} element={<SubGroupPage />} />
                 </Route>
               </>
             ) : auth && MIC_user?.name ? (
