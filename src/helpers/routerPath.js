@@ -43,6 +43,7 @@ const path = {
   //QC manager
   QCManager: '/qc-manager/',
   report: 'report/',
+  newQC: 'qc-new/',
   //activator
   activator: '/activator/',
   zoho: 'zoho/'

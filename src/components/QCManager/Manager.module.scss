@@ -108,3 +108,18 @@
   border: 0;
   background-color: white;
 }
+.forgotPassword {
+  font-size: 20px;
+  font-family: $poppins;
+  align-items: center;
+  background-color: $grey;
+  margin-top: 20px;
+  height: 50px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: $blue;
+  color: white;
+}
+.forgotPassword:hover {
+  scale: 1.05;
+}

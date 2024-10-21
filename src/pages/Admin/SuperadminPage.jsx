@@ -22,10 +22,10 @@ const SuperAdministrator = () => {
           {text: t('superAdmin.header.mentors'), path: path.avaliableTable},
           {text: t('superAdmin.header.subgroups'), path: path.subgroups},
           {text: t('superAdmin.header.replacements'), path: path.replacements},
-          {text: 'zoho', path: path.zoho},
           userRole === 'superAdmin'
             ? {text: t('superAdmin.header.spreadsheet'), path: path.spreadsheet}
-            : {}
+            : {},
+          userRole === 'superAdmin' ? {text: 'newQC', path: path.newQC} : {}
         ]}
       />
       <section className={styles.main_wrapper}>

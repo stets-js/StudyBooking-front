@@ -47,6 +47,7 @@ import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
 import Automatizers from './components/Automatizers/Automatizers';
 import {success} from '@pnotify/core';
 import ActivatorWrapper from './pages/Activator/ActivatorWrapper';
+import NewHome from './pages/QCManager/NewHome';
 // import SurveyModal from './components/Survey/SurveyModal';
 
 const App = () => {
@@ -136,7 +137,10 @@ const App = () => {
                 <Route path={path.superAdmin} element={<Navigate to={path.users} />} />
                 <Route path={path.superAdmin} element={<SuperAdministratorPage />}>
                   {userRole === 'superAdmin' && (
-                    <Route path={path.spreadsheet} element={<Spreadsheet></Spreadsheet>} />
+                    <>
+                      <Route path={path.spreadsheet} element={<Spreadsheet></Spreadsheet>} />
+                      <Route path={path.newQC} element={<NewHome></NewHome>} />
+                    </>
                   )}
                   <Route path={path.lessons} element={<LessonsPage />} />
                   <Route path={path.courses} element={<CoursesPage />} />
