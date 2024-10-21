@@ -22,7 +22,7 @@ export default function MentorsPage() {
       }
       const res = await getUsers(
         // teachersFilter - flag for corner case on backend
-        `onlyIndiv=true&limit=${limit}&offset=${reset ? 0 : offset}${
+        `onlyIndiv=true&role=teacher&limit=${limit}&offset=${reset ? 0 : offset}${
           filterName || filterCourse.value ? '&teachersFilter=true' : ''
         }${filterName ? '&name=' + filterName : ''}${
           filterCourse?.value ? '&courses=' + JSON.stringify([filterCourse.value]) : '&courses=[]'
