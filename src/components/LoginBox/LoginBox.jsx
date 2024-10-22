@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './LoginBox.module.scss';
 import Login from '../modals/Login/Login';
 import SignUp from '../modals/SignUp/SignUp';
 import {useDispatch, useSelector} from 'react-redux';
 import logout from '../../img/logout.svg';
+import {useLocation} from 'react-router-dom';
 
 export default function LoginBox({loggedUser, MIC_flag = false}) {
   const dispatch = useDispatch();
@@ -17,6 +18,19 @@ export default function LoginBox({loggedUser, MIC_flag = false}) {
   const auth = isAuthenticated && (jwtExp * 1000 > Date.now() || jwtExpMIC);
   const [isOpen, setIsOpen] = useState(false);
   const [modal, setModal] = useState('');
+
+  const location = useLocation();
+  const [resetActivate, setResetActivate] = useState(location.state?.fromResetPage);
+  console.log(resetActivate);
+  useEffect(() => {
+    if (resetActivate) {
+      console.log(321);
+      setIsOpen(true);
+      setModal('login');
+      setResetActivate(false);
+    }
+  }, [resetActivate]);
+
   return (
     <div className={styles.loginBox}>
       <div

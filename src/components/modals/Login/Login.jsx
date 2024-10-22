@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {error, success} from '@pnotify/core';
 
@@ -8,6 +8,7 @@ import FormInput from '../../FormInput/FormInput';
 import {loginUser} from '../../../helpers/manager/manager';
 import {loginMIC} from '../../../helpers/user/user';
 import {forgotPassword} from '../../../helpers/auth/auth';
+import {useLocation} from 'react-router-dom';
 
 const root = document.querySelector('#root');
 
@@ -61,6 +62,18 @@ const Login = ({MIC_flag, isOpen, handleClose}) => {
       }
     }
   };
+
+  const location = useLocation();
+  const [resetActivate, setResetActivate] = useState(location.state?.fromResetPage);
+  console.log('hello');
+  console.log(location.state);
+  console.log(resetActivate);
+  useEffect(() => {
+    if (resetActivate) {
+      setForgotPasswordFlag(true);
+      setResetActivate(false);
+    }
+  }, [resetActivate]);
   return (
     <>
       {isOpen && (

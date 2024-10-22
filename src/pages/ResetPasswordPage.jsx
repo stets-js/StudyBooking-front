@@ -4,6 +4,7 @@ import styles from '../styles/teacher.module.scss';
 import {useNavigate, useParams} from 'react-router-dom';
 import {resetPassword} from '../helpers/auth/auth';
 import {success, error} from '@pnotify/core';
+import InfoButton from '../components/Buttons/Info';
 
 export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
@@ -25,13 +26,30 @@ export default function ResetPasswordPage() {
           navigate('/');
         }
       } catch (e) {
-        error({text: 'Something went wrong', delay: 1000});
+        error({text: 'Завершився срок дії можливості скидання пароля', delay: 1000});
         console.log(e);
       }
     }
   };
   return (
     <div>
+      <br />
+      <InfoButton
+        classname={'fullWidth'}
+        onClick={() => {
+          navigate('/');
+        }}
+        text={'Повернутися до букінга'}
+      />
+      <InfoButton
+        classname={'fullWidth'}
+        onClick={() => {
+          navigate('/', {state: {fromResetPage: true}});
+        }}
+        text={'Скинути пароль наново'}
+      />
+      <br />
+      <br />
       <h2>Forgot password?</h2>
       <div className={styles.reset_wrapper}>
         <FormInput
@@ -39,6 +57,7 @@ export default function ResetPasswordPage() {
           value={newPassword}
           placeholder={'Start typing'}
           handler={setNewPassword}></FormInput>
+
         <button
           className={styles.reset_button}
           onClick={() => handleSubmit()}
