@@ -47,7 +47,8 @@ import ChangeLanguage from './components/ChangeLanguage/ChangeLanguage';
 import Automatizers from './components/Automatizers/Automatizers';
 import {success} from '@pnotify/core';
 import ActivatorWrapper from './pages/Activator/ActivatorWrapper';
-import NewHome from './pages/QCManager/NewHome';
+import HeadHome from './pages/QCManager/HeadHome';
+import HeadWrapper from './pages/QCManager/HeadWrapper';
 // import SurveyModal from './components/Survey/SurveyModal';
 
 const App = () => {
@@ -139,7 +140,6 @@ const App = () => {
                   {userRole === 'superAdmin' && (
                     <>
                       <Route path={path.spreadsheet} element={<Spreadsheet></Spreadsheet>} />
-                      <Route path={path.newQC} element={<NewHome></NewHome>} />
                     </>
                   )}
                   <Route path={path.lessons} element={<LessonsPage />} />
@@ -195,6 +195,14 @@ const App = () => {
                 <Route path={path.home} element={<Navigate to={`${path.activator}`} />}></Route>
                 <Route path={path.home} element={<ActivatorWrapper />}>
                   <Route path={path.activator} element={<Automatizers />} />
+                  <Route path={path.subgroups} element={<SubGroupPage />} />
+                </Route>
+              </>
+            ) : auth && userRole === 'Head QC' ? (
+              <>
+                <Route path={path.home} element={<Navigate to={`${path.headQC}`} />}></Route>
+                <Route path={path.home} element={<HeadWrapper />}>
+                  <Route path={path.headQC} element={<HeadHome />} />
                   <Route path={path.subgroups} element={<SubGroupPage />} />
                 </Route>
               </>

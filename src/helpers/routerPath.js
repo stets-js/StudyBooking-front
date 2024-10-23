@@ -40,10 +40,12 @@ const path = {
   teacher: '/teacher/',
   subgroups: 'subgroups',
   replacements: 'replacements',
+
   //QC manager
   QCManager: '/qc-manager/',
   report: 'report/',
   newQC: 'qc-new/',
+  headQC: '/headQC/',
   //activator
   activator: '/activator/',
   zoho: 'zoho/'
