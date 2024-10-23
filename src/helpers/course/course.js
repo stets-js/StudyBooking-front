@@ -1,8 +1,8 @@
 import axios from '../axios-config';
 
-const getCourses = () => {
+const getCourses = (options = '') => {
   return axios
-    .get('/courses')
+    .get(`/courses${options.length > 0 ? '?' + options : ''}`)
     .then(res => res.data)
     .catch(error => {
       throw error;

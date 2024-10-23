@@ -12,8 +12,16 @@ import styles from './Manager.module.scss';
 import {getSheets} from '../../helpers/spreadsheet/spreadsheet';
 import {getUsers} from '../../helpers/user/user';
 import {getCourses} from '../../helpers/course/course';
+import {useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 
 export default function FitlerRow({filterData, setFilterData, teacherPage = false}) {
+  const {teacherId} = useParams() || null;
+  let userId = useSelector(state => state.auth.user.id);
+  if (teacherId) {
+    userId = teacherId;
+  } //case when admin is logged in and wants to see another teacher
+
   const [status] = useState([
     {label: 'Погодження', value: 'Pending'},
     {label: 'Погоджено', value: 'Approved'},
@@ -30,7 +38,8 @@ export default function FitlerRow({filterData, setFilterData, teacherPage = fals
     );
   };
   const fetchCourses = async () => {
-    const courses = await getCourses();
+    const courses = await getCourses(teacherPage ? `userCourses=true&mentorId=${userId}` : '');
+    console.log(courses);
     setCourses([
       ...courses.data.map(el => {
         return {label: el.name, value: el.id};
@@ -51,12 +60,16 @@ export default function FitlerRow({filterData, setFilterData, teacherPage = fals
   const spreadsheetId = '1gbBpJfNZzkURPnOIghqPWDxkDovdRKVK_YxlotmkcIY';
   const [sheets, setSheets] = useState([]);
   const fetchSheets = async () => {
-    const {data} = await getSheets(spreadsheetId);
-    setSheets(
-      data.data.sheets.map((el, index) => {
-        return {label: el, value: index};
-      })
-    );
+    if (teacherPage) {
+      setSheets(filterData.sheets);
+    } else {
+      const {data} = await getSheets(spreadsheetId);
+      setSheets(
+        data.data.sheets.map((el, index) => {
+          return {label: el, value: index};
+        })
+      );
+    }
   };
 
   useEffect(() => {

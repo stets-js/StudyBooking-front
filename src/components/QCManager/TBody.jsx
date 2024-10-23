@@ -34,7 +34,8 @@ export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
     date: undefined,
     status: undefined,
     mark: 'DESC',
-    reset: false
+    reset: false,
+    sheets: []
   });
   console.log(userRole);
   const [status] = useState([
@@ -67,6 +68,13 @@ export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
     });
   };
   useEffect(() => {
+    setFilterData(prev => ({
+      ...prev,
+      sheets: reports.map(report => ({label: report.sheetName, value: report.sheetName}))
+    }));
+  }, [reports]);
+  console.log(filterData);
+  useEffect(() => {
     fetchAllReports();
   }, []);
   useEffect(() => {
@@ -91,6 +99,7 @@ export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
     setIsEdit(-1);
     fetchAllReports(true);
   };
+  console.log(filterData);
   return (
     <>
       <div className={styles.filter__wrapper}></div>
@@ -322,7 +331,7 @@ export default function Tbody({teacherPage, needToUpdate, setNeedToUpdate}) {
                 })
               ) : (
                 <>
-                  <tr key={'No'}>
+                  <tr key={'No'} style={{height: '480px'}}>
                     <td className={tableStyles.cell__mySubgroup} colSpan={teacherPage ? 6 : 7}>
                       <div>No reports for now!</div>
                     </td>
